@@ -1,20 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
+import { 
+  BrowserRouter as Router ,
+  Route
+} from 'react-router-dom';
+
+import * as ROUTES from './constants/routes';
 import './App.css';
 
-import DynamicLineChart from './components/dynamicLineChart'
-import TemperatureDisplay from './components/temperature'
+import Navigation from './components/Navigation'
+import LandingPage from './components/Landing'
+import SignUpPage from './components/SignUp'
+import SignInPage from './components/SignIn'
+import HomePage from './components/Home';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        {/* <img src={logo} className="App-logo" alt="logo" /> */}
-        <TemperatureDisplay/>
-        <DynamicLineChart/>
-      </header>
-    </div>
-  );
-}
+import { withAuthentication } from './components/Session';
 
-export default App;
+import SmartHeaterDisplay from './views/smartHeater'
+
+// function App() {
+const App = () => (
+  <div className="App">
+    <header className="App-header">
+      <Router>
+        <Navigation />
+
+        <Route exact path={ROUTES.LANDING} component={LandingPage} />
+        <Route path={ROUTES.SMART_HEATING} component={SmartHeaterDisplay} />
+        <Route path={ROUTES.HOME} component={HomePage} />
+        <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
+        <Route path={ROUTES.SIGN_IN} component={SignInPage} />
+      </Router>
+    </header>
+  </div>
+);
+
+export default withAuthentication(App);

@@ -1,38 +1,39 @@
 import React, { Component } from 'react';
+import { Link, withRouter } from 'react-router-dom';
+
 import CanvasJSReact from '../assets/canvasjs.react';
 
-import { db } from './firebase';
+import { withFirebase } from './Firebase';
 
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 var dps = []
 
-db.collection('temp_sensor_test').orderBy('timestamp','desc').limit(20).get().then(query => {
-	query.forEach(doc => {
-		let timestamp = doc.data().timestamp
-		timestamp = new Date(timestamp * 1000);
-		// console.log(timestamp)
-		// console.log(typeof timestamp)
-		let temperature = doc.data().temp
-		let tempdata = {x: timestamp, y: temperature}
-		dps.push(tempdata)
-	})
-})
-
-class DynamicLineChart extends Component {
-	constructor() {
-		super();
+class DynamicLineChartBase extends Component {
+	constructor(props) {
+		super(props);
 		this.updateChart = this.updateChart.bind(this);
+
+		this.props.firebase.fs.collection('temp_sensor_test').orderBy('timestamp','desc').limit(20).get().then(query => {
+			query.forEach(doc => {
+				let timestamp = doc.data().timestamp
+				timestamp = new Date(timestamp * 1000);
+				let temperature = doc.data().temp
+				let tempdata = {x: timestamp, y: temperature}
+				dps.push(tempdata)
+			})
+		})
 	}
 
 	componentDidMount() {
-		db.collection('temp_sensor_test').orderBy('timestamp','desc').limit(1).onSnapshot(snapshot => {
+		
+		this.props.firebase.fs.collection('temp_sensor_test').orderBy('timestamp','desc').limit(1).onSnapshot(snapshot => {
 			let changes = snapshot.docChanges();
 			changes.forEach(change => {
-                // this.setState({current: change.doc.data().temp})
-                let timestamp = change.doc.data().timestamp;
+				// this.setState({current: change.doc.data().temp})
+				let timestamp = change.doc.data().timestamp;
 				timestamp = new Date(timestamp * 1000);
-                let temperature = change.doc.data().temp
+				let temperature = change.doc.data().temp
 				let tempdata = {x: timestamp, y: temperature}
 				dps.push(tempdata)
 				this.updateChart()
@@ -79,5 +80,8 @@ class DynamicLineChart extends Component {
 		);
 	}
 }
+
+const DynamicLineChart = withRouter(withFirebase(DynamicLineChartBase));
+
 
 export default DynamicLineChart;
