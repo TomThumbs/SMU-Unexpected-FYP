@@ -11,7 +11,12 @@ import Navigation from './components/Navigation'
 import LandingPage from './components/Landing'
 import SignUpPage from './components/SignUp'
 import SignInPage from './components/SignIn'
-import HomePage from './components/Home';
+import HomePage from './components/Home'
+import DeliveryForm from './components/DeliveryForm'
+import PostDeliveryForm from './components/PostDeliveryForm'
+import OrderForm from './components/OrderForm'
+import PostOrderForm from './components/PostOrderForm'
+import DeliverySelection from './components/DeliverySelection'
 
 import { withAuthentication } from './components/Session';
 
@@ -29,6 +34,11 @@ const App = () => (
         <Route path={ROUTES.HOME} component={HomePage} />
         <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
         <Route path={ROUTES.SIGN_IN} component={SignInPage} />
+        <Route path={ROUTES.DELIVERY_FORM} component={DeliveryForm} />
+        <Route path={ROUTES.POST_DELIVERY_FORM} component={PostDeliveryForm} />
+        <Route path={ROUTES.DELIVERY_SELECTION} component={DeliverySelection} />
+        <Route path={ROUTES.POST_ORDER_FORM} component={PostOrderForm} />
+        <Route path={ROUTES.ORDER_FORM} component={OrderForm} />
       </Router>
     </header>
   </div>
