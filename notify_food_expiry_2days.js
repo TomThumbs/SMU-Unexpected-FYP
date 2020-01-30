@@ -1,6 +1,4 @@
 //set constants for security
-const accountSid = 'ACe2b224e4761970ae4dbccaaf01f849b4';
-const authToken = '1d3d80432f711600a18cf5c7f239abf2';
 const client = require('twilio')(accountSid, authToken);
 const admin = require('firebase-admin');
 
@@ -34,7 +32,7 @@ function twillioSms(listItems){
     .create({
         body: "Please note these are the items that will be expiring today : " + listItems ,
         from: '+18022424685',
-        to:  '+6598398720'
+        to:  '+65'
     })
     .then(message => console.log(message.sid));
 } ;
