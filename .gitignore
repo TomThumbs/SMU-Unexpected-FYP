@@ -27,3 +27,5 @@ yarn-error.log*
 icon*
 Icon
 **/icon*
+*/*/icon*
+*/*/*/icon*
