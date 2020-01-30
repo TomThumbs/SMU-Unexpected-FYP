@@ -15,10 +15,6 @@ class TemperatureDisplayBase extends Component{
     constructor(props) {
         super(props);
         this.state = {
-            // min_temp: 0, 
-            // min_temp_doc_id: '',
-            // current: 0,
-            // new_min_temp: ''
             ...INITIAL_STATE
         };
     }
