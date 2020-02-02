@@ -31,7 +31,7 @@ function twillioSms(listItems){
     client.messages
     .create({
         body: "Please note these are the items that will be expiring today : " + listItems ,
-        from: '+18022424685',
+        from: '+15', //CHANGE THIS
         to:  '+65'
     })
     .then(message => console.log(message.sid));
