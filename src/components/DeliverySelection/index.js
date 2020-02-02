@@ -12,6 +12,11 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
+import Container from '@material-ui/core/Container';
+import Button from '@material-ui/core/Button';
+import CssBaseline from '@material-ui/core/CssBaseline';
+
+import { withAuthorization } from '../Session'
 
 // const cafeList = document.querySelector('#cafe-list');
 // const form = document.querySelector('#add-cafe-form')
@@ -51,6 +56,22 @@ import FormLabel from '@material-ui/core/FormLabel';
 const useStyles = makeStyles(theme => ({
   formControl: {
     margin: theme.spacing(3),
+  },
+  paper: {
+    marginTop: theme.spacing(8),
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
   },
 }));
 
@@ -123,26 +144,42 @@ class DeliverySelectionBase extends Component {
 
     render() {
       {this.state.events = this.state.strEvents.split(",")} 
-        return(
-        <div>
-
-        <FormControl component="fieldset" id="cafe-list" className={this.classes.formControl}>
-        <FormLabel component="legend">Catering events for the day</FormLabel>
-        <RadioGroup aria-label="doc_id" name="doc_id" id="cafe-list" value={this.state} onChange={this.handleChange}> 
-          {this.state.events.map((event, index) =>
-          
-            <FormControlLabel value={event} control={<Radio />} label={event} />
+        
+      return(
+        <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        
+      <div>
+      <FormControl component="fieldset" id="cafe-list" className={this.classes.formControl}>
+        <FormLabel component="legend"><h2>Catering Events For The Day</h2></FormLabel>
+        <RadioGroup aria-label="doc_id" name="doc_id" id="cafe-list" value={this.value} onChange={this.handleChange}>
+        {this.state.events.map((event, index) =>
+          <FormControlLabel value={event} control={<Radio />} label={event} />
           )}
+          <br></br>
         </RadioGroup>
       </FormControl>
-        <form onSubmit={this.onSubmit}>
-          <button type='submit'>Submit</button>
-        </form>
+      
+      
+      <form onSubmit={this.onSubmit}>
+      
+      <Button 
+        type="submit"
+        fullWidth
+        // disabled={isInvalid} 
+        variant="contained"
+        color="primary"
+        className={this.classes.submit}>
+          Submit
+        </Button>
+      
+      </form>
+    </div>
+    </Container>
 
-        </div>
         );
 }}
 
 const DeliverySelection = withRouter(withFirebase(DeliverySelectionBase));
-
-export default DeliverySelection;
+const condition = authUser => !!authUser;
+export default withAuthorization(condition) (DeliverySelection);
