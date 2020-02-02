@@ -53,7 +53,7 @@ function twillioSms(number){
     client.messages
     .create({
         body: 'Testing please reply',
-        from: '+18022424685',
+        from: '+1', //change this
         to:  '+65'+ number
     })
     .then(message => console.log(message.sid));
