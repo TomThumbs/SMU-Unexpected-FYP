@@ -42,7 +42,6 @@ const INITIAL_STATE = {
   error: null,
 };
 
-
 const SignInPage = () => (
   <div >
     <br></br><br></br>

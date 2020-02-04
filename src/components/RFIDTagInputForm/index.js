@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import '../../App.css';
-import { Link, withRouter } from 'react-router-dom';
 import { withFirebase } from '../Firebase';
+import { Link, withRouter } from 'react-router-dom';
 
 import 'date-fns'; //npm i date-fns
 import DateFnsUtils from '@date-io/date-fns'; //npm i @date-io/date-fns@1.x date-fns
@@ -20,6 +19,7 @@ import {
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
+import Container from '@material-ui/core/Container';
 
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -28,39 +28,41 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Paper from '@material-ui/core/Paper';
+import { CssBaseline } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
+  paper: {
+    marginTop: theme.spacing(8),
+    display: 'flex',
+    flexDirection: 'column',
   },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
   },
 }));
 
 const INITIAL_STATE = {
-  today:'',
-  selectedDate:'',
   foodType:'',
   inputLabel: '',
   RFID:'',
   temp_tag:'',
-  name:'',
+  foodName:'',
+  storageDate:'',
+  expiryDate:'',
   open:'',
   foodId:''
 };  
 
-class RFIDTagInputFormBase extends Component {
-
+class NewIngredientForm extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-        ...INITIAL_STATE
-    };
+    this.state = { ...INITIAL_STATE };
+    this.classes = { useStyles }
   }
-
-  classes = useStyles
 
   componentDidMount(){
     let queryString = window.location.search
@@ -70,54 +72,7 @@ class RFIDTagInputFormBase extends Component {
     this.setState({
       foodId: urlId
     })
-  }
-
-  handleTagChange = event => {
-    this.setState({
-      foodType: event.target.value
-    })
-  }
-
-  handleRFID = data => {
-    if (this.state.foodType.length != 0 && (this.state.foodType != this.state.temp_tag)) {
-      this.props.firebase.fs.collection('Ingredient_RFID').doc(this.state.foodType).get().then(doc=> {
-        let increRFID = Number(doc.data().RFID)+1
-        this.setState({
-          RFID: increRFID,
-          temp_tag: this.state.foodType
-        }) 
-      })
-    }
-  }
-
-  handleDateChange = date => {
-    let temp_date = String(date).slice(0,15)
-    this.setState({
-      selectedDate: temp_date
-    })
-    console.log(temp_date)
-    console.log(this.state.selecteddDate)
-  };  
-
-  onSubmit = event => {
-    event.preventDefault();
-
-    // this.props.firebase.fs.collection('Ingredient_RFID').doc(this.state.foodType).update({
-    //   RFID: this.state.RFID
-    // })
-
-    // this.props.firebase.fs.collection('Ingredient_RFID').doc(this.state.foodType).collection(strRFID).doc("Document Details").set({ 
-    //   Expiry_Date: this.state.selectedDate, Name: this.state.name
-    // })
-    // let strRFID = String(this.state.RFID)
-    this.props.firebase.fs.collection('Ingredient_RFID').doc(this.state.foodId).set({ 
-      Expiry_Date: this.state.selectedDate, Name: this.state.name
-    })
-    this.handleClickOpen()
-  }
-
-  today() {
-    if (this.state.today.length == 0) {
+    if (this.state.storageDate.length == 0) {
       let temp_date = new Date();
       let dd = String(temp_date.getDate()).padStart(2, '0');
       let mm = String(temp_date.getMonth() + 1).padStart(2, '0'); 
@@ -125,160 +80,108 @@ class RFIDTagInputFormBase extends Component {
       let string = dd + '/' + mm + '/' + yyyy
     
       this.setState({
-        today: string,
-        selectedDate: string
+        storageDate: string,
       })
     }
   }
 
-  handleIngredientName = name => event => {
-    this.setState({...this.props, [name]: event.target.value});   
-  }
-
-  renderSubmit() {
-    // if (this.state.today == this.state.selectedDate || this.state.foodType.length == 0 || this.state.name.length == 0) {
-    //   return <h1>Please select a tag, input ingredient name and choose a future expiry date</h1>
-    //       // <form onSubmit={this.onSubmit}>
-    //       //    <button type='submit'>Submit</button>
-    //       //    </form>
-    // } else {
-    //   return <form onSubmit={this.onSubmit}>
-    //          <button type='submit'>Submit</button>
-    //          </form>
-    // }
-    if (this.state.today == this.state.selectedDate || this.state.name.length == 0) {
-      return <h1>Please select a tag, input ingredient name and choose a future expiry date</h1>
-          // <form onSubmit={this.onSubmit}>
-          //    <button type='submit'>Submit</button>
-          //    </form>
-    } else {
-      return <form onSubmit={this.onSubmit}>
-              <button type='submit'>Submit</button>
-             </form>
-    }
-  }
-
-  handleClickOpen = () => {
-    this.setState({
-      open: true
+  onSubmit = event => {
+    this.props.firebase.fs.collection('Ingredient_RFID').doc(this.state.foodId).set({ 
+      Expiry_Date: this.state.selectedDate, Name: this.state.name
     })
+    event.preventDefault();
   };
 
-  handleClose = () => {
-    this.setState({
-      open: false,
-    })
-    window.location.reload(true);
+  onChange = event => {
+    this.setState({ [event.target.name]: event.target.value });
   };
 
-  render() {
-    // {this.testurl()}
+  render(){
+    const isInvalid = this.state.storageDate == this.state.expiryDate || this.state.foodName.length == 0;
+    return(
+      <Container component="main" maxWidth="xs">
+        <CssBaseline/>
+        <div className={this.classes.paper}>
+        <form onSubmit={this.onSubmit}>
+          <TextField
+            variant="outlined"
+            margin="normal"
+            fullWidth
+            name="foodId"
+            value={this.state.foodId}
+            label="FoodID"
+            onChange={this.onChange}
+            type="text"
+            placeholder="Food ID"
+            autoFocus
+            InputProps={{
+              readOnly: true,
+            }}
+          />
 
-    const isInvalid = this.state.today == this.state.selectedDate || this.state.name.length == 0;
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            name="foodName"
+            value={this.state.foodName}
+            label="foodName"
+            onChange={this.onChange}
+            type="text"
+            placeholder="Food Name"
+            autoFocus
+          />
+          
+          <TextField
+            variant="outlined"
+            margin="normal"
+            fullWidth
+            name="storageDate"
+            value={this.state.storageDate}
+            label="storageDate"
+            onChange={this.onChange}
+            type="text"
+            placeholder="Date of Storage"
+            autoFocus
+            InputProps={{
+              readOnly: true,
+            }}
+          />
 
-    return (  
-    <div>
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            name="expiryDate"
+            value={this.state.expiryDate}
+            label="expiryDate"
+            onChange={this.onChange}
+            type="text"
+            placeholder="Date of Expiry"
+            autoFocus
+          />
 
-      <React.Fragment>
-        <Typography align="center" variant="h6" gutterBottom>
-          Barcode Tag Registration
-        </Typography>
-        
 
-        <Grid container justify="center" spacing={3} alignItems="center">
-          <Grid item xs={3}>
-          Item ID: 
-          </Grid>
-          <Grid item xs={3}>
-          <Paper>{this.state.foodId}</Paper>
-          </Grid>
-        </Grid>
-        {/* <Grid item xs={12}>
-        <FormControl className={this.classes.formControl}>
-          <InputLabel id="demo-simple-select-label">Tag</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={this.state.foodType}
-            onChange={this.handleTagChange}
+          <Button 
+            disabled={isInvalid} 
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={this.classes.submit}
           >
-            <MenuItem value="A">A (Vegetables)</MenuItem>
-            <MenuItem value="B">B (Fish)</MenuItem>
-            <MenuItem value="C">C (Meat)</MenuItem>
-            <MenuItem value="D">D</MenuItem>
-            <MenuItem value="E">E</MenuItem>
-            <MenuItem value="F">F</MenuItem>
-          </Select>
-        </FormControl> */}
-        {/* {this.handleRFID()}{this.state.RFID} */}
-        {/* </Grid> */}
-        <Grid container justify="center" spacing={3} alignItems="center">
-          <Grid item xs={3}>Name:</Grid>
-          <Grid item xs={3}>
-            <TextField
-              required
-              id="name" 
-              name="name"
-              label="Name of ingredient:"
-              autoComplete="name"
-              value={this.state.value}
-              onChange={this.handleIngredientName('name')}
-            />
-          </Grid>
-        </Grid>
-        <Grid container justify="center" spacing={3} alignItems="center">
-          <Grid item xs={3}>Date of entry:</Grid>
-          <Grid item xs={3}>
-            {this.today()} {this.state.today}
-          </Grid>
-        </Grid>
-        <Grid container justify="center" spacing={3} alignItems="center">
-          <Grid item xs={3}>Date of Expiry: </Grid>
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <Grid item xs={3}> {/* container justify="space-around"> */}
-            <KeyboardDatePicker
-              disableToolbar
-              variant="inline"
-              format="dd/MM/yyyy"
-              margin="normal"
-              id="date-picker-inline"
-              value={this.state.selectedDate}
-              onChange={this.handleDateChange}
-              KeyboardButtonProps={{
-                'aria-label': 'change date',
-              }}
-            />
-            </Grid>
-          </MuiPickersUtilsProvider>
-        </Grid>
-        <Grid container justify="center" spacing={3} alignItems="center">
-          {this.renderSubmit()}
-        </Grid>
-      </React.Fragment>
-
-      <Dialog
-        open={this.state.open}
-        onClose={this.handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">{"Submission Notification"}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Tag has been submitted to database.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={this.handleClose} color="primary" autoFocus>
-            Noted
+            Submit
           </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
-    );
+        </form>
+        </div>
+      </Container>
+      
+    )
   }
 }
 
-const RFIDTagInputForm = withRouter(withFirebase(RFIDTagInputFormBase));
+const RFIDTagInputForm = withRouter(withFirebase(NewIngredientForm));
 
 export default RFIDTagInputForm;
