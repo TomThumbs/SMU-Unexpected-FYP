@@ -24,6 +24,15 @@ const NavigationAuth = () => (
             <Link to={ROUTES.SMART_HEATING}>Smart Heater</Link>
         </li>
         <li>
+            <Link to={ROUTES.DELIVERY_SELECTION}>Make Delivery</Link>
+        </li>
+        <li>
+            <Link to={ROUTES.ORDER_FORM}>Order Form</Link>
+        </li>
+        <li>
+            <Link to={ROUTES.RFID_TAG_INPUT_FORM}>Tag Ingredient</Link>
+        </li>
+        <li>
             <SignOutButton />
         </li>
     </ul>
