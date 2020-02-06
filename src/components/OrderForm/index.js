@@ -20,6 +20,11 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+
+import { withAuthorization } from '../Session'
 
 import 'date-fns'; //npm i date-fns
 import DateFnsUtils from '@date-io/date-fns'; //npm i @date-io/date-fns@1.x date-fns
@@ -28,12 +33,6 @@ import {
   KeyboardTimePicker,
   KeyboardDatePicker,
 } from '@material-ui/pickers'; //npm i @material-ui/pickers
-
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import { CssBaseline } from '@material-ui/core';
-
 const INITIAL_STATE = {
   orderid: 0,
   orderiddoc: '',
@@ -73,7 +72,6 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-
 class OrderFormBase extends Component {
 
   constructor(props) {
@@ -100,8 +98,7 @@ class OrderFormBase extends Component {
   }
 
   onSubmit = event => {
-    
-  }
+    }
 
   onChange = event => {
     this.setState({ 
@@ -137,7 +134,6 @@ class OrderFormBase extends Component {
     )
   }
 
-
   render () {
     let isInvalid = this.state.date.length !== 0 &&
     this.state.starttime.length !== 0 &&
@@ -149,32 +145,32 @@ class OrderFormBase extends Component {
     this.state.company.length !== 0 
 
     return(
-      <Container component="main" maxWidth="xs">
-        <CssBaseline/>
-        <div className={this.classes.paper}>
+      <Container component="main" maxWidth="sm">
+        <div className={this.classes.root}>
           <Typography variant="h6" align="center" gutterBottom>
           Order Creation
           </Typography>
+          
           <form onSubmit={this.onSubmit}>
             <TextField
               variant="filled"
-              margin="normal"
+              margin="dense"
               fullWidth
               name="orderid"
               value={this.state.orderid}
-              label="orderid"
+              label="Order ID"
               placeholder="Order ID"
               autoFocus
               InputProps={{
                 readOnly: true,
               }}
             />
-            <p>Order Date</p>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+           <div><br></br></div>
+            Date: <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <KeyboardDatePicker
                 variant="inline"
                 format="dd/MM/yyyy"
-                margin="normal"
+            
                 id="date-picker-inline"
                 value={this.state.date}
                 onChange={this.handleDateChange}
@@ -182,8 +178,8 @@ class OrderFormBase extends Component {
                   'aria-label': 'change date',
                 }}
               />
-              <KeyboardTimePicker
-                margin="normal"
+                 Time: <KeyboardTimePicker
+                margin="none"
                 id="time-picker"
                 value={this.state.starttime}
                 onChange={this.handleTimeChange}
@@ -193,11 +189,20 @@ class OrderFormBase extends Component {
               />
             </MuiPickersUtilsProvider>
 
-            {/* Postal Code */}
-            {this.createTextField("venue", this.state.venue, "Postal Code:", "Postal Code")}
-
-            {/* Number of people */}
-            {this.createTextField("pax", this.state.pax, "Number of people:", "Pax")}
+            <TextField
+              margin="normal"
+              id="standard-number"
+              fullWidth
+              name="pax"
+              value={this.state.pax}
+              label="Number of people"
+              type="number"
+              onChange={this.onChange}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              inputProps= {{ min: 10}}
+            />
 
             {/* Customer Name */}
             {this.createTextField("custname", this.state.custname, "Customer Name:", "Customer Name")}
@@ -207,6 +212,11 @@ class OrderFormBase extends Component {
 
             {/* Customer Company */}
             {this.createTextField("custcompany", this.state.custcompany, "Customer Company:", "Customer Company")}
+            
+            {/* Postal Code */}
+            {this.createTextField("venue", this.state.venue, "Postal Code:", "Postal Code")}
+
+            <div><br></br></div>
 
             <Button 
               disabled={isInvalid} 
@@ -214,8 +224,7 @@ class OrderFormBase extends Component {
               fullWidth
               variant="contained"
               color="primary"
-              className={this.classes.submit}
-            >
+              className={this.classes.submit}>
               Submit
             </Button>
           </form>
@@ -226,5 +235,7 @@ class OrderFormBase extends Component {
 }
 
 const OrderForm = withRouter(withFirebase(OrderFormBase));
+const condition = authUser => !!authUser;
 
-export default OrderForm;
+export default withAuthorization(condition) (OrderForm);
+
