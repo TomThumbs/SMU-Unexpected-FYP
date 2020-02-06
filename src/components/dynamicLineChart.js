@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 
 import CanvasJSReact from '../assets/canvasjs.react';
+import Typography from '@material-ui/core/Typography';
 
 import { withFirebase } from './Firebase';
 
@@ -51,9 +52,9 @@ class DynamicLineChartBase extends Component {
 	}
 	render() {
 		const options = {
-			title :{
-				text: "Temperature Line Chart"
-			},
+			// title :{
+			// 	text: "Temperature Line Chart"
+			// },
 			
 			axisY: { 
 				title: "Temperature (°C)", 
@@ -71,7 +72,9 @@ class DynamicLineChartBase extends Component {
 		
 		return (
 		<div>
-			<h1>Temperature Dynamic Line Chart</h1>
+			<br></br><br></br>
+			<Typography variant="h4" align="center">Temperature Dynamic Line Chart</Typography>
+			<br></br>
 			<CanvasJSChart options = {options} 
 				onRef={ref => this.chart = ref}
 			/>
