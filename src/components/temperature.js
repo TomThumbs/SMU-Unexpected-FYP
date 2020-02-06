@@ -3,6 +3,33 @@ import { Link, withRouter } from 'react-router-dom';
 import '../App.css';
 import { withFirebase } from './Firebase';
 
+import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import { positions } from '@material-ui/system';
+
+const useStyles = makeStyles(theme => ({
+    submit: {
+      margin: theme.spacing(3, 0, 2),
+    },
+    textField: {
+        marginLeft: theme.spacing(1),
+        marginRight: theme.spacing(1),
+        width: 200,
+    },
+    root: {
+        flexGrow: 1,
+        align:"center"
+    },
+    paper: {
+        padding: theme.spacing(2),
+        margin: 'auto',
+        maxWidth: 200,
+    },
+  }));
+
 const INITIAL_STATE = {
     min_temp: 0, 
     min_temp_doc_id: '',
@@ -15,8 +42,14 @@ class TemperatureDisplayBase extends Component{
     constructor(props) {
         super(props);
         this.state = {
+            // min_temp: 0, 
+            // min_temp_doc_id: '',
+            // current: 0,
+            // new_min_temp: ''
             ...INITIAL_STATE
         };
+        this.classes = { useStyles }
+        
     }
 
     componentDidMount() {
@@ -62,19 +95,37 @@ class TemperatureDisplayBase extends Component{
         const {new_min_temp} = this.state; 
 
         return ( 
-            <div>            
+            <div align="center" className={this.classes.root}>
+            {/* <Paper className={this.classes.paper}>        */}
                 <p>Temperature Threshold: {this.state.min_temp}</p>
                 <p>Current Temperature: {this.state.current}</p>
                 <form onSubmit={this.onSubmit}>
-                    <input 
+                
+                    <TextField
                         name='new_min_temp'
                         value={new_min_temp}
                         onChange={this.onChange}
-                        type="number"
-                        palceholder="New mininium temperature"
+                        label="Set Threshold"
+                        defaultValue="65"
+                        type="Number"
+                        variant="outlined"
+                        margin="dense"
+                        align="left"
                     />
-                    <button type='submit'>Submit</button>
+              
+                    <Button 
+                        // disabled={isInvalid} 
+                        type="submit"
+                        variant="contained"
+                        color="primary"
+                        className={this.classes.submit}
+                        margin="normal">
+                        Submit
+                    </Button>
+              
+            
                 </form>
+                {/* </Paper>   */}
             </div>
         );
     }
