@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import '../../App.css';
 
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { withFirebase } from '../Firebase';
 
 import Grid from '@material-ui/core/Grid';
@@ -47,14 +47,7 @@ const INITIAL_STATE = {
   custcompany: '',
   custID:0,
   custref:'',
-  bva: false,
-  bvb: false,
-  rca: false,
-  rcb: false,
-  dea: false,
-  deb: false,
-  fia: false,
-  fib: false,
+  selectedmenu:[],
 }
 
 const useStyles = makeStyles(theme => ({
@@ -94,11 +87,23 @@ class OrderFormBase extends Component {
     })
 
     // Get list of menu items
-    this.props.firebase.fs.collection('Menu')
+    this.props.firebase.fs.collection('Menu').orderBy("Type").onSnapshot(snapshot => {
+      let changes = snapshot.docChanges();
+      changes.forEach(change => {
+        // console.log(change.doc.data())
+        let dishname = change.doc.data().name
+        let dishtype = change.doc.data().Type
+        this.setState((prevstate) => ({
+        selectedmenu:[...prevstate.selectedmenu,{dish:dishname, type:dishtype, selected:"false"}]
+    }))
+      })
+    })
   }
 
   onSubmit = event => {
-    }
+    console.log(this.state)
+    event.preventDefault();
+  }
 
   onChange = event => {
     this.setState({ 
@@ -132,6 +137,36 @@ class OrderFormBase extends Component {
         placeholder={placeholder}
       />
     )
+  }
+
+  renderMenu = () => {
+    let listofmenu = [];
+    let dishtype = []
+    // console.log(this.state.selectedmenu)
+    this.state.selectedmenu.forEach(item => {
+      // console.log(dishtype);
+      // console.log(item.type)
+      // console.log(item.dish)
+      if(dishtype.includes(item.type) === false){
+        // console.log("test")
+        dishtype.push(item.type);
+        listofmenu.push(<p>{item.type}</p>);
+      }
+      listofmenu.push(
+        <FormControlLabel 
+        control={
+          <Checkbox 
+            // checked={item.selected} 
+            onChange={this.onChange} 
+            name={item.dish} 
+            value={item.dish} 
+            color="primary" 
+          />} 
+        label={item.dish} 
+        />
+      )
+    })
+    return listofmenu;
   }
 
   render () {
@@ -216,7 +251,8 @@ class OrderFormBase extends Component {
             {/* Postal Code */}
             {this.createTextField("venue", this.state.venue, "Postal Code:", "Postal Code")}
 
-            <div><br></br></div>
+            {/* Display Menu */}
+            {this.renderMenu()}
 
             <Button 
               disabled={isInvalid} 
