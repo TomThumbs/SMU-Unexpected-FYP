@@ -19,8 +19,14 @@
     "react-dom": "^16.12.0",
     "react-firebase-file-uploader": "^2.4.3",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.3.0",
-    "recompose": "^0.30.0"
+    "react-scripts": "^3.3.0",
+    "recompose": "^0.30.0",
+    "date-fns":"^2.9.0",
+    "@date-io/date-fns@1.x date-fns":"^2.2.0",
+    "@material-ui/core":"^4.9.1",
+    "@material-ui/pickers":"^3.2.10",
+    "canvasjs":"^1.8.3"
+
   },
   "scripts": {
     "start": "react-scripts start",
