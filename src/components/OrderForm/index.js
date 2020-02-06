@@ -109,7 +109,7 @@ class OrderFormBase extends Component {
     this.setState({ 
       [event.target.name]: event.target.value 
     });
-    console.log(event.target.name + ": " + event.target.value)
+    // console.log(event.target.name + ": " + event.target.value)
   }
 
   handleDateChange = event => {
@@ -142,30 +142,32 @@ class OrderFormBase extends Component {
   renderMenu = () => {
     let listofmenu = [];
     let dishtype = []
-    // console.log(this.state.selectedmenu)
+
     this.state.selectedmenu.forEach(item => {
-      // console.log(dishtype);
-      // console.log(item.type)
-      // console.log(item.dish)
+
       if(dishtype.includes(item.type) === false){
-        // console.log("test")
         dishtype.push(item.type);
-        listofmenu.push(<p>{item.type}</p>);
+        listofmenu.push(<p key={item.type}>{item.type}</p>);
       }
+
       listofmenu.push(
-        <FormControlLabel 
-        control={
-          <Checkbox 
-            // checked={item.selected} 
-            onChange={this.onChange} 
-            name={item.dish} 
-            value={item.dish} 
-            color="primary" 
-          />} 
-        label={item.dish} 
-        />
+        <div key={item.dish}>
+          <FormControlLabel 
+            control={
+            <Checkbox 
+              // checked={item.selected} 
+              onChange={this.onChange} 
+              name={item.dish} 
+              value={item.dish} 
+              color="primary" 
+            />} 
+          label={item.dish} 
+          />
+          <br/>
+        </div>
       )
     })
+    
     return listofmenu;
   }
 
@@ -174,10 +176,10 @@ class OrderFormBase extends Component {
     this.state.starttime.length !== 0 &&
     this.state.venue.length !== 0 &&
     this.state.pax.length !== 0 &&
-    this.state.name.length !== 0 &&
-    this.state.contact.length !== 0 &&
-    this.state.email.length !== 0 &&
-    this.state.company.length !== 0 
+    this.state.custname.length !== 0 &&
+    this.state.custcontact.length !== 0 &&
+    this.state.custemail.length !== 0 &&
+    this.state.custcompany.length !== 0 
 
     return(
       <Container component="main" maxWidth="sm">
@@ -200,8 +202,9 @@ class OrderFormBase extends Component {
                 readOnly: true,
               }}
             />
-           <div><br></br></div>
-            Date: <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <div><br></br></div>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              Date: 
               <KeyboardDatePicker
                 variant="inline"
                 format="dd/MM/yyyy"
@@ -213,7 +216,8 @@ class OrderFormBase extends Component {
                   'aria-label': 'change date',
                 }}
               />
-                 Time: <KeyboardTimePicker
+              Time: 
+              <KeyboardTimePicker
                 margin="none"
                 id="time-picker"
                 value={this.state.starttime}
