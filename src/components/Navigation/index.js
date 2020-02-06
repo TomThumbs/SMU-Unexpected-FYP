@@ -30,7 +30,7 @@ const NavigationAuth = () => (
             <Link to={ROUTES.ORDER_FORM}>Order Form</Link>
         </li>
         <li>
-            <Link to={ROUTES.RFID_TAG_INPUT_FORM}>Tag Ingredient</Link>
+            <Link to={ROUTES.NEW_INGREDIENT}>Tag Ingredient</Link>
         </li>
         <li>
             <SignOutButton />

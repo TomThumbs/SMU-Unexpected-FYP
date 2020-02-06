@@ -182,6 +182,6 @@ class NewIngredientForm extends Component {
   }
 }
 
-const RFIDTagInputForm = withRouter(withFirebase(NewIngredientForm));
+const NewIngredient = withRouter(withFirebase(NewIngredientForm));
 
-export default RFIDTagInputForm;
+export default NewIngredient;

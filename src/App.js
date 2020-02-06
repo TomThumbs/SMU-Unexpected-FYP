@@ -17,7 +17,7 @@ import PostDeliveryForm from './components/PostDeliveryForm'
 import OrderForm from './components/OrderForm'
 import PostOrderForm from './components/PostOrderForm'
 import DeliverySelection from './components/DeliverySelection'
-import RFIDTagInputForm from './components/RFIDTagInputForm'
+import NewIngredient from './components/NewIngredient'
 
 import { withAuthentication } from './components/Session';
 
@@ -40,7 +40,7 @@ const App = () => (
         <Route path={ROUTES.DELIVERY_SELECTION} component={DeliverySelection} />
         <Route path={ROUTES.POST_ORDER_FORM} component={PostOrderForm} />
         <Route path={ROUTES.ORDER_FORM} component={OrderForm} />
-        <Route path={ROUTES.RFID_TAG_INPUT_FORM} component={RFIDTagInputForm} />
+        <Route path={ROUTES.NEW_INGREDIENT} component={NewIngredient} />
       </Router>
     </header>
   </div>

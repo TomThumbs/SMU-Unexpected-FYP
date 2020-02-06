@@ -9,4 +9,4 @@ export const ORDER_FORM = '/order-form'
 export const POST_DELIVERY_FORM = '/post-delivery-form';
 export const DELIVERY_SELECTION = '/delivery-selection';
 export const POST_ORDER_FORM = '/post-order-form';
-export const RFID_TAG_INPUT_FORM = '/RFID_Tag_Input_Form'
+export const NEW_INGREDIENT = '/new-ingredient'
