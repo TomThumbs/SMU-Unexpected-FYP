@@ -29,7 +29,7 @@ class SignUpFormBase extends Component {
   }
 
   onSubmit = event => {
-    const { username, email, passwordOne } = this.state;
+    const { email, passwordOne } = this.state;
     this.props.firebase
       .doCreateUserWithEmailAndPassword(email, passwordOne)
       .then(authUser => {
@@ -92,7 +92,7 @@ class SignUpFormBase extends Component {
           type="password"
           placeholder="Confirm Password"
         />
-        <button type="submit">Sign Up</button>
+        <button type="submit" disabled={isInvalid}>Sign Up</button>
         {error && <p>{error.message}</p>}
 
       </form>

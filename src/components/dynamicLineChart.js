@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 import CanvasJSReact from '../assets/canvasjs.react';
 import Typography from '@material-ui/core/Typography';
@@ -13,7 +13,7 @@ var dps = []
 class DynamicLineChartBase extends Component {
 	constructor(props) {
 		super(props);
-		this.updateChart = this.updateChart.bind(this);
+		// this.updateChart = this.updateChart.bind(this);
 
 		this.props.firebase.fs.collection('temp_sensor_test').orderBy('timestamp','desc').limit(20).get().then(query => {
 			query.forEach(doc => {
@@ -27,7 +27,6 @@ class DynamicLineChartBase extends Component {
 	}
 
 	componentDidMount() {
-		
 		this.props.firebase.fs.collection('temp_sensor_test').orderBy('timestamp','desc').limit(1).onSnapshot(snapshot => {
 			let changes = snapshot.docChanges();
 			changes.forEach(change => {
@@ -41,6 +40,7 @@ class DynamicLineChartBase extends Component {
 			})
 		})
 	}
+
 	updateChart() {
 		// yVal = yVal +  Math.round(5 + Math.random() *(-5-5));
 		// dps.push({x: xVal,y: yVal});

@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+// import ReactDOM from 'react-dom';
 import '../../App.css';
 
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { withFirebase } from '../Firebase';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
-import FormHelperText from '@material-ui/core/FormHelperText';
+// import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
@@ -114,14 +114,16 @@ class DeliverySelectionBase extends Component {
             let changes = snapshot.docChanges();
             changes.forEach(change => {
                 let orderidnum = Number(change.doc.data().orderNumber)
-                this.setState({orderid: orderidnum+1,
-                               orderiddoc: change.doc.id })
+                this.setState({
+                  orderid: orderidnum+1,
+                  orderiddoc: change.doc.id 
+                })
             })
         })
         this.props.firebase.fs.collection("Catering_orders").onSnapshot(snapshot => {
               let changes = snapshot.docChanges();                       
               changes.forEach(change => {
-                if (this.state.strEvents.length == 0) {
+                if (this.state.strEvents.length === 0) {
                   this.setState({
                     strEvents: change.doc.id
                   }) 
@@ -139,7 +141,10 @@ class DeliverySelectionBase extends Component {
 
 
     render() {
-      {this.state.events = this.state.strEvents.split(",")} 
+      this.setState({
+        events: this.state.strEvents.split(",")
+      })
+      // this.state.events = this.state.strEvents.split(",")
         
       return(
         <Container component="main" maxWidth="xs">

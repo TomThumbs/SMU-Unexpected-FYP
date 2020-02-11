@@ -6,6 +6,7 @@ import { withFirebase } from '../Firebase';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { Typography } from '@material-ui/core';
 
 const useStyles = makeStyles({
   table: {
@@ -34,7 +35,7 @@ class LandingPageBase extends Component {
   }  
 
     componentDidMount() {  
-      let events_str = ''
+      // let events_str = ''
 
       let tempDate = new Date()
       tempDate.setHours(0)
@@ -52,52 +53,87 @@ class LandingPageBase extends Component {
         let tempMonth = Number(tempDate.getMonth())+1
         let compareDate = tempDate.getFullYear() + "-" + tempMonth + "-" + tempDate.getDate()
           snapshot.forEach(doc => {
-            // console.log(compareDate+","+doc.data().DateOnly)
-          if (doc.data().DateOnly == compareDate) {
-            this.setState({
-              events: events_str+ doc.id + ". Date: " + doc.data().DateOnly + ". Venue: " + doc.data().venue + ". Pax: " + doc.data().Pax + ","
-            })
-            events_str = this.state.events
+          if (doc.data().DateOnly === compareDate) {
+            // console.log(doc.data())
+            this.setState((prevstate) => ({
+              events_list: [...prevstate.events_list, {
+                docid:doc.id,
+                date: doc.data().DateOnly,
+                venue: doc.data().venue,
+                pax: doc.data().Pax
+              }]
+            }))
+            // this.setState({
+            //   events: events_str+ doc.id + ". Date: " + doc.data().DateOnly + ". Venue: " + doc.data().venue + ". Pax: " + doc.data().Pax + ","
+            // })
+            // events_str = this.state.events
           }
         });
       })
-      let week_events_str = ''
+      // let week_events_str = ''
       this.props.firebase.fs.collection('Catering_orders')
       .where("Date", ">=", tmrDate)
       .where("Date", "<=", sevenDate)
       .get().then(snapshot=>{
           snapshot.forEach(doc => {
-            console.log("___"+doc.id)
+            // console.log("___"+doc.id)
           // if (doc.data().DateOnly == compareDate) {
-            this.setState({
-              week_events: week_events_str+ doc.id + ". Date: " + doc.data().DateOnly + ". Venue: " + doc.data().venue + ". Pax: " + doc.data().Pax + ","
-            })
-            week_events_str = this.state.week_events
+            this.setState((prevstate) => ({
+              week_events_list: [...prevstate.week_events_list, {
+                docid: doc.id,
+                date: doc.data().DateOnly,
+                venue: doc.data().venue,
+                pax: doc.data().Pax
+              }]
+            }))
+            // this.setState({
+            //   week_events: week_events_str+ doc.id + ". Date: " + doc.data().DateOnly + ". Venue: " + doc.data().venue + ". Pax: " + doc.data().Pax + ","
+            // })
+            // week_events_str = this.state.week_events
           // }
         });
-      })      
+      })
+      // console.log(this.state.events_list);
     }
 
+  renderEvents(eventlist){
+    let result = [];
+    // console.log(eventlist)
+    eventlist.forEach((evt) => {
+      // console.log(evt)
+      let temp = [];
+      Object.values(evt).forEach(test => {
+        temp.push(<Typography>{test}</Typography>)
+        // console.log(entry);
+      })
+      temp.push(<br/>)
+      result.push(temp);
+    })
+    return result;
+  }
+
   render() {
-    {this.state.events_list = this.state.events.split(",")}
-    {this.state.week_events_list = this.state.week_events.split(",")}
+    // {this.state.events_list = this.state.events.split(",")}
+    // {this.state.week_events_list = this.state.week_events.split(",")}
 
   return (
     <Container component="main" maxWidth="xs">
-   
   <div>
 
 
     <h1>Events for Today</h1>
-    <table>
-    {this.state.events_list.map((test, index) =>
-        <tr>{test}</tr>)}
-    </table>
+    {/* <table> */}
+    {/* {this.state.events_list.map((test, index) =>
+        <tr>{test}</tr>)} */}
+    
+      {this.renderEvents(this.state.events_list)}
+    {/* </table> */}
     <h1>Events for the week</h1>
-    <table>
-    {this.state.week_events_list.map((test, index) =>
-        <tr>{test}</tr>)}
-    </table>
+    {/* <table> */}
+    {/* {this.state.week_events_list.map((test, index) =>
+        <tr>{test}</tr>)} */}
+      {this.renderEvents(this.state.week_events_list)}
+    {/* </table> */}
   </div>
   </Container>
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import '../../App.css';
 
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { withFirebase } from '../Firebase';
 import FileUploader from "react-firebase-file-uploader";
 
@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography';
 // import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import Button from '@material-ui/core/Button';
+// import Button from '@material-ui/core/Button';
 
 
 const INITIAL_STATE = {
@@ -110,7 +110,7 @@ class DeliveryFormBase extends Component {
   };
 
   renderSubmit() {
-    if (this.state.cleanReady == true && (this.state.allItems == true && this.state.foodWrap == true && this.state.imageURL.length != 0)) {
+    if (this.state.cleanReady === true && (this.state.allItems === true && this.state.foodWrap === true && this.state.imageURL.length !== 0)) {
         return        <form onSubmit={this.onSubmit}>
                       <button type='submit'>Submit</button>
                       </form>

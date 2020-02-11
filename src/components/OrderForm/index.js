@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+// import ReactDOM from 'react-dom';
 import '../../App.css';
 
 import { withRouter } from 'react-router-dom';
 import { withFirebase } from '../Firebase';
 
-import Grid from '@material-ui/core/Grid';
+// import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -13,16 +13,16 @@ import Button from '@material-ui/core/Button';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Paper from '@material-ui/core/Paper';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
+// import Paper from '@material-ui/core/Paper';
+// import Radio from '@material-ui/core/Radio';
+// import RadioGroup from '@material-ui/core/RadioGroup';
+// import FormHelperText from '@material-ui/core/FormHelperText';
+// import FormControl from '@material-ui/core/FormControl';
+// import FormLabel from '@material-ui/core/FormLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
+// import InputLabel from '@material-ui/core/InputLabel';
+// import MenuItem from '@material-ui/core/MenuItem';
+// import Select from '@material-ui/core/Select';
 
 import { withAuthorization } from '../Session'
 
@@ -48,6 +48,7 @@ const INITIAL_STATE = {
   custID:0,
   custref:'',
   selectedmenu:[],
+  finalmenu:[]
 }
 
 const useStyles = makeStyles(theme => ({
@@ -75,10 +76,10 @@ class OrderFormBase extends Component {
   
   componentDidMount() {  
     // Detect latest order ID
-    this.props.firebase.fs.collection('Order_ID').orderBy("orderNumber", "desc").limit(1).onSnapshot(snapshot => {
+    this.props.firebase.fs.collection('Catering_orders').orderBy("orderID", "desc").limit(1).onSnapshot(snapshot => {
       let changes = snapshot.docChanges();
       changes.forEach(change => {
-        let orderidnum = Number(change.doc.data().orderNumber)
+        let orderidnum = Number(change.doc.data().orderID)
         this.setState({
           orderid: orderidnum+1, 
           orderiddoc: change.doc.id
@@ -109,6 +110,15 @@ class OrderFormBase extends Component {
     this.setState({ 
       [event.target.name]: event.target.value 
     });
+    // console.log(event.target.name + ": " + event.target.value)
+  }
+
+  onMenuChange = event => {
+    const dishname = event.target.value;
+
+    this.setState((prevstate) => ({
+      finalmenu: [...prevstate.finalmenu, dishname]
+    }));
     // console.log(event.target.name + ": " + event.target.value)
   }
 
@@ -156,7 +166,7 @@ class OrderFormBase extends Component {
             control={
             <Checkbox 
               // checked={item.selected} 
-              onChange={this.onChange} 
+              onChange={this.onMenuChange} 
               name={item.dish} 
               value={item.dish} 
               color="primary" 

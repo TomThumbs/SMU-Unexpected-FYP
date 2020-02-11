@@ -8,7 +8,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
+// import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -16,8 +16,8 @@ import Container from '@material-ui/core/Container';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
 
-import { SignUpLink } from '../SignUp';
-import { PasswordForgetLink } from '../PasswordForget';
+// import { SignUpLink } from '../SignUp';
+// import { PasswordForgetLink } from '../PasswordForget';
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 

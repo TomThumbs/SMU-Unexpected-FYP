@@ -10,3 +10,7 @@ export const POST_DELIVERY_FORM = '/post-delivery-form';
 export const DELIVERY_SELECTION = '/delivery-selection';
 export const POST_ORDER_FORM = '/post-order-form';
 export const NEW_INGREDIENT = '/new-ingredient'
+export const DISPLAY_ORDERS = '/display-orders'
+export const SEARCH_ORDER = '/search'
+export const ORDER_TIMELINE = '/order-timeline'
+export const ORDER_RECEIVED = '/order-received'
