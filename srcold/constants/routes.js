@@ -1,0 +1,14 @@
+export const SMART_HEATING = '/smart-heating';
+export const LANDING = '/';
+export const SIGN_UP = '/signup';
+export const SIGN_IN = '/signin';
+export const HOME = '/home';
+export const PASSWORD_FORGET = '/pw-forget';
+export const DELIVERY_FORM = '/delivery-form';
+export const ORDER_FORM = '/order-form'
+export const POST_DELIVERY_FORM = '/post-delivery-form';
+export const DELIVERY_SELECTION = '/delivery-selection';
+export const POST_ORDER_FORM = '/post-order-form';
+export const NEW_INGREDIENT_FORM = '/new-ingredient-form'
+export const DISH_TO_INGREDIENT_FORM = '/dish-recipe-form'
+// export const HOME = '/home';
