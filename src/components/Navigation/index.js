@@ -36,7 +36,7 @@ const NavigationAuth = () => (
             <Link to={ROUTES.ORDER_FORM}>Order Form</Link>
         </li>
         <li>
-            <Link to={ROUTES.NEW_INGREDIENT_FORM}>New Ingredient Form</Link>
+            <Link to={ROUTES.NEW_INGREDIENT}>New Ingredient Form</Link>
         </li>
         <li>
             <Link to={ROUTES.DISH_TO_INGREDIENT_FORM}>Digital Recipe Form</Link>

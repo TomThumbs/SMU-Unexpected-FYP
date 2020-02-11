@@ -22,7 +22,7 @@ import DisplayOrders from './components/DisplayOrders'
 import SearchOrder from './components/SearchOrder'
 import DisplayOrderTimeline from './components/DisplayOrderTimeline'
 import OrderReceived from './components/OrderReceived'
-
+import DishToIngredientForm from './components/DishToIngredientForm'
 import { withAuthentication } from './components/Session';
 
 import SmartHeaterDisplay from './views/smartHeater'
@@ -49,6 +49,8 @@ const App = () => (
         <Route path={ROUTES.SEARCH_ORDER} component={SearchOrder} />
         <Route path={ROUTES.ORDER_TIMELINE} component={DisplayOrderTimeline}/>
         <Route path={ROUTES.ORDER_RECEIVED} component={OrderReceived}/>
+        <Route path={ROUTES.DISH_TO_INGREDIENT_FORM} component={DishToIngredientForm}/>
+        
       </Router>
     </header>
   </div>

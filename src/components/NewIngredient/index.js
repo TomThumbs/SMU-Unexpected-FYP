@@ -161,7 +161,7 @@ class NewIngredientForm extends Component {
 
           {/* Date of Expiry */}
           {/* {this.createTextField("expiryDate", this.state.expiryDate, "Date of Expiry", "Date of Expiry")} */}
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          {/* <MuiPickersUtilsProvider utils={DateFnsUtils}>
             Expiry Date: 
             <KeyboardDatePicker
               variant="inline"
@@ -173,7 +173,7 @@ class NewIngredientForm extends Component {
                 'aria-label': 'change date',
               }}
             />
-          </MuiPickersUtilsProvider>
+          </MuiPickersUtilsProvider> */}
 
 
           <Button 
