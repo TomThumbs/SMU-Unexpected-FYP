@@ -7,6 +7,7 @@ import { withFirebase } from '../Firebase';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Typography } from '@material-ui/core';
+console.log = console.warn = console.error = () => {};
 
 const useStyles = makeStyles({
   table: {
