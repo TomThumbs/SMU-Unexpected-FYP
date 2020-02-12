@@ -21,22 +21,16 @@ const NavigationAuth = () => (
             <Link to={ROUTES.LANDING}>Landing</Link>
         </li>
         <li>
-            <Link to={ROUTES.SEARCH_ORDER}>Search Order</Link>
-        </li>
-        <li>
             <Link to={ROUTES.SMART_HEATING}>Smart Heater</Link>
         </li>
         <li>
             <Link to={ROUTES.DELIVERY_SELECTION}>Make Delivery</Link>
         </li>
         <li>
-            <Link to={ROUTES.DISPLAY_ORDERS}>Display Orders</Link>
-        </li>
-        <li>
             <Link to={ROUTES.ORDER_FORM}>Order Form</Link>
         </li>
         <li>
-            <Link to={ROUTES.NEW_INGREDIENT}>New Ingredient Form</Link>
+            <Link to={ROUTES.NEW_INGREDIENT_FORM}>New Ingredient Form</Link>
         </li>
         <li>
             <Link to={ROUTES.DISH_TO_INGREDIENT_FORM}>Digital Recipe Form</Link>

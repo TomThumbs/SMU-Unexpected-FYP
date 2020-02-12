@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-// import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom';
 import '../../App.css';
 
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { withFirebase } from '../Firebase';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
-// import FormHelperText from '@material-ui/core/FormHelperText';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
@@ -17,41 +17,6 @@ import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
 import { withAuthorization } from '../Session'
-
-// const cafeList = document.querySelector('#cafe-list');
-// const form = document.querySelector('#add-cafe-form')
-
-// // create element and render cafe
-// function renderCafe(doc) {
-//     let li = document.createElement('li');
-//     let name = document.createElement('span');
-//     let city = document.createElement('span');
-//     let cross = document.createElement('div');
-
-//     li.setAttribute('data-id', doc.id);
-//     name.textContent = doc.data().name
-//     city.textContent = doc.data().city
-//     cross.textContent = 'x';
-
-//     li.appendChild(name);
-//     li.appendChild(city);
-//     li.appendChild(cross)
-
-//     cafeList.appendChild(li);
-
-//     // deleting data
-//     cross.addEventListener('click', (e) => {
-//         e.stopPropagation();
-//         let id = e.target.parentElement.getAttribute('data-id');
-//         db.collection('cafes').doc(id).delete();
-//     })
-// }
-
-// db.collection('cafes').get().then((snapshot) => {
-//     snapshot.docs.forEach(doc => {
-//         renderCafe(doc)
-//     })
-// })
 
 const useStyles = makeStyles(theme => ({
   formControl: {
@@ -96,17 +61,26 @@ class DeliverySelectionBase extends Component {
 
     onSubmit = event => {
         event.preventDefault();       
-        this.props.history.push({
-          pathname: './delivery-form',
-          doc_id: this.state.doc_id          
+
+        this.props.firebase.fs.collection("Catering_orders").where("venue", "==", this.state.doc_id).get().then(snapshot => {
+          snapshot.forEach(doc => {
+            console.log(doc.id)
+            this.props.history.push({
+              pathname: './delivery-form',
+              doc_id: doc.id          
+            })
+          })
         })
+
+
+
       }
 
     handleChange = event => {
         this.setState({
             [event.target.name]: event.target.value 
         });
-        console.log(this.state.doc_id)
+        // console.log(this.state.doc_id)
     };
 
     componentDidMount() {  
@@ -114,37 +88,41 @@ class DeliverySelectionBase extends Component {
             let changes = snapshot.docChanges();
             changes.forEach(change => {
                 let orderidnum = Number(change.doc.data().orderNumber)
-                this.setState({
-                  orderid: orderidnum+1,
-                  orderiddoc: change.doc.id 
-                })
+                this.setState({orderid: orderidnum+1,
+                               orderiddoc: change.doc.id })
             })
         })
-        this.props.firebase.fs.collection("Catering_orders").onSnapshot(snapshot => {
-              let changes = snapshot.docChanges();                       
-              changes.forEach(change => {
-                if (this.state.strEvents.length === 0) {
-                  this.setState({
-                    strEvents: change.doc.id
-                  }) 
-                } else {
-                this.setState({
-                  strEvents: this.state.strEvents + "," + change.doc.id 
-                })
-                // console.log(this.state.strEvents)
-              }
-                    // this.state.list_test.push(change.doc.id)  
-              });
+        let startDate = new Date()
+        startDate.setHours(0)
+        startDate.setMinutes(0)
+        let endDate = new Date()
+        endDate.setHours(23)
+        endDate.setMinutes(0)
+        this.props.firebase.fs.collection("Catering_orders").where("Date", ">=", startDate).where("Date", "<=", endDate).get().then(snapshot => {
+          snapshot.forEach(doc => {                      
+         
+
+          // console.log(doc.data().Customer.id)
+
+          // this.props.firebase.fs.collection("Customers").doc(doc.data().Customer.id).get().then(docu=> {
+    
+          if (this.state.strEvents.length == 0) {
+            this.setState({
+              strEvents: doc.data().venue
+            }) 
+          } else {
+            this.setState({
+              strEvents: this.state.strEvents + "," + doc.data().venue 
+            })
+          }
+        // })
+
         });
-        
+      });
     }
 
-
     render() {
-      this.setState({
-        events: this.state.strEvents.split(",")
-      })
-      // this.state.events = this.state.strEvents.split(",")
+      {this.state.events = this.state.strEvents.split(",")} 
         
       return(
         <Container component="main" maxWidth="xs">

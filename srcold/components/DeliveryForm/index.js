@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import '../../App.css';
 
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { withFirebase } from '../Firebase';
 import FileUploader from "react-firebase-file-uploader";
 
@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography';
 // import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-// import Button from '@material-ui/core/Button';
+import Button from '@material-ui/core/Button';
 
 
 const INITIAL_STATE = {
@@ -40,13 +40,12 @@ class DeliveryFormBase extends Component {
     };
 }
   componentDidMount() { 
-    // console.log(this.props.location.doc_id)
     this.props.firebase.fs.collection('Catering_orders').doc(this.props.location.doc_id).get().then(doc=> {
-      // console.log(doc.data())
+      console.log(doc.data().Date.toDate())
           this.setState({
             catering_event_doc: doc.id,
             date: String(doc.data().Date.toDate()).split("GMT")[0], 
-            venue: doc.data().venue,
+            venue: doc.data().Venue,
             pax: doc.data().Pax,
           }) 
       })
@@ -111,7 +110,7 @@ class DeliveryFormBase extends Component {
   };
 
   renderSubmit() {
-    if (this.state.cleanReady === true && (this.state.allItems === true && this.state.foodWrap === true && this.state.imageURL.length !== 0)) {
+    if (this.state.cleanReady == true && (this.state.allItems == true && this.state.foodWrap == true && this.state.imageURL.length != 0)) {
         return        <form onSubmit={this.onSubmit}>
                       <button type='submit'>Submit</button>
                       </form>
@@ -123,7 +122,7 @@ class DeliveryFormBase extends Component {
   render() {
     return (  
 <div>
-      {/* <h1>{this.props.location.doc_id}</h1> */}
+      <h1>{this.props.location.doc_id}</h1>
       <React.Fragment>
         
       <Typography variant="h6" gutterBottom>

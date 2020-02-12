@@ -26,13 +26,13 @@ import Checkbox from '@material-ui/core/Checkbox';
 
 import { withAuthorization } from '../Session'
 
-import 'date-fns'; //npm i date-fns
-import DateFnsUtils from '@date-io/date-fns'; //npm i @date-io/date-fns@1.x date-fns
+import 'date-fns'; 
+import DateFnsUtils from '@date-io/date-fns'; 
 import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker,
   KeyboardDatePicker,
-} from '@material-ui/pickers'; //npm i @material-ui/pickers
+} from '@material-ui/pickers'; 
 const INITIAL_STATE = {
   orderid: 0,
   orderiddoc: '',
@@ -41,6 +41,8 @@ const INITIAL_STATE = {
   endtime:'',
   venue: '',
   pax: 0,
+  hour: '',
+  minute:'',
   custname: '',
   custcontact: '',
   custemail: '',
@@ -74,6 +76,8 @@ class OrderFormBase extends Component {
     this.classes = { useStyles }
   }
   
+  // dishtype = []
+
   componentDidMount() {  
     // Detect latest order ID
     this.props.firebase.fs.collection('Catering_orders').orderBy("orderID", "desc").limit(1).onSnapshot(snapshot => {
@@ -87,11 +91,18 @@ class OrderFormBase extends Component {
       })
     })
 
+    //get latest customer ID
+    this.props.firebase.fs.collection('Customers').doc("Counter").get().then(docu=> {
+      this.setState({
+        custID: Number(docu.data().ID)+1
+      })   
+      
+  });    
+
     // Get list of menu items
     this.props.firebase.fs.collection('Menu').orderBy("Type").onSnapshot(snapshot => {
       let changes = snapshot.docChanges();
       changes.forEach(change => {
-        // console.log(change.doc.data())
         let dishname = change.doc.data().name
         let dishtype = change.doc.data().Type
         this.setState((prevstate) => ({
@@ -102,15 +113,101 @@ class OrderFormBase extends Component {
   }
 
   onSubmit = event => {
-    console.log(this.state)
     event.preventDefault();
+    
+    let strhour = String(this.state.hour)
+    let strmonth = Number(this.state.date.getMonth())+1
+    let strtime = ''
+    if (strhour.includes("8")||strhour.includes("9")) {
+      strtime = "0"+String(this.state.hour)+String(this.state.minute)
+    } else {
+      strtime = String(this.state.hour)+String(this.state.minute)
+    }  
+    let strDate = this.state.date.getFullYear()+"-"+strmonth+"-"+this.state.date.getDate()
+    let submitDate = new Date(this.state.date.getFullYear(),this.state.date.getMonth(),this.state.date.getDate(),this.state.hour,this.state.minute,0)
+    let strSubmitDate = String(submitDate)
+
+    strSubmitDate = strSubmitDate.split("GMT")[0]
+
+    let docname = 'Event ' + this.state.orderid
+     
+    this.props.firebase.fs.collection('Catering_orders').add({ 
+      Customer: "",
+      Status: "Order Received",
+      Date: submitDate, 
+      DateOnly: strDate,
+      DeliveryCheck: false,
+      Pax: this.state.pax,
+      Time: strtime, 
+      TruckImgUrl: '',
+      venue: this.state.venue,
+      orderID: this.state.orderid
+    });
+    let notCreated = true
+
+    this.props.firebase.fs.collection('Customers').where("Email","==",this.state.custemail).get().then(snap => {
+      snap.forEach(doc => {
+          if (doc.exists) {
+            this.setState({custExists: true}) 
+             
+      
+                // console.log('Customer exists')
+                this.setState({ custref: "Customers/"+doc.id})
+                let dbcustref = this.props.firebase.fs.doc("Customers/"+doc.id)
+
+                this.props.firebase.fs.collection('Catering_orders').where("orderID", "==", this.state.orderid).onSnapshot(snapshot => {
+                  let changes = snapshot.docChanges();
+                  changes.forEach(change => {
+                     
+                  this.props.firebase.fs.doc('Catering_orders/'+change.doc.id).update({ Customer: dbcustref })
+                  // console.log('linked catering order to customer')
+                  notCreated = false
+                    
+                  
+              }) 
+            })           
+          } 
+      }); 
+    })
+    // console.log(notCreated)
+    if (notCreated) {
+      // console.log('Customer to be created')
+      let custDocName = "Customer"+String(this.state.custID)
+      console.log("custid"+this.state.custID + " --- " + custDocName)
+      this.props.firebase.fs.collection('Customers').doc(custDocName).set({
+            Company: this.state.custcompany,
+            CustomerID: this.state.custID,
+            Email: this.state.custemail,
+            HP: this.state.custcontact,
+            Name: this.state.custname
+      });
+      this.props.firebase.fs.collection('Customers').doc("Counter").update({ ID: this.state.custID }); 
+      let dbcustref = this.props.firebase.fs.doc("Customers/Customer"+this.state.custID)
+        this.props.firebase.fs.collection('Catering_orders').where("orderID", "==", this.state.orderid).onSnapshot(snapshot => {
+        let changes = snapshot.docChanges();
+          changes.forEach(change => {
+                  
+          this.props.firebase.fs.doc('Catering_orders/'+change.doc.id).update({ Customer: dbcustref })
+  
+              // console.log('linked catering order to customer')
+        })
+      })
+    }
+
+    this.props.history.push({
+      pathname: './post-order-form',
+      orderid: this.state.orderid,
+      date: strSubmitDate,
+      venue: this.state.venue,
+      pax: this.state.pax,
+    })
   }
 
   onChange = event => {
     this.setState({ 
       [event.target.name]: event.target.value 
     });
-    // console.log(event.target.name + ": " + event.target.value)
+    
   }
 
   onMenuChange = event => {
@@ -126,12 +223,18 @@ class OrderFormBase extends Component {
     this.setState({
       date: event
     })
+    console.log(this.state.date)
   };
 
   handleTimeChange = time => {
     this.setState({
-      starttime: time
+      starttime: time,
+      hour: time.getHours(),
+      minute: time.getMinutes()
+
     }) 
+
+    console.log(this.state.starttime)
   }
 
   createTextField = (name, temp, label, placeholder) =>{
@@ -185,7 +288,7 @@ class OrderFormBase extends Component {
     let isInvalid = this.state.date.length !== 0 &&
     this.state.starttime.length !== 0 &&
     this.state.venue.length !== 0 &&
-    this.state.pax.length !== 0 &&
+    this.state.pax.length >= 30 &&
     this.state.custname.length !== 0 &&
     this.state.custcontact.length !== 0 &&
     this.state.custemail.length !== 0 &&
@@ -250,7 +353,7 @@ class OrderFormBase extends Component {
               InputLabelProps={{
                 shrink: true,
               }}
-              inputProps= {{ min: 10}}
+              inputProps= {{ min: 30}}
             />
 
             {/* Customer Name */}
