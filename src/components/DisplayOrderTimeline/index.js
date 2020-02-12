@@ -40,21 +40,26 @@ class DisplayOrderTimelineBase extends Component {
   componentDidMount(){
     let queryString = window.location.search;
     let urlParams = new URLSearchParams(queryString);
-    let urlId = urlParams.get('id');
+    let urlId = Number(urlParams.get('id'));
     console.log(urlId)
     this.setState({
-      orderID: Number(urlId)
+      orderID: urlId
     });
 
-    this.props.firebase.fs.collection('Catering_orders').where("orderID", "==", Number(urlId)).get()
+    console.log("Retreving doc")
+    this.props.firebase.fs.collection('Catering_orders').where("orderID", "==", urlId).get()
     .then(querySnapshot => {
+      // console.log(urlId);
       querySnapshot.forEach(doc => {
         console.log(doc.data());
       });
     })
     .catch(function(error) {
       console.log("Error getting documents: ", error);
-  });
+    });
+    console.log("Retrieved doc")
+    
+
   }
 
   timeline(){
