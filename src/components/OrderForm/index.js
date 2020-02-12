@@ -121,7 +121,6 @@ class OrderFormBase extends Component {
 
     strSubmitDate = strSubmitDate.split("GMT")[0]
 
-    let docname = 'Event ' + this.state.orderid
     let strMonth = Number(new Date().getMonth())+1
     this.props.firebase.fs.collection('Catering_orders').add({ 
       Customer: "",
@@ -145,7 +144,6 @@ class OrderFormBase extends Component {
           if (doc.exists) {
             this.setState({custExists: true}) 
              
-      
                 // console.log('Customer exists')
                 this.setState({ custref: "Customers/"+doc.id})
                 let dbcustref = this.props.firebase.fs.doc("Customers/"+doc.id)
@@ -183,7 +181,6 @@ class OrderFormBase extends Component {
           changes.forEach(change => {
                   
           this.props.firebase.fs.doc('Catering_orders/'+change.doc.id).update({ Customer: dbcustref })
-  
               // console.log('linked catering order to customer')
         })
       })
@@ -218,7 +215,7 @@ class OrderFormBase extends Component {
     this.setState({
       date: event
     })
-    console.log(this.state.date)
+    // console.log(this.state.date)
   };
 
   handleTimeChange = time => {
@@ -226,10 +223,8 @@ class OrderFormBase extends Component {
       starttime: time,
       hour: time.getHours(),
       minute: time.getMinutes()
-
     }) 
-
-    console.log(this.state.starttime)
+    // console.log(this.state.starttime)
   }
 
   createTextField = (name, temp, label, placeholder) =>{

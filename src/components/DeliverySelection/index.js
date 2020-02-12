@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+
 import '../../App.css';
 
-import { Link, withRouter } from 'react-router-dom';
+import {  withRouter } from 'react-router-dom';
 import { withFirebase } from '../Firebase';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
@@ -71,9 +70,6 @@ class DeliverySelectionBase extends Component {
             })
           })
         })
-
-
-
       }
 
     handleChange = event => {
@@ -100,29 +96,14 @@ class DeliverySelectionBase extends Component {
         endDate.setMinutes(0)
         this.props.firebase.fs.collection("Catering_orders").where("Date", ">=", startDate).where("Date", "<=", endDate).get().then(snapshot => {
           snapshot.forEach(doc => {                      
-         
-
-          // console.log(doc.data().Customer.id)
-
-          // this.props.firebase.fs.collection("Customers").doc(doc.data().Customer.id).get().then(docu=> {
-    
-          if (this.state.strEvents.length == 0) {
-            this.setState({
-              strEvents: doc.data().venue
-            }) 
-          } else {
-            this.setState({
-              strEvents: this.state.strEvents + "," + doc.data().venue 
-            })
-          }
-        // })
-
+            this.setState((prevstate) => ({
+              events: [...prevstate.events, doc.data().venue]
+            }));
         });
       });
     }
 
     render() {
-      {this.state.events = this.state.strEvents.split(",")} 
         
       return(
         <Container component="main" maxWidth="xs">
@@ -145,7 +126,6 @@ class DeliverySelectionBase extends Component {
       <Button 
         type="submit"
         fullWidth
-        // disabled={isInvalid} 
         variant="contained"
         color="primary"
         className={this.classes.submit}>

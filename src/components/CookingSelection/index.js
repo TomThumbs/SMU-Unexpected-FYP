@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import '../../App.css';
 
-import { Link, withRouter } from 'react-router-dom';
+import {  withRouter } from 'react-router-dom';
 import { withFirebase } from '../Firebase';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
@@ -64,7 +62,7 @@ class CookingSelectionBase extends Component {
 
         this.props.firebase.fs.collection("Catering_orders").where("venue", "==", this.state.doc_id).get().then(snapshot => {
           snapshot.forEach(doc => {
-            console.log(doc.id)
+            // console.log(doc.id)
             this.props.history.push({
               pathname: './cooking-form',
               doc_id: doc.id          
@@ -98,26 +96,17 @@ class CookingSelectionBase extends Component {
         this.props.firebase.fs.collection("Catering_orders").where("Date", ">=", startDate).where("Date", "<=", endDate).get().then(snapshot => {
           snapshot.forEach(doc => {                      
          
-          if (this.state.strEvents.length == 0) {
-            this.setState({
-              strEvents: doc.data().venue
-            }) 
-          } else {
-            this.setState({
-              strEvents: this.state.strEvents + "," + doc.data().venue 
-            })
-          }
+            this.setState((prevstate) => ({
+              events: [...prevstate.events, doc.data().venue]
+            }));
         });
       });
     }
 
     render() {
-      {this.state.events = this.state.strEvents.split(",")} 
-        
       return(
         <Container component="main" maxWidth="xs">
         <CssBaseline />
-        
       <div>
       <FormControl component="fieldset" id="cafe-list" className={this.classes.formControl}>
         <FormLabel component="legend"><h2>Catering Events For The Day</h2></FormLabel>
@@ -129,13 +118,11 @@ class CookingSelectionBase extends Component {
         </RadioGroup>
       </FormControl>
       
-      
       <form onSubmit={this.onSubmit}>
       
       <Button 
         type="submit"
         fullWidth
-        // disabled={isInvalid} 
         variant="contained"
         color="primary"
         className={this.classes.submit}>

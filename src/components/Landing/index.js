@@ -35,16 +35,15 @@ class LandingPageBase extends Component {
   }  
 
     componentDidMount() {  
-      // let events_str = ''
 
       let tempDate = new Date()
       tempDate.setHours(0)
       tempDate.setMinutes(0)
-      console.log(tempDate)
+      // console.log(tempDate)
       let sevenDate = new Date(tempDate.getTime() + 8 * 86400000 )
       sevenDate.setHours(23)
       sevenDate.setMinutes(0)
-      console.log(sevenDate)
+      // console.log(sevenDate)
       let tmrDate = new Date(tempDate.getTime() + 1 * 86400000 )
       sevenDate.setHours(0)
       sevenDate.setMinutes(0)
@@ -73,8 +72,6 @@ class LandingPageBase extends Component {
       .where("Date", "<=", sevenDate)
       .get().then(snapshot=>{
           snapshot.forEach(doc => {
-            // console.log("___"+doc.id)
-          // if (doc.data().DateOnly == compareDate) {
             this.setState((prevstate) => ({
               week_events_list: [...prevstate.week_events_list, {
                 docid: doc.id,
@@ -83,7 +80,6 @@ class LandingPageBase extends Component {
                 pax: doc.data().Pax
               }]
             }))
-          // }
         });
       })
 
@@ -95,8 +91,8 @@ class LandingPageBase extends Component {
     eventlist.forEach((evt) => {
       // console.log(evt)
       let temp = [];
-      Object.values(evt).forEach(test => {
-        temp.push(<Typography>{test}</Typography>)
+      Object.values(evt).forEach((test,id) => {
+        temp.push(<Typography key={id}>{test}</Typography>)
         // console.log(entry);
       })
       temp.push(<br/>)
@@ -106,8 +102,6 @@ class LandingPageBase extends Component {
   }
 
   render() {
-    // {this.state.events_list = this.state.events.split(",")}
-    // {this.state.week_events_list = this.state.week_events.split(",")}
 
   return (
     <Container component="main" maxWidth="xs">
@@ -115,18 +109,13 @@ class LandingPageBase extends Component {
 
 
     <h1>Events for Today</h1>
-    {/* <table> */}
-    {/* {this.state.events_list.map((test, index) =>
-        <tr>{test}</tr>)} */}
     
       {this.renderEvents(this.state.events_list)}
-    {/* </table> */}
+
     <h1>Events for the week</h1>
-    {/* <table> */}
-    {/* {this.state.week_events_list.map((test, index) =>
-        <tr>{test}</tr>)} */}
+
       {this.renderEvents(this.state.week_events_list)}
-    {/* </table> */}
+
   </div>
   </Container>
 

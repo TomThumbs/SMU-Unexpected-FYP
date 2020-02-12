@@ -44,7 +44,7 @@ const INITIAL_STATE = {
   custref:'',
   selectedmenu:[],
   finalmenu:[],
-  ingredientsUsed:'',
+  ingredientsUsed:[],
   ingredientTagsUsed:'000,001'
 }
 
@@ -74,7 +74,6 @@ class CookingFormBase extends Component {
 
   componentDidMount() {  
 //this.props.location.doc_id
-    let tempTime = ''
     this.props.firebase.fs.collection('Catering_orders').doc(this.props.location.doc_id).get().then(doc=> {
       // console.log(doc.data())
           this.setState({
@@ -87,7 +86,7 @@ class CookingFormBase extends Component {
             ingredientTagsUsed: doc.data().Ingredient_Tags_Used
           }) 
           // console.log((doc.data().Date.toDate()).getMinutes())
-          if (Number(doc.data().Date.toDate().getHours()) == 12) {
+          if (Number(doc.data().Date.toDate().getHours()) === 12) {
             this.setState({
               time: doc.data().Date.toDate().getHours() + ":" + doc.data().Date.toDate().getMinutes() + " PM"
               }
@@ -131,29 +130,20 @@ class CookingFormBase extends Component {
   //these tags and codes should be reusable. So I will dig out the tags and add an additional field for reference
   onSubmit = event => {
     event.preventDefault();
-    console.log(this.state.ingredientTagsUsed)
+    // console.log(this.state.ingredientTagsUsed)
     let ingredientsTempList = this.state.ingredientTagsUsed.split(",")
-    let ingredientsDescstr = ''
     let ingredientsTempListLength = ingredientsTempList.length  
-    let expiryStr = "Date of expiry"
     for (var i = 0; i < ingredientsTempListLength; i++) {
-
       this.props.firebase.fs.collection('Ingredient_RFID').doc(ingredientsTempList[i]).get().then(doc=>{
-        // this.ingredientsDescList.push(doc.data().Name + ": " + doc.data().Date_of_expiry)
-        // console.log("----"+this.ingredientsDescList)
-        if (ingredientsDescstr.length == 0) {
-          ingredientsDescstr = doc.data().Name + ": " + doc.data().Date_of_expiry
-        } else {
-          ingredientsDescstr =ingredientsDescstr+","+ doc.data().Name + ": " + doc.data().Date_of_expiry
-        }
+        this.setState((prevstate) => ({
+          ingredientsUsed: [...prevstate.ingredientsUsed, doc.data().Name + ": " + doc.data().Date_of_expiry]
+        }));
         this.props.firebase.fs.collection('Catering_orders').doc(this.props.location.doc_id).update({
-          Ingredients_Used: ingredientsDescstr.split(",")
+          Ingredients_Used: this.state.ingredientsUsed
         })
       })
-
     }
   
-
     this.props.firebase.fs.collection('Catering_orders').doc(this.props.location.doc_id).update({
       Ingredient_Tags_Used: this.state.ingredientTagsUsed,
         })
@@ -240,7 +230,7 @@ class CookingFormBase extends Component {
   }
 
   render () {
-    let isInvalid = this.state.ingredientTagsUsed.length == 0
+    let isInvalid = this.state.ingredientTagsUsed.length === 0
 
     return(
       <Container component="main" maxWidth="sm">

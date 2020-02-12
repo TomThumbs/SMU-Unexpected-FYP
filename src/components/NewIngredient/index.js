@@ -2,31 +2,17 @@ import React, { Component } from 'react';
 import { withFirebase } from '../Firebase';
 import { withRouter } from 'react-router-dom';
 
-import 'date-fns'; //npm i date-fns
+import 'date-fns';
 
-// import Grid from '@material-ui/core/Grid';
-// import Typography from '@material-ui/core/Typography';
+
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
-// import FormControl from '@material-ui/core/FormControl';
-// import FormLabel from '@material-ui/core/FormLabel';
-import {
-  MuiPickersUtilsProvider,
-  // KeyboardTimePicker,
-  KeyboardDatePicker,
-} from '@material-ui/pickers'; //npm i @material-ui/pickers
-// import InputLabel from '@material-ui/core/InputLabel';
-// import MenuItem from '@material-ui/core/MenuItem';
-// import Select from '@material-ui/core/Select';
+
+
 import Container from '@material-ui/core/Container';
 
 import Button from '@material-ui/core/Button';
-// import Dialog from '@material-ui/core/Dialog';
-// import DialogActions from '@material-ui/core/DialogActions';
-// import DialogContent from '@material-ui/core/DialogContent';
-// import DialogContentText from '@material-ui/core/DialogContentText';
-// import DialogTitle from '@material-ui/core/DialogTitle';
-// import Paper from '@material-ui/core/Paper';
+
 import { CssBaseline } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
@@ -66,7 +52,7 @@ class NewIngredientForm extends Component {
     let queryString = window.location.search
     let urlParams = new URLSearchParams(queryString)
     let urlId = urlParams.get('id')
-    console.log(urlId)
+    // console.log(urlId)
     this.setState({
       foodId: urlId
     })

@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import '../../App.css';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { withFirebase } from '../Firebase';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
-// import FormLabel from '@material-ui/core/FormLabel';
-import 'date-fns'; //npm i date-fns
+import 'date-fns'; 
 
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -72,21 +71,12 @@ class DishToIngredientFormBase extends Component {
   
 
   componentDidMount(){ 
-    let tempMenu = ''
     this.props.firebase.fs.collection('Menu').get().then(snapshot=> {
       snapshot.forEach(doc => {
-        console.log(doc.id)
-        if (tempMenu == 0) {
-          this.setState({
-            menu: doc.id
-          })
-          tempMenu = this.state.menu
-        } else {
-          this.setState({
-            menu: tempMenu + "," + doc.id
-          })
-          tempMenu = this.state.menu
-        }
+        
+        this.setState((prevstate) => ({
+          menu_List: [...prevstate.menu_List, doc.id]
+        }));
       })
     })
   }
@@ -99,29 +89,23 @@ class DishToIngredientFormBase extends Component {
 
   onSubmit = event => {
     event.preventDefault();
-    if (this.state.ingredientOne.length != 0) {this.dishIngredients.push(this.state.ingredientOne)}
-    if (this.state.ingredientTwo.length != 0) {this.dishIngredients.push(this.state.ingredientTwo)}
-    if (this.state.ingredientThree.length != 0) {this.dishIngredients.push(this.state.ingredientThree)}
-    if (this.state.ingredientFour.length != 0) {this.dishIngredients.push(this.state.ingredientFour)}
-    if (this.state.ingredientFive.length != 0) {this.dishIngredients.push(this.state.ingredientFive)}
+    if (this.state.ingredientOne.length !== 0) {this.dishIngredients.push(this.state.ingredientOne)}
+    if (this.state.ingredientTwo.length !== 0) {this.dishIngredients.push(this.state.ingredientTwo)}
+    if (this.state.ingredientThree.length !== 0) {this.dishIngredients.push(this.state.ingredientThree)}
+    if (this.state.ingredientFour.length !== 0) {this.dishIngredients.push(this.state.ingredientFour)}
+    if (this.state.ingredientFive.length !== 0) {this.dishIngredients.push(this.state.ingredientFive)}
     this.props.firebase.fs.collection('Menu').doc(this.state.chosen_menu).update({ 
-      Ingredients: this.dishIngredients//some map
-      //Ingredients: [
-        // {comma separated ingredients},
-        // {maybe can sub the whole [{}] with the dishIngredients list} 
-      // ]
+      Ingredients: this.dishIngredients
     })
     this.handleClickOpen()
   }
 
   handleIngredientName = name => event => {
     this.setState({...this.props, [name]: event.target.value});   
-    // this.dishIngredients.push(event.target.value)
-    // console.log(this.dishIngredients)
   }
 
   renderSubmit() {
-    if (this.state.chosen_menu.length == 0) {
+    if (this.state.chosen_menu.length === 0) {
       return <h1>Please select a dish.</h1>
     } else {
       return <form onSubmit={this.onSubmit}>
@@ -144,7 +128,7 @@ class DishToIngredientFormBase extends Component {
   };
 
   render() {
-    {this.state.menu_List = this.state.menu.split(",")}
+    
     return (  
     <div>
 

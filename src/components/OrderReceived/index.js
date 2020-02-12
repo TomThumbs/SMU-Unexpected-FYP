@@ -5,9 +5,7 @@ import { withRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
-// import Paper from '@material-ui/core/Paper';
-// import { CssBaseline } from '@material-ui/core';
+
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -75,10 +73,10 @@ class OrderReceivedBase extends Component {
     return(
       <Grid container justify="center" spacing={3} alignItems="center">
         <Grid item xs={6}>
-
+        <Typography>Deliver to: {this.state.venue}</Typography>
         </Grid>
       </Grid>
-        <Typography>Deliver to: {this.state.venue}</Typography>
+        
     )
   }
 }
