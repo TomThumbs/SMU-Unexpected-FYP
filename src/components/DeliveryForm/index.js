@@ -28,7 +28,8 @@ const INITIAL_STATE = {
   name: '',
   contact: '',
   email: '',
-  strDate:''
+  strDate:'',
+  menu: ''
 };  
 
 class DeliveryFormBase extends Component {
@@ -41,11 +42,12 @@ class DeliveryFormBase extends Component {
 }
   componentDidMount() { 
     // console.log(this.props.location.doc_id)
-    this.props.firebase.fs.collection('Catering_orders').doc(this.props.location.doc_id).get().then(doc=> {
+    this.props.firebase.fs.collection('Catering_orders').doc("ATQjjgqvKU8n49QdSuR7").get().then(doc=> {
       // console.log(doc.data())
           this.setState({
             catering_event_doc: doc.id,
             date: String(doc.data().Date.toDate()).split("GMT")[0], 
+            menu: doc.data().Menu,
             venue: doc.data().venue,
             pax: doc.data().Pax,
           }) 
@@ -55,7 +57,7 @@ class DeliveryFormBase extends Component {
       this.setState({
         strDate: temp_date.split("GMT")[0]
       })
-    this.props.firebase.fs.collection('Catering_orders').doc(this.props.location.doc_id).get().then(doc=> {
+    this.props.firebase.fs.collection('Catering_orders').doc("ATQjjgqvKU8n49QdSuR7").get().then(doc=> {
           this.setState({
             name: doc.data().Customer.id
           })
@@ -66,6 +68,7 @@ class DeliveryFormBase extends Component {
             })            
         });            
       });    
+
   }
 
   onSubmit = event => {
@@ -121,14 +124,17 @@ class DeliveryFormBase extends Component {
   }
 
   render() {
+    // console.log(typeof this.state.menu)
     return (  
 <div>
+  {this.state.menu}
       {/* <h1>{this.props.location.doc_id}</h1> */}
       <React.Fragment>
         
       <Typography variant="h6" gutterBottom>
         Shipping address
       </Typography>
+          {/* {this.state.menu.map((test, index) =><tr>{test}</tr>)} */}
 
       <Grid container spacing={3}>
         <Grid item xs={12}>

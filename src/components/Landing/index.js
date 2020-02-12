@@ -63,10 +63,7 @@ class LandingPageBase extends Component {
                 pax: doc.data().Pax
               }]
             }))
-            // this.setState({
-            //   events: events_str+ doc.id + ". Date: " + doc.data().DateOnly + ". Venue: " + doc.data().venue + ". Pax: " + doc.data().Pax + ","
-            // })
-            // events_str = this.state.events
+
           }
         });
       })
@@ -86,14 +83,10 @@ class LandingPageBase extends Component {
                 pax: doc.data().Pax
               }]
             }))
-            // this.setState({
-            //   week_events: week_events_str+ doc.id + ". Date: " + doc.data().DateOnly + ". Venue: " + doc.data().venue + ". Pax: " + doc.data().Pax + ","
-            // })
-            // week_events_str = this.state.week_events
           // }
         });
       })
-      // console.log(this.state.events_list);
+
     }
 
   renderEvents(eventlist){

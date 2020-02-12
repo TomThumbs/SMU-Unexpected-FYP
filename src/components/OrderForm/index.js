@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import ReactDOM from 'react-dom';
+
 import '../../App.css';
 
 import { withRouter } from 'react-router-dom';
@@ -13,16 +13,9 @@ import Button from '@material-ui/core/Button';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-// import Paper from '@material-ui/core/Paper';
-// import Radio from '@material-ui/core/Radio';
-// import RadioGroup from '@material-ui/core/RadioGroup';
-// import FormHelperText from '@material-ui/core/FormHelperText';
-// import FormControl from '@material-ui/core/FormControl';
-// import FormLabel from '@material-ui/core/FormLabel';
+
 import Checkbox from '@material-ui/core/Checkbox';
-// import InputLabel from '@material-ui/core/InputLabel';
-// import MenuItem from '@material-ui/core/MenuItem';
-// import Select from '@material-ui/core/Select';
+
 
 import { withAuthorization } from '../Session'
 
@@ -75,8 +68,7 @@ class OrderFormBase extends Component {
     this.state = { ...INITIAL_STATE };
     this.classes = { useStyles }
   }
-  
-  // dishtype = []
+
 
   componentDidMount() {  
     // Detect latest order ID
@@ -102,12 +94,12 @@ class OrderFormBase extends Component {
     // Get list of menu items
     this.props.firebase.fs.collection('Menu').orderBy("Type").onSnapshot(snapshot => {
       let changes = snapshot.docChanges();
-      changes.forEach(change => {
-        let dishname = change.doc.data().name
-        let dishtype = change.doc.data().Type
-        this.setState((prevstate) => ({
-        selectedmenu:[...prevstate.selectedmenu,{dish:dishname, type:dishtype, selected:"false"}]
-    }))
+          changes.forEach(change => {
+            let dishname = change.doc.data().name
+            let dishtype = change.doc.data().Type
+            this.setState((prevstate) => ({
+            selectedmenu:[...prevstate.selectedmenu,{dish:dishname, type:dishtype, selected:"false"}]
+        }))
       })
     })
   }
@@ -130,18 +122,21 @@ class OrderFormBase extends Component {
     strSubmitDate = strSubmitDate.split("GMT")[0]
 
     let docname = 'Event ' + this.state.orderid
-     
+    let strMonth = Number(new Date().getMonth())+1
     this.props.firebase.fs.collection('Catering_orders').add({ 
       Customer: "",
       Status: "Order Received",
       Date: submitDate, 
       DateOnly: strDate,
       DeliveryCheck: false,
-      Pax: this.state.pax,
+      Menu: this.state.finalmenu,
+      Pax: Number(this.state.pax),
       Time: strtime, 
       TruckImgUrl: '',
       venue: this.state.venue,
-      orderID: this.state.orderid
+      orderID: this.state.orderid,
+      Ingredient_Tags_Used: '',
+      Created_On:new Date().getFullYear()+"-"+strMonth+"-"+new Date().getDate()
     });
     let notCreated = true
 

@@ -42,6 +42,9 @@ const NavigationAuth = () => (
             <Link to={ROUTES.DISH_TO_INGREDIENT_FORM}>Digital Recipe Form</Link>
         </li>
         <li>
+            <Link to={ROUTES.COOKING_SELECTION}>Pre Cooking Ingredient Tag Form</Link>
+        </li>
+        <li>
             <SignOutButton />
         </li>
     </ul>

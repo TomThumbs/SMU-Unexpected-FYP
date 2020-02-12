@@ -84,10 +84,14 @@ class NewIngredientForm extends Component {
   }
 
   onSubmit = event => {
-    this.props.firebase.fs.collection('Ingredient_RFID').doc(this.state.foodId).set({ 
-      Expiry_Date: this.state.selectedDate, Name: this.state.name
-    })
     event.preventDefault();
+    let strMonth = Number(new Date().getMonth())+1
+    this.props.firebase.fs.collection('Ingredient_RFID').doc(this.state.foodId).set({ 
+      Date_of_expiry: this.state.storageDate, 
+      Name: this.state.foodName,
+      Date_of_Storage:new Date().getFullYear()+"-"+strMonth+"-"+new Date().getDate()
+    })
+
   };
 
   onChange = event => {
@@ -119,23 +123,7 @@ class NewIngredientForm extends Component {
         <CssBaseline/>
         <div className={this.classes.paper}>
         <form onSubmit={this.onSubmit}>
-
-          {/* Food ID */}
-          {/* <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="foodId"
-            value={this.state.foodId}
-            label="Food ID"
-            onChange={this.onChange}
-            type="text"
-            placeholder="Food ID"
-            InputProps={{
-              readOnly: true,
-            }}
-          /> */}
+  
           {this.createTextField("foodId", this.state.foodId, "Food ID", "Food ID")}
 
 
@@ -150,7 +138,7 @@ class NewIngredientForm extends Component {
             fullWidth
             name="storageDate"
             value={this.state.storageDate}
-            label="Date of Storage"
+            label="Date of Expiry"
             onChange={this.onChange}
             type="text"
             placeholder="Date of Storage"
