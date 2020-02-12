@@ -55,6 +55,11 @@
   list-style: none;
 }
 
+.nav-link{
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
 
 /* ----------TIMELINE---------- */
 .timeline-container {

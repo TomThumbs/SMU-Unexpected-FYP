@@ -78,7 +78,9 @@ class DisplayOrderTimelineBase extends Component {
             to={{
               pathname: ROUTES.ORDER_RECEIVED,
               search: '?id=' + this.state.orderID
-            }}>Read</Link>: <p></p>}
+            }}>
+              Read
+            </Link>: <p>Not done yet</p>}
           <span className="circle" />
         </div>
       </div>
