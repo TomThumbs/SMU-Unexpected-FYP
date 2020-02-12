@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import '../../App.css';
 
-import {  withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { withFirebase } from '../Firebase';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -84,8 +84,10 @@ class DeliverySelectionBase extends Component {
             let changes = snapshot.docChanges();
             changes.forEach(change => {
                 let orderidnum = Number(change.doc.data().orderNumber)
-                this.setState({orderid: orderidnum+1,
-                               orderiddoc: change.doc.id })
+                this.setState({
+                  orderid: orderidnum+1,
+                  orderiddoc: change.doc.id 
+                })
             })
         })
         let startDate = new Date()

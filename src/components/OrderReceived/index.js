@@ -1,17 +1,29 @@
 import React, { Component } from 'react';
 import { withFirebase } from '../Firebase';
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import Container from '@material-ui/core/Container';
+import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
+// import { CssBaseline } from '@material-ui/core';
 
+import * as ROUTES from '../../constants/routes';
 
 const useStyles = makeStyles(theme => ({
+  root: {
+    flexGrow: 1,
+  },
   paper: {
     marginTop: theme.spacing(8),
     display: 'flex',
     flexDirection: 'column',
+    maxWidth:400,
+    textAlign: 'center',
+    // margin: `${theme.spacing(1)}px auto`,
+    // padding: theme.spacing(2),
   },
   form: {
     width: '100%', // Fix IE 11 issue.
@@ -20,6 +32,9 @@ const useStyles = makeStyles(theme => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  text:{
+    textAlign: 'center',
+  }
 }));
 
 const INITIAL_STATE = {
@@ -30,6 +45,7 @@ const INITIAL_STATE = {
   venue: '',
   pax: '',
   status: '',
+  menu: []
 };  
 
 class OrderReceivedBase extends Component {
@@ -53,30 +69,81 @@ class OrderReceivedBase extends Component {
     .then(querySnapshot => {
       // console.log(querySnapshot);
       querySnapshot.forEach(doc => {
-        console.log(doc.data());
+        // console.log(doc.data());
         let data = doc.data();
         this.setState({
           dateOnly: data.DateOnly,
           time: data.Time,
           venue: data.venue,
-          pax: data.Pax,
+          pax: Number(data.Pax),
           status: data.Status,
+          // menu: data.Menu,
+          menu: Array.from(new Set(data.Menu)),
         })
+        // data.Menu.forEach(temp => {
+        //   this.setState(prevState => ({
+        //     menu: [...prevState.menu, temp],
+        //   }))
+        // })
       });
     })
     .catch(function(error) {
       console.log("Error getting documents: ", error);
-  });
+    });
+    // console.log(this.state.menu);
+  }
+
+  renderMenu(){
+    let list = [];
+    this.state.menu.forEach((item,id) => {
+      list.push(<Typography key={id}>{item}</Typography>)
+    })
+    return list;
+  }
+
+  renderBackButton(){
+    return(
+      <Link
+        to={{
+        pathname: ROUTES.ORDER_TIMELINE,
+        search: '?id=' + this.state.orderID
+      }}>
+        <Button>Back</Button>
+      </Link>
+    )
   }
 
   render(){
     return(
-      <Grid container justify="center" spacing={3} alignItems="center">
-        <Grid item xs={6}>
-        <Typography>Deliver to: {this.state.venue}</Typography>
-        </Grid>
-      </Grid>
-        
+      <Container className={this.classes.root}>
+        {this.renderBackButton()}
+        <Paper className={this.classes.paper}>
+
+          <Grid className='grid' item xs={12}>
+            <Paper className={this.classes.paper}>
+            Order Received
+            </Paper>
+          </Grid>
+
+          <Grid container spacing={3}>
+
+            <Grid item xs={6}>
+              <Typography>Deliver to:</Typography>
+              <Typography> {this.state.venue}</Typography>
+              <Typography> {this.state.dateOnly}</Typography>
+              <Typography> {this.state.time}</Typography>
+            </Grid>
+
+            <Grid item xs={6}>
+              <Typography>Menu: ({this.state.pax} pax)</Typography>
+              {this.renderMenu()}
+            </Grid>
+
+          </Grid>
+
+        </Paper>
+      </Container>
+      
     )
   }
 }

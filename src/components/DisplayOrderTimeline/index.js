@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withFirebase } from '../Firebase';
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
 // import Grid from '@material-ui/core/Grid';
@@ -8,7 +8,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 // import Paper from '@material-ui/core/Paper';
 // import { CssBaseline } from '@material-ui/core';
-import TimelineItem from './timelineItem'
+// import TimelineItem from './timelineItem'
+
+import * as ROUTES from '../../constants/routes';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -27,7 +29,8 @@ const useStyles = makeStyles(theme => ({
 
 const INITIAL_STATE = {
   orderID: '',
-  statusList: ['Order Received', 'Preparation', 'Delivery', 'Service', 'Order Complete']
+  statusList: ['Order Received', 'Preparation', 'Delivery', 'Service', 'Order Complete'],
+  status: '',
 };  
 
 class DisplayOrderTimelineBase extends Component {
@@ -52,21 +55,41 @@ class DisplayOrderTimelineBase extends Component {
       // console.log(urlId);
       querySnapshot.forEach(doc => {
         console.log(doc.data());
+        this.setState({
+          status: doc.data().Status
+        })
       });
     })
     .catch(function(error) {
       console.log("Error getting documents: ", error);
     });
     console.log("Retrieved doc")
-    
+  }
 
+  timelineItem(key, itemIndex, status){
+    const isDone = this.state.statusList.indexOf(itemIndex) <= this.state.statusList.indexOf(status);
+
+    return(
+      <div key={key} className="timeline-item">
+        <div className="timeline-item-content">
+          <span className="tag"></span>
+          <p>{itemIndex}</p>
+          {isDone ? <Link 
+            to={{
+              pathname: ROUTES.ORDER_RECEIVED,
+              search: '?id=' + this.state.orderID
+            }}>Read</Link>: <p></p>}
+          <span className="circle" />
+        </div>
+      </div>
+    )
   }
 
   timeline(){
     return(
       <div className="timeline-container">
         {this.state.statusList.map((data, idx) => (
-          <TimelineItem data={data} key={idx}/>
+          this.timelineItem(idx, data, this.state.status)
         ))}
       </div>
     )

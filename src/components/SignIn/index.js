@@ -57,8 +57,6 @@ class SignInFormBase extends Component {
     this.classes = { useStyles }
   }
 
-
-
   onSubmit = event => {
     const { email, password } = this.state;
     this.props.firebase
