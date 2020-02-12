@@ -94,14 +94,33 @@ class DishToIngredientFormBase extends Component {
     if (this.state.ingredientThree.length !== 0) {this.dishIngredients.push(this.state.ingredientThree)}
     if (this.state.ingredientFour.length !== 0) {this.dishIngredients.push(this.state.ingredientFour)}
     if (this.state.ingredientFive.length !== 0) {this.dishIngredients.push(this.state.ingredientFive)}
+    if (this.state.ingredientSix.length !== 0) {this.dishIngredients.push(this.state.ingredientSix)}
+    if (this.state.ingredientSeven.length !== 0) {this.dishIngredients.push(this.state.ingredientSeven)}
+    if (this.state.ingredientEight.length !== 0) {this.dishIngredients.push(this.state.ingredientEight)}
+    if (this.state.ingredientNine.length !== 0) {this.dishIngredients.push(this.state.ingredientNine)}
+    if (this.state.ingredientTen.length !== 0) {this.dishIngredients.push(this.state.ingredientTen)}
+    if (this.state.ingredientEleven.length !== 0) {this.dishIngredients.push(this.state.ingredientEleven)}
+    if (this.state.ingredientTwelve.length !== 0) {this.dishIngredients.push(this.state.ingredientTwelve)}
+    if (this.state.ingredientThirteen.length !== 0) {this.dishIngredients.push(this.state.ingredientThirteen)}
+    if (this.state.ingredientFourteen.length !== 0) {this.dishIngredients.push(this.state.ingredientFourteen)}
+    if (this.state.ingredientFifteen.length !== 0) {this.dishIngredients.push(this.state.ingredientFifteen)}
+    if (this.state.ingredientSixteen.length !== 0) {this.dishIngredients.push(this.state.ingredientSixteen)}
+    if (this.state.ingredientSeventeen.length !== 0) {this.dishIngredients.push(this.state.ingredientSeventeen)}
+    if (this.state.ingredientEighteen.length !== 0) {this.dishIngredients.push(this.state.ingredientEighteen)}
+    if (this.state.ingredientNineteen.length !== 0) {this.dishIngredients.push(this.state.ingredientNineteen)}
+    if (this.state.ingredientTwenty.length !== 0) {this.dishIngredients.push(this.state.ingredientTwenty)}
+    
     this.props.firebase.fs.collection('Menu').doc(this.state.chosen_menu).update({ 
       Ingredients: this.dishIngredients
     })
     this.handleClickOpen()
   }
 
-  handleIngredientName = name => event => {
-    this.setState({...this.props, [name]: event.target.value});   
+  onChange = event => {
+    this.setState({ 
+      [event.target.name]: event.target.value 
+    });
+    
   }
 
   renderSubmit() {
@@ -126,6 +145,23 @@ class DishToIngredientFormBase extends Component {
     })
     window.location.reload(true);
   };
+
+  createTextField = (name, temp, label, placeholder) =>{
+    return(
+      <Grid item spacing xs={12}>
+      <TextField
+        margin="normal"
+        // fullWidth
+        name={name}
+        value={temp}
+        label={label}
+        onChange={this.onChange}
+        type="text"
+        placeholder={placeholder}
+      />
+      </Grid>
+    )
+  }
 
   render() {
     
@@ -154,42 +190,31 @@ class DishToIngredientFormBase extends Component {
           </Select>
         </FormControl>
         </Grid>
-          <Grid item xs={12}>
-            Ingredients:
-            <TextField
-              required
-              id="name" 
-              name="name"
-              label="Ingredient :"
-              autoComplete="name"
-              value={this.state.value}
-              onChange={this.handleIngredientName('ingredientOne')}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            Ingredients:
-            <TextField
-              required
-              id="name" 
-              name="name"
-              label="Ingredient :"
-              autoComplete="name"
-              value={this.state.value}
-              onChange={this.handleIngredientName('ingredientTwo')}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            Ingredients:
-            <TextField
-              required
-              id="name" 
-              name="name"
-              label="Ingredient :"
-              autoComplete="name"
-              value={this.state.value}
-              onChange={this.handleIngredientName('ingredientThree')}
-            />
-          </Grid>
+
+        Ingredients
+        {this.createTextField("ingredientOne", this.state.ingredientOne, "Ingredient 1:", "Ingredient")}
+        {this.createTextField("ingredientTwo", this.state.ingredientTwo, "Ingredient 2:", "Ingredient")}
+        {this.createTextField("ingredientThree", this.state.ingredientThree, "Ingredient 3:", "Ingredient")}
+        {this.createTextField("ingredientFour", this.state.ingredientFour, "Ingredient 4:", "Ingredient")}
+        {this.createTextField("ingredientFive", this.state.ingredientFive, "Ingredient 5:", "Ingredient")}
+        {this.createTextField("ingredientSix", this.state.ingredientSix, "Ingredient 6:", "Ingredient")}
+        {this.createTextField("ingredientSeven", this.state.ingredientSeven, "Ingredient 7:", "Ingredient")}
+        {this.createTextField("ingredientEight", this.state.ingredientEight, "Ingredient 8:", "Ingredient")}
+        {this.createTextField("ingredientNine", this.state.ingredientNine, "Ingredient 9:", "Ingredient")}
+        {this.createTextField("ingredientTen", this.state.ingredientTen, "Ingredient 10:", "Ingredient")}
+        {this.createTextField("ingredientEleven", this.state.ingredientEleven, "Ingredient 11:", "Ingredient")}
+        {this.createTextField("ingredientTwelve", this.state.ingredientTwelve, "Ingredient 12:", "Ingredient")}
+        {this.createTextField("ingredientThirteen", this.state.ingredientThirteen, "Ingredient 13:", "Ingredient")}
+        {this.createTextField("ingredientFourteen", this.state.ingredientFourteen, "Ingredient 14:", "Ingredient")}
+        {this.createTextField("ingredientFifteen", this.state.ingredientFifteen, "Ingredient 15:", "Ingredient")}
+        {this.createTextField("ingredientSixteen", this.state.ingredientSixteen, "Ingredient 16:", "Ingredient")}
+        {this.createTextField("ingredientSeventeen", this.state.ingredientSeventeen, "Ingredient 17:", "Ingredient")}
+        {this.createTextField("ingredientEighteen", this.state.ingredientEighteen, "Ingredient 18:", "Ingredient")}
+        {this.createTextField("ingredientNineteen", this.state.ingredientNineteen, "Ingredient 19:", "Ingredient")}
+        {this.createTextField("ingredientTwenty", this.state.ingredientTwenty, "Ingredient 20:", "Ingredient")}
+
+
+         
         </Grid>
       </React.Fragment>
       {this.renderSubmit()}
