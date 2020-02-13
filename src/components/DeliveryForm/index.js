@@ -10,7 +10,28 @@ import Typography from '@material-ui/core/Typography';
 // import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-// import Button from '@material-ui/core/Button';
+
+import Button from '@material-ui/core/Button';
+import Container from '@material-ui/core/Container';
+import { makeStyles } from '@material-ui/core/styles';
+import Divider from '@material-ui/core/Divider';
+
+import { withAuthorization } from '../Session'
+
+const useStyles = makeStyles(theme => ({
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+  paper: {
+    padding: theme.spacing(2),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+  },
+}));
 
 
 const INITIAL_STATE = {
@@ -33,12 +54,10 @@ const INITIAL_STATE = {
 };  
 
 class DeliveryFormBase extends Component {
-
   constructor(props) {
     super(props);
-    this.state = {
-        ...INITIAL_STATE
-    };
+    this.state = { ...INITIAL_STATE};
+    this.classes = { useStyles }
 }
   componentDidMount() { 
     // console.log(this.props.location.doc_id)
@@ -116,96 +135,108 @@ class DeliveryFormBase extends Component {
   renderSubmit() {
     if (this.state.cleanReady === true && (this.state.allItems === true && this.state.foodWrap === true && this.state.imageURL.length !== 0)) {
         return        <form onSubmit={this.onSubmit}>
-                      <button type='submit'>Submit</button>
+                      <Button 
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                      color="primary"
+                      className={this.classes.submit}>
+                      Submit
+                      </Button>
                       </form>
     } else {
-      return <h1>Please check all 3 checkboxes and upload a picture of the truck.</h1>
+      return <h4><font color="#e91e63">Please check all 3 checkboxes and upload a picture of the truck.</font></h4>
     }
   }
 
   render() {
     // console.log(typeof this.state.menu)
     return (  
-<div>
-  {this.state.menu}
-      {/* <h1>{this.props.location.doc_id}</h1> */}
-      <React.Fragment>
+      <Container component="main" maxWidth="sm">
         
-      <Typography variant="h6" gutterBottom>
-        Shipping address
-      </Typography>
-          {/* {this.state.menu.map((test, index) =><tr>{test}</tr>)} */}
+        <div>
+          <h1>{this.props.location.doc_id}</h1>
+          <React.Fragment>
+            
+          <Typography variant="h5" gutterBottom>
+            Event Details
+          </Typography>
 
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
-          {this.state.date} 
-        </Grid>
-        <Grid item xs={12} >
-        {this.state.venue}
-        </Grid>
-        <Grid item xs={12}>
+          <Grid container alignItems="center">
+            <Grid item xs>Date & Time:</Grid>
+            <Grid item><b>{this.state.date}</b></Grid>
+          </Grid>
 
-        {this.state.pax} Pax
-        </Grid>
-        <Grid item xs={12}>
-        
-          Cust Name: {this.state.name}
-        </Grid>
-        <Grid item xs={12}>
+          <Grid container alignItems="center">
+            <Grid item xs>Venue:</Grid>
+            <Grid item><b>{this.state.venue}</b></Grid>
+          </Grid>
 
-          Cust HP: {this.state.contact}
-        </Grid>
-        
-        <Grid item xs={12}></Grid>
-      </Grid>
-        <Typography variant="h6" gutterBottom>
-            Checklist 
-        </Typography>
+          <Grid container alignItems="center">
+            <Grid item xs>Pax:</Grid>
+            <Grid item><b>{this.state.pax}</b></Grid>
+          </Grid>
 
-        <Grid item xs={12}>
-          <FormControlLabel
-            control={<Checkbox checked={this.state.cleanReady} onChange={this.handleChange('cleanReady')} color="secondary" name="cleanReady" value="cleanReady" />}
-            // <Checkbox checked={state.checkedA} onChange={handleChange('checkedA')} value="checkedA" />
-            label="Is the vehicle cleaned and ready for transportation?"
-          />
-        </Grid>
+          <Grid container alignItems="center">
+            <Grid item xs>Customer Name:</Grid>
+            <Grid item><b>{this.state.name}</b></Grid>
+          </Grid>
 
-        <Grid item xs={12}>
-          <FormControlLabel
-            control={<Checkbox checked={this.state.allItems} onChange={this.handleChange('allItems')} color="secondary" name="allItems" value="allItems" />}
-            label="Are all the items required for the event on the vehicle?"
-          />
-        </Grid>
+          <Grid container alignItems="center">
+            <Grid item xs>Customer HP:</Grid>
+            <Grid item><b>{this.state.contact}</b> </Grid>
+          </Grid>
 
-        <Grid item xs={12}>
-          <FormControlLabel
-            control={<Checkbox checked={this.state.foodWrap} onChange={this.handleChange('foodWrap')} color="secondary" name="foodWrap" value="foodWrap" />}
-            label="Are all the food wrapped properly?"
-          />
-        </Grid>
+          <br/>
+          <Divider variant="li" />
+          <br/>
 
-        <Typography variant="h6" gutterBottom>
-              Take a photograph of the state of the vehicle and food before delivery commences
-        </Typography>
-    </React.Fragment>
-        
-        <label> Progress: {this.props.imageURL}</label>
-        <p>{this.state.progress}</p>
-        <br/>
-        <FileUploader
-          accept="image/*"
-          name='image'
-          storageRef={this.props.firebase.stg.ref('truckHistory')}
-          onUploadStart={this.handleUploadStart}
-          onUploadSuccess={this.handleUploadSuccess}
-          onProgress={this.handleProgress}
-        />
-        <div>{this.renderSubmit()}</div>
-      </div>
+            <Typography variant="h6" gutterBottom>
+                Checklist 
+            </Typography>
+
+              <FormControlLabel
+                control={<Checkbox checked={this.state.cleanReady} onChange={this.handleChange('cleanReady')} color="secondary" name="cleanReady" value="cleanReady" />}
+                // <Checkbox checked={state.checkedA} onChange={handleChange('checkedA')} value="checkedA" />
+                label="Is the vehicle cleaned and ready for transportation?"
+              />
+
+              <FormControlLabel
+                control={<Checkbox checked={this.state.allItems} onChange={this.handleChange('allItems')} color="secondary" name="allItems" value="allItems" />}
+                label="Are all the items required for the event on the vehicle?"
+              />
+
+              <FormControlLabel
+                control={<Checkbox checked={this.state.foodWrap} onChange={this.handleChange('foodWrap')} color="secondary" name="foodWrap" value="foodWrap" />}
+                label="Are all the food wrapped properly?"
+              />
+        <br/><br/>
+        <Divider variant="li" />
+
+            <h4>Take a photograph of the state of the vehicle and food before delivery commences</h4>
+           
+        </React.Fragment>
+            
+            <label> Progress: {this.props.imageURL}</label>
+            <p>{this.state.progress}</p>
+            
+            <FileUploader
+              accept="image/*"
+              name='image'
+              storageRef={this.props.firebase.stg.ref('truckHistory')}
+              onUploadStart={this.handleUploadStart}
+              onUploadSuccess={this.handleUploadSuccess}
+              onProgress={this.handleProgress}
+            />
+            <div>{this.renderSubmit()}</div>
+          </div>
+          </Container>
     );
   }
 }
 
 const DeliveryForm = withRouter(withFirebase(DeliveryFormBase));
+const condition = authUser => !!authUser;
+export default withAuthorization(condition) (DeliveryForm);
 
-export default DeliveryForm;
+//this.props.location.doc_id

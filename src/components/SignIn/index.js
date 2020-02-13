@@ -85,7 +85,7 @@ class SignInFormBase extends Component {
         <CssBaseline />
         <div className={this.classes.paper}>
           
-          <Typography component="h1" variant="h4" align="center">
+        <Typography component="h1" variant="h4" align="center">
         </Typography>
 
         <form onSubmit={this.onSubmit}>

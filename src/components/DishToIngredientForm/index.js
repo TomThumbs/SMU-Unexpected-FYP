@@ -19,14 +19,18 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Container from '@material-ui/core/Container';
+
+import { withAuthorization } from '../Session'
 
 const useStyles = makeStyles(theme => ({
   formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
+    style:{
+      minWidth:300
+    },
   },
   selectEmpty: {
-    marginTop: theme.spacing(2),
+    marginTop: theme.spacing(0),
   },
 }));
 
@@ -125,11 +129,19 @@ class DishToIngredientFormBase extends Component {
 
   renderSubmit() {
     if (this.state.chosen_menu.length === 0) {
-      return <h1>Please select a dish.</h1>
+      return <Typography align="center"><h4><font color="#e91e63">Please select a dish.</font></h4></Typography>
     } else {
-      return <form onSubmit={this.onSubmit}>
-             <button type='submit'>Submit</button>
-             </form>
+      return  <form onSubmit={this.onSubmit}>
+              <br></br>
+              <Button 
+              fullWidth
+              type="submit"
+              variant="contained"
+              color="primary"
+              className={this.classes.submit}>
+              Submit
+            </Button>
+            </form>
     }
   }
 
@@ -148,10 +160,9 @@ class DishToIngredientFormBase extends Component {
 
   createTextField = (name, temp, label, placeholder) =>{
     return(
-      <Grid item spacing xs={12}>
       <TextField
-        margin="normal"
-        // fullWidth
+        fullWidth
+        margin="dense"
         name={name}
         value={temp}
         label={label}
@@ -159,28 +170,24 @@ class DishToIngredientFormBase extends Component {
         type="text"
         placeholder={placeholder}
       />
-      </Grid>
     )
   }
 
   render() {
     
     return (  
+      <Container component="main" maxWidth="xs">
     <div>
 
       <React.Fragment>
-        <Typography variant="h6" gutterBottom>
-          Digital Menu Recipe
-        </Typography>
+      <Grid container spacing={3}>
+      <Grid item xs={12}>
+        <Typography variant="h5" gutterBottom>Digital Menu Recipe</Typography>
         
 
-        <Grid container spacing={3}>
-        <Grid item xs={12}>
-        <FormControl className={this.classes.formControl}>
-          <InputLabel id="demo-simple-select-label">Name:</InputLabel>
+        <FormControl style={{minWidth:300}}>
+          <InputLabel>Select Dish:</InputLabel>
           <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
             value={this.state.chosen_menu}
             onChange={this.handleMenuChange}
           >
@@ -188,10 +195,14 @@ class DishToIngredientFormBase extends Component {
             <MenuItem value={event}>{event}</MenuItem>
           )}
           </Select>
-        </FormControl>
-        </Grid>
+          </FormControl>
+          </Grid>
+       
+        <br></br>
+        
+        <Grid item xs={12}>
 
-        Ingredients
+        <Typography variant="h7" gutterBottom>Ingredients</Typography>
         {this.createTextField("ingredientOne", this.state.ingredientOne, "Ingredient 1:", "Ingredient")}
         {this.createTextField("ingredientTwo", this.state.ingredientTwo, "Ingredient 2:", "Ingredient")}
         {this.createTextField("ingredientThree", this.state.ingredientThree, "Ingredient 3:", "Ingredient")}
@@ -212,11 +223,13 @@ class DishToIngredientFormBase extends Component {
         {this.createTextField("ingredientEighteen", this.state.ingredientEighteen, "Ingredient 18:", "Ingredient")}
         {this.createTextField("ingredientNineteen", this.state.ingredientNineteen, "Ingredient 19:", "Ingredient")}
         {this.createTextField("ingredientTwenty", this.state.ingredientTwenty, "Ingredient 20:", "Ingredient")}
-
-
-         
         </Grid>
+        </Grid>
+       
+        
+
       </React.Fragment>
+      
       {this.renderSubmit()}
 
       <Dialog
@@ -238,10 +251,12 @@ class DishToIngredientFormBase extends Component {
         </DialogActions>
       </Dialog>
     </div>
+    </Container>
     );
   }
 }
 
 const DishToIngredientForm = withRouter(withFirebase(DishToIngredientFormBase));
+const condition = authUser => !!authUser;
 
-export default DishToIngredientForm;
+export default withAuthorization(condition) (DishToIngredientForm);

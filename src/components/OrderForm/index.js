@@ -15,7 +15,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
 import Checkbox from '@material-ui/core/Checkbox';
-
+import Divider from '@material-ui/core/Divider';
 
 import { withAuthorization } from '../Session'
 
@@ -287,7 +287,8 @@ class OrderFormBase extends Component {
     return(
       <Container component="main" maxWidth="sm">
         <div className={this.classes.root}>
-          <Typography variant="h6" align="center" gutterBottom>
+          <br></br>
+          <Typography variant="h4" align="center" gutterBottom>
           Order Creation
           </Typography>
           
@@ -357,6 +358,11 @@ class OrderFormBase extends Component {
             
             {/* Postal Code */}
             {this.createTextField("venue", this.state.venue, "Postal Code:", "Postal Code")}
+
+            <br></br><br></br>
+            <Divider variant="il" />
+            <Typography component="h5" variant="h5" >Menu</Typography>
+            <Divider variant="il" />
 
             {/* Display Menu */}
             {this.renderMenu()}

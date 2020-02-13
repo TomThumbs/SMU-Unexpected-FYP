@@ -101,7 +101,8 @@ class TemperatureDisplayBase extends Component{
                 <p>Current Temperature: {this.state.current}</p>
                 <form onSubmit={this.onSubmit}>
                 
-                    <TextField
+                <div style={{ alignSelf: 'center' }}>
+                    <TextField 
                         name='new_min_temp'
                         value={new_min_temp}
                         onChange={this.onChange}
@@ -111,9 +112,10 @@ class TemperatureDisplayBase extends Component{
                         variant="outlined"
                         margin="dense"
                         align="left"
-                    />
-              
-                    <Button 
+                    /></div>
+               
+               
+                    <Button style={{ alignSelf: 'center' }}
                         // disabled={isInvalid} 
                         type="submit"
                         variant="contained"
@@ -122,6 +124,7 @@ class TemperatureDisplayBase extends Component{
                         margin="normal">
                         Submit
                     </Button>
+                
               
             
                 </form>
