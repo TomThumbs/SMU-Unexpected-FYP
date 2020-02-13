@@ -47,7 +47,7 @@ const INITIAL_STATE = {
   menu: []
 };  
 
-class OrderReceivedBase extends Component {
+class OrderPreparationEditBase extends Component {
   constructor(props) {
     super(props);
     this.state = { ...INITIAL_STATE };
@@ -86,7 +86,16 @@ class OrderReceivedBase extends Component {
   renderMenu(){
     let list = [];
     this.state.menu.forEach((item,id) => {
-      list.push(<Typography key={id}>{item}</Typography>)
+      list.push(
+        <div key={id}>
+          <Grid item xs={6}>
+            <Typography >{item}</Typography>
+          </Grid>
+          <Grid item xs={6}>
+            {/* <TextField  */}
+          </Grid>
+        </div>
+      )
     })
     return list;
   }
@@ -117,14 +126,14 @@ class OrderReceivedBase extends Component {
 
           <Grid container spacing={3}>
 
-            <Grid item xs={6}>
+            <Grid item xs={12}>
               <Typography>Deliver to:</Typography>
               <Typography> {this.state.venue}</Typography>
               <Typography> {this.state.dateOnly}</Typography>
               <Typography> {this.state.time}</Typography>
             </Grid>
 
-            <Grid item xs={6}>
+            <Grid item xs={12}>
               <Typography>Menu: ({this.state.pax} pax)</Typography>
               {this.renderMenu()}
             </Grid>
@@ -138,6 +147,6 @@ class OrderReceivedBase extends Component {
   }
 }
 
-const OrderReceived = withRouter(withFirebase(OrderReceivedBase));
+const OrderPreparationEdit = withRouter(withFirebase(OrderPreparationEditBase));
 
-export default OrderReceived;
+export default OrderPreparationEdit;

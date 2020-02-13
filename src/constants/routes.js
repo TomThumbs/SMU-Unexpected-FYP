@@ -31,6 +31,7 @@ export const ORDER_TIMELINE = '/order-timeline'
 
 export const ORDER_RECEIVED = '/order-received'
 export const ORDER_PREPARATION = '/order-preparation'
+export const ORDER_PREPARATION_EDIT = '/order-preparation-edit'
 export const ORDER_DELIVERY = '/order-delivery'
 export const ORDER_SERVICE = '/order-service'
 export const ORDER_COMPLETE = '/order-complete'

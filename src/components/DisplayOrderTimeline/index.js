@@ -77,13 +77,22 @@ class DisplayOrderTimelineBase extends Component {
   timelineItem(key, itemIndex, status){
     const isDone = this.state.statusList.indexOf(itemIndex) <= this.state.statusList.indexOf(status);
 
+    const isPrep = itemIndex === status;
+
     const routepath = this.state.routeList[this.state.statusList.indexOf(itemIndex)];
 
     return(
       <div key={key} className="timeline-item">
         <div className="timeline-item-content">
           <span className="tag"></span>
-          <p>{itemIndex}</p>
+          <h5>{itemIndex}</h5>
+          {isPrep ? <Link 
+            to={{
+              pathname: ROUTES.ORDER_PREPARATION_EDIT,
+              search: '?id=' + this.state.orderID
+            }}>
+              Edit
+            </Link>: null}
           {isDone ? <Link 
             to={{
               pathname: routepath,
