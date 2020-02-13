@@ -31,6 +31,13 @@ const useStyles = makeStyles(theme => ({
 const INITIAL_STATE = {
   orderID: '',
   statusList: ['Order Received', 'Preparation', 'Delivery', 'Service', 'Order Complete'],
+  routeList: [
+    ROUTES.ORDER_RECEIVED, 
+    ROUTES.ORDER_PREPARATION, 
+    ROUTES.ORDER_DELIVERY, 
+    ROUTES.ORDER_SERVICE, 
+    ROUTES.ORDER_COMPLETE
+  ],
   status: '',
 };  
 
@@ -70,6 +77,8 @@ class DisplayOrderTimelineBase extends Component {
   timelineItem(key, itemIndex, status){
     const isDone = this.state.statusList.indexOf(itemIndex) <= this.state.statusList.indexOf(status);
 
+    const routepath = this.state.routeList[this.state.statusList.indexOf(itemIndex)];
+
     return(
       <div key={key} className="timeline-item">
         <div className="timeline-item-content">
@@ -77,7 +86,7 @@ class DisplayOrderTimelineBase extends Component {
           <p>{itemIndex}</p>
           {isDone ? <Link 
             to={{
-              pathname: ROUTES.ORDER_RECEIVED,
+              pathname: routepath,
               search: '?id=' + this.state.orderID
             }}>
               Read
