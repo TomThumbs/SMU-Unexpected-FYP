@@ -236,7 +236,7 @@ class CookingFormBase extends Component {
       <Container component="main" maxWidth="sm">
         <div className={this.classes.root}>
           <Typography variant="h6" align="center" gutterBottom>
-          Order Creation
+          Order Preparation
           </Typography>
           
           <form onSubmit={this.onSubmit}>

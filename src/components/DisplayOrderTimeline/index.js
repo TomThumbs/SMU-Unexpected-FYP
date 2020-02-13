@@ -11,6 +11,7 @@ import Container from '@material-ui/core/Container';
 // import TimelineItem from './timelineItem'
 
 import * as ROUTES from '../../constants/routes';
+import { withAuthorization } from '../Session'
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -107,5 +108,5 @@ class DisplayOrderTimelineBase extends Component {
 }
 
 const DisplayOrderTimeline = withRouter(withFirebase(DisplayOrderTimelineBase));
-
-export default DisplayOrderTimeline
+const condition = authUser => !!authUser;
+export default withAuthorization(condition) (DisplayOrderTimeline)

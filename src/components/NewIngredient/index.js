@@ -15,6 +15,14 @@ import Button from '@material-ui/core/Button';
 
 import { CssBaseline } from '@material-ui/core';
 
+import 'date-fns'; 
+import DateFnsUtils from '@date-io/date-fns'; 
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+} from '@material-ui/pickers'; 
+
 const useStyles = makeStyles(theme => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -73,9 +81,9 @@ class NewIngredientForm extends Component {
     event.preventDefault();
     let strMonth = Number(new Date().getMonth())+1
     this.props.firebase.fs.collection('Ingredient_RFID').doc(this.state.foodId).set({ 
-      Date_of_expiry: this.state.storageDate, 
+      Date_of_expiry: this.state.expiryDate, 
       Name: this.state.foodName,
-      Date_of_Storage:new Date().getFullYear()+"-"+strMonth+"-"+new Date().getDate()
+      Date_of_Storage:this.state.storageDate,
     })
 
   };
@@ -124,7 +132,7 @@ class NewIngredientForm extends Component {
             fullWidth
             name="storageDate"
             value={this.state.storageDate}
-            label="Date of Expiry"
+            label="Date of Storage"
             onChange={this.onChange}
             type="text"
             placeholder="Date of Storage"
@@ -135,7 +143,7 @@ class NewIngredientForm extends Component {
 
           {/* Date of Expiry */}
           {/* {this.createTextField("expiryDate", this.state.expiryDate, "Date of Expiry", "Date of Expiry")} */}
-          {/* <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
             Expiry Date: 
             <KeyboardDatePicker
               variant="inline"
@@ -147,7 +155,7 @@ class NewIngredientForm extends Component {
                 'aria-label': 'change date',
               }}
             />
-          </MuiPickersUtilsProvider> */}
+          </MuiPickersUtilsProvider>
 
 
           <Button 
