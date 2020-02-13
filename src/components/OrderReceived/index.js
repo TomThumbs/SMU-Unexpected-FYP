@@ -8,7 +8,6 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
-// import { CssBaseline } from '@material-ui/core';
 
 import * as ROUTES from '../../constants/routes';
 
@@ -67,9 +66,7 @@ class OrderReceivedBase extends Component {
     console.log("Retreving doc")
     this.props.firebase.fs.collection('Catering_orders').where("orderID", "==", urlId).get()
     .then(querySnapshot => {
-      // console.log(querySnapshot);
       querySnapshot.forEach(doc => {
-        // console.log(doc.data());
         let data = doc.data();
         this.setState({
           dateOnly: data.DateOnly,
@@ -77,20 +74,13 @@ class OrderReceivedBase extends Component {
           venue: data.venue,
           pax: Number(data.Pax),
           status: data.Status,
-          // menu: data.Menu,
           menu: Array.from(new Set(data.Menu)),
         })
-        // data.Menu.forEach(temp => {
-        //   this.setState(prevState => ({
-        //     menu: [...prevState.menu, temp],
-        //   }))
-        // })
       });
     })
     .catch(function(error) {
       console.log("Error getting documents: ", error);
     });
-    // console.log(this.state.menu);
   }
 
   renderMenu(){
