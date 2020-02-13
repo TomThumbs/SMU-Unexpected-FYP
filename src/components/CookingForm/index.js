@@ -45,7 +45,7 @@ const INITIAL_STATE = {
   selectedmenu:[],
   finalmenu:[],
   ingredientsUsed:[],
-  ingredientTagsUsed:'000,001'
+  ingredientTagsUsed:''
 }
 
 const useStyles = makeStyles(theme => ({
@@ -230,7 +230,7 @@ class CookingFormBase extends Component {
   }
 
   render () {
-    let isInvalid = this.state.ingredientTagsUsed.length === 0
+    // let isInvalid = this.state.ingredientTagsUsed.length === 0
 
     return(
       <Container component="main" maxWidth="sm">
@@ -295,7 +295,7 @@ class CookingFormBase extends Component {
 
 
             <Button 
-              disabled={isInvalid} 
+              // disabled={isInvalid} 
               type="submit"
               fullWidth
               variant="contained"

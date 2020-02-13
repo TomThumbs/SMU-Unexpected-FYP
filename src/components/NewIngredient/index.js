@@ -1,27 +1,23 @@
 import React, { Component } from 'react';
 import { withFirebase } from '../Firebase';
 import { withRouter } from 'react-router-dom';
-
 import 'date-fns';
-
-
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
-
-
-import Container from '@material-ui/core/Container';
-
-import Button from '@material-ui/core/Button';
-
-import { CssBaseline } from '@material-ui/core';
-
-import 'date-fns'; 
 import DateFnsUtils from '@date-io/date-fns'; 
 import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker,
   KeyboardDatePicker,
-} from '@material-ui/pickers'; 
+} from '@material-ui/pickers';
+import Container from '@material-ui/core/Container';
+import Button from '@material-ui/core/Button';
+import { CssBaseline } from '@material-ui/core';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -47,6 +43,7 @@ const INITIAL_STATE = {
   expiryDate: "",
   open: "",
   foodId: "",
+  open:'',
 };  
 
 class NewIngredientForm extends Component {
@@ -79,17 +76,37 @@ class NewIngredientForm extends Component {
 
   onSubmit = event => {
     event.preventDefault();
-    let strMonth = Number(new Date().getMonth())+1
     this.props.firebase.fs.collection('Ingredient_RFID').doc(this.state.foodId).set({ 
       Date_of_expiry: this.state.expiryDate, 
       Name: this.state.foodName,
       Date_of_Storage:this.state.storageDate,
     })
+    this.handleClickOpen()
+  };
+
+  handleClickOpen = () => {
+    this.setState({
+      open: true
+    })
+  };
+
+  handleClose = () => {
+    this.setState({
+      open: false,
+    })
+    // window.location.reload(true); 
 
   };
 
   onChange = event => {
     this.setState({ [event.target.name]: event.target.value });
+  };
+
+  handleDateChange = event => {
+    this.setState({
+      expiryDate: event
+    })
+    // console.log(this.state.date)
   };
 
   createTextField = (name, temp, label, placeholder) =>{
@@ -109,10 +126,12 @@ class NewIngredientForm extends Component {
       />
     )
   }
-
+  today = new Date()
+  
   render(){
     const isInvalid = this.state.storageDate === this.state.expiryDate || this.state.foodName.length === 0;
     return(
+      
       <Container component="main" maxWidth="xs">
         <CssBaseline/>
         <div className={this.classes.paper}>
@@ -141,11 +160,10 @@ class NewIngredientForm extends Component {
             }}
           />
 
-          {/* Date of Expiry */}
-          {/* {this.createTextField("expiryDate", this.state.expiryDate, "Date of Expiry", "Date of Expiry")} */}
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             Expiry Date: 
             <KeyboardDatePicker
+              minDate={this.today}
               variant="inline"
               format="dd/MM/yyyy"
               id="date-picker-inline"
@@ -157,6 +175,24 @@ class NewIngredientForm extends Component {
             />
           </MuiPickersUtilsProvider>
 
+          <Dialog
+            open={this.state.open}
+            onClose={this.handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">{"Submission Notification"}</DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+              {this.state.foodName} has been tagged.
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={this.handleClose} color="primary" autoFocus>
+                Noted
+              </Button>
+            </DialogActions>
+          </Dialog>
 
           <Button 
             disabled={isInvalid} 

@@ -205,9 +205,9 @@ class OrderFormBase extends Component {
   onMenuChange = event => {
     const dishname = event.target.value;
 
-    this.setState((prevstate) => ({
-      finalmenu: [...prevstate.finalmenu, dishname]
-    }));
+      this.setState((prevstate) => ({
+        finalmenu: [...prevstate.finalmenu, dishname]
+      }));
     // console.log(event.target.name + ": " + event.target.value)
   }
 
@@ -242,6 +242,7 @@ class OrderFormBase extends Component {
     )
   }
 
+  today = new Date()
   renderMenu = () => {
     let listofmenu = [];
     let dishtype = []
@@ -312,7 +313,7 @@ class OrderFormBase extends Component {
               <KeyboardDatePicker
                 variant="inline"
                 format="dd/MM/yyyy"
-            
+                minDate={this.today}
                 id="date-picker-inline"
                 value={this.state.date}
                 onChange={this.handleDateChange}
