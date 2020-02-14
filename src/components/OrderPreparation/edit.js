@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
+import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 
 import * as ROUTES from '../../constants/routes';
 
@@ -37,6 +38,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const INITIAL_STATE = {
+  docID:'',
   orderID: '',
   // statusList: ['Order Received', 'Preparation', 'Delivery', 'Service', 'Order Complete'],
   dateOnly: '',
@@ -50,25 +52,28 @@ const INITIAL_STATE = {
 class OrderPreparationEditBase extends Component {
   constructor(props) {
     super(props);
-    this.state = { ...INITIAL_STATE };
+    this.state = { ...INITIAL_STATE, docID: props.location.state.docID};
     this.classes = { useStyles };
+    
   }
 
   componentDidMount(){
     let queryString = window.location.search;
     let urlParams = new URLSearchParams(queryString);
     let urlId = Number(urlParams.get('id'));
-    console.log(urlId)
+    // console.log(urlId)
     this.setState({
-      orderID: urlId
+      orderID: urlId,
     });
 
-    console.log("Retreving doc")
+    // ---------- RETRIEVE CATERING ORDER ----------
+    console.log("Retreving Catering Order")
     this.props.firebase.fs.collection('Catering_orders').where("orderID", "==", urlId).get()
     .then(querySnapshot => {
       querySnapshot.forEach(doc => {
         let data = doc.data();
         this.setState({
+          docID: doc.id,
           dateOnly: data.DateOnly,
           time: data.Time,
           venue: data.venue,
@@ -81,6 +86,56 @@ class OrderPreparationEditBase extends Component {
     .catch(function(error) {
       console.log("Error getting documents: ", error);
     });
+
+    // ---------- RETRIEVE MENU INGREDIENTS ----------
+    console.log("Retreving Menu Ingredients")
+    this.props.firebase.fs.collection('Menu').get()
+    .then(querySnapshot => {
+      querySnapshot.forEach(doc => {
+        let data = doc.data();
+        this.setState({
+          [data.name] : data.Ingredients
+        })
+      });
+    })
+    .catch(function(error) {
+      console.log("Error getting documents: ", error);
+    });
+  }
+
+  onSubmit = event => {
+    event.preventDefault();
+
+    console.log(this.state.docID)
+    this.props.firebase.fs.collection('Catering_orders').doc(this.state.docID).update({
+      Status: 'Preparation'
+    }).then(function() {
+      console.log("Document successfully written!");
+    })
+    .catch(function(error) {
+        console.error("Error writing document: ", error);
+    });
+  }
+
+  renderMenuItem(item){
+    const ingredients = this.state[item]
+    // console.log(ingredient)
+    let menu = []
+    if(ingredients !== undefined){
+      ingredients.forEach((ingt,id) => {
+        menu.push(
+          <div>
+            {/* <Grid item xs={6}> */}
+              <Typography key={id}>{ingt}</Typography>
+            {/* </Grid> */}
+            {/* <Grid item xs={6}> */}
+              {/* <Typography>Insert checkbox </Typography> */}
+            {/* </Grid> */}
+          </div>
+        )
+      })
+    }
+    return menu;
   }
 
   renderMenu(){
@@ -88,15 +143,14 @@ class OrderPreparationEditBase extends Component {
     this.state.menu.forEach((item,id) => {
       list.push(
         <div key={id}>
-          <Grid item xs={6}>
-            <Typography >{item}</Typography>
-          </Grid>
-          <Grid item xs={6}>
-            {/* <TextField  */}
-          </Grid>
+          <Paper className={this.classes.paper}>
+            <Typography variant='h6'>{item}</Typography> 
+            {this.renderMenuItem(item)}
+            <TextareaAutosize aria-label="minimum height" rowsMin={3} placeholder="Minimum 3 rows" />
+          </Paper>
         </div>
       )
-    })
+    });
     return list;
   }
 
@@ -113,32 +167,30 @@ class OrderPreparationEditBase extends Component {
   }
 
   render(){
+    // console.log(this.state)
     return(
       <Container className={this.classes.root}>
         {this.renderBackButton()}
         <Paper className={this.classes.paper}>
 
-          <Grid className='grid' item xs={12}>
-            <Paper className={this.classes.paper}>
-            Order Received
-            </Paper>
-          </Grid>
+          <Typography className={this.classes.paper}>
+          Order Preparation Edit
+          </Typography>
 
-          <Grid container spacing={3}>
-
-            <Grid item xs={12}>
-              <Typography>Deliver to:</Typography>
-              <Typography> {this.state.venue}</Typography>
-              <Typography> {this.state.dateOnly}</Typography>
-              <Typography> {this.state.time}</Typography>
-            </Grid>
-
-            <Grid item xs={12}>
-              <Typography>Menu: ({this.state.pax} pax)</Typography>
-              {this.renderMenu()}
-            </Grid>
-
-          </Grid>
+          {/* <Grid container spacing={3}> */}
+            <form onSubmit={this.onSubmit}>
+                {this.renderMenu()}
+              
+              <Button 
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={this.classes.submit}>
+                Submit
+              </Button>
+            </form>
+          {/* </Grid> */}
 
         </Paper>
       </Container>

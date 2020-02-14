@@ -29,6 +29,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const INITIAL_STATE = {
+  docID:'',
   orderID: '',
   statusList: ['Order Received', 'Preparation', 'Delivery', 'Service', 'Order Complete'],
   routeList: [
@@ -64,6 +65,7 @@ class DisplayOrderTimelineBase extends Component {
       querySnapshot.forEach(doc => {
         console.log(doc.data());
         this.setState({
+          docID: doc.id,
           status: doc.data().Status
         })
       });
@@ -77,7 +79,9 @@ class DisplayOrderTimelineBase extends Component {
   timelineItem(key, itemIndex, status){
     const isDone = this.state.statusList.indexOf(itemIndex) <= this.state.statusList.indexOf(status);
 
-    const isPrep = itemIndex === status;
+    const isPrep = itemIndex === 'Preparation';
+
+    const isService = itemIndex === 'Order Completed' && status === 'Service';
 
     const routepath = this.state.routeList[this.state.statusList.indexOf(itemIndex)];
 
@@ -89,10 +93,14 @@ class DisplayOrderTimelineBase extends Component {
           {isPrep ? <Link 
             to={{
               pathname: ROUTES.ORDER_PREPARATION_EDIT,
-              search: '?id=' + this.state.orderID
+              search: '?id=' + this.state.orderID,
+              state: {
+                docID: this.state.docID
+              }
             }}>
               Edit
             </Link>: null}
+          {isService ? <Link>Collected</Link>: null}
           {isDone ? <Link 
             to={{
               pathname: routepath,

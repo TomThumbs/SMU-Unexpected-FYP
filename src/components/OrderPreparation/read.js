@@ -120,7 +120,7 @@ class OrderPreparationBase extends Component {
 
           <Grid className='grid' item xs={12}>
             <Paper className={this.classes.paper}>
-            Order Received
+            Order Preparation
             </Paper>
           </Grid>
 

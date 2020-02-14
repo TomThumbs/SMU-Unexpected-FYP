@@ -18,31 +18,31 @@ const Navigation = () => (
 const NavigationAuth = () => (
     <ul className="nav-links">
         <li className="nav-link">
-            <Link to={ROUTES.LANDING}>Landing</Link>
+            <Link className="navigation-link" to={ROUTES.LANDING}>Landing</Link>
         </li>
         <li className="nav-link">
-            <Link to={ROUTES.SEARCH_ORDER}>Search Order</Link>
+            <Link className="navigation-link" to={ROUTES.SEARCH_ORDER}>Search Order</Link>
         </li>
         <li className="nav-link">
-            <Link to={ROUTES.SMART_HEATING}>Smart Heater</Link>
+            <Link className="navigation-link" to={ROUTES.SMART_HEATING}>Smart Heater</Link>
         </li>
         <li className="nav-link">
-            <Link to={ROUTES.DELIVERY_SELECTION}>Make Delivery</Link>
+            <Link className="navigation-link" to={ROUTES.DELIVERY_SELECTION}>Make Delivery</Link>
         </li>
         <li className="nav-link">
-            <Link to={ROUTES.DISPLAY_ORDERS}>Display Orders</Link>
+            <Link className="navigation-link" to={ROUTES.DISPLAY_ORDERS}>Display Orders</Link>
         </li>
         <li className="nav-link">
-            <Link to={ROUTES.ORDER_FORM}>Order Form</Link>
+            <Link className="navigation-link" to={ROUTES.ORDER_FORM}>Order Form</Link>
         </li>
         <li className="nav-link">
-            <Link to={ROUTES.NEW_INGREDIENT}>New Ingredient Form</Link>
+            <Link className="navigation-link" to={ROUTES.NEW_INGREDIENT}>New Ingredient Form</Link>
         </li>
         <li className="nav-link">
-            <Link to={ROUTES.DISH_TO_INGREDIENT_FORM}>Digital Recipe Form</Link>
+            <Link className="navigation-link" to={ROUTES.DISH_TO_INGREDIENT_FORM}>Digital Recipe Form</Link>
         </li>
         <li className="nav-link">
-            <Link to={ROUTES.COOKING_SELECTION}>Pre Cooking Ingredient Tag Form</Link>
+            <Link className="navigation-link" to={ROUTES.COOKING_SELECTION}>Pre Cooking Ingredient Tag Form</Link>
         </li>
         <li className="nav-link">
             <SignOutButton />
@@ -53,10 +53,10 @@ const NavigationAuth = () => (
 const NavigationNonAuth = () => (
     <ul className="nav-links">
         <li className="nav-link">
-            <Link to={ROUTES.LANDING}>Landing</Link>
+            <Link className="navigation-link" to={ROUTES.LANDING}>Landing</Link>
         </li>
         <li className="nav-link">
-            <Link to={ROUTES.SIGN_IN}>Sign In</Link>
+            <Link className="navigation-link" to={ROUTES.SIGN_IN}>Sign In</Link>
         </li>
     </ul>
 );
