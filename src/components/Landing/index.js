@@ -57,7 +57,7 @@ class LandingPageBase extends Component {
             // console.log(doc.data())
             this.setState((prevstate) => ({
               events_list: [...prevstate.events_list, {
-                docid:doc.id,
+                docID:doc.id,
                 date: doc.data().DateOnly,
                 venue: doc.data().venue,
                 pax: doc.data().Pax
@@ -75,7 +75,7 @@ class LandingPageBase extends Component {
           snapshot.forEach(doc => {
             this.setState((prevstate) => ({
               week_events_list: [...prevstate.week_events_list, {
-                docid: doc.id,
+                docID: doc.id,
                 date: doc.data().DateOnly,
                 venue: doc.data().venue,
                 pax: doc.data().Pax

@@ -73,12 +73,12 @@ class CookingFormBase extends Component {
 
 
   componentDidMount() {  
-//this.props.location.doc_id
-    this.props.firebase.fs.collection('Catering_orders').doc(this.props.location.doc_id).get().then(doc=> {
+//this.props.location.docID
+    this.props.firebase.fs.collection('Catering_orders').doc(this.props.location.docID).get().then(doc=> {
       // console.log(doc.data())
           this.setState({
             orderid: doc.data().orderID,
-            catering_event_doc: doc.id,
+            docId: doc.id,
             date: String(doc.data().Date.toDate()).split("GMT")[0].split(" ")[1] + " " + String(doc.data().Date.toDate()).split("GMT")[0].split(" ")[2] + " "+ String(doc.data().Date.toDate()).split("GMT")[0].split(" ")[3],
             menu: doc.data().Menu,
             venue: doc.data().venue,
@@ -138,13 +138,13 @@ class CookingFormBase extends Component {
         this.setState((prevstate) => ({
           ingredientsUsed: [...prevstate.ingredientsUsed, doc.data().Name + ": " + doc.data().Date_of_expiry]
         }));
-        this.props.firebase.fs.collection('Catering_orders').doc(this.props.location.doc_id).update({
+        this.props.firebase.fs.collection('Catering_orders').doc(this.props.location.docID).update({
           Ingredients_Used: this.state.ingredientsUsed
         })
       })
     }
   
-    this.props.firebase.fs.collection('Catering_orders').doc(this.props.location.doc_id).update({
+    this.props.firebase.fs.collection('Catering_orders').doc(this.props.location.docID).update({
       Ingredient_Tags_Used: this.state.ingredientTagsUsed,
         })
     this.handleClickOpen()

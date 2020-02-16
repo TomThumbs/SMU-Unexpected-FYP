@@ -173,7 +173,7 @@ class OrderPreparationEditBase extends Component {
         {this.renderBackButton()}
         <Paper className={this.classes.paper}>
 
-          <Typography className={this.classes.paper}>
+          <Typography>
           Order Preparation Edit
           </Typography>
 

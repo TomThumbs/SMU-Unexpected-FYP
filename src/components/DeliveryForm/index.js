@@ -56,46 +56,67 @@ const INITIAL_STATE = {
 class DeliveryFormBase extends Component {
   constructor(props) {
     super(props);
-    this.state = { ...INITIAL_STATE};
+    this.state = { ...INITIAL_STATE, docID: props.location.state.docID};
     this.classes = { useStyles }
 }
   componentDidMount() { 
-    // console.log(this.props.location.doc_id)
-    this.props.firebase.fs.collection('Catering_orders').doc("ATQjjgqvKU8n49QdSuR7").get().then(doc=> {
+    // ---------- GET ORDER ID FROM URL ----------
+    let queryString = window.location.search;
+    let urlParams = new URLSearchParams(queryString);
+    let urlId = Number(urlParams.get('id'));
+    console.log(urlId)
+    this.setState({
+      orderID: urlId
+    });
+
+    // ---------- GET ORDER DETAILS ----------
+    // this.props.firebase.fs.collection('Catering_orders').doc("ATQjjgqvKU8n49QdSuR7").get().then(doc=> {
+    this.props.firebase.fs.collection('Catering_orders').doc(this.state.docID).get().then(doc=> {
       // console.log(doc.data())
-          this.setState({
-            catering_event_doc: doc.id,
-            date: String(doc.data().Date.toDate()).split("GMT")[0], 
-            menu: doc.data().Menu,
-            venue: doc.data().venue,
-            pax: doc.data().Pax,
-          }) 
-      })
-      let temp_date = String(this.state.date)
-      console.log(this.state.date )
-      this.setState({
-        strDate: temp_date.split("GMT")[0]
-      })
+        this.setState({
+          // catering_event_doc: doc.id,
+          date: String(doc.data().Date.toDate()).split("GMT")[0], 
+          menu: doc.data().Menu,
+          venue: doc.data().venue,
+          pax: doc.data().Pax,
+        }) 
+    })
+
+    let temp_date = String(this.state.date)
+    console.log(this.state.date )
+    this.setState({
+      strDate: temp_date.split("GMT")[0]
+    })
+
+    // this.props.firebase.fs.collection('Catering_orders').doc("ATQjjgqvKU8n49QdSuR7").get().then(doc=> {
     this.props.firebase.fs.collection('Catering_orders').doc("ATQjjgqvKU8n49QdSuR7").get().then(doc=> {
+      this.setState({
+          name: doc.data().Customer.id
+        })
+        this.props.firebase.fs.collection('Customers').doc(this.state.name).get().then(docu=> {
           this.setState({
-            name: doc.data().Customer.id
-          })
-          this.props.firebase.fs.collection('Customers').doc(this.state.name).get().then(docu=> {
-            this.setState({
-              contact: docu.data().HP,
-              name: docu.data().Name
-            })            
-        });            
-      });    
+            contact: docu.data().HP,
+            name: docu.data().Name
+          })            
+      });            
+    });    
 
   }
 
   onSubmit = event => {
     event.preventDefault();
 
-    this.props.firebase.fs.collection('Catering_orders').doc(this.state.catering_event_doc).update({ DeliveryCheck: true }); //UPDATE FIRESTORE
-    this.props.firebase.fs.collection('Catering_orders').doc(this.state.catering_event_doc).update({ TruckImgURL: this.state.imageURL });
+    // this.props.firebase.fs.collection('Catering_orders').doc(this.state.catering_event_doc).update({ DeliveryCheck: true }); //UPDATE FIRESTORE
+    this.props.firebase.fs.collection('Catering_orders')
+      .doc(this.state.docID)
+      .update({ DeliveryCheck: true }); //UPDATE FIRESTORE
+    // this.props.firebase.fs.collection('Catering_orders').doc(this.state.catering_event_doc).update({ TruckImgURL: this.state.imageURL });
+    this.props.firebase.fs.collection('Catering_orders')
+      .doc(this.state.docID)
+      .update({ TruckImgURL: this.state.imageURL });
+
     this.setState({imageURL: ''}) 
+
     this.props.history.push('./post-delivery-form');
   }
 
@@ -133,19 +154,30 @@ class DeliveryFormBase extends Component {
   };
 
   renderSubmit() {
-    if (this.state.cleanReady === true && (this.state.allItems === true && this.state.foodWrap === true && this.state.imageURL.length !== 0)) {
-        return        <form onSubmit={this.onSubmit}>
-                      <Button 
-                      type="submit"
-                      fullWidth
-                      variant="contained"
-                      color="primary"
-                      className={this.classes.submit}>
-                      Submit
-                      </Button>
-                      </form>
+    if (
+      this.state.cleanReady === true && 
+      (this.state.allItems === true && 
+        this.state.foodWrap === true && 
+        this.state.imageURL.length !== 0)) {
+        return (
+          <form onSubmit={this.onSubmit}>
+            <Button 
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={this.classes.submit}>
+            Submit
+            </Button>
+          </form>
+        )
     } else {
-      return <h4><font color="#e91e63">Please check all 3 checkboxes and upload a picture of the truck.</font></h4>
+      return (
+        <h4>
+          <font color="#e91e63">
+            Please check all 3 checkboxes and upload a picture of the truck.
+          </font>
+        </h4>)
     }
   }
 
@@ -155,7 +187,7 @@ class DeliveryFormBase extends Component {
       <Container component="main" maxWidth="sm">
         
         <div>
-          <h1>{this.props.location.doc_id}</h1>
+          <h1>{this.state.docID}</h1>
           <React.Fragment>
             
           <Typography variant="h5" gutterBottom>
@@ -239,4 +271,4 @@ const DeliveryForm = withRouter(withFirebase(DeliveryFormBase));
 const condition = authUser => !!authUser;
 export default withAuthorization(condition) (DeliveryForm);
 
-//this.props.location.doc_id
+//this.state.docID

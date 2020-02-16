@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const INITIAL_STATE = {
-    doc_id: '',
+    docID: '',
     time: '',
     pax: '',
     venue: '',
@@ -61,12 +61,14 @@ class DeliverySelectionBase extends Component {
     onSubmit = event => {
         event.preventDefault();       
 
-        this.props.firebase.fs.collection("Catering_orders").where("venue", "==", this.state.doc_id).get().then(snapshot => {
+        this.props.firebase.fs.collection("Catering_orders").where("venue", "==", this.state.docID).get().then(snapshot => {
           snapshot.forEach(doc => {
             console.log(doc.id)
             this.props.history.push({
               pathname: './delivery-form',
-              doc_id: doc.id          
+              state: {
+                docID: doc.id
+              }
             })
           })
         })
@@ -76,7 +78,7 @@ class DeliverySelectionBase extends Component {
         this.setState({
             [event.target.name]: event.target.value 
         });
-        // console.log(this.state.doc_id)
+        // console.log(this.state.docID)
     };
 
     componentDidMount() {  
@@ -114,7 +116,7 @@ class DeliverySelectionBase extends Component {
       <div>
       <FormControl component="fieldset" id="cafe-list" className={this.classes.formControl}>
         <FormLabel component="legend"><h2>Catering Events For The Day</h2></FormLabel>
-        <RadioGroup aria-label="doc_id" name="doc_id" id="cafe-list" value={this.value} onChange={this.handleChange}>
+        <RadioGroup aria-label="docID" name="docID" id="cafe-list" value={this.value} onChange={this.handleChange}>
         {this.state.events.map((event, index) =>
           <FormControlLabel value={event} control={<Radio />} label={event} />
           )}

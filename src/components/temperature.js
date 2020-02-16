@@ -31,58 +31,59 @@ const useStyles = makeStyles(theme => ({
   }));
 
 const INITIAL_STATE = {
-    min_temp: 0, 
-    min_temp_doc_id: '',
+    minTemp: 0, 
+    minTempDocID: '',
     current: 0,
-    new_min_temp: ''
+    newMinTemp: ''
 };  
 
 class TemperatureDisplayBase extends Component{
 
     constructor(props) {
         super(props);
-        this.state = {
-            // min_temp: 0, 
-            // min_temp_doc_id: '',
-            // current: 0,
-            // new_min_temp: ''
-            ...INITIAL_STATE
-        };
+        this.state = { ...INITIAL_STATE };
         this.classes = { useStyles }
         
     }
 
     componentDidMount() {
-        this.props.firebase.fs.collection('device_settings').onSnapshot(snapshot => { //to me, this is the 60 threshold. 
-            let changes = snapshot.docChanges();                           //if a new value is keyed in, update the value 
-            changes.forEach(change => {                                     // both in the constant and in db. 
-                if (change.doc.data().name === 'temperature sensor'){
-                    // this.state.min_temp = change.doc.data().minimum
-                    this.setState({
-                        min_temp: change.doc.data().minimum, //pulls from MINIMUM
-                        min_temp_doc_id: change.doc.id      //the device settings doc id will change, so must update here for reference.
-                    })
-                }
+        this.props.firebase.fs.collection('device_settings')
+            .onSnapshot(snapshot => { //to me, this is the 60 threshold. 
+                let changes = snapshot.docChanges();                           //if a new value is keyed in, update the value 
+                changes.forEach(change => {                                     // both in the constant and in db. 
+                    if (change.doc.data().name === 'temperature sensor'){
+                        // this.state.minTemp = change.doc.data().minimum
+                        this.setState({
+                            minTemp: change.doc.data().minimum, //pulls from MINIMUM
+                            minTempDocID: change.doc.id      //the device settings doc id will change, so must update here for reference.
+                        })
+                    }
+                })
             })
-        })
         
-        this.props.firebase.fs.collection('temp_sensor_test').orderBy('timestamp','desc').limit(1).onSnapshot(snapshot => {
-            let changes = snapshot.docChanges();
-            changes.forEach(change => {
-                this.setState({current: change.doc.data().temp}) //this is what the temp is. if i replace temp with timestamp then it changes
+        this.props.firebase.fs.collection('temp_sensor_test')
+            .orderBy('timestamp','desc').limit(1)
+            .onSnapshot(snapshot => {
+                let changes = snapshot.docChanges();
+                changes.forEach(change => {
+                    this.setState({current: change.doc.data().temp}) //this is what the temp is. if i replace temp with timestamp then it changes
+                })
             })
-        })
     }
 
     onSubmit = event => {
         event.preventDefault();
-        let num = Number(this.state.new_min_temp); //sets the var
-        // let num = this.new_min_temp;
+        let num = Number(this.state.newMinTemp); //sets the var
+        // let num = this.newMinTemp;
         console.log(num)
         console.log(typeof num)
-        this.props.firebase.fs.collection('device_settings').doc(this.state.min_temp_doc_id).update({ minimum: num }); //UPDATE FIRESTORE
+        this.props.firebase.fs.collection('device_settings')
+            .doc(this.state.minTempDocID)
+            .update({ 
+                minimum: num 
+            }); //UPDATE FIRESTORE
 
-        this.setState({new_min_temp: ''}) 
+        this.setState({newMinTemp: ''}) 
     }
 
     onChange = event => {
@@ -92,19 +93,19 @@ class TemperatureDisplayBase extends Component{
     }
 
     render() {
-        const {new_min_temp} = this.state; 
+        const {newMinTemp} = this.state; 
 
         return ( 
             <div align="center" className={this.classes.root}>
             {/* <Paper className={this.classes.paper}>        */}
-                <p>Temperature Threshold: {this.state.min_temp}</p>
+                <p>Temperature Threshold: {this.state.minTemp}</p>
                 <p>Current Temperature: {this.state.current}</p>
                 <form onSubmit={this.onSubmit}>
                 
                 <div style={{ alignSelf: 'center' }}>
                     <TextField 
-                        name='new_min_temp'
-                        value={new_min_temp}
+                        name='newMinTemp'
+                        value={newMinTemp}
                         onChange={this.onChange}
                         label="Set Threshold"
                         defaultValue="65"
@@ -113,8 +114,7 @@ class TemperatureDisplayBase extends Component{
                         margin="dense"
                         align="left"
                     /></div>
-               
-               
+
                     <Button style={{ alignSelf: 'center' }}
                         // disabled={isInvalid} 
                         type="submit"
@@ -124,8 +124,6 @@ class TemperatureDisplayBase extends Component{
                         margin="normal">
                         Submit
                     </Button>
-                
-              
             
                 </form>
                 {/* </Paper>   */}
