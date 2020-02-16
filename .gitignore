@@ -28,3 +28,6 @@ icon*
 Icon*
 **/icon*
 **/Icon*
+
+**/*.log
+**/*.tlog

@@ -1,36 +1,31 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+
 import '../../App.css';
 
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { withFirebase } from '../Firebase';
 
-import Grid from '@material-ui/core/Grid';
+// import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Button from '@material-ui/core/Button';
 
 import { makeStyles } from '@material-ui/core/styles';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
-import Checkbox from '@material-ui/core/Checkbox';
+import Container from '@material-ui/core/Container';
 
-import 'date-fns'; //npm i date-fns
-import DateFnsUtils from '@date-io/date-fns'; //npm i @date-io/date-fns@1.x date-fns
+import Checkbox from '@material-ui/core/Checkbox';
+import Divider from '@material-ui/core/Divider';
+
+import { withAuthorization } from '../Session'
+
+import 'date-fns'; 
+import DateFnsUtils from '@date-io/date-fns'; 
 import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker,
   KeyboardDatePicker,
-} from '@material-ui/pickers'; //npm i @material-ui/pickers
-
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-
+} from '@material-ui/pickers'; 
 const INITIAL_STATE = {
   orderid: 0,
   orderiddoc: '',
@@ -39,22 +34,16 @@ const INITIAL_STATE = {
   endtime:'',
   venue: '',
   pax: 0,
-  name: '',
-  contact: '',
-  email: '',
-  company: '',
-  hour:'',
+  hour: '',
+  minute:'',
+  custname: '',
+  custcontact: '',
+  custemail: '',
+  custcompany: '',
   custID:0,
   custref:'',
-  bva: false,
-  bvb: false,
-  rca: false,
-  rcb: false,
-  dea: false,
-  deb: false,
-  fia: false,
-  fib: false,
-
+  selectedmenu:[],
+  finalmenu:[]
 }
 
 const useStyles = makeStyles(theme => ({
@@ -65,73 +54,59 @@ const useStyles = makeStyles(theme => ({
   selectEmpty: {
     marginTop: theme.spacing(2),
   },
+  paper: {
+    padding: theme.spacing(2),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+  },
 }));
-
 
 class OrderFormBase extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-        ...INITIAL_STATE
-    };
-}
-  
-classes = useStyles
+    this.state = { ...INITIAL_STATE };
+    this.classes = { useStyles }
+  }
+
 
   componentDidMount() {  
-    this.props.firebase.fs.collection('Order_ID').limit(1).onSnapshot(snapshot => {
-        let changes = snapshot.docChanges();
-        changes.forEach(change => {
-            let orderidnum = Number(change.doc.data().orderNumber)
-            this.setState({orderid: orderidnum+1,
-                           orderiddoc: change.doc.id })
-          })
+    // Detect latest order ID
+    this.props.firebase.fs.collection('Catering_orders').orderBy("orderID", "desc").limit(1).onSnapshot(snapshot => {
+      let changes = snapshot.docChanges();
+      changes.forEach(change => {
+        let orderidnum = Number(change.doc.data().orderID)
+        this.setState({
+          orderid: orderidnum+1, 
+          orderiddoc: change.doc.id
+        })
+      })
     })
 
+    //get latest customer ID
+    this.props.firebase.fs.collection('Customers').doc("Counter").get().then(docu=> {
+      this.setState({
+        custID: Number(docu.data().ID)+1
+      })   
+      
+  });    
+
+    // Get list of menu items
+    this.props.firebase.fs.collection('Menu').orderBy("Type").onSnapshot(snapshot => {
+      let changes = snapshot.docChanges();
+          changes.forEach(change => {
+            let dishname = change.doc.data().name
+            let dishtype = change.doc.data().Type
+            this.setState((prevstate) => ({
+            selectedmenu:[...prevstate.selectedmenu,{dish:dishname, type:dishtype, selected:"false"}]
+        }))
+      })
+    })
   }
 
   onSubmit = event => {
     event.preventDefault();
-    let increCustID = 0
-    this.props.firebase.fs.collection('Customers').doc("Counter").get().then(docu=> {
-      // console.log(Number(docu.data().ID)+1)
-      increCustID = Number(docu.data().ID)+1
-      this.setState({
-        custID: Number(docu.data().ID)+1
-      })            
-  });            
-
-  // let increCustID = this.state.custID   
-  // let custref = ''
-    this.props.firebase.fs.collection('Customers').where("Email","==",this.state.email).get().then(docSnapshot => {
-      if (docSnapshot.exists) {
-        //create ref project
-        console.log('if')
-        this.setState({
-        custref: "Customers/"+docSnapshot.id
-      }) 
-      } else {
-          //create
-          //ref
-          console.log('else')
-          let custDocName = "Customer"+String(increCustID)
-          this.setState({
-            custref: "Customers/"+ custDocName
-          }) 
-          
-          // console.log(custDocName)
-          this.props.firebase.fs.collection('Customers').doc(custDocName).set({
-            Company: this.state.company,
-            CustomerID: increCustID,
-            Email: this.state.email,
-            HP: this.state.contact,
-            Name: this.state.name
-          });
-        
-      }     
-    })
-
+    
     let strhour = String(this.state.hour)
     let strmonth = Number(this.state.date.getMonth())+1
     let strtime = ''
@@ -139,35 +114,77 @@ classes = useStyles
       strtime = "0"+String(this.state.hour)+String(this.state.minute)
     } else {
       strtime = String(this.state.hour)+String(this.state.minute)
-    }
-     
+    }  
     let strDate = this.state.date.getFullYear()+"-"+strmonth+"-"+this.state.date.getDate()
     let submitDate = new Date(this.state.date.getFullYear(),this.state.date.getMonth(),this.state.date.getDate(),this.state.hour,this.state.minute,0)
     let strSubmitDate = String(submitDate)
 
     strSubmitDate = strSubmitDate.split("GMT")[0]
-    // let x = new DocumentReference()
 
-    let docname = 'Event ' + this.state.orderid
-    
-    // let dbcustref = this.props.firebase.fs.doc(this.state.custref)
-    //   console.log("_____"+dbcustref)
-    // this.props.firebase.fs.doc('Catering_orders/'+docname).update({ Customer: dbcustref })
-    
-    this.props.firebase.fs.collection('Order_ID').doc(this.state.orderiddoc).update({ orderNumber: this.state.orderid });  
-    this.props.firebase.fs.collection('Catering_orders').doc(docname).set({ 
-      Customer: "idk", //problem
-      Date: submitDate,
+    let strMonth = Number(new Date().getMonth())+1
+    this.props.firebase.fs.collection('Catering_orders').add({ 
+      Customer: "",
+      Status: "Order Received",
+      Date: submitDate, 
       DateOnly: strDate,
       DeliveryCheck: false,
-      Menu_ID: "underway",
-      Pax: this.state.pax,
-      Time: strtime,
+      Menu: this.state.finalmenu,
+      Pax: Number(this.state.pax),
+      Time: strtime, 
       TruckImgUrl: '',
-      venue: this.state.venue
+      venue: this.state.venue,
+      orderID: this.state.orderid,
+      Ingredient_Tags_Used: '',
+      Created_On:new Date().getFullYear()+"-"+strMonth+"-"+new Date().getDate()
     });
-    
+    let notCreated = true
 
+    this.props.firebase.fs.collection('Customers').where("Email","==",this.state.custemail).get().then(snap => {
+      snap.forEach(doc => {
+          if (doc.exists) {
+            this.setState({custExists: true}) 
+             
+                // console.log('Customer exists')
+                this.setState({ custref: "Customers/"+doc.id})
+                let dbcustref = this.props.firebase.fs.doc("Customers/"+doc.id)
+
+                this.props.firebase.fs.collection('Catering_orders').where("orderID", "==", this.state.orderid).onSnapshot(snapshot => {
+                  let changes = snapshot.docChanges();
+                  changes.forEach(change => {
+                     
+                  this.props.firebase.fs.doc('Catering_orders/'+change.doc.id).update({ Customer: dbcustref })
+                  // console.log('linked catering order to customer')
+                  notCreated = false
+                    
+                  
+              }) 
+            })           
+          } 
+      }); 
+    })
+    // console.log(notCreated)
+    if (notCreated) {
+      // console.log('Customer to be created')
+      let custDocName = "Customer"+String(this.state.custID)
+      console.log("custid"+this.state.custID + " --- " + custDocName)
+      this.props.firebase.fs.collection('Customers').doc(custDocName).set({
+            Company: this.state.custcompany,
+            CustomerID: this.state.custID,
+            Email: this.state.custemail,
+            HP: this.state.custcontact,
+            Name: this.state.custname
+      });
+      this.props.firebase.fs.collection('Customers').doc("Counter").update({ ID: this.state.custID }); 
+      let dbcustref = this.props.firebase.fs.doc("Customers/Customer"+this.state.custID)
+        this.props.firebase.fs.collection('Catering_orders').where("orderID", "==", this.state.orderid).onSnapshot(snapshot => {
+        let changes = snapshot.docChanges();
+          changes.forEach(change => {
+                  
+          this.props.firebase.fs.doc('Catering_orders/'+change.doc.id).update({ Customer: dbcustref })
+              // console.log('linked catering order to customer')
+        })
+      })
+    }
 
     this.props.history.push({
       pathname: './post-order-form',
@@ -178,302 +195,196 @@ classes = useStyles
     })
   }
 
-  handleChange= name => event =>  {
-    this.setState({...this.props, [name]: event.target.value});
-    // console.log(this.state.date)
+  onChange = event => {
+    this.setState({ 
+      [event.target.name]: event.target.value 
+    });
   }
+
+  onMenuChange = event => {
+    const dishname = event.target.value;
+
+      this.setState((prevstate) => ({
+        finalmenu: [...prevstate.finalmenu, dishname]
+      }));
+    // console.log(event.target.name + ": " + event.target.value)
+  }
+
+  handleDateChange = event => {
+    this.setState({
+      date: event
+    })
+    // console.log(this.state.date)
+  };
 
   handleTimeChange = time => {
-    // console.log(time.target.value)
-    if (time.target.value.includes("AM") || time.target.value.includes("12:")) {
-      this.setState({
-        hour: time.target.value.split(":")[0]
-      })
-    } else { 
-      let pm = Number(time.target.value.split(":")[0])+12 
-        this.setState({
-          hour: pm
-        }) 
-    }
-    let temp_str = time.target.value.split(":")[1]
-    temp_str = temp_str.split(" ")[0]
     this.setState({
-      minute: temp_str
-    })
+      starttime: time,
+      hour: time.getHours(),
+      minute: time.getMinutes()
+    }) 
+    // console.log(this.state.starttime)
   }
 
-  handleDateChange = date => {
-    this.setState({
-      date: date
-    })
-  };  
-
-  renderSubmit() {
-    if (this.state.date.length !== 0 &&
-        this.state.hour.length !== 0 &&
-        this.state.venue.length !== 0 &&
-        this.state.pax.length !== 0 &&
-        this.state.name.length !== 0 &&
-        this.state.contact.length !== 0 &&
-        this.state.email.length !== 0 &&
-        this.state.company.length !== 0 
-        // && this.state.menu.length != 0
-        //problem menu how to render properly. 
-        ) {
-      return        <form onSubmit={this.onSubmit}>
-                    <button type='submit'>Submit</button>
-                    </form>
-    }  else {
-      return <h1>Please fill in all compulsory fields and select the </h1>
-    }
+  createTextField = (name, temp, label, placeholder) =>{
+    return(
+      <TextField
+        margin="normal"
+        fullWidth
+        name={name}
+        value={temp}
+        label={label}
+        onChange={this.onChange}
+        type="text"
+        placeholder={placeholder}
+      />
+    )
   }
 
-  render() {
-    return (
-<div>
-      <React.Fragment>
-      <Typography variant="h6" gutterBottom>
-        Order Creation
-      </Typography>
+  today = new Date()
+  renderMenu = () => {
+    let listofmenu = [];
+    let dishtype = []
 
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
-        Order ID: {this.state.orderid}
-        </Grid>
+    this.state.selectedmenu.forEach(item => {
 
-        <Grid item xs={12}>
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <Grid item xs={12}> {/* container justify="space-around"> */}
-          date:
-            <KeyboardDatePicker
-              disableToolbar
-              variant="inline"
-              format="MM/dd/yyyy"
-              margin="normal"
-              id="date-picker-inline"
-              value={this.state.date}
-              onChange={this.handleDateChange}
-              KeyboardButtonProps={{
-                'aria-label': 'change date',
+      if(dishtype.includes(item.type) === false){
+        dishtype.push(item.type);
+        listofmenu.push(<p key={item.type}>{item.type}</p>);
+      }
+
+      listofmenu.push(
+        <div key={item.dish}>
+          <FormControlLabel 
+            control={
+            <Checkbox 
+              // checked={item.selected} 
+              onChange={this.onMenuChange} 
+              name={item.dish} 
+              value={item.dish} 
+              color="primary" 
+            />} 
+          label={item.dish} 
+          />
+          <br/>
+        </div>
+      )
+    })
+    
+    return listofmenu;
+  }
+
+  render () {
+    let isInvalid = this.state.date.length !== 0 &&
+    this.state.starttime.length !== 0 &&
+    this.state.venue.length !== 0 &&
+    this.state.pax.length >= 30 &&
+    this.state.custname.length !== 0 &&
+    this.state.custcontact.length !== 0 &&
+    this.state.custemail.length !== 0 &&
+    this.state.custcompany.length !== 0 
+
+    return(
+      <Container component="main" maxWidth="sm">
+        <div className={this.classes.root}>
+          <br></br>
+          <Typography variant="h4" align="center" gutterBottom>
+          Order Creation
+          </Typography>
+          
+          <form onSubmit={this.onSubmit}>
+            <TextField
+              variant="filled"
+              margin="dense"
+              fullWidth
+              name="orderid"
+              value={this.state.orderid}
+              label="Order ID"
+              placeholder="Order ID"
+              autoFocus
+              InputProps={{
+                readOnly: true,
               }}
             />
-            </Grid>
-          </MuiPickersUtilsProvider>
-          {/* <TextField
-            required
-            id="date" 
-            name="date"
-            label="Delivery Date:"
-            autoComplete="date"
-            value={this.state.value}
-            onChange={this.handleChange('date')}
-          /> */}
-        </Grid>
-        <Grid item xs={12}>
-        <FormControl className={this.classes.formControl}>
-          <InputLabel id="demo-simple-select-label">Delivery Time</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={this.state.starttime}
-            onChange={this.handleTimeChange}
-          >
-            <MenuItem value="9:00 AM">9:00 AM</MenuItem>
-            <MenuItem value="9:15 AM">9:15 AM</MenuItem>
-            <MenuItem value="9:30 AM">9:30 AM</MenuItem>
-            <MenuItem value="9:45 AM">9:45 AM</MenuItem>
-            <MenuItem value="10:00 AM">10:00 AM</MenuItem>
-            <MenuItem value="10:15 AM">10:15 AM</MenuItem>
-            <MenuItem value="10:30 AM">10:30 AM</MenuItem>
-            <MenuItem value="10:45 AM">10:45 AM</MenuItem>
-            <MenuItem value="11:00 AM">11:00 AM</MenuItem>
-            <MenuItem value="11:15 AM">11:15 AM</MenuItem>
-            <MenuItem value="11:30 AM">11:30 AM</MenuItem>
-            <MenuItem value="11:45 AM">11:45 AM</MenuItem>
-            <MenuItem value="12:00 PM">12:00 PM</MenuItem>
-            <MenuItem value="12:15 PM">12:15 PM</MenuItem>
-            <MenuItem value="12:30 PM">12:30 PM</MenuItem>
-            <MenuItem value="12:45 PM">12:45 PM</MenuItem>
-            <MenuItem value="1:00 PM">1:00 PM</MenuItem>
-            <MenuItem value="1:15 PM">1:15 PM</MenuItem>
-            <MenuItem value="1:30 PM">1:30 PM</MenuItem>
-            <MenuItem value="1:45 PM">1:45 PM</MenuItem>
-            <MenuItem value="2:00 PM">2:00 PM</MenuItem>
-            <MenuItem value="2:15 PM">2:15 PM</MenuItem>
-            <MenuItem value="2:30 PM">2:30 PM</MenuItem>
-            <MenuItem value="2:45 PM">2:45 PM</MenuItem>
-            <MenuItem value="3:00 PM">3:00 PM</MenuItem>
-            <MenuItem value="3:15 PM">3:15 PM</MenuItem>
-            <MenuItem value="3:30 PM">3:30 PM</MenuItem>
-            <MenuItem value="3:45 PM">3:45 PM</MenuItem>
-            <MenuItem value="4:00 PM">4:00 PM</MenuItem>
-            <MenuItem value="4:15 PM">4:15 PM</MenuItem>
-            <MenuItem value="4:30 PM">4:30 PM</MenuItem>
-            <MenuItem value="4:45 PM">4:45 PM</MenuItem>
-            <MenuItem value="5:00 PM">5:00 PM</MenuItem>
-            <MenuItem value="5:15 PM">5:15 PM</MenuItem>
-            <MenuItem value="5:30 PM">5:30 PM</MenuItem>
-            <MenuItem value="5:45 PM">5:45 PM</MenuItem>
-            <MenuItem value="6:00 PM">6:00 PM</MenuItem>
-            <MenuItem value="6:15 PM">6:15 PM</MenuItem>
-            <MenuItem value="6:30 PM">6:30 PM</MenuItem>
-            <MenuItem value="6:45 PM">6:45 PM</MenuItem>
-            <MenuItem value="7:00 PM">7:00 PM</MenuItem>
-            <MenuItem value="7:15 PM">7:15 PM</MenuItem>
-            <MenuItem value="7:30 PM">7:30 PM</MenuItem>
-            <MenuItem value="7:45 PM">7:45 PM</MenuItem>
-            <MenuItem value="8:00 PM">8:00 PM</MenuItem>
-          </Select>
-        </FormControl>
-          {/* <TextField
-            required
-            id="starttime" 
-            name="starttime"
-            label="Delivery Time:"
-            autoComplete="starttimetime"
-            value={this.state.value}
-            onChange={this.handleChange('starttime')}
-          /> */}
-        </Grid>
-        {/* <Grid item xs={12}>
-          <TextField
-            required
-            id="endtime" 
-            name="endtime"
-            label="Pack Time:"
-            autoComplete="endtime"
-            value={this.state.value}
-            onChange={this.handleChange('endtime')}
-          />
-        </Grid> */}
-        <Grid item xs={12} >
-          <TextField
-            required
-            id="venue"
-            name="venue"
-            label="Venue:"
-            autoComplete="venue"
-            placeholder="Postal Code"
-            value={this.state.value}
-            onChange={this.handleChange('venue')}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            required
-            id="pax"
-            name="pax"
-            label="Pax:"
-            autoComplete="pax"
-            value={this.state.value}
-            onChange={this.handleChange('pax')}
-          />
-    
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            id="name"
-            name="name"
-            label="Customer details:"
-            placeholder="Name"
-            autoComplete="name"
-            value={this.state.value}
-            onChange={this.handleChange('name')}
-          />
-          
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            required
-            id="contact"
-            name="contact"
-            // label="contact"
-            placeholder="Contact Number"
-            autoComplete="contact"
-            value={this.state.value}
-            onChange={this.handleChange('contact')}
-          />
-       
-        </Grid>
+            <div><br></br></div>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              Date: 
+              <KeyboardDatePicker
+                variant="inline"
+                format="dd/MM/yyyy"
+                minDate={this.today}
+                id="date-picker-inline"
+                value={this.state.date}
+                onChange={this.handleDateChange}
+                KeyboardButtonProps={{
+                  'aria-label': 'change date',
+                }}
+              />
+              Time: 
+              <KeyboardTimePicker
+                margin="none"
+                id="time-picker"
+                value={this.state.starttime}
+                onChange={this.handleTimeChange}
+                KeyboardButtonProps={{
+                  'aria-label': 'change time',
+                }}
+              />
+            </MuiPickersUtilsProvider>
 
-        <Grid item xs={12}>
-        <TextField
-            required
-            id="email"
-            name="email"
-            placeholder="Email"
-            autoComplete="email"
-            value={this.state.value}
-            onChange={this.handleChange('email')}
-          />
-        </Grid>
-        <Grid item xs={12}>
-        <TextField
-            required
-            id="company"
-            name="company"
-            placeholder="Company/ Organization"
-            autoComplete="company"
-            value={this.state.value}
-            onChange={this.handleChange('company')}
-          />
-        </Grid>
-      </Grid>
-      
-      <Typography variant="h6" gutterBottom>
-              Menu selection:
-        </Typography>
+            <TextField
+              margin="normal"
+              id="standard-number"
+              fullWidth
+              name="pax"
+              value={this.state.pax}
+              label="Number of people"
+              type="number"
+              onChange={this.onChange}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              inputProps= {{ min: 30}}
+            />
 
-        <Typography variant="h5" gutterBottom>
-              (select where applicable)
-        </Typography>    
+            {/* Customer Name */}
+            {this.createTextField("custname", this.state.custname, "Customer Name:", "Customer Name")}
 
-        <Grid item xs={12}>
-        <FormLabel component="legend">Rice / Noodles</FormLabel>
-          <FormControlLabel control={<Checkbox checked={this.state.cleanReady} onChange={this.handleChange('rca')} color="secondary" name="cleanReady" value="rca" />}
-            label="Nasi Goreng"/>
-        </Grid>
-        <Grid item xs={12}>
-          <FormControlLabel control={<Checkbox checked={this.state.cleanReady} onChange={this.handleChange('rcb')} color="secondary" name="cleanReady" value="rcb" />}
-            label="Xin Zhou Mee Hoon"/>
-        </Grid>
-        <Grid item xs={12}>
-        <FormLabel component="legend">Beancurd / Vegetables</FormLabel>
-          <FormControlLabel control={<Checkbox checked={this.state.cleanReady} onChange={this.handleChange('bva')} color="secondary" name="cleanReady" value="bva" />}
-            label="Braised Beancurd with mushroom"/>
-        </Grid>
-        <Grid item xs={12}>
-          <FormControlLabel control={<Checkbox checked={this.state.cleanReady} onChange={this.handleChange('bvb')} color="secondary" name="cleanReady" value="bvb" />}
-            label="Fried Cabbage with black fungus"/>
-        </Grid>
-        <Grid item xs={12}>
-        <FormLabel component="legend">Fish</FormLabel>
-          <FormControlLabel control={<Checkbox checked={this.state.cleanReady} onChange={this.handleChange('fia')} color="secondary" name="cleanReady" value="fia" />}
-            // <Checkbox checked={state.checkedA} onChange={handleChange('checkedA')} value="checkedA" />
-            label="Breaded Fish Fillet"/>
-        </Grid>
-        <Grid item xs={12}>
-          <FormControlLabel control={<Checkbox checked={this.state.cleanReady} onChange={this.handleChange('fib')} color="secondary" name="cleanReady" value="fib" />}
-            label="Sweet & Sour Fish"/>
-        </Grid>
-        <Grid item xs={12}>
-        <FormLabel component="legend">Dessert</FormLabel>
-          <FormControlLabel control={<Checkbox checked={this.state.cleanReady} onChange={this.handleChange('dea')} color="secondary" name="cleanReady" value="dea" />}
-            label="Ice Jelly with Cocktail"/>
-        </Grid>
-        <Grid item xs={12}>
-          <FormControlLabel control={<Checkbox checked={this.state.cleanReady} onChange={this.handleChange('deb')} color="secondary" name="cleanReady" value="deb" />}
-            label="Chin Chow with Longan"/>
-        </Grid>
-    </React.Fragment>
-    <div>{this.renderSubmit()}</div>
-      </div>
+            {/* Customer Email */}
+            {this.createTextField("custemail", this.state.custemail, "Customer Email:", "Customer Email")}
 
-    );
+            {/* Customer Company */}
+            {this.createTextField("custcompany", this.state.custcompany, "Customer Company:", "Customer Company")}
+            
+            {/* Postal Code */}
+            {this.createTextField("venue", this.state.venue, "Postal Code:", "Postal Code")}
+
+            <br></br><br></br>
+            <Divider variant="il" />
+            <Typography component="h5" variant="h5" >Menu</Typography>
+            <Divider variant="il" />
+
+            {/* Display Menu */}
+            {this.renderMenu()}
+
+            <Button 
+              disabled={isInvalid} 
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={this.classes.submit}>
+              Submit
+            </Button>
+          </form>
+        </div>
+      </Container>
+    )
   }
-
 }
 
 const OrderForm = withRouter(withFirebase(OrderFormBase));
+const condition = authUser => !!authUser;
 
-export default OrderForm;
+export default withAuthorization(condition) (OrderForm);
+
