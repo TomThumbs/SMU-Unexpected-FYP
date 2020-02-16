@@ -31,3 +31,4 @@ Icon*
 
 **/*.log
 **/*.tlog
+*.cache
