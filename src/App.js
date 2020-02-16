@@ -1,5 +1,5 @@
 import React from 'react';
-import { 
+import {
   BrowserRouter as Router ,
   Route
 } from 'react-router-dom';
@@ -19,10 +19,12 @@ import PostOrderForm from './components/PostOrderForm'
 import DeliverySelection from './components/DeliverySelection'
 import NewIngredient from './components/NewIngredient'
 import DisplayOrders from './components/DisplayOrders'
+
 import SearchOrder from './components/SearchOrder'
 import DisplayOrderTimeline from './components/DisplayOrderTimeline'
 import OrderReceived from './components/OrderReceived'
-import { OrderPreparation , OrderPreparationEdit } from './components/OrderPreparation'
+import { OrderPreparation , OrderPreparationEdit, OrderPreparationSop } from './components/OrderPreparation'
+
 import DishToIngredientForm from './components/DishToIngredientForm'
 import { withAuthentication } from './components/Session';
 import CookingSelection from './components/CookingSelection';
@@ -60,6 +62,7 @@ const App = () => (
         <Route path={ROUTES.ORDER_RECEIVED} component={OrderReceived}/>
         <Route path={ROUTES.ORDER_PREPARATION} component={OrderPreparation}/>
         <Route path={ROUTES.ORDER_PREPARATION_EDIT} component={OrderPreparationEdit}/>
+        <Route path={ROUTES.ORDER_PREPARATION_SOP} component={OrderPreparationSop}/>
 
         <Route path={ROUTES.DISH_TO_INGREDIENT_FORM} component={DishToIngredientForm}/>
         <Route path={ROUTES.COOKING_SELECTION} component={CookingSelection}/>

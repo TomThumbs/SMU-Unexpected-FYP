@@ -47,14 +47,13 @@ const INITIAL_STATE = {
   pax: '',
   status: '',
   menu: []
-};  
+};
 
 class OrderPreparationEditBase extends Component {
   constructor(props) {
     super(props);
     this.state = { ...INITIAL_STATE, docID: props.location.state.docID};
     this.classes = { useStyles };
-    
   }
 
   componentDidMount(){
@@ -144,7 +143,7 @@ class OrderPreparationEditBase extends Component {
       list.push(
         <div key={id}>
           <Paper className={this.classes.paper}>
-            <Typography variant='h6'>{item}</Typography> 
+            <Typography variant='h6'>{item}</Typography>
             {this.renderMenuItem(item)}
             <TextareaAutosize aria-label="minimum height" rowsMin={3} placeholder="Minimum 3 rows" />
           </Paper>
@@ -169,7 +168,7 @@ class OrderPreparationEditBase extends Component {
   render(){
     // console.log(this.state)
     return(
-      <Container className={this.classes.root}>
+      <Container component="main" maxWidth='xs' className={this.classes.root}>
         {this.renderBackButton()}
         <Paper className={this.classes.paper}>
 
@@ -180,8 +179,8 @@ class OrderPreparationEditBase extends Component {
           {/* <Grid container spacing={3}> */}
             <form onSubmit={this.onSubmit}>
                 {this.renderMenu()}
-              
-              <Button 
+
+              <Button
                 type="submit"
                 fullWidth
                 variant="contained"
@@ -194,7 +193,7 @@ class OrderPreparationEditBase extends Component {
 
         </Paper>
       </Container>
-      
+
     )
   }
 }

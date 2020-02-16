@@ -1,37 +1,38 @@
 // ---------- LANDING PAGE ----------
 export const LANDING = '/';
 
-// ---------- LOGIN ---------- 
+// ---------- LOGIN ----------
 export const SIGN_IN = '/signin';
 export const SIGN_UP = '/signup';
 export const PASSWORD_FORGET = '/pw-forget';
 
-// ---------- HOME PAGE ---------- 
+// ---------- HOME PAGE ----------
 export const HOME = '/home';
 
-// ---------- SMART HEATING ---------- 
+// ---------- SMART HEATING ----------
 export const SMART_HEATING = '/smart-heating';
 
-// ---------- ADD A NEW INGREDIENT ---------- 
+// ---------- ADD A NEW INGREDIENT ----------
 export const NEW_INGREDIENT = '/new-ingredient'
 
-// ---------- ADD NEW ORDER ---------- 
+// ---------- ADD NEW ORDER ----------
 export const ORDER_FORM = '/order-form'
 export const POST_ORDER_FORM = '/post-order-form';
 
-// ---------- ADD DELIVERY FORM ---------- 
+// ---------- ADD DELIVERY FORM ----------
 export const DELIVERY_FORM = '/delivery-form';
 export const POST_DELIVERY_FORM = '/post-delivery-form';
 
 export const DELIVERY_SELECTION = '/delivery-selection';
 
-// ---------- FIND EXISTING ORDER ---------- 
+// ---------- FIND EXISTING ORDER ----------
 export const SEARCH_ORDER = '/search'
 export const ORDER_TIMELINE = '/order-timeline'
 
 export const ORDER_RECEIVED = '/order-received'
 export const ORDER_PREPARATION = '/order-preparation'
 export const ORDER_PREPARATION_EDIT = '/order-preparation-edit'
+export const ORDER_PREPARATION_SOP = '/order-preparation-sop'
 export const ORDER_DELIVERY = '/order-delivery'
 export const ORDER_SERVICE = '/order-service'
 export const ORDER_COMPLETE = '/order-complete'

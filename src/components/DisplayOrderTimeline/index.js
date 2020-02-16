@@ -33,14 +33,14 @@ const INITIAL_STATE = {
   orderID: '',
   statusList: ['Order Received', 'Preparation', 'Delivery', 'Service', 'Order Complete'],
   routeList: [
-    ROUTES.ORDER_RECEIVED, 
-    ROUTES.ORDER_PREPARATION, 
-    ROUTES.ORDER_DELIVERY, 
-    ROUTES.ORDER_SERVICE, 
+    ROUTES.ORDER_RECEIVED,
+    ROUTES.ORDER_PREPARATION,
+    ROUTES.ORDER_DELIVERY,
+    ROUTES.ORDER_SERVICE,
     ROUTES.ORDER_COMPLETE
   ],
   status: '',
-};  
+};
 
 class DisplayOrderTimelineBase extends Component {
   constructor(props) {
@@ -90,7 +90,7 @@ class DisplayOrderTimelineBase extends Component {
         <div className="timeline-item-content">
           <span className="tag"></span>
           <h5>{itemIndex}</h5>
-          {isPrep ? <Link 
+          {isPrep ? <Link
             to={{
               pathname: ROUTES.ORDER_PREPARATION_EDIT,
               search: '?id=' + this.state.orderID,
@@ -100,8 +100,18 @@ class DisplayOrderTimelineBase extends Component {
             }}>
               Edit
             </Link>: null}
+          {isPrep ? <Link
+            to={{
+              pathname: ROUTES.ORDER_PREPARATION_SOP,
+              search: '?id=' + this.state.orderID,
+              state: {
+                docID: this.state.docID
+              }
+            }}>
+              SOP
+            </Link>: null}
           {isService ? <Link>Collected</Link>: null}
-          {isDone ? <Link 
+          {isDone ? <Link
             to={{
               pathname: routepath,
               search: '?id=' + this.state.orderID
