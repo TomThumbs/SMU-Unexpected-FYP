@@ -11,6 +11,7 @@ import Button from "@material-ui/core/Button";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 
 import * as ROUTES from "../../constants/routes";
+import { compose } from "recompose";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -56,18 +57,22 @@ class OrderServiceBase extends Component {
     this.classes = { useStyles };
   }
 
-  componentDidMount(){
+  componentDidMount() {}
 
-  }
-
-  render(){
-    return(
-      <Container component='main' maxWidth='xs'>
+  render() {
+    return (
+      <Container component="main" maxWidth="xs">
         <Grid container spaciing={3}>
-          <Grid item xs={3}></Grid>
+          <Grid item xs={4}>Heater</Grid>
+          <Grid item xs={4}>Heater</Grid>
+          <Grid item xs={4}>Heater</Grid>
+
+          <Grid item xs={4}>Heater</Grid>
+          <Grid item xs={4}>Heater</Grid>
+          <Grid item xs={4}>Heater</Grid>
         </Grid>
       </Container>
-    )
+    );
   }
 }
 

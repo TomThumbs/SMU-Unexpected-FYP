@@ -134,7 +134,10 @@ class DisplayOrderTimelineBase extends Component {
             <Link
               to={{
                 pathname: routepath,
-                search: "?id=" + this.state.orderID
+                search: "?id=" + this.state.orderID,
+                state: {
+                  docID: this.state.docID
+                }
               }}
             >
               Read
