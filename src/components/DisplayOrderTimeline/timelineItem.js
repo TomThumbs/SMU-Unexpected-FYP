@@ -1,9 +1,13 @@
-import React, { Component } from 'react';
-import { render } from '@testing-library/react';
+import React, { Component } from "react";
+import { render } from "@testing-library/react";
 
-const statusList = ['Order Received', 'Preparation', 'Delivery', 'Service', 'Order Complete'];
-
-
+const statusList = [
+  "Order Received",
+  "Preparation",
+  "Delivery",
+  "Service",
+  "Order Complete"
+];
 
 // const TimelineItem = ({ itemIndex, status }) => (
 //   <div className="timeline-item">
@@ -18,9 +22,9 @@ const statusList = ['Order Received', 'Preparation', 'Delivery', 'Service', 'Ord
 //   </div>
 // );
 
-class TimelineItemBase extends Component{
-  render(){
-    return(
+class TimelineItemBase extends Component {
+  render() {
+    return (
       <div className="timeline-item">
         <div className="timeline-item-content">
           <span className="tag"></span>

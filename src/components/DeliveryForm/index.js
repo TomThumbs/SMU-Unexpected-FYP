@@ -120,12 +120,12 @@ class DeliveryFormBase extends Component {
     this.props.firebase.fs
       .collection("Catering_orders")
       .doc(this.state.docID)
-      .update({ DeliveryCheck: true }); //UPDATE FIRESTORE
+      .update({
+        DeliveryCheck: true,
+        TruckImgURL: this.state.imageURL,
+        Status: "Delivery"
+      }); //UPDATE FIRESTORE
     // this.props.firebase.fs.collection('Catering_orders').doc(this.state.catering_event_doc).update({ TruckImgURL: this.state.imageURL });
-    this.props.firebase.fs
-      .collection("Catering_orders")
-      .doc(this.state.docID)
-      .update({ TruckImgURL: this.state.imageURL });
 
     this.setState({ imageURL: "" });
 
