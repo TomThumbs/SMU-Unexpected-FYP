@@ -19,94 +19,94 @@ import { withAuthorization } from '../Session'
 import * as ROUTES from "../../constants/routes";
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1
-  },
-  paper: {
-    marginTop: theme.spacing(8),
-    display: "flex",
-    flexDirection: "column",
-    maxWidth: 400,
-    textAlign: "center"
-    // margin: `${theme.spacing(1)}px auto`,
-    // padding: theme.spacing(2),
-  },
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1)
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2)
-  },
-  text: {
-    textAlign: "center"
-  }
+	root: {
+		flexGrow: 1
+	},
+	paper: {
+		marginTop: theme.spacing(8),
+		display: "flex",
+		flexDirection: "column",
+		maxWidth: 400,
+		textAlign: "center"
+		// margin: `${theme.spacing(1)}px auto`,
+		// padding: theme.spacing(2),
+	},
+	form: {
+		width: "100%", // Fix IE 11 issue.
+		marginTop: theme.spacing(1)
+	},
+	submit: {
+		margin: theme.spacing(3, 0, 2)
+	},
+	text: {
+		textAlign: "center"
+	}
 }));
 
 const INITIAL_STATE = {
-  docID: "",
-  orderID: ""
+	docID: "",
+	orderID: ""
 };
 
 class OrderPreparationSopBase extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { ...INITIAL_STATE, docID: props.location.state.docID };
-    this.classes = { useStyles };
-  }
+	constructor(props) {
+		super(props);
+		this.state = { ...INITIAL_STATE, docID: props.location.state.docID };
+		this.classes = { useStyles };
+	}
 
-  componentDidMount() {
-    this.props.firebase.fs
-      .collection("Catering_orders")
-      .doc(this.state.docID)
-      .onSnapshot(doc => {
-        let data = doc.data();
-        this.setState({
-          orderID: data.orderID,
-          headchef: data.headchef,
-          assistantA: data.assistantA,
-          assistantB: data.assistantB
-        });
-      });
-  }
+	componentDidMount() {
+		this.props.firebase.fs
+			.collection("Catering_orders")
+			.doc(this.state.docID)
+			.onSnapshot(doc => {
+				let data = doc.data();
+				this.setState({
+					orderID: data.orderID,
+					headchef: data.headchef,
+					assistantA: data.assistantA,
+					assistantB: data.assistantB
+				});
+			});
+	}
 
-  renderBackButton() {
-    return (
-      <Link
-        to={{
-          pathname: ROUTES.ORDER_TIMELINE,
-          search: "?id=" + this.state.orderID
-        }}
-      >
-        <Button>Back</Button>
-      </Link>
-    );
-  }
+	renderBackButton() {
+		return (
+			<Link
+				to={{
+					pathname: ROUTES.ORDER_TIMELINE,
+					search: "?id=" + this.state.orderID
+				}}
+			>
+				<Button>Back</Button>
+			</Link>
+		);
+	}
 
-  onSubmit = event => {
-    this.props.firebase.fs
-      .collection("Catering_orders")
-      .doc(this.state.docID)
-      .update({
-        headchef: this.state.headchef,
-        assistantA: this.state.assistantA,
-        assistantB: this.state.assistantB
-      })
-      .then(function() {
-        console.log("Document successfully written!");
-      })
-      .catch(function(error) {
-        console.error("Error writing document: ", error);
-      });
-    this.props.history.push({
-      pathname: ROUTES.ORDER_TIMELINE,
-      search: "?id=" + this.state.searchId
-    });
-  };
+	onSubmit = event => {
+		this.props.firebase.fs
+			.collection("Catering_orders")
+			.doc(this.state.docID)
+			.update({
+				headchef: this.state.headchef,
+				assistantA: this.state.assistantA,
+				assistantB: this.state.assistantB
+			})
+			.then(function() {
+				console.log("Document successfully written!");
+			})
+			.catch(function(error) {
+				console.error("Error writing document: ", error);
+			});
+		this.props.history.push({
+			pathname: ROUTES.ORDER_TIMELINE,
+			search: "?id=" + this.state.searchId
+		});
+	};
 
-  onChange = event => {
-    this.setState({ [event.target.name]: event.target.value });
-  };
+	onChange = event => {
+		this.setState({ [event.target.name]: event.target.value });
+	};
 
   render() {
     return (

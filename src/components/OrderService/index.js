@@ -16,50 +16,50 @@ import Container from "@material-ui/core/Container";
 import { compose } from "recompose";
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1
-  },
-  paper: {
-    marginTop: theme.spacing(8),
-    display: "flex",
-    flexDirection: "column",
-    maxWidth: 400,
-    textAlign: "center"
-    // margin: `${theme.spacing(1)}px auto`,
-    // padding: theme.spacing(2),
-  },
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1)
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2)
-  },
-  text: {
-    textAlign: "center"
-  }
+	root: {
+		flexGrow: 1
+	},
+	paper: {
+		marginTop: theme.spacing(8),
+		display: "flex",
+		flexDirection: "column",
+		maxWidth: 400,
+		textAlign: "center"
+		// margin: `${theme.spacing(1)}px auto`,
+		// padding: theme.spacing(2),
+	},
+	form: {
+		width: "100%", // Fix IE 11 issue.
+		marginTop: theme.spacing(1)
+	},
+	submit: {
+		margin: theme.spacing(3, 0, 2)
+	},
+	text: {
+		textAlign: "center"
+	}
 }));
 
 const INITIAL_STATE = {
-  docID: "",
-  orderID: "",
-  // statusList: ['Order Received', 'Preparation', 'Delivery', 'Service', 'Order Complete'],
-  dateOnly: "",
-  time: "",
-  venue: "",
-  pax: "",
-  status: "",
-  menu: []
+	docID: "",
+	orderID: "",
+	// statusList: ['Order Received', 'Preparation', 'Delivery', 'Service', 'Order Complete'],
+	dateOnly: "",
+	time: "",
+	venue: "",
+	pax: "",
+	status: "",
+	menu: []
 };
 
 class OrderServiceBase extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { ...INITIAL_STATE, docID: props.location.state.docID };
-    this.classes = { useStyles };
-  }
+	constructor(props) {
+		super(props);
+		this.state = { ...INITIAL_STATE, docID: props.location.state.docID };
+		this.classes = { useStyles };
+	}
 
-  componentDidMount() {}
+	componentDidMount() {}
 
   render() {
     return (
