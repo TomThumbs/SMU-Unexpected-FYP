@@ -175,7 +175,7 @@ class OrderPreparationEditBase extends Component {
 				});
 		}
 
-		console.log(this.state.docID);
+		// console.log(this.state.docID);
 		this.props.firebase.fs
 			.collection("Catering_orders")
 			.doc(this.state.docID)
@@ -212,7 +212,7 @@ class OrderPreparationEditBase extends Component {
 
 	onItemTextChange = dish => event => {
 		this.setState({
-			[dish + " " + 'barcodes']: event.target.value
+			[dish + " " + "barcodes"]: event.target.value
 		});
 		let barcodes = event.target.value.split(",");
 		barcodes.forEach(barcode => {
@@ -220,10 +220,19 @@ class OrderPreparationEditBase extends Component {
 				this.setState({
 					[dish + " " + this.state[barcode]]: true
 				});
+			} else {
+				this.setState({
+					[dish + " " + this.state[barcode]]: false
+				});
 			}
 		});
 		console.log(barcodes);
 	};
+
+	validator(name) {
+		console.log(name);
+		return this.state[name] === true;
+	}
 
 	renderMenuItem(item) {
 		const ingredients = this.state[item];
@@ -232,6 +241,7 @@ class OrderPreparationEditBase extends Component {
 		let menu = [];
 		if (ingredients !== undefined) {
 			ingredients.forEach((ingt, id) => {
+				let temp = item + " " + ingt;
 				menu.push(
 					<div key={id}>
 						{/* <Typography key={id}>{ingt}</Typography> */}
@@ -239,7 +249,7 @@ class OrderPreparationEditBase extends Component {
 							control={
 								<Checkbox
 									disabled
-									checked={this.state[item + " " + ingt]}
+									checked={this.validator(temp)}
 									// value={this.state[item + " " + ingt]}
 									// onChange={this.onMenuItemChange(item, ingt)}
 									name={ingt}
@@ -294,11 +304,7 @@ class OrderPreparationEditBase extends Component {
 	render() {
 		// console.log(this.state)
 		return (
-			<Container
-				component="main"
-				maxWidth="xs"
-				className={this.classes.root}
-			>
+			<Container component="main" maxWidth="xs" className={this.classes.root}>
 				{this.renderBackButton()}
 				<Paper className={this.classes.paper}>
 					<Typography>Order Preparation Edit</Typography>

@@ -19,316 +19,316 @@ import Divider from "@material-ui/core/Divider";
 import { withAuthorization } from "../Session";
 
 const useStyles = makeStyles(theme => ({
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2)
-  },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: "center",
-    color: theme.palette.text.secondary
-  }
+	formControl: {
+		margin: theme.spacing(1),
+		minWidth: 120
+	},
+	submit: {
+		margin: theme.spacing(3, 0, 2)
+	},
+	paper: {
+		padding: theme.spacing(2),
+		textAlign: "center",
+		color: theme.palette.text.secondary
+	}
 }));
 
 const INITIAL_STATE = {
-  image: "",
-  imageURL: "",
-  progress: 0,
-  catering_event_doc: "",
-  cleanReady: "",
-  allItems: "",
-  foodWrap: "",
-  date: "",
-  starttime: "",
-  venue: "",
-  pax: 0,
-  name: "",
-  contact: "",
-  email: "",
-  strDate: "",
-  menu: ""
+	image: "",
+	imageURL: "",
+	progress: 0,
+	catering_event_doc: "",
+	cleanReady: "",
+	allItems: "",
+	foodWrap: "",
+	date: "",
+	starttime: "",
+	venue: "",
+	pax: 0,
+	name: "",
+	contact: "",
+	email: "",
+	strDate: "",
+	menu: ""
 };
 
 class DeliveryFormBase extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { ...INITIAL_STATE, docID: props.location.state.docID };
-    this.classes = { useStyles };
-  }
-  componentDidMount() {
-    // ---------- GET ORDER ID FROM URL ----------
-    let queryString = window.location.search;
-    let urlParams = new URLSearchParams(queryString);
-    let urlId = Number(urlParams.get("id"));
-    console.log(urlId);
-    this.setState({
-      orderID: urlId
-    });
+	constructor(props) {
+		super(props);
+		this.state = { ...INITIAL_STATE, docID: props.location.state.docID };
+		this.classes = { useStyles };
+	}
+	componentDidMount() {
+		// ---------- GET ORDER ID FROM URL ----------
+		let queryString = window.location.search;
+		let urlParams = new URLSearchParams(queryString);
+		let urlId = Number(urlParams.get("id"));
+		console.log(urlId);
+		this.setState({
+			orderID: urlId
+		});
 
-    // ---------- GET ORDER DETAILS ----------
-    // this.props.firebase.fs.collection('Catering_orders').doc("ATQjjgqvKU8n49QdSuR7").get().then(doc=> {
-    this.props.firebase.fs
-      .collection("Catering_orders")
-      .doc(this.state.docID)
-      .get()
-      .then(doc => {
-        // console.log(doc.data())
-        this.setState({
-          // catering_event_doc: doc.id,
-          date: String(doc.data().Date.toDate()).split("GMT")[0],
-          menu: doc.data().Menu,
-          venue: doc.data().venue,
-          pax: doc.data().Pax
-        });
-      });
+		// ---------- GET ORDER DETAILS ----------
+		// this.props.firebase.fs.collection('Catering_orders').doc("ATQjjgqvKU8n49QdSuR7").get().then(doc=> {
+		this.props.firebase.fs
+			.collection("Catering_orders")
+			.doc(this.state.docID)
+			.get()
+			.then(doc => {
+				// console.log(doc.data())
+				this.setState({
+					// catering_event_doc: doc.id,
+					date: String(doc.data().Date.toDate()).split("GMT")[0],
+					menu: doc.data().Menu,
+					venue: doc.data().venue,
+					pax: doc.data().Pax
+				});
+			});
 
-    let temp_date = String(this.state.date);
-    console.log(this.state.date);
-    this.setState({
-      strDate: temp_date.split("GMT")[0]
-    });
+		let temp_date = String(this.state.date);
+		console.log(this.state.date);
+		this.setState({
+			strDate: temp_date.split("GMT")[0]
+		});
 
-    // this.props.firebase.fs.collection('Catering_orders').doc("ATQjjgqvKU8n49QdSuR7").get().then(doc=> {
-    this.props.firebase.fs
-      .collection("Catering_orders")
-      .doc("ATQjjgqvKU8n49QdSuR7")
-      .get()
-      .then(doc => {
-        this.setState({
-          name: doc.data().Customer.id
-        });
-        this.props.firebase.fs
-          .collection("Customers")
-          .doc(this.state.name)
-          .get()
-          .then(docu => {
-            this.setState({
-              contact: docu.data().HP,
-              name: docu.data().Name
-            });
-          });
-      });
-  }
+		// this.props.firebase.fs.collection('Catering_orders').doc("ATQjjgqvKU8n49QdSuR7").get().then(doc=> {
+		this.props.firebase.fs
+			.collection("Catering_orders")
+			.doc("ATQjjgqvKU8n49QdSuR7")
+			.get()
+			.then(doc => {
+				this.setState({
+					name: doc.data().Customer.id
+				});
+				this.props.firebase.fs
+					.collection("Customers")
+					.doc(this.state.name)
+					.get()
+					.then(docu => {
+						this.setState({
+							contact: docu.data().HP,
+							name: docu.data().Name
+						});
+					});
+			});
+	}
 
-  onSubmit = event => {
-    event.preventDefault();
+	onSubmit = event => {
+		event.preventDefault();
 
-    // this.props.firebase.fs.collection('Catering_orders').doc(this.state.catering_event_doc).update({ DeliveryCheck: true }); //UPDATE FIRESTORE
-    this.props.firebase.fs
-      .collection("Catering_orders")
-      .doc(this.state.docID)
-      .update({
-        DeliveryCheck: true,
-        TruckImgURL: this.state.imageURL,
-        Status: "Delivery"
-      }); //UPDATE FIRESTORE
-    // this.props.firebase.fs.collection('Catering_orders').doc(this.state.catering_event_doc).update({ TruckImgURL: this.state.imageURL });
+		// this.props.firebase.fs.collection('Catering_orders').doc(this.state.catering_event_doc).update({ DeliveryCheck: true }); //UPDATE FIRESTORE
+		this.props.firebase.fs
+			.collection("Catering_orders")
+			.doc(this.state.docID)
+			.update({
+				DeliveryCheck: true,
+				TruckImgURL: this.state.imageURL,
+				Status: "Delivery"
+			}); //UPDATE FIRESTORE
+		// this.props.firebase.fs.collection('Catering_orders').doc(this.state.catering_event_doc).update({ TruckImgURL: this.state.imageURL });
 
-    this.setState({ imageURL: "" });
+		this.setState({ imageURL: "" });
 
-    this.props.history.push("./post-delivery-form");
-  };
+		this.props.history.push("./post-delivery-form");
+	};
 
-  handleUploadStart = () => {
-    this.setState({
-      progress: 0
-    });
-  };
+	handleUploadStart = () => {
+		this.setState({
+			progress: 0
+		});
+	};
 
-  handleUploadSuccess = filename => {
-    this.setState({
-      image: filename,
-      progress: 100
-    });
+	handleUploadSuccess = filename => {
+		this.setState({
+			image: filename,
+			progress: 100
+		});
 
-    this.props.firebase.stg
-      .ref("truckHistory")
-      .child(filename)
-      .getDownloadURL()
-      .then(url =>
-        this.setState({
-          imageURL: url
-        })
-      );
-  };
+		this.props.firebase.stg
+			.ref("truckHistory")
+			.child(filename)
+			.getDownloadURL()
+			.then(url =>
+				this.setState({
+					imageURL: url
+				})
+			);
+	};
 
-  handleProgress = progress => {
-    this.setState({
-      progress: progress,
-      imageURL: ""
-    });
-  };
+	handleProgress = progress => {
+		this.setState({
+			progress: progress,
+			imageURL: ""
+		});
+	};
 
-  handleChange = name => event => {
-    this.setState({ ...this.props, [name]: event.target.checked });
-    console.log(this.state.cleanReady)
-    console.log(this.state.allItems)
-    console.log(this.state.foodWrap)
-  };
+	handleChange = name => event => {
+		this.setState({ ...this.props, [name]: event.target.checked });
+		console.log(this.state.cleanReady);
+		console.log(this.state.allItems);
+		console.log(this.state.foodWrap);
+	};
 
-  renderSubmit() {
-    if (
-      this.state.cleanReady === true &&
-      this.state.allItems === true &&
-      this.state.foodWrap === true &&
-      this.state.imageURL.length !== 0
-    ) {
-      return (
-        <form onSubmit={this.onSubmit}>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={this.classes.submit}
-          >
-            Submit
-          </Button>
-        </form>
-      );
-    } else {
-      return (
-        <h4>
-          <font color="#e91e63">
-            Please check all 3 checkboxes and upload a picture of the truck.
-          </font>
-        </h4>
-      );
-    }
-  }
+	renderSubmit() {
+		if (
+			this.state.cleanReady === true &&
+			this.state.allItems === true &&
+			this.state.foodWrap === true &&
+			this.state.imageURL.length !== 0
+		) {
+			return (
+				<form onSubmit={this.onSubmit}>
+					<Button
+						type="submit"
+						fullWidth
+						variant="contained"
+						color="primary"
+						className={this.classes.submit}
+					>
+						Submit
+					</Button>
+				</form>
+			);
+		} else {
+			return (
+				<h4>
+					<font color="#e91e63">
+						Please check all 3 checkboxes and upload a picture of the truck.
+					</font>
+				</h4>
+			);
+		}
+	}
 
-  render() {
-    // console.log(typeof this.state.menu)
-    return (
-      <Container component="main" maxWidth="sm">
-        <div>
-          <h1>{this.state.docID}</h1>
-          <React.Fragment>
-            <Typography variant="h5" gutterBottom>
-              Event Details
-            </Typography>
+	render() {
+		// console.log(typeof this.state.menu)
+		return (
+			<Container component="main" maxWidth="sm">
+				<div>
+					<h1>{this.state.docID}</h1>
+					<React.Fragment>
+						<Typography variant="h5" gutterBottom>
+							Event Details
+						</Typography>
 
-            <Grid container alignItems="center">
-              <Grid item xs>
-                Date & Time:
-              </Grid>
-              <Grid item>
-                <b>{this.state.date}</b>
-              </Grid>
-            </Grid>
+						<Grid container alignItems="center">
+							<Grid item xs>
+								Date & Time:
+							</Grid>
+							<Grid item>
+								<b>{this.state.date}</b>
+							</Grid>
+						</Grid>
 
-            <Grid container alignItems="center">
-              <Grid item xs>
-                Venue:
-              </Grid>
-              <Grid item>
-                <b>{this.state.venue}</b>
-              </Grid>
-            </Grid>
+						<Grid container alignItems="center">
+							<Grid item xs>
+								Venue:
+							</Grid>
+							<Grid item>
+								<b>{this.state.venue}</b>
+							</Grid>
+						</Grid>
 
-            <Grid container alignItems="center">
-              <Grid item xs>
-                Pax:
-              </Grid>
-              <Grid item>
-                <b>{this.state.pax}</b>
-              </Grid>
-            </Grid>
+						<Grid container alignItems="center">
+							<Grid item xs>
+								Pax:
+							</Grid>
+							<Grid item>
+								<b>{this.state.pax}</b>
+							</Grid>
+						</Grid>
 
-            <Grid container alignItems="center">
-              <Grid item xs>
-                Customer Name:
-              </Grid>
-              <Grid item>
-                <b>{this.state.name}</b>
-              </Grid>
-            </Grid>
+						<Grid container alignItems="center">
+							<Grid item xs>
+								Customer Name:
+							</Grid>
+							<Grid item>
+								<b>{this.state.name}</b>
+							</Grid>
+						</Grid>
 
-            <Grid container alignItems="center">
-              <Grid item xs>
-                Customer HP:
-              </Grid>
-              <Grid item>
-                <b>{this.state.contact}</b>{" "}
-              </Grid>
-            </Grid>
+						<Grid container alignItems="center">
+							<Grid item xs>
+								Customer HP:
+							</Grid>
+							<Grid item>
+								<b>{this.state.contact}</b>{" "}
+							</Grid>
+						</Grid>
 
-            <br />
-            <Divider variant="li" />
-            <br />
+						<br />
+						<Divider variant="li" />
+						<br />
 
-            <Typography variant="h6" gutterBottom>
-              Checklist
-            </Typography>
+						<Typography variant="h6" gutterBottom>
+							Checklist
+						</Typography>
 
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={this.state.cleanReady}
-                  onChange={this.handleChange("cleanReady")}
-                  color="secondary"
-                  name="cleanReady"
-                  value="cleanReady"
-                />
-              }
-              // <Checkbox checked={state.checkedA} onChange={handleChange('checkedA')} value="checkedA" />
-              label="Is the vehicle cleaned and ready for transportation?"
-            />
+						<FormControlLabel
+							control={
+								<Checkbox
+									checked={this.state.cleanReady}
+									onChange={this.handleChange("cleanReady")}
+									color="secondary"
+									name="cleanReady"
+									value="cleanReady"
+								/>
+							}
+							// <Checkbox checked={state.checkedA} onChange={handleChange('checkedA')} value="checkedA" />
+							label="Is the vehicle cleaned and ready for transportation?"
+						/>
 
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={this.state.allItems}
-                  onChange={this.handleChange("allItems")}
-                  color="secondary"
-                  name="allItems"
-                  value="allItems"
-                />
-              }
-              label="Are all the items required for the event on the vehicle?"
-            />
+						<FormControlLabel
+							control={
+								<Checkbox
+									checked={this.state.allItems}
+									onChange={this.handleChange("allItems")}
+									color="secondary"
+									name="allItems"
+									value="allItems"
+								/>
+							}
+							label="Are all the items required for the event on the vehicle?"
+						/>
 
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={this.state.foodWrap}
-                  onChange={this.handleChange("foodWrap")}
-                  color="secondary"
-                  name="foodWrap"
-                  value="foodWrap"
-                />
-              }
-              label="Are all the food wrapped properly?"
-            />
-            <br />
-            <br />
-            <Divider variant="li" />
+						<FormControlLabel
+							control={
+								<Checkbox
+									checked={this.state.foodWrap}
+									onChange={this.handleChange("foodWrap")}
+									color="secondary"
+									name="foodWrap"
+									value="foodWrap"
+								/>
+							}
+							label="Are all the food wrapped properly?"
+						/>
+						<br />
+						<br />
+						<Divider variant="li" />
 
-            <h4>
-              Take a photograph of the state of the vehicle and food before
-              delivery commences
-            </h4>
-          </React.Fragment>
+						<h4>
+							Take a photograph of the state of the vehicle and food before
+							delivery commences
+						</h4>
+					</React.Fragment>
 
-          <label> Progress: {this.props.imageURL}</label>
-          <p>{this.state.progress}</p>
+					<label> Progress: {this.props.imageURL}</label>
+					<p>{this.state.progress}</p>
 
-          <FileUploader
-            accept="image/*"
-            name="image"
-            storageRef={this.props.firebase.stg.ref("truckHistory")}
-            onUploadStart={this.handleUploadStart}
-            onUploadSuccess={this.handleUploadSuccess}
-            onProgress={this.handleProgress}
-          />
-          <div>{this.renderSubmit()}</div>
-        </div>
-      </Container>
-    );
-  }
+					<FileUploader
+						accept="image/*"
+						name="image"
+						storageRef={this.props.firebase.stg.ref("truckHistory")}
+						onUploadStart={this.handleUploadStart}
+						onUploadSuccess={this.handleUploadSuccess}
+						onProgress={this.handleProgress}
+					/>
+					<div>{this.renderSubmit()}</div>
+				</div>
+			</Container>
+		);
+	}
 }
 
 const DeliveryForm = withRouter(withFirebase(DeliveryFormBase));
