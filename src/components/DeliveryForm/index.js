@@ -164,9 +164,9 @@ class DeliveryFormBase extends Component {
 
   handleChange = name => event => {
     this.setState({ ...this.props, [name]: event.target.checked });
-    // console.log(this.state.cleanReady)
-    // console.log(this.state.allItems)
-    // console.log(this.state.foodWrap)
+    console.log(this.state.cleanReady)
+    console.log(this.state.allItems)
+    console.log(this.state.foodWrap)
   };
 
   renderSubmit() {
