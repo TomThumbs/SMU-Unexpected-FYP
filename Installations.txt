@@ -1,0 +1,13 @@
+List to install: 
+
+npm i firebase
+npm i react-firebase-file-uploader
+
+npm i date-fns
+npm i @date-io/date-fns@1.x date-fns
+
+npm install @material-ui/core
+npm i @material-ui/pickers
+
+npm install canvasjs
+

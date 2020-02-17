@@ -31,3 +31,7 @@ Icon*
 
 **/*.log
 **/*.tlog
+*.cache
+**/*.cache
+
+.firebase/
