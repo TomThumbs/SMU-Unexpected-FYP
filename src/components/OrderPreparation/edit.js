@@ -110,17 +110,34 @@ class OrderPreparationEditBase extends Component {
   onSubmit = event => {
     event.preventDefault();
 
-    console.log(this.state.docID);
-    this.props.firebase.fs
-      .collection("Catering_orders")
-      .doc(this.state.docID)
-      .update({
-        Status: "Preparation"
+    // ingredientTagsUsed is the equivalent of the TextareaAutosize. For whatever text in there, it splits by comma
+   // gets the RFID details and appends it to a new variable called ingredientsUsed
+  // then it writes to the db, under the name of Ingredients_Used.
+    let ingredientsTempList = this.state.ingredientTagsUsed.split(",")
+    let ingredientsTempListLength = ingredientsTempList.length  
+    for (var i = 0; i < ingredientsTempListLength; i++) {
+      //Get
+      this.props.firebase.fs.collection('Ingredient_RFID').doc(ingredientsTempList[i]).get().then(doc=>{
+        this.setState((prevstate) => ({
+          ingredientsUsed: [...prevstate.ingredientsUsed, doc.data().Name + ": " + doc.data().Date_of_expiry + ", " + ingredientsTempList[i]]
+        }));
+        //Write
+       // Why this writing code is being initiated many times in this for loop is because ingredientsUsed becomes blank
+      // after this for loop is done. its weird. if this code is outside the for loop, itll write blank to the db.
+        this.props.firebase.fs.collection('Catering_orders').doc(this.props.location.docID).update({
+          Ingredients_Used: this.state.ingredientsUsed
+        })
       })
-      .then(function() {
-        console.log("Document successfully written!");
-      })
-      .catch(function(error) {
+    }
+
+
+    console.log(this.state.docID)
+    this.props.firebase.fs.collection('Catering_orders').doc(this.state.docID).update({
+      Status: 'Preparation'
+    }).then(function() {
+      console.log("Document successfully written!");
+    })
+    .catch(function(error) {
         console.error("Error writing document: ", error);
       });
   };
