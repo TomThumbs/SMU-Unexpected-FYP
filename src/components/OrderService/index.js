@@ -6,13 +6,13 @@ import { withAuthorization } from '../Session'
 
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
+// import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
-import Paper from "@material-ui/core/Paper";
-import Button from "@material-ui/core/Button";
-import TextareaAutosize from "@material-ui/core/TextareaAutosize";
+// import Paper from "@material-ui/core/Paper";
+// import Button from "@material-ui/core/Button";
+// import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 
-import * as ROUTES from "../../constants/routes";
+// import * as ROUTES from "../../constants/routes";
 import { compose } from "recompose";
 
 const useStyles = makeStyles(theme => ({

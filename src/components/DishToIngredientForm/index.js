@@ -192,7 +192,7 @@ class DishToIngredientFormBase extends Component {
       options={this.state.availableIngredients}
       getOptionLabel={option => option.ingredient}
       style={{ width: 300 }}
-      id={id}  
+      // id={id}  
       onChange={this.handleChange({id})}  
       renderInput={params => (
         <TextField {...params} 
