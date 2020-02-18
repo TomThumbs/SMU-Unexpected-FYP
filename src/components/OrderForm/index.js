@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -26,6 +27,8 @@ import {
   KeyboardTimePicker,
   KeyboardDatePicker,
 } from '@material-ui/pickers'; 
+
+
 const INITIAL_STATE = {
   orderid: 0,
   orderiddoc: '',
@@ -88,7 +91,6 @@ class OrderFormBase extends Component {
       this.setState({
         custID: Number(docu.data().ID)+1
       })   
-      
   });    
 
     // Get list of menu items
@@ -155,8 +157,6 @@ class OrderFormBase extends Component {
                   this.props.firebase.fs.doc('Catering_orders/'+change.doc.id).update({ Customer: dbcustref })
                   // console.log('linked catering order to customer')
                   notCreated = false
-                    
-                  
               }) 
             })           
           } 
@@ -289,7 +289,7 @@ class OrderFormBase extends Component {
         <div className={this.classes.root}>
           <br></br>
           <Typography variant="h4" align="center" gutterBottom>
-          Order Creation
+          Order Form
           </Typography>
           
           <form onSubmit={this.onSubmit}>
@@ -307,6 +307,7 @@ class OrderFormBase extends Component {
               }}
             />
             <div><br></br></div>
+            <Grid container align-items="left">
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
               Date: 
               <KeyboardDatePicker
@@ -320,6 +321,7 @@ class OrderFormBase extends Component {
                   'aria-label': 'change date',
                 }}
               />
+              
               Time: 
               <KeyboardTimePicker
                 margin="none"
@@ -331,6 +333,7 @@ class OrderFormBase extends Component {
                 }}
               />
             </MuiPickersUtilsProvider>
+            </Grid>
 
             <TextField
               margin="normal"

@@ -13,7 +13,6 @@ import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
 
 import { withAuthorization } from '../Session'
 
@@ -111,7 +110,6 @@ class DeliverySelectionBase extends Component {
         
       return(
         <Container component="main" maxWidth="xs">
-        <CssBaseline />
         
       <div>
       <FormControl component="fieldset" id="cafe-list" className={this.classes.formControl}>

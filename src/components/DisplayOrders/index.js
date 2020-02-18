@@ -7,7 +7,6 @@ import Grid from '@material-ui/core/Grid';
 // import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 // import Paper from '@material-ui/core/Paper';
-import { CssBaseline } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -65,7 +64,6 @@ class DisplayOrdersBase extends Component{
   render(){
     return(
       <Container component="main" maxWidth="xs">
-        <CssBaseline/>
         <Grid container justify="center" spacing={3} alignItems="center">
 
         </Grid>

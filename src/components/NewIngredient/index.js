@@ -11,7 +11,6 @@ import {
 } from '@material-ui/pickers';
 import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
-import { CssBaseline } from '@material-ui/core';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -131,7 +130,6 @@ class NewIngredientForm extends Component {
     return(
       
       <Container component="main" maxWidth="xs">
-        <CssBaseline/>
         <div className={this.classes.paper}>
         <form onSubmit={this.onSubmit}>
   

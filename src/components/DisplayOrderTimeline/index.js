@@ -7,7 +7,6 @@ import { makeStyles } from "@material-ui/core/styles";
 // import Typography from '@material-ui/core/Typography';
 import Container from "@material-ui/core/Container";
 // import Paper from '@material-ui/core/Paper';
-// import { CssBaseline } from '@material-ui/core';
 // import TimelineItem from './timelineItem'
 
 import * as ROUTES from "../../constants/routes";

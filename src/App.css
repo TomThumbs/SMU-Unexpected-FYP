@@ -38,30 +38,48 @@
 } */
 
 #nav{
-  display: flex;
+  /* display: flex;
   justify-content: space-around;
   align-items: center;
   min-height: 10vh;
   background: rgb(73, 79, 82
   );
-  color: white;
+  color: white; */
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+  min-height: 5vh;
+  width: 100%;
+  align-items: center;
 }
 
 .nav-links{
-  width: 40%;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  list-style: none;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+  min-height: 5vh;
+  width: 100%
+
 }
 
 .nav-link{
-  margin-left: 20px;
-  margin-right: 20px;
+  float: left;
 }
 
 .navigation-link{
+  display: block;
   color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover {
+  background-color: #111;
 }
 
 
