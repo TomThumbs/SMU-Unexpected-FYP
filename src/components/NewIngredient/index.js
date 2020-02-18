@@ -74,7 +74,8 @@ class NewIngredientForm extends Component {
 
   onSubmit = event => {
     event.preventDefault();
-    this.props.firebase.fs.collection('Ingredient_RFID').doc(this.state.foodId).set({ 
+    this.props.firebase.fs.collection('Ingredients').doc(this.state.foodId).set({ 
+      ingredientId: this.state.foodId,
       Date_of_expiry: this.state.expiryDate, 
       Name: this.state.foodName,
       Date_of_Storage:this.state.storageDate,
