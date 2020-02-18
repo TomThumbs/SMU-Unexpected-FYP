@@ -107,6 +107,12 @@ class OrderPreparationEditBase extends Component {
       });
   }
 
+  onChange = event => {
+    this.setState({ 
+      [event.target.name]: event.target.value 
+    });
+  }
+
   onSubmit = event => {
     event.preventDefault();
 
@@ -119,7 +125,7 @@ class OrderPreparationEditBase extends Component {
       //Get
       this.props.firebase.fs.collection('Ingredient_RFID').doc(ingredientsTempList[i]).get().then(doc=>{
         this.setState((prevstate) => ({
-          ingredientsUsed: [...prevstate.ingredientsUsed, doc.data().Name + ": " + doc.data().Date_of_expiry + ", " + ingredientsTempList[i]]
+          ingredientsUsed: [...prevstate.ingredientsUsed, doc.data().Name + ": " + doc.data().Date_of_expiry + "," + ingredientsTempList[i]]
         }));
         //Write
        // Why this writing code is being initiated many times in this for loop is because ingredientsUsed becomes blank

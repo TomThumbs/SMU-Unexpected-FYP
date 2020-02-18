@@ -132,55 +132,13 @@ class OrderPreparationEditBase extends Component {
         list.push(
           <div key={id}>
             <Paper className={this.classes.paper}>
-              <Typography variant="h5">
-                <Link name={item} onClick={this.onChange}>
-                {item}
-                </Link>
-              </Typography>
-            </Paper>
-          </div>
-        );
-      } else {
-        list.push(
-          <div key={id}>
-            <Paper className={this.classes.paper}>
-              <Typography variant="h6" underline="none"> {/*Problem: I cant remove the underline. Think ans is here: https://material-ui.com/api/link/    */}              
-                <Link name={item} onClick={this.onChange}>
-                {item}
-                </Link>
-              </Typography>
-            </Paper>
-          </div>
-        );
-      }
-    })
-
-    if (this.state.menu.length !== 0) {
-      console.log("chosen menu is " , this.state.chosenMenu)
-      this.state.menu.forEach((item, id) => {
-        if (item === this.state.chosenMenu) {
-          list.push(
-            <table>
-              <tr>
-                <th>
-                  Item
-                </th>
-                <th>
-                  Item ID
-                </th>
-              </tr>
-              {this.renderMenuItem(item)}
-            </table>
-          );
-        } 
-      })
-    } else {
-      console.log("chosen menu is empty.")
-      list.push(
-        <div>
-          <Paper className={this.classes.paper}>
-            <table>
-              <tr>
+              <Typography variant="h6" name={item} >
+              <Link name={item} onClick={this.onChange}>
+              {item}
+              </Link>
+                </Typography>
+              <table>
+                <tr>
                   <th>
                     Item
                   </th>
@@ -188,11 +146,25 @@ class OrderPreparationEditBase extends Component {
                     Item ID
                   </th>
                 </tr>
-            </table>
+              {this.renderMenuItem(item)}
+              </table>
+            </Paper>
+          </div>
+        );
+    } else {
+      list.push(
+        <div key={id}>
+          <Paper className={this.classes.paper}>
+            <Typography variant="h6">              
+              <Link name={item} onClick={this.onChange}>
+              {item}
+              </Link>
+            </Typography>
           </Paper>
         </div>
-      )
+      );
     }
+    });
     return list;
   }
 
@@ -222,8 +194,10 @@ class OrderPreparationEditBase extends Component {
           Ingredient Breakdown
           </Typography>
 
+          {/* <Grid container spacing={3}> */}
           {this.renderMenu()}          
 
+          {/* </Grid> */}
         </Paper>
       </Container>
     );
