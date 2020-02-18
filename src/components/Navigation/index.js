@@ -39,6 +39,9 @@ const NavigationAuth = () => (
             <Link className="navigation-link" to={ROUTES.NEW_INGREDIENT}>New Ingredient Form</Link>
         </li>
         <li className="nav-link">
+            <Link className="navigation-link" to={ROUTES.DISPLAY_INGREDIENT}>Display Ingredient</Link>
+        </li>
+        <li className="nav-link">
             <Link className="navigation-link" to={ROUTES.DISH_TO_INGREDIENT_FORM}>Digital Recipe Form</Link>
         </li>
         <li className="nav-link">
