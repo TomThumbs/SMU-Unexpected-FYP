@@ -7,13 +7,21 @@ import { withFirebase } from '../Firebase';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Typography } from '@material-ui/core';
-// console.log = console.warn = console.error = () => {};
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
 
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
   },
 });
+// console.log = console.warn = console.error = () => {};
+
 
 const INITIAL_STATE = {
   orderiddoc: '',
@@ -26,6 +34,8 @@ const INITIAL_STATE = {
   events_list: [],
   week_events_list: []
 }
+
+
 
 class LandingPageBase extends Component {
 
@@ -87,7 +97,7 @@ class LandingPageBase extends Component {
     }
 
   renderEvents(eventlist){
-    let result = [];
+    let eventid = [];
     // console.log(eventlist)
     eventlist.forEach((evt) => {
       // console.log(evt)
@@ -97,29 +107,55 @@ class LandingPageBase extends Component {
         // console.log(entry);
       })
       temp.push(<br/>)
-      result.push(temp);
+      eventid.push(temp[0]);
     })
-    return result;
+    return eventid;
+  }
+
+  createTable = (period) =>{
+    return(
+  <TableContainer>
+        <Table className={this.classes.table} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell>Date</TableCell>
+              <TableCell align="right">Event ID</TableCell>
+              <TableCell align="right">Venue</TableCell>
+              <TableCell align="right">Pax</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+          {period.map(row => (
+              <TableRow key={row.date}>
+                <TableCell component="th" scope="row">{row.date}</TableCell>
+                <TableCell align="right">{row.docID}</TableCell>
+                <TableCell align="right">{row.venue}</TableCell>
+                <TableCell align="right">{row.pax}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    )
   }
 
   render() {
 
   return (
-    <Container component="main" maxWidth="xs">
-  <div>
-
-
-    <h1>Events for Today</h1>
-    
-      {this.renderEvents(this.state.events_list)}
-
-    <h1>Events for the week</h1>
-
-      {this.renderEvents(this.state.week_events_list)}
-
-  </div>
+    <div class="body">
+      <Container component="main" maxWidth="md">
+        
+        <div>
+          <h1>Events for Today</h1>
+          {this.createTable(this.state.events_list)}
+        </div>
+        <br></br><br></br>
+        <div>
+          <h1>Events for the week</h1>
+          {this.createTable(this.state.week_events_list)}
+        </div>
   </Container>
-
+  </div>
 
     );
   }
