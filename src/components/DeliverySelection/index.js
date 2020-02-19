@@ -109,6 +109,7 @@ class DeliverySelectionBase extends Component {
     render() {
         
       return(
+        <div class="body"> 
         <Container component="main" maxWidth="xs">
         
       <div>
@@ -137,6 +138,7 @@ class DeliverySelectionBase extends Component {
       </form>
     </div>
     </Container>
+    </div>
 
         );
 }}

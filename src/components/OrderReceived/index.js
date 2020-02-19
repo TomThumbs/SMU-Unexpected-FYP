@@ -105,6 +105,7 @@ class OrderReceivedBase extends Component {
 
   render(){
     return(
+      <div class="body">
       <Container className={this.classes.root}>
         {this.renderBackButton()}
         <Paper className={this.classes.paper}>
@@ -133,6 +134,7 @@ class OrderReceivedBase extends Component {
 
         </Paper>
       </Container>
+      </div>
       
     )
   }

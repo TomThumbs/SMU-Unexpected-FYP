@@ -207,8 +207,9 @@ class DishToIngredientFormBase extends Component {
   render() {
     
     return (  
-      <Container component="main" maxWidth="xs">
-    <div>
+      <div class="body">
+      <Container component="main" maxWidth="xs" >
+    
 
       <React.Fragment>
       <Grid container spacing={3}>
@@ -305,8 +306,9 @@ class DishToIngredientFormBase extends Component {
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    
     </Container>
+    </div>
     );
   }
 }

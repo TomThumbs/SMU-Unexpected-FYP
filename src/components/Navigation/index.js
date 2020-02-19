@@ -16,7 +16,7 @@ const Navigation = () => (
 );
 
 const NavigationAuth = () => (
-    <ul className="nav-links">
+    <ul className="nav-links" >
         <li className="nav-link">
             <Link className="navigation-link" to={ROUTES.LANDING}>Landing</Link>
         </li>
@@ -42,9 +42,9 @@ const NavigationAuth = () => (
             <Link className="navigation-link" to={ROUTES.DISH_TO_INGREDIENT_FORM}>Digital Recipe Form</Link>
         </li>
         <li className="nav-link">
-            <Link className="navigation-link" to={ROUTES.COOKING_SELECTION}>Pre Cooking Ingredient Tag Form</Link>
+            <Link className="navigation-link" to={ROUTES.COOKING_SELECTION}>Cooking Tag Form</Link>
         </li>
-        <li className="nav-link">
+        <li className="button-link" >
             <SignOutButton />
         </li>
     </ul>

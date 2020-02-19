@@ -85,7 +85,7 @@ class SignInFormBase extends Component {
 
     return (
       <Container component="main" maxWidth="xs">
-        <div className={this.classes.paper}>
+        <div class="body" className={this.classes.paper}>
           <Typography component="h1" variant="h4" align="center"></Typography>
 
           <form onSubmit={this.onSubmit}>

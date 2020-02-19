@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { withFirebase } from "../Firebase";
 import { Link, withRouter } from "react-router-dom";
 
+
 import { makeStyles } from "@material-ui/core/styles";
 // import Grid from '@material-ui/core/Grid';
 // import Typography from '@material-ui/core/Typography';
@@ -162,9 +163,11 @@ class DisplayOrderTimelineBase extends Component {
 
   render() {
     return (
+      <div class="body">
       <Container component="main" maxWidth="xs">
         {this.timeline()}
       </Container>
+      </div>
     );
   }
 }

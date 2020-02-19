@@ -204,7 +204,7 @@ class DeliveryFormBase extends Component {
     // console.log(typeof this.state.menu)
     return (
       <Container component="main" maxWidth="sm">
-        <div>
+        <div class="body">
           <h1>{this.state.docID}</h1>
           <React.Fragment>
             <Typography variant="h5" gutterBottom>

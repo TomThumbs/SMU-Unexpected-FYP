@@ -104,8 +104,9 @@ class CookingSelectionBase extends Component {
 
     render() {
       return(
+
         <Container component="main" maxWidth="xs">
-      <div>
+      <div class="body">
       <FormControl component="fieldset" id="cafe-list" className={this.classes.formControl}>
         <FormLabel component="legend"><h2>Catering Events For The Day</h2></FormLabel>
         <RadioGroup aria-label="docID" name="docID" id="cafe-list" value={this.value} onChange={this.handleChange}>

@@ -4,6 +4,7 @@ import "../../App.css";
 
 import { withRouter } from "react-router-dom";
 import { withFirebase } from "../Firebase";
+import { withAuthorization } from '../Session'
 
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
@@ -61,6 +62,7 @@ class SearchOrderBase extends Component {
     let isInvalid = this.state.searchId.length === 0;
 
     return (
+      <div class="body"> 
       <Container component="main" maxWidth="xs">
         <form onSubmit={this.onSubmit}>
           <TextField
@@ -86,10 +88,12 @@ class SearchOrderBase extends Component {
           </Button>
         </form>
       </Container>
+      </div>
     );
   }
 }
 
 const SearchOrder = withRouter(withFirebase(SearchOrderBase));
+const condition = authUser => !!authUser;
 
-export default SearchOrder;
+export default withAuthorization(condition) (SearchOrder);

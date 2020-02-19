@@ -107,6 +107,7 @@ class OrderPreparationSopBase extends Component {
 
   render() {
     return (
+      <div class="body">
       <Container component="main" maxWidth="xs" className={this.classes.root}>
         {this.renderBackButton()}
         <Paper className={this.classes.paper}>
@@ -175,6 +176,7 @@ class OrderPreparationSopBase extends Component {
           </form>
         </Paper>
       </Container>
+      </div>
     );
   }
 }

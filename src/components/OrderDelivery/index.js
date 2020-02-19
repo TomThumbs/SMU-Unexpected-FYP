@@ -8,6 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
+import { withAuthorization } from '../Session'
 
 import * as ROUTES from "../../constants/routes";
 
@@ -118,6 +119,7 @@ class OrderDeliveryBase extends Component {
 
   render() {
     return (
+      <div class="body"> 
       <Container className={this.classes.root}>
         {this.renderBackButton()}
         <Paper className={this.classes.paper}>
@@ -146,10 +148,11 @@ class OrderDeliveryBase extends Component {
           </Grid>
         </Paper>
       </Container>
+      </div>
     );
   }
 }
 
 const OrderDelivery = withRouter(withFirebase(OrderDeliveryBase));
-
-export default OrderDelivery;
+const condition = authUser => !!authUser;
+export default withAuthorization(condition)(OrderDelivery);

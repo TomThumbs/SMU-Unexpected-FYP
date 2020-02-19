@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { withFirebase } from "../Firebase";
 import { Link, withRouter } from "react-router-dom";
+import { withAuthorization } from '../Session'
+
 
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
@@ -61,6 +63,7 @@ class OrderServiceBase extends Component {
 
   render() {
     return (
+      <div class="body">
       <Container component="main" maxWidth="xs">
         <Grid container spaciing={3}>
           <Grid item xs={4}>Heater</Grid>
@@ -72,10 +75,12 @@ class OrderServiceBase extends Component {
           <Grid item xs={4}>Heater</Grid>
         </Grid>
       </Container>
+      </div>
     );
   }
 }
 
 const OrderService = compose(withRouter, withFirebase)(OrderServiceBase);
+const condition = authUser => !!authUser;
 
-export default OrderService;
+export default withAuthorization(condition) (OrderService);

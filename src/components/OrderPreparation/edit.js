@@ -304,6 +304,7 @@ class OrderPreparationEditBase extends Component {
 	render() {
 		// console.log(this.state)
 		return (
+			<div class="body">
 			<Container component="main" maxWidth="xs" className={this.classes.root}>
 				{this.renderBackButton()}
 				<Paper className={this.classes.paper}>
@@ -326,6 +327,7 @@ class OrderPreparationEditBase extends Component {
 					{/* </Grid> */}
 				</Paper>
 			</Container>
+			</div>
 		);
 	}
 }

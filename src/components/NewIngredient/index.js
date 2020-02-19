@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withFirebase } from '../Firebase';
 import { withRouter } from 'react-router-dom';
+import { withAuthorization } from '../Session'
 import 'date-fns';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
@@ -128,7 +129,7 @@ class NewIngredientForm extends Component {
   render(){
     const isInvalid = this.state.storageDate === this.state.expiryDate || this.state.foodName.length === 0;
     return(
-      
+      <div class="body"> 
       <Container component="main" maxWidth="xs">
         <div className={this.classes.paper}>
         <form onSubmit={this.onSubmit}>
@@ -203,11 +204,13 @@ class NewIngredientForm extends Component {
         </form>
         </div>
       </Container>
+      </div>
       
     )
   }
 }
 
 const NewIngredient = withRouter(withFirebase(NewIngredientForm));
+const condition = authUser => !!authUser;
 
-export default NewIngredient;
+export default withAuthorization(condition) (NewIngredient);

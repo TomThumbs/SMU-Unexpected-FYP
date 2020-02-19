@@ -37,6 +37,25 @@
   }
 } */
 
+.button {
+  background-color: rgb(172, 172, 172); /* Green */
+  border: none;
+  color: white;
+  padding: 23px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 15px;
+}
+
+.button-link{
+  float: right;
+}
+
+.body { 
+  padding-top: 40px; 
+}
+
 #nav{
   /* display: flex;
   justify-content: space-around;
@@ -44,13 +63,13 @@
   min-height: 10vh;
   background: rgb(73, 79, 82
   );
-  color: white; */
+  */
   list-style-type: none;
   margin: 0;
   padding: 0;
   overflow: hidden;
   background-color: #333;
-  min-height: 5vh;
+  min-height: 6vh;
   width: 100%;
   align-items: center;
 }
@@ -58,10 +77,10 @@
 .nav-links{
   list-style-type: none;
   margin: 0;
-  padding: 0;
+  padding: 0px;
   overflow: hidden;
   background-color: #333;
-  min-height: 5vh;
+  min-height: 6vh;
   width: 100%
 
 }
@@ -74,14 +93,20 @@
   display: block;
   color: white;
   text-align: center;
-  padding: 14px 16px;
+  padding: 23px 10px;
   text-decoration: none;
 }
 
 li a:hover {
   background-color: #111;
+  padding: 23px 10px;
 }
 
+ul {
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
 
 /* ----------TIMELINE---------- */
 .timeline-container {
