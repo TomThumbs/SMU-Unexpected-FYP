@@ -49,7 +49,8 @@ const INITIAL_STATE = {
   contact: "",
   email: "",
   strDate: "",
-  menu: ""
+  menu: "",
+  cID: "",
 };
 
 class DeliveryFormBase extends Component {
@@ -94,9 +95,10 @@ class DeliveryFormBase extends Component {
     // this.props.firebase.fs.collection('Catering_orders').doc("ATQjjgqvKU8n49QdSuR7").get().then(doc=> {
     this.props.firebase.fs
       .collection("Catering_orders")
-      .doc("ATQjjgqvKU8n49QdSuR7")
+      .doc(this.state.docID)
       .get()
       .then(doc => {
+        // console.log(doc.data().Customer.id)
         this.setState({
           name: doc.data().Customer.id
         });
@@ -107,7 +109,8 @@ class DeliveryFormBase extends Component {
           .then(docu => {
             this.setState({
               contact: docu.data().HP,
-              name: docu.data().Name
+              name: docu.data().Name,
+              cID: CustomerID
             });
           });
       });
@@ -205,7 +208,7 @@ class DeliveryFormBase extends Component {
     return (
       <Container component="main" maxWidth="sm">
         <div class="body">
-          <h1>{this.state.docID}</h1>
+          <h1>Customer {this.state.cID}</h1>
           <React.Fragment>
             <Typography variant="h5" gutterBottom>
               Event Details
