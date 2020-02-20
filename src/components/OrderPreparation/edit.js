@@ -13,7 +13,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 
 import * as ROUTES from "../../constants/routes";
-import { withAuthorization } from '../Session'
+import { withAuthorization } from "../Session";
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -306,28 +306,32 @@ class OrderPreparationEditBase extends Component {
 		// console.log(this.state)
 		return (
 			<div class="body">
-			<Container component="main" maxWidth="xs" className={this.classes.root}>
-				{this.renderBackButton()}
-				<Paper className={this.classes.paper}>
-					<Typography>Order Preparation Edit</Typography>
+				<Container
+					component="main"
+					maxWidth="xs"
+					className={this.classes.root}
+				>
+					{this.renderBackButton()}
+					<Paper className={this.classes.paper}>
+						<Typography>Order Preparation Edit</Typography>
 
-					{/* <Grid container spacing={3}> */}
-					<form onSubmit={this.onSubmit}>
-						{this.renderMenu()}
+						{/* <Grid container spacing={3}> */}
+						<form onSubmit={this.onSubmit}>
+							{this.renderMenu()}
 
-						<Button
-							type="submit"
-							fullWidth
-							variant="contained"
-							color="primary"
-							className={this.classes.submit}
-						>
-							Submit
-						</Button>
-					</form>
-					{/* </Grid> */}
-				</Paper>
-			</Container>
+							<Button
+								type="submit"
+								fullWidth
+								variant="contained"
+								color="primary"
+								className={this.classes.submit}
+							>
+								Submit
+							</Button>
+						</form>
+						{/* </Grid> */}
+					</Paper>
+				</Container>
 			</div>
 		);
 	}
@@ -335,4 +339,4 @@ class OrderPreparationEditBase extends Component {
 
 const OrderPreparationEdit = withRouter(withFirebase(OrderPreparationEditBase));
 const condition = authUser => !!authUser;
-export default withAuthorization(condition) (OrderPreparationEdit);
+export default withAuthorization(condition)(OrderPreparationEdit);

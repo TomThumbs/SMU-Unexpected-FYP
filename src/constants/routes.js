@@ -14,6 +14,7 @@ export const SMART_HEATING = '/smart-heating';
 
 // ---------- ADD A NEW INGREDIENT ----------
 export const NEW_INGREDIENT = '/new-ingredient'
+export const DISPLAY_INGREDIENT = '/display-ingredient'
 
 // ---------- ADD NEW ORDER ----------
 export const ORDER_FORM = '/order-form'

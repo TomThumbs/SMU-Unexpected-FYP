@@ -47,6 +47,7 @@ const INITIAL_STATE = {
   custref:'',
   selectedmenu:[],
   finalmenu:[],
+  remarks:''
   
 }
 
@@ -137,14 +138,14 @@ class OrderFormBase extends Component {
       Status: "Order Received",
       Date: submitDate, 
       DateOnly: strDate,
-      DeliveryCheck: false,
+      // DeliveryCheck: false,
       Menu: this.state.finalmenu,
       Pax: Number(this.state.pax),
       Time: strtime, 
-      TruckImgUrl: '',
+      // TruckImgUrl: '',
       venue: this.state.venue,
       orderID: this.state.orderid,
-      Ingredient_Tags_Used: '',
+      // Ingredient_Tags_Used: '',
       Created_On:new Date().getFullYear()+"-"+strMonth+"-"+new Date().getDate()
     });
     let notCreated = true
@@ -375,7 +376,7 @@ class OrderFormBase extends Component {
             {this.createTextField("custcompany", this.state.custcompany, "Customer Company:", "Customer Company")}
             
             {/* Postal Code */}
-            {this.createTextField("venue", this.state.venue, "Postal Code:", "Postal Code")}
+            {this.createTextField("venue", this.state.venue, "Venue Address:", "Venue Address")}
 
             <br></br><br></br>
             <Divider variant="il" />
@@ -385,6 +386,9 @@ class OrderFormBase extends Component {
 
             {/* Display Menu */}
             {this.renderMenu()}
+
+            {/* Remarks */}
+            {this.createTextField("remarks", this.state.remarks, "Remarks:", "Remarks")}
 
             <Button 
               disabled={isInvalid} 
