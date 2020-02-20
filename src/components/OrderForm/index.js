@@ -46,7 +46,8 @@ const INITIAL_STATE = {
   custID:0,
   custref:'',
   selectedmenu:[],
-  finalmenu:[]
+  finalmenu:[],
+  
 }
 
 const useStyles = makeStyles(theme => ({
@@ -186,12 +187,14 @@ class OrderFormBase extends Component {
       })
     }
 
+    let nPax = Number(this.state.pax)
+
     this.props.history.push({
       pathname: './post-order-form',
       orderid: this.state.orderid,
       date: strSubmitDate,
       venue: this.state.venue,
-      pax: this.state.pax,
+      pax: nPax,
     })
   }
 
@@ -356,6 +359,9 @@ class OrderFormBase extends Component {
 
             {/* Customer Email */}
             {this.createTextField("custemail", this.state.custemail, "Customer Email:", "Customer Email")}
+
+            {/* Customer Company */}
+            {this.createTextField("custcontact", this.state.custcontact, "Customer Phone Number:", "Customer Phone Number")}
 
             {/* Customer Company */}
             {this.createTextField("custcompany", this.state.custcompany, "Customer Company:", "Customer Company")}

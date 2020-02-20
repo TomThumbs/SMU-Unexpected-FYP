@@ -15,20 +15,18 @@ class PostOrderFormBase extends Component {
 
 
     render() {
-        // const { data } = this.props.location
+
         return(
         <div class="body">
              <Container component="main" maxWidth="xs">
                 <Typography component="h4" variant="h4">Order Summary</Typography>
                 <Typography component="h5" variant="h7">Order No.</Typography>
                 <Typography component="h5" variant="h7">#{this.props.location.orderid}</Typography>
-                <Typography component="h5" variant="h7">{this.props.location.date}</Typography>
-                {/* <h3>{this.props.location.starttime} - {this.props.location.starttime}</h3> */}
-                <Typography component="h5" variant="h7">{this.props.location.venue}</Typography>/
-                {/* <h3>{this.props.location.venue}</h3> */}
-                <Typography component="h5" variant="h7">{this.props.location.pax} pax</Typography>>
-                <h3>-------------</h3>
-                {/* <h3>SGD$ _undefined</h3> */}
+                <Typography component="h5" variant="h7">Date: {this.props.location.date.split(' ')[1]}/{this.props.location.date.split(' ')[2]}/{this.props.location.date.split(' ')[3]}</Typography>
+                <Typography component="h5" variant="h7">Time: {this.props.location.date.split(' ')[4]}</Typography>
+                <Typography component="h5" variant="h7"> Venue Postal Code: {this.props.location.venue}</Typography>
+
+                <Typography component="h5" variant="h7">{this.props.location.pax} pax</Typography>
             </Container>
         </div>
         );
