@@ -5,6 +5,7 @@ import { withRouter } from "react-router-dom";
 import { withFirebase } from "../Firebase";
 import FileUploader from "react-firebase-file-uploader";
 
+
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import TextField from '@material-ui/core/TextField';
@@ -343,6 +344,7 @@ class DeliveryFormBase extends Component {
 						onUploadSuccess={this.handleUploadSuccess}
 						onProgress={this.handleProgress}
 					/>
+					<br></br>
 					<div>{this.renderSubmit()}</div>
 				</div>
 			</Container>
