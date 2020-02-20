@@ -107,43 +107,44 @@ class OrderReceivedBase extends Component {
 		);
 	}
 
-  render(){
-    return(
-      <div class="body">
-      <Container className={this.classes.root}>
-        {this.renderBackButton()}
-        <Paper className={this.classes.paper}>
+	render() {
+		return (
+			<div class="body">
+				<Container className={this.classes.root}>
+					{this.renderBackButton()}
+					<Paper className={this.classes.paper}>
+						<Grid container spacing={3}>
+							<Grid item xs={6}>
+								<Typography>Deliver to:</Typography>
+								<Typography> {this.state.venue}</Typography>
+								<Typography> {this.state.dateOnly}</Typography>
+								<Typography> {this.state.time}</Typography>
+							</Grid>
 
-					<Grid container spacing={3}>
-						<Grid item xs={6}>
-							<Typography>Deliver to:</Typography>
-							<Typography> {this.state.venue}</Typography>
-							<Typography> {this.state.dateOnly}</Typography>
-							<Typography> {this.state.time}</Typography>
+							<Grid container spacing={3}>
+								<Grid item xs={6}>
+									<Typography>Deliver to:</Typography>
+									<Typography> {this.state.venue}</Typography>
+									<Typography>
+										{" "}
+										{this.state.dateOnly}
+									</Typography>
+									<Typography> {this.state.time}</Typography>
+								</Grid>
+
+								<Grid item xs={6}>
+									<Typography>
+										Menu: ({this.state.pax} pax)
+									</Typography>
+									{this.renderMenu()}
+								</Grid>
+							</Grid>
 						</Grid>
-
-          <Grid container spacing={3}>
-
-            <Grid item xs={6}>
-              <Typography>Deliver to:</Typography>
-              <Typography> {this.state.venue}</Typography>
-              <Typography> {this.state.dateOnly}</Typography>
-              <Typography> {this.state.time}</Typography>
-            </Grid>
-
-            <Grid item xs={6}>
-              <Typography>Menu: ({this.state.pax} pax)</Typography>
-              {this.renderMenu()}
-            </Grid>
-
-          </Grid>
-
-        </Paper>
-      </Container>
-      </div>
-      
-    )
-  }
+					</Paper>
+				</Container>
+			</div>
+		);
+	}
 }
 
 const OrderReceived = withRouter(withFirebase(OrderReceivedBase));

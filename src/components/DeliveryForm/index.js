@@ -90,11 +90,12 @@ class DeliveryFormBase extends Component {
 		this.setState({
 			strDate: temp_date.split("GMT")[0]
 		});
-
+// 
 		// this.props.firebase.fs.collection('Catering_orders').doc("ATQjjgqvKU8n49QdSuR7").get().then(doc=> {
 		this.props.firebase.fs
 			.collection("Catering_orders")
-			.doc("ATQjjgqvKU8n49QdSuR7")
+			// .doc("8CRkktSm8MUHru4tInDx")
+			.doc(this.state.docID)
 			.get()
 			.then(doc => {
 				this.setState({
@@ -193,23 +194,24 @@ class DeliveryFormBase extends Component {
 			return (
 				<h4>
 					<font color="#e91e63">
-						Please check all 3 checkboxes and upload a picture of the truck.
+						Please check all 3 checkboxes and upload a picture of
+						the truck.
 					</font>
 				</h4>
 			);
 		}
 	}
 
-  render() {
-    // console.log(typeof this.state.menu)
-    return (
-      <Container component="main" maxWidth="sm">
-        <div class="body">
-          <h1>{this.state.docID}</h1>
-          <React.Fragment>
-            <Typography variant="h5" gutterBottom>
-              Event Details
-            </Typography>
+	render() {
+		// console.log(typeof this.state.menu)
+		return (
+			<Container component="main" maxWidth="sm">
+				<div class="body">
+					<h1>{this.state.docID}</h1>
+					<React.Fragment>
+						<Typography variant="h5" gutterBottom>
+							Event Details
+						</Typography>
 
 						<Grid container alignItems="center">
 							<Grid item xs>
@@ -308,8 +310,8 @@ class DeliveryFormBase extends Component {
 						<Divider variant="li" />
 
 						<h4>
-							Take a photograph of the state of the vehicle and food before
-							delivery commences
+							Take a photograph of the state of the vehicle and
+							food before delivery commences
 						</h4>
 					</React.Fragment>
 

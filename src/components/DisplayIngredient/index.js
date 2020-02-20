@@ -59,8 +59,8 @@ class DisplayIngredientBase extends Component {
 				"[data-id=id" + this.state.prevId + "]"
 			);
 			result.removeChild(old);
-    }
-    // let searchID = this.state.searchId
+		}
+		// let searchID = this.state.searchId
 		if (this.state.searchId in this.state) {
 			// Add new result to display
 			let div = document.createElement("div");
