@@ -34,22 +34,23 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const INITIAL_STATE = {
-	image: "",
-	imageURL: "",
-	progress: 0,
-	catering_event_doc: "",
-	cleanReady: "",
-	allItems: "",
-	foodWrap: "",
-	date: "",
-	starttime: "",
-	venue: "",
-	pax: 0,
-	name: "",
-	contact: "",
-	email: "",
-	strDate: "",
-	menu: ""
+  image: "",
+  imageURL: "",
+  progress: 0,
+  catering_event_doc: "",
+  cleanReady: "",
+  allItems: "",
+  foodWrap: "",
+  date: "",
+  starttime: "",
+  venue: "",
+  pax: 0,
+  name: "",
+  contact: "",
+  email: "",
+  strDate: "",
+  menu: "",
+  cID: "",
 };
 
 class DeliveryFormBase extends Component {
@@ -114,8 +115,29 @@ class DeliveryFormBase extends Component {
 			});
 	}
 
-	onSubmit = event => {
-		event.preventDefault();
+    // this.props.firebase.fs.collection('Catering_orders').doc("ATQjjgqvKU8n49QdSuR7").get().then(doc=> {
+    this.props.firebase.fs
+      .collection("Catering_orders")
+      .doc(this.state.docID)
+      .get()
+      .then(doc => {
+        // console.log(doc.data().Customer.id)
+        this.setState({
+          name: doc.data().Customer.id
+        });
+        this.props.firebase.fs
+          .collection("Customers")
+          .doc(this.state.name)
+          .get()
+          .then(docu => {
+            this.setState({
+              contact: docu.data().HP,
+              name: docu.data().Name,
+              cID: docu.data().CustomerID
+            });
+          });
+      });
+  }
 
 		// this.props.firebase.fs.collection('Catering_orders').doc(this.state.catering_event_doc).update({ DeliveryCheck: true }); //UPDATE FIRESTORE
 		this.props.firebase.fs
@@ -213,14 +235,16 @@ class DeliveryFormBase extends Component {
 							Event Details
 						</Typography>
 
-						<Grid container alignItems="center">
-							<Grid item xs>
-								Date & Time:
-							</Grid>
-							<Grid item>
-								<b>{this.state.date}</b>
-							</Grid>
-						</Grid>
+  render() {
+    // console.log(typeof this.state.menu)
+    return (
+      <Container component="main" maxWidth="sm">
+        <div class="body">
+          <h1>Customer {this.state.cID}</h1>
+          <React.Fragment>
+            <Typography variant="h5" gutterBottom>
+              Event Details
+            </Typography>
 
 						<Grid container alignItems="center">
 							<Grid item xs>

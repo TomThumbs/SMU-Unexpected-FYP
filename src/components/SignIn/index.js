@@ -42,7 +42,7 @@ const INITIAL_STATE = {
 };
 
 const SignInPage = () => (
-  <div>
+  <div class="body">
     <br></br>
     <br></br>
     <h1>
@@ -85,7 +85,7 @@ class SignInFormBase extends Component {
 
     return (
       <Container component="main" maxWidth="xs">
-        <div class="body" className={this.classes.paper}>
+        <div className={this.classes.paper}>
           <Typography component="h1" variant="h4" align="center"></Typography>
 
           <form onSubmit={this.onSubmit}>

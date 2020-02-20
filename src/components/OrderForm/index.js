@@ -46,7 +46,8 @@ const INITIAL_STATE = {
   custID:0,
   custref:'',
   selectedmenu:[],
-  finalmenu:[]
+  finalmenu:[],
+  
 }
 
 const useStyles = makeStyles(theme => ({
@@ -111,11 +112,18 @@ class OrderFormBase extends Component {
     
     let strhour = String(this.state.hour)
     let strmonth = Number(this.state.date.getMonth())+1
-    let strtime = ''
-    if (strhour.includes("8")||strhour.includes("9")) {
-      strtime = "0"+String(this.state.hour)+String(this.state.minute)
+    let strmin = ''
+    if (this.state.minute.length === 1) {
+      strmin = "0"+ String(this.state.minute)
     } else {
-      strtime = String(this.state.hour)+String(this.state.minute)
+      strmin = String(this.state.minute)
+    }
+
+    let strtime = ''
+    if (strhour.length === 1) {
+      strtime = "0"+String(this.state.hour) + strmin
+    } else {
+      strtime = String(this.state.hour) + strmin
     }  
     let strDate = this.state.date.getFullYear()+"-"+strmonth+"-"+this.state.date.getDate()
     let submitDate = new Date(this.state.date.getFullYear(),this.state.date.getMonth(),this.state.date.getDate(),this.state.hour,this.state.minute,0)
@@ -186,12 +194,14 @@ class OrderFormBase extends Component {
       })
     }
 
+    let nPax = Number(this.state.pax)
+
     this.props.history.push({
       pathname: './post-order-form',
       orderid: this.state.orderid,
       date: strSubmitDate,
       venue: this.state.venue,
-      pax: this.state.pax,
+      pax: nPax,
     })
   }
 
@@ -356,6 +366,9 @@ class OrderFormBase extends Component {
 
             {/* Customer Email */}
             {this.createTextField("custemail", this.state.custemail, "Customer Email:", "Customer Email")}
+
+            {/* Customer Company */}
+            {this.createTextField("custcontact", this.state.custcontact, "Customer Phone Number:", "Customer Phone Number")}
 
             {/* Customer Company */}
             {this.createTextField("custcompany", this.state.custcompany, "Customer Company:", "Customer Company")}
