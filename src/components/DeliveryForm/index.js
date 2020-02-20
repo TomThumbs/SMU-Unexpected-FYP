@@ -110,7 +110,7 @@ class DeliveryFormBase extends Component {
             this.setState({
               contact: docu.data().HP,
               name: docu.data().Name,
-              cID: CustomerID
+              cID: docu.data().CustomerID
             });
           });
       });
