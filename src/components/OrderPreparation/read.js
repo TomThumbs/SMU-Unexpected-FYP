@@ -12,6 +12,8 @@ import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 
 import * as ROUTES from "../../constants/routes";
 
+import { withAuthorization } from '../Session'
+
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1
@@ -233,5 +235,6 @@ class OrderPreparationBase extends Component {
 }
 
 const OrderPreparation = withRouter(withFirebase(OrderPreparationBase));
+const condition = authUser => !!authUser;
 
-export default OrderPreparation;
+export default withAuthorization(condition) (OrderPreparation);

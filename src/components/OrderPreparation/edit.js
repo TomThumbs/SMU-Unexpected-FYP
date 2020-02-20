@@ -13,6 +13,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 
 import * as ROUTES from "../../constants/routes";
+import { withAuthorization } from '../Session'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -333,5 +334,5 @@ class OrderPreparationEditBase extends Component {
 }
 
 const OrderPreparationEdit = withRouter(withFirebase(OrderPreparationEditBase));
-
-export default OrderPreparationEdit;
+const condition = authUser => !!authUser;
+export default withAuthorization(condition) (OrderPreparationEdit);

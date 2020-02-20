@@ -11,6 +11,9 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
+
+import { withAuthorization } from '../Session'
+
 // import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 
 import * as ROUTES from "../../constants/routes";
@@ -182,5 +185,6 @@ class OrderPreparationSopBase extends Component {
 }
 
 const OrderPreparationSop = withRouter(withFirebase(OrderPreparationSopBase));
+const condition = authUser => !!authUser;
 
-export default OrderPreparationSop;
+export default withAuthorization(condition) (OrderPreparationSop);
