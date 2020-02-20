@@ -43,7 +43,8 @@ const INITIAL_STATE = {
 	storageDate: "",
 	expiryDate: "",
 	open: "",
-	foodId: ""
+	foodId: "",
+	month:""
 };
 
 class NewIngredientForm extends Component {
@@ -118,8 +119,14 @@ class NewIngredientForm extends Component {
 	};
 
 	handleDateChange = event => {
+		// console.log(Number(event.getMonth())+1)
+		let tempMonth = (Number(event.getMonth())+1).toString()
+		if (tempMonth.length === 1) { 
+			tempMonth = "0"+tempMonth
+		}
 		this.setState({
-			expiryDate: event
+			expiryDate: event,
+			month: tempMonth
 		});
 		// console.log(this.state.date)
 	};
@@ -224,7 +231,7 @@ class NewIngredientForm extends Component {
                   {this.state.foodName} has been tagged.<br/>
                   Food ID: {this.state.foodId}<br/>
                   Storage Date: {this.state.storageDate}<br/>
-                  Expiry Date: {this.state.expiryDate.toString}
+                  Expiry Date: {String(this.state.expiryDate).split(' ')[2]+"/"+this.state.month+"/"+String(this.state.expiryDate).split(' ')[3]}
 								</DialogContentText>
 								{/* <DialogContentText id="alert-dialog-description">
                 Food ID: {this.state.foodId}

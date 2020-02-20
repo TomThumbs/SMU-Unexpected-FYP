@@ -15,7 +15,7 @@ class PostOrderFormBase extends Component {
 
 
     render() {
-
+        console.log(this.props.location.Menu)
         return(
         <div class="body">
              <Container component="main" maxWidth="xs">

@@ -7,7 +7,7 @@ import FileUploader from "react-firebase-file-uploader";
 
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-// import TextField from '@material-ui/core/TextField';
+import TextField from '@material-ui/core/TextField';
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 
@@ -50,7 +50,10 @@ const INITIAL_STATE = {
 	email: "",
 	strDate: "",
 	menu: "",
-	cID: ""
+	cID: "",
+	decor:"",
+	driver:"",
+	oID:""
 };
 
 class DeliveryFormBase extends Component {
@@ -70,20 +73,20 @@ class DeliveryFormBase extends Component {
 		});
 
 		// ---------- GET ORDER DETAILS ----------
-		// this.props.firebase.fs.collection('Catering_orders').doc("ATQjjgqvKU8n49QdSuR7").get().then(doc=> {
 		this.props.firebase.fs
 			.collection("Catering_orders")
 			.doc(this.state.docID)
 			.get()
 			.then(doc => {
-				// console.log(doc.data())
+				// console.log(doc.data().orderID)
 				this.setState({
 					// catering_event_doc: doc.id,
 					date: String(doc.data().Date.toDate()).split("GMT")[0],
 					menu: doc.data().Menu,
 					venue: doc.data().venue,
 					pax: doc.data().Pax,
-					name: doc.data().Customer.id
+					name: doc.data().Customer.id,
+					oID: doc.data().orderID
 				});
 				this.props.firebase.fs
 					.collection("Customers")
@@ -103,29 +106,6 @@ class DeliveryFormBase extends Component {
 		this.setState({
 			strDate: temp_date.split("GMT")[0]
 		});
-
-		//   // this.props.firebase.fs.collection('Catering_orders').doc("ATQjjgqvKU8n49QdSuR7").get().then(doc=> {
-		// this.props.firebase.fs
-		// 	.collection("Catering_orders")
-		// 	.doc(this.state.docID)
-		// 	.get()
-		// 	.then(doc => {
-		// 		// console.log(doc.data().Customer.id)
-		// 		this.setState({
-		// 			name: doc.data().Customer.id
-		// 		});
-		// 		this.props.firebase.fs
-		// 			.collection("Customers")
-		// 			.doc(this.state.name)
-		// 			.get()
-		// 			.then(docu => {
-		// 				this.setState({
-		// 					contact: docu.data().HP,
-		// 					name: docu.data().Name,
-		// 					cID: docu.data().CustomerID
-		// 				});
-		// 			});
-		// 	});
 	}
 
 	onSubmit = event => {
@@ -136,13 +116,19 @@ class DeliveryFormBase extends Component {
 			.update({
 				DeliveryCheck: true,
 				TruckImgURL: this.state.imageURL,
-				Status: "Delivery"
+				Status: "Delivery",
+				Driver: this.state.driver
 			}); //UPDATE FIRESTORE
 		// this.props.firebase.fs.collection('Catering_orders').doc(this.state.catering_event_doc).update({ TruckImgURL: this.state.imageURL });
 
 		this.setState({ imageURL: "" });
 
-		this.props.history.push("./post-delivery-form");
+		this.props.history.push({
+			pathname: './post-delivery-form',
+			orderid: this.state.oID,
+			driver: this.state.driver,
+			url: this.state.imageURL
+		  })
 	};
 
 	handleUploadStart = () => {
@@ -177,9 +163,10 @@ class DeliveryFormBase extends Component {
 
 	handleChange = name => event => {
 		this.setState({ ...this.props, [name]: event.target.checked });
-		console.log(this.state.cleanReady);
-		console.log(this.state.allItems);
-		console.log(this.state.foodWrap);
+	};
+
+	onChange = event => {	
+		this.setState({ [event.target.name]: event.target.value });
 	};
 
 	renderSubmit() {
@@ -187,7 +174,9 @@ class DeliveryFormBase extends Component {
 			this.state.cleanReady === true &&
 			this.state.allItems === true &&
 			this.state.foodWrap === true &&
-			this.state.imageURL.length !== 0
+			this.state.decor === true &&
+			this.state.imageURL.length !== 0 &&
+			this.state.driver.length !== 0
 		) {
 			return (
 				<form onSubmit={this.onSubmit}>
@@ -206,7 +195,7 @@ class DeliveryFormBase extends Component {
 			return (
 				<h4>
 					<font color="#e91e63">
-						Please check all 3 checkboxes and upload a picture of
+						Please check all 4 checkboxes and upload a picture of
 						the truck.
 					</font>
 				</h4>
@@ -265,6 +254,18 @@ class DeliveryFormBase extends Component {
 						<Divider variant="li" />
 						<br />
 
+						<TextField
+						margin="normal"
+						id="standard-number"
+						required
+						fullWidth
+						name="driver"
+						value={this.state.driver}
+						label="Enter Driver Name"
+						type="text"
+						onChange={this.onChange}
+						/>
+
 						<Typography variant="h6" gutterBottom>
 							Checklist
 						</Typography>
@@ -280,7 +281,7 @@ class DeliveryFormBase extends Component {
 								/>
 							}
 							// <Checkbox checked={state.checkedA} onChange={handleChange('checkedA')} value="checkedA" />
-							label="Is the vehicle cleaned and ready for transportation?"
+							label="Food securely packed?"
 						/>
 
 						<FormControlLabel
@@ -293,7 +294,7 @@ class DeliveryFormBase extends Component {
 									value="allItems"
 								/>
 							}
-							label="Are all the items required for the event on the vehicle?"
+							label="Vehicle Clean?"
 						/>
 
 						<FormControlLabel
@@ -306,20 +307,32 @@ class DeliveryFormBase extends Component {
 									value="foodWrap"
 								/>
 							}
-							label="Are all the food wrapped properly?"
+							label="No strong odors?"
+						/>
+
+						<FormControlLabel
+							control={
+								<Checkbox
+									checked={this.state.decor}
+									onChange={this.handleChange("decor")}
+									color="secondary"
+									name="foodWrap"
+									value="foodWrap"
+								/>
+							}
+							label="Buffet decor loaded?"
 						/>
 						<br />
 						<br />
 						<Divider variant="li" />
 
 						<h4>
-							Take a photograph of the state of the vehicle and
-							food before delivery commences
+							Attach Image
 						</h4>
 					</React.Fragment>
 
-					<label> Progress: {this.props.imageURL}</label>
-					<p>{this.state.progress}</p>
+					{/* <label> Progress: {this.props.imageURL}</label> */}
+					{/* <p>{this.state.progress}</p> */}
 
 					<FileUploader
 						accept="image/*"
