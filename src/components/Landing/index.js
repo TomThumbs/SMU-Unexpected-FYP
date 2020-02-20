@@ -14,6 +14,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles({
   table: {
@@ -34,7 +35,6 @@ const INITIAL_STATE = {
   events_list: [],
   week_events_list: []
 }
-
 
 
 class LandingPageBase extends Component {
@@ -68,9 +68,12 @@ class LandingPageBase extends Component {
             this.setState((prevstate) => ({
               events_list: [...prevstate.events_list, {
                 docID:doc.id,
+                orderID: doc.data().orderID,
                 date: doc.data().DateOnly,
                 venue: doc.data().venue,
-                pax: doc.data().Pax
+                pax: doc.data().Pax,
+                status: doc.data().Status,
+                time: doc.data().Time,
               }]
             }))
 
@@ -86,9 +89,12 @@ class LandingPageBase extends Component {
             this.setState((prevstate) => ({
               week_events_list: [...prevstate.week_events_list, {
                 docID: doc.id,
+                orderID: doc.data().orderID,
                 date: doc.data().DateOnly,
                 venue: doc.data().venue,
-                pax: doc.data().Pax
+                pax: doc.data().Pax,
+                status: doc.data().Status,
+                time: doc.data().Time,
               }]
             }))
         });
@@ -119,18 +125,24 @@ class LandingPageBase extends Component {
           <TableHead>
             <TableRow>
               <TableCell>Date</TableCell>
-              <TableCell align="right">Event ID</TableCell>
+              <TableCell align="right">Time</TableCell>
+              <TableCell align="right">Order ID</TableCell>
               <TableCell align="right">Venue</TableCell>
               <TableCell align="right">Pax</TableCell>
+              <TableCell align="right">Status</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
           {period.map(row => (
               <TableRow key={row.date}>
                 <TableCell component="th" scope="row">{row.date}</TableCell>
-                <TableCell align="right">{row.docID}</TableCell>
+                <TableCell align="right">{row.time}</TableCell>
+                <TableCell align="right">{row.orderID}</TableCell>
                 <TableCell align="right">{row.venue}</TableCell>
                 <TableCell align="right">{row.pax}</TableCell>
+                <TableCell align="right">
+                  <Button href={this.linktoevent(row.orderID)} color="primary">{row.status}</Button>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -138,6 +150,13 @@ class LandingPageBase extends Component {
       </TableContainer>
     )
   }
+
+  linktoevent(id){
+    var link = ""
+    return (link.concat("order-timeline?id=", id))
+  }
+
+
 
   render() {
 
@@ -151,7 +170,7 @@ class LandingPageBase extends Component {
         </div>
         <br></br><br></br>
         <div>
-          <h1>Events for the week</h1>
+          <h1>Events for the Next 7 Days</h1>
           {this.createTable(this.state.week_events_list)}
         </div>
   </Container>
@@ -175,3 +194,4 @@ export default LandingPage;
 // );
 
 // export default LandingPage;
+
