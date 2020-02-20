@@ -137,7 +137,7 @@ class DeliverySelectionBase extends Component {
 							</FormLabel>
 							<RadioGroup
 								aria-label="postalCode"
-								name="postalCode"
+								name="docID"
 								id="cafe-list"
 								value={this.value}
 								onChange={this.handleChange}
@@ -147,10 +147,8 @@ class DeliverySelectionBase extends Component {
 										value={this.state.docIDList[index]}
 										control={<Radio />}
 										label={
-											"#" +
-											this.state.orderIdList[index] +
-											" " +
-											this.state.venueList[index]
+											"Order #" +
+											this.state.orderIdList[index]
 										}
 									/>
 								))}

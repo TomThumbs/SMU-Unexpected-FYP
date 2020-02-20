@@ -208,7 +208,8 @@ class DeliveryFormBase extends Component {
 		return (
 			<Container component="main" maxWidth="sm">
 				<div class="body">
-					<h1>Customer {this.state.cID}</h1>
+					{/* <h1>Customer {this.state.cID}</h1> */}
+					<h1>Order #{this.state.oID}</h1>
 					<React.Fragment>
 						<Typography variant="h5" gutterBottom>
 							Event Details

@@ -376,7 +376,7 @@ class OrderFormBase extends Component {
             {this.createTextField("custcompany", this.state.custcompany, "Customer Company:", "Customer Company")}
             
             {/* Postal Code */}
-            {this.createTextField("venue", this.state.venue, "Venue Address:", "Venue Address")}
+            {this.createTextField("venue", this.state.venue, "Venue:", "Venue")}
 
             <br></br><br></br>
             <Divider variant="il" />
