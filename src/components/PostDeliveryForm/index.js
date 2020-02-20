@@ -6,9 +6,9 @@ import { withRouter } from 'react-router-dom';
 import { withFirebase } from '../Firebase';
 import { withAuthorization } from '../Session'
 
-import { makeStyles } from '@material-ui/core/styles';
+// import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Typography from '@material-ui/core/Typography';
+// import Typography from '@material-ui/core/Typography';
 import * as ROUTES from '../../constants/routes';
 import Button from '@material-ui/core/Button';
 
@@ -22,7 +22,7 @@ class PostDeliveryFormBase extends Component {
     <Container component="main" maxWidth="xs">
     <h1>Declaration for Order #{this.props.location.orderid} Successful.</h1>
     <h1>Driver: {this.props.location.driver}</h1>
-    <img src={this.props.location.url}></img>
+    <img src={this.props.location.url} alt="Delivery form"></img>
     <br></br>
     <br></br>
     <Button href={ROUTES.LANDING} color="primary" fullWidth variant="contained">Home</Button>

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { withFirebase } from "../Firebase";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { withAuthorization } from '../Session'
 
 

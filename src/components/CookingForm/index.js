@@ -3,12 +3,12 @@ import { withFirebase } from "../Firebase";
 import { Link, withRouter } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
+// import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
-import TextareaAutosize from "@material-ui/core/TextareaAutosize";
+// import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 
 import * as ROUTES from "../../constants/routes";
 
@@ -57,9 +57,9 @@ class OrderPreparationEditBase extends Component {
   mmenu = ''
 
   componentDidMount() {
-    let queryString = window.location.search;
-    let urlParams = new URLSearchParams(queryString);
-    let urlId = "28" //Number(urlParams.get("id"));
+    // let queryString = window.location.search;
+    // let urlParams = new URLSearchParams(queryString);
+    // let urlId = "28" //Number(urlParams.get("id"));
     
     this.setState({
       orderID: "28",// urlId,
@@ -78,8 +78,8 @@ class OrderPreparationEditBase extends Component {
 
           // ---------- RETRIEVE MENU INGREDIENTS ----------
           this.mmenu.forEach((item,id) => { //supposed to be doing a multi one already. This hinges on how data is uploaded from order prep
-            let spacetrim = item.replace(/\s/g,'')
-            spacetrim = spacetrim.replace('&','')
+            // let spacetrim = item.replace(/\s/g,'')
+            // spacetrim = spacetrim.replace('&','')
             // console.log(spacetrim)
 
             this.setState({
