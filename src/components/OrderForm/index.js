@@ -202,6 +202,7 @@ class OrderFormBase extends Component {
       date: strSubmitDate,
       venue: this.state.venue,
       pax: nPax,
+      Menu: this.state.finalmenu
     })
   }
 
@@ -378,8 +379,9 @@ class OrderFormBase extends Component {
 
             <br></br><br></br>
             <Divider variant="il" />
+            <br></br>
             <Typography component="h5" variant="h5" >Menu</Typography>
-            <Divider variant="il" />
+            
 
             {/* Display Menu */}
             {this.renderMenu()}

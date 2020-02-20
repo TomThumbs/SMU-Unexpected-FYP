@@ -118,6 +118,11 @@ class LandingPageBase extends Component {
     return eventid;
   }
 
+  linktoevent(id){
+    var link = ""
+    return (link.concat("order-timeline?id=", id))
+  }
+
   createTable = (period) =>{
     return(
   <TableContainer>
@@ -151,10 +156,7 @@ class LandingPageBase extends Component {
     )
   }
 
-  linktoevent(id){
-    var link = ""
-    return (link.concat("order-timeline?id=", id))
-  }
+  
 
 
 
