@@ -44,7 +44,8 @@ const INITIAL_STATE = {
 	expiryDate: "",
 	open: "",
 	foodId: "",
-	month:""
+	month:"",
+	priFoodId:""
 };
 
 class NewIngredientForm extends Component {
@@ -67,7 +68,7 @@ class NewIngredientForm extends Component {
 			let dd = String(temp_date.getDate()).padStart(2, "0");
 			let mm = String(temp_date.getMonth() + 1).padStart(2, "0");
 			let yyyy = temp_date.getFullYear();
-			let string = dd + "/" + mm + "/" + yyyy;
+			let string = dd + "-" + mm + "-" + yyyy;
 
 			this.setState({
 				storageDate: string
@@ -82,8 +83,9 @@ class NewIngredientForm extends Component {
 			.doc(this.state.foodId)
 			.set({
 				ingredientId: this.state.foodId,
-				Date_of_expiry: this.state.expiryDate,
+				Date_of_expiry: String(this.state.expiryDate).split(' ')[2]+"-"+this.state.month+"-"+String(this.state.expiryDate).split(' ')[3],
 				Name: this.state.foodName,
+				Primary_Ingredients: this.state.priFoodId,
 				Date_of_Storage: this.state.storageDate
 			});
 		this.handleClickOpen();
@@ -100,7 +102,8 @@ class NewIngredientForm extends Component {
 			open: false,
 			foodId: "",
 			expiryDate: "",
-			foodName: ""
+			foodName: "",
+			priFoodId: ""
 		});
 		// window.location.reload(true);
 	};
@@ -158,6 +161,19 @@ class NewIngredientForm extends Component {
 			<div class="body">
 				<Container component="main" maxWidth="xs">
 					<div className={this.classes.paper}>
+
+						<TextField
+							variant="outlined"
+							margin="normal"
+							fullWidth
+							name="priFoodId"
+							value={this.state.priFoodId}
+							label="Primary Ingredients"
+							onChange={this.onChange}
+							type="text"
+							placeholder="Primary Ingredients"
+						/>
+
 						{this.createTextField(
 							"foodId",
 							this.state.foodId,
@@ -228,10 +244,11 @@ class NewIngredientForm extends Component {
 									Expiry Date: {this.state.expiryDate}
 								</Typography> */}
 								<DialogContentText id="alert-dialog-description">
-                  {this.state.foodName} has been tagged.<br/>
-                  Food ID: {this.state.foodId}<br/>
-                  Storage Date: {this.state.storageDate}<br/>
-                  Expiry Date: {String(this.state.expiryDate).split(' ')[2]+"/"+this.state.month+"/"+String(this.state.expiryDate).split(' ')[3]}
+								{this.state.foodName} has been tagged.<br/>
+								Primary ingredients(if any):{this.state.priFoodId}<br/>
+								Food ID: {this.state.foodId}<br/>
+								Storage Date: {this.state.storageDate}<br/>
+								Expiry Date: {String(this.state.expiryDate).split(' ')[2]+"/"+this.state.month+"/"+String(this.state.expiryDate).split(' ')[3]}
 								</DialogContentText>
 								{/* <DialogContentText id="alert-dialog-description">
                 Food ID: {this.state.foodId}
