@@ -117,27 +117,15 @@ class OrderReceivedBase extends Component {
 							<Grid item xs={6}>
 								<Typography>Deliver to:</Typography>
 								<Typography> {this.state.venue}</Typography>
-								<Typography> {this.state.dateOnly}</Typography>
+								<Typography>{this.state.dateOnly}</Typography>
 								<Typography> {this.state.time}</Typography>
 							</Grid>
 
-							<Grid container spacing={3}>
-								<Grid item xs={6}>
-									<Typography>Deliver to:</Typography>
-									<Typography> {this.state.venue}</Typography>
-									<Typography>
-										{" "}
-										{this.state.dateOnly}
-									</Typography>
-									<Typography> {this.state.time}</Typography>
-								</Grid>
-
-								<Grid item xs={6}>
-									<Typography>
-										Menu: ({this.state.pax} pax)
-									</Typography>
-									{this.renderMenu()}
-								</Grid>
+							<Grid item xs={6}>
+								<Typography>
+									Menu: ({this.state.pax} pax)
+								</Typography>
+								{this.renderMenu()}
 							</Grid>
 						</Grid>
 					</Paper>

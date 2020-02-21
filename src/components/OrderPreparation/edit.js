@@ -106,9 +106,9 @@ class OrderPreparationEditBase extends Component {
 							[data.name]: data.Ingredients
 						});
 						data.Ingredients.forEach(ingt => {
-							let temp = data.name + " " + ingt;
+							let dishIngt = data.name + " " + ingt;
 							this.setState({
-								[temp]: ""
+								[dishIngt]: false
 							});
 						});
 					}
@@ -139,57 +139,57 @@ class OrderPreparationEditBase extends Component {
 			});
 	}
 
-	onSubmit = event => {
-		event.preventDefault();
+	// onSubmit = event => {
+	// 	event.preventDefault();
 
-		// ingredientTagsUsed is the equivalent of the TextareaAutosize. For whatever text in there, it splits by comma
-		// gets the RFID details and appends it to a new variable called ingredientsUsed
-		// then it writes to the db, under the name of Ingredients_Used.
-		let ingredientsTempList = this.state.ingredientTagsUsed.split(",");
-		let ingredientsTempListLength = ingredientsTempList.length;
-		for (var i = 0; i < ingredientsTempListLength; i++) {
-			//Get
-			this.props.firebase.fs
-				.collection("Ingredient_RFID")
-				.doc(ingredientsTempList[i])
-				.get()
-				.then(doc => {
-					this.setState(prevstate => ({
-						ingredientsUsed: [
-							...prevstate.ingredientsUsed,
-							doc.data().Name +
-								": " +
-								doc.data().Date_of_expiry +
-								", " +
-								ingredientsTempList[i]
-						]
-					}));
-					//Write
-					// Why this writing code is being initiated many times in this for loop is because ingredientsUsed becomes blank
-					// after this for loop is done. its weird. if this code is outside the for loop, itll write blank to the db.
-					this.props.firebase.fs
-						.collection("Catering_orders")
-						.doc(this.props.location.docID)
-						.update({
-							Ingredients_Used: this.state.ingredientsUsed
-						});
-				});
-		}
+	// 	// ingredientTagsUsed is the equivalent of the TextareaAutosize. For whatever text in there, it splits by comma
+	// 	// gets the RFID details and appends it to a new variable called ingredientsUsed
+	// 	// then it writes to the db, under the name of Ingredients_Used.
+	// 	let ingredientsTempList = this.state.ingredientTagsUsed.split(",");
+	// 	let ingredientsTempListLength = ingredientsTempList.length;
+	// 	for (var i = 0; i < ingredientsTempListLength; i++) {
+	// 		//Get
+	// 		this.props.firebase.fs
+	// 			.collection("Ingredient")
+	// 			.doc(ingredientsTempList[i])
+	// 			.get()
+	// 			.then(doc => {
+	// 				this.setState(prevstate => ({
+	// 					ingredientsUsed: [
+	// 						...prevstate.ingredientsUsed,
+	// 						doc.data().Name +
+	// 							": " +
+	// 							doc.data().Date_of_expiry +
+	// 							", " +
+	// 							ingredientsTempList[i]
+	// 					]
+	// 				}));
+	// 				//Write
+	// 				// Why this writing code is being initiated many times in this for loop is because ingredientsUsed becomes blank
+	// 				// after this for loop is done. its weird. if this code is outside the for loop, itll write blank to the db.
+	// 				this.props.firebase.fs
+	// 					.collection("Catering_orders")
+	// 					.doc(this.props.location.docID)
+	// 					.update({
+	// 						Ingredients_Used: this.state.ingredientsUsed
+	// 					});
+	// 			});
+	// 	}
 
-		// console.log(this.state.docID);
-		this.props.firebase.fs
-			.collection("Catering_orders")
-			.doc(this.state.docID)
-			.update({
-				Status: "Preparation"
-			})
-			.then(function() {
-				console.log("Document successfully written!");
-			})
-			.catch(function(error) {
-				console.error("Error writing document: ", error);
-			});
-	};
+	// 	// console.log(this.state.docID);
+	// 	this.props.firebase.fs
+	// 		.collection("Catering_orders")
+	// 		.doc(this.state.docID)
+	// 		.update({
+	// 			Status: "Preparation"
+	// 		})
+	// 		.then(function() {
+	// 			console.log("Document successfully written!");
+	// 		})
+	// 		.catch(function(error) {
+	// 			console.error("Error writing document: ", error);
+	// 		});
+	// };
 
 	onChange = event => {
 		this.setState({
@@ -213,47 +213,67 @@ class OrderPreparationEditBase extends Component {
 
 	onItemTextChange = dish => event => {
 		this.setState({
-			[dish + " " + "barcodes"]: event.target.value
+			[dish + " barcodes"]: event.target.value
 		});
 		let barcodes = event.target.value.split(",");
+
+		const ingredients = this.state[dish];
+		console.log(ingredients)
+
+		ingredients.forEach(ingt => {
+			let dishIngt = dish + " " + ingt;
+			console.log(dishIngt)
+
+			// if (true) {
+			this.setState({
+				[dishIngt]: false
+			});
+			// }
+			// console.log(dishIngt);
+			// console.log(this.state[dishIngt]);
+			// console.log(this.state)
+		});
+		
+		console.log(this.state)
+
 		barcodes.forEach(barcode => {
 			if (barcode in this.state) {
+				// console.log(dish)
+				// console.log(ingt)
+				// console.log(dishIngt)
+				// console.log(barcode)
 				this.setState({
 					[dish + " " + this.state[barcode]]: true
 				});
-			} else {
-				this.setState({
-					[dish + " " + this.state[barcode]]: false
-				});
 			}
-		});
-		console.log(barcodes);
+		}); // console.log(barcodes);
+
+		console.log(this.state)
 	};
 
-	validator(name) {
-		console.log(name);
-		return this.state[name] === true;
+	validator(dishIngt) {
+		// console.log("Validator: " + dishIngt);
+		return this.state[dishIngt] === true;
 	}
 
-	renderMenuItem(item) {
-		const ingredients = this.state[item];
-		// console.log(typeof ingredients)
-		// console.log(ingredient)
+	renderMenuItem(dish) {
+		const ingredients = this.state[dish];
+
 		let menu = [];
+
 		if (ingredients !== undefined) {
 			ingredients.forEach((ingt, id) => {
-				let temp = item + " " + ingt;
+				let dishIngt = dish + " " + ingt; // E.g. Sweet and Sour Fish Fish
+
 				menu.push(
 					<div key={id}>
-						{/* <Typography key={id}>{ingt}</Typography> */}
 						<FormControlLabel
 							control={
 								<Checkbox
 									disabled
-									checked={this.validator(temp)}
-									// value={this.state[item + " " + ingt]}
+									checked={this.validator(dishIngt)}
 									// onChange={this.onMenuItemChange(item, ingt)}
-									name={ingt}
+									// name={dishIngt}
 								/>
 							}
 							label={ingt}
@@ -267,7 +287,7 @@ class OrderPreparationEditBase extends Component {
 
 	renderMenu() {
 		let list = [];
-		console.log(this.state);
+		// console.log(this.state);
 		this.state.menu.forEach((dish, id) => {
 			// let dishBarcodes = "";
 			list.push(
@@ -305,7 +325,7 @@ class OrderPreparationEditBase extends Component {
 	render() {
 		// console.log(this.state)
 		return (
-			<div class="body">
+			<div className="body">
 				<Container
 					component="main"
 					maxWidth="xs"

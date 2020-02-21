@@ -6,9 +6,9 @@ import { withRouter } from 'react-router-dom';
 import { withFirebase } from '../Firebase';
 import { withAuthorization } from '../Session'
 
-import { makeStyles } from '@material-ui/core/styles';
+// import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Typography from '@material-ui/core/Typography';
+// import Typography from '@material-ui/core/Typography';
 import * as ROUTES from '../../constants/routes';
 import Button from '@material-ui/core/Button';
 import Grid from "@material-ui/core/Grid";
