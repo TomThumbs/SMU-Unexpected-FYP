@@ -162,18 +162,6 @@ class NewIngredientForm extends Component {
 				<Container component="main" maxWidth="xs">
 					<div className={this.classes.paper}>
 
-						<TextField
-							variant="outlined"
-							margin="normal"
-							fullWidth
-							name="priFoodId"
-							value={this.state.priFoodId}
-							label="Primary Ingredients"
-							onChange={this.onChange}
-							type="text"
-							placeholder="Primary Ingredients"
-						/>
-
 						{this.createTextField(
 							"foodId",
 							this.state.foodId,
@@ -188,6 +176,18 @@ class NewIngredientForm extends Component {
 							"Food Name",
 							"Food Name"
 						)}
+
+						<TextField
+							variant="outlined"
+							margin="normal"
+							fullWidth
+							name="priFoodId"
+							value={this.state.priFoodId}
+							label="Contains"
+							onChange={this.onChange}
+							type="text"
+							placeholder="Barcodes of other ingredients"
+						/>
 
 						{/* Storage Date */}
 						<TextField
