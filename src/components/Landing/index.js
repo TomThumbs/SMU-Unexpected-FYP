@@ -118,15 +118,25 @@ class LandingPageBase extends Component {
     return eventid;
   }
 
+
   linktoevent(id){
     var link = ""
     return (link.concat("order-timeline?id=", id))
   }
 
-  createTable = (period) =>{
-    return(
-  <TableContainer>
-        <Table className={this.classes.table} aria-label="simple table">
+
+
+  createTable(eventlist) {
+		if (
+      eventlist.length === 0
+		) {
+			return (
+				"No Upcoming Events"
+			);
+		} else {
+			return (
+				<TableContainer>
+        <Table className={this.classes.table} >
           <TableHead>
             <TableRow>
               <TableCell>Date</TableCell>
@@ -138,7 +148,7 @@ class LandingPageBase extends Component {
             </TableRow>
           </TableHead>
           <TableBody>
-          {period.map(row => (
+          {eventlist.map(row => (
               <TableRow key={row.date}>
                 <TableCell component="th" scope="row">{row.date}</TableCell>
                 <TableCell align="right">{row.time}</TableCell>
@@ -153,10 +163,9 @@ class LandingPageBase extends Component {
           </TableBody>
         </Table>
       </TableContainer>
-    )
-  }
-
-  
+			);
+		}
+	}
 
 
 
