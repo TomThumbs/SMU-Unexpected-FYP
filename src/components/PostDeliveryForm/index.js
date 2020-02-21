@@ -22,7 +22,7 @@ class PostDeliveryFormBase extends Component {
     <Container component="main" maxWidth="xs">
     <h1>Declaration for Order #{this.props.location.orderid} Successful.</h1>
     <h1>Driver: {this.props.location.driver}</h1>
-    <img src={this.props.location.url} alt="Delivery form"></img>
+    <img src={this.props.location.url} width="100%" ></img>
     <br></br>
     <br></br>
     <Button href={ROUTES.LANDING} color="primary" fullWidth variant="contained">Home</Button>
