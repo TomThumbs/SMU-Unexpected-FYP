@@ -20,23 +20,23 @@ import Divider from '@material-ui/core/Divider';
 
 import { withAuthorization } from '../Session'
 
-import 'date-fns'; 
-import DateFnsUtils from '@date-io/date-fns'; 
+import 'date-fns';
+import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker,
   KeyboardDatePicker,
-} from '@material-ui/pickers'; 
+} from '@material-ui/pickers';
 
 
 const INITIAL_STATE = {
-  orderid: 0,
+  orderID: 0,
   orderiddoc: '',
   date: '',
   starttime:'',
   endtime:'',
   venue: '',
-  pax: 0,
+  pax: 30,
   hour: '',
   minute:'',
   custname: '',
@@ -48,7 +48,7 @@ const INITIAL_STATE = {
   selectedmenu:[],
   finalmenu:[],
   remarks:''
-  
+
 }
 
 const useStyles = makeStyles(theme => ({
@@ -75,14 +75,14 @@ class OrderFormBase extends Component {
   }
 
 
-  componentDidMount() {  
+  componentDidMount() {
     // Detect latest order ID
     this.props.firebase.fs.collection('Catering_orders').orderBy("orderID", "desc").limit(1).onSnapshot(snapshot => {
       let changes = snapshot.docChanges();
       changes.forEach(change => {
         let orderidnum = Number(change.doc.data().orderID)
         this.setState({
-          orderid: orderidnum+1, 
+          orderID: orderidnum+1,
           orderiddoc: change.doc.id
         })
       })
@@ -92,8 +92,8 @@ class OrderFormBase extends Component {
     this.props.firebase.fs.collection('Customers').doc("Counter").get().then(docu=> {
       this.setState({
         custID: Number(docu.data().ID)+1
-      })   
-  });    
+      })
+  });
 
     // Get list of menu items
     this.props.firebase.fs.collection('Menu').orderBy("Type").onSnapshot(snapshot => {
@@ -110,7 +110,7 @@ class OrderFormBase extends Component {
 
   onSubmit = event => {
     event.preventDefault();
-    
+
     let strhour = String(this.state.hour)
     let strmonth = Number(this.state.date.getMonth())+1
     let strmin = ''
@@ -125,7 +125,7 @@ class OrderFormBase extends Component {
       strtime = "0"+String(this.state.hour) + strmin
     } else {
       strtime = String(this.state.hour) + strmin
-    }  
+    }
     let strDate = this.state.date.getFullYear()+"-"+strmonth+"-"+this.state.date.getDate()
     let submitDate = new Date(this.state.date.getFullYear(),this.state.date.getMonth(),this.state.date.getDate(),this.state.hour,this.state.minute,0)
     let strSubmitDate = String(submitDate)
@@ -133,18 +133,18 @@ class OrderFormBase extends Component {
     strSubmitDate = strSubmitDate.split("GMT")[0]
 
     let strMonth = Number(new Date().getMonth())+1
-    this.props.firebase.fs.collection('Catering_orders').add({ 
+    this.props.firebase.fs.collection('Catering_orders').add({
       Customer: "",
       Status: "Order Received",
-      Date: submitDate, 
+      Date: submitDate,
       DateOnly: strDate,
       // DeliveryCheck: false,
       Menu: this.state.finalmenu,
       Pax: Number(this.state.pax),
-      Time: strtime, 
+      Time: strtime,
       // TruckImgUrl: '',
       venue: this.state.venue,
-      orderID: this.state.orderid,
+      orderID: this.state.orderID,
       // Ingredient_Tags_Used: '',
       Created_On:new Date().getFullYear()+"-"+strMonth+"-"+new Date().getDate()
     });
@@ -153,23 +153,23 @@ class OrderFormBase extends Component {
     this.props.firebase.fs.collection('Customers').where("Email","==",this.state.custemail).get().then(snap => {
       snap.forEach(doc => {
           if (doc.exists) {
-            this.setState({custExists: true}) 
-             
+            this.setState({custExists: true})
+
                 // console.log('Customer exists')
                 this.setState({ custref: "Customers/"+doc.id})
                 let dbcustref = this.props.firebase.fs.doc("Customers/"+doc.id)
 
-                this.props.firebase.fs.collection('Catering_orders').where("orderID", "==", this.state.orderid).onSnapshot(snapshot => {
+                this.props.firebase.fs.collection('Catering_orders').where("orderID", "==", this.state.orderID).onSnapshot(snapshot => {
                   let changes = snapshot.docChanges();
                   changes.forEach(change => {
-                     
+
                   this.props.firebase.fs.doc('Catering_orders/'+change.doc.id).update({ Customer: dbcustref })
                   // console.log('linked catering order to customer')
                   notCreated = false
-              }) 
-            })           
-          } 
-      }); 
+              })
+            })
+          }
+      });
     })
     // console.log(notCreated)
     if (notCreated) {
@@ -183,12 +183,12 @@ class OrderFormBase extends Component {
             HP: this.state.custcontact,
             Name: this.state.custname
       });
-      this.props.firebase.fs.collection('Customers').doc("Counter").update({ ID: this.state.custID }); 
+      this.props.firebase.fs.collection('Customers').doc("Counter").update({ ID: this.state.custID });
       let dbcustref = this.props.firebase.fs.doc("Customers/Customer"+this.state.custID)
-        this.props.firebase.fs.collection('Catering_orders').where("orderID", "==", this.state.orderid).onSnapshot(snapshot => {
+        this.props.firebase.fs.collection('Catering_orders').where("orderID", "==", this.state.orderID).onSnapshot(snapshot => {
         let changes = snapshot.docChanges();
           changes.forEach(change => {
-                  
+
           this.props.firebase.fs.doc('Catering_orders/'+change.doc.id).update({ Customer: dbcustref })
               // console.log('linked catering order to customer')
         })
@@ -199,7 +199,7 @@ class OrderFormBase extends Component {
 
     this.props.history.push({
       pathname: './post-order-form',
-      orderid: this.state.orderid,
+      orderID: this.state.orderID,
       date: strSubmitDate,
       venue: this.state.venue,
       pax: nPax,
@@ -208,8 +208,8 @@ class OrderFormBase extends Component {
   }
 
   onChange = event => {
-    this.setState({ 
-      [event.target.name]: event.target.value 
+    this.setState({
+      [event.target.name]: event.target.value
     });
   }
 
@@ -234,7 +234,7 @@ class OrderFormBase extends Component {
       starttime: time,
       hour: time.getHours(),
       minute: time.getMinutes()
-    }) 
+    })
     // console.log(this.state.starttime)
   }
 
@@ -267,22 +267,22 @@ class OrderFormBase extends Component {
 
       listofmenu.push(
         <div key={item.dish}>
-          <FormControlLabel 
+          <FormControlLabel
             control={
-            <Checkbox 
-              // checked={item.selected} 
-              onChange={this.onMenuChange} 
-              name={item.dish} 
-              value={item.dish} 
-              color="primary" 
-            />} 
-          label={item.dish} 
+            <Checkbox
+              // checked={item.selected}
+              onChange={this.onMenuChange}
+              name={item.dish}
+              value={item.dish}
+              color="primary"
+            />}
+          label={item.dish}
           />
           <br/>
         </div>
       )
     })
-    
+
     return listofmenu;
   }
 
@@ -294,7 +294,7 @@ class OrderFormBase extends Component {
     this.state.custname.length !== 0 &&
     this.state.custcontact.length !== 0 &&
     this.state.custemail.length !== 0 &&
-    this.state.custcompany.length !== 0 
+    this.state.custcompany.length !== 0
 
     return(
       <Container component="main" maxWidth="sm">
@@ -304,14 +304,14 @@ class OrderFormBase extends Component {
           <Typography variant="h4" align="center" gutterBottom>
           Order Form
           </Typography>
-          
+
           <form onSubmit={this.onSubmit}>
             <TextField
               variant="filled"
               margin="dense"
               fullWidth
-              name="orderid"
-              value={this.state.orderid}
+              name="orderID"
+              value={this.state.orderID}
               label="Order ID"
               placeholder="Order ID"
               autoFocus
@@ -322,7 +322,7 @@ class OrderFormBase extends Component {
             <div><br></br></div>
             <Grid container align-items="left">
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              Date: 
+              Date:
               <KeyboardDatePicker
                 variant="inline"
                 format="dd/MM/yyyy"
@@ -334,8 +334,8 @@ class OrderFormBase extends Component {
                   'aria-label': 'change date',
                 }}
               />
-              
-              Time: 
+
+              Time:
               <KeyboardTimePicker
                 margin="none"
                 id="time-picker"
@@ -374,7 +374,7 @@ class OrderFormBase extends Component {
 
             {/* Customer Company */}
             {this.createTextField("custcompany", this.state.custcompany, "Customer Company:", "Customer Company")}
-            
+
             {/* Postal Code */}
             {this.createTextField("venue", this.state.venue, "Venue:", "Venue")}
 
@@ -382,7 +382,7 @@ class OrderFormBase extends Component {
             <Divider variant="il" />
             <br></br>
             <Typography component="h5" variant="h5" >Menu</Typography>
-            
+
 
             {/* Display Menu */}
             {this.renderMenu()}
@@ -390,8 +390,8 @@ class OrderFormBase extends Component {
             {/* Remarks */}
             {this.createTextField("remarks", this.state.remarks, "Remarks:", "Remarks")}
 
-            <Button 
-              disabled={isInvalid} 
+            <Button
+              disabled={isInvalid}
               type="submit"
               fullWidth
               variant="contained"

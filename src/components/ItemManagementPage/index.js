@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import { withFirebase } from "../Firebase";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
+// import Button from "@material-ui/core/Button";
 import ButtonBase from "@material-ui/core/ButtonBase";
-import Typography from "@material-ui/core/Typography";
+// import Typography from "@material-ui/core/Typography";
 
 import * as ROUTES from "../../constants/routes";
 
@@ -90,9 +90,8 @@ const useStyles = makeStyles(theme => ({
 	},
 	imageTitle: {
 		position: "relative",
-		padding: `${theme.spacing(2)}px ${theme.spacing(4)}px ${theme.spacing(
-			1
-		) + 6}px`
+		padding: `${theme.spacing(2)}px ${theme.spacing(4)}px ${theme.spacing(1) +
+			6}px`
 	},
 	imageMarked: {
 		height: 3,
@@ -117,12 +116,6 @@ class ItemManagementPageBase extends Component {
 	onClick = event => {
 		let trigger = event.target.value;
 		console.log(trigger);
-		// if(index === 0){
-		//   this.props.history.push({
-		//     pathname: ROUTES.LANDING
-		//   });
-		//   console.log("The link was clicked 0.");
-		// }
 		switch (Number(trigger)) {
 			case 0:
 				this.props.history.push({
@@ -142,6 +135,8 @@ class ItemManagementPageBase extends Component {
 				});
 				console.log("The link was clicked 2.");
 				break;
+			default:
+				break;
 		}
 	};
 
@@ -152,20 +147,20 @@ class ItemManagementPageBase extends Component {
 			//   {image.title}
 			// </Button>
 			<Grid item xs={4}>
-        <Paper className={this.classes.Paper}>
-        <ButtonBase
-					focusRipple
-					key={image.title}
-					className={this.classes.image}
-					focusVisibleClassName={this.classes.focusVisible}
-					style={{
-						width: image.width
-					}}
-					onClick={this.onClick}
-					value={index}
-					type="button"
-				>
-					{/* <span
+				<Paper className={this.classes.Paper}>
+					<ButtonBase
+						focusRipple
+						key={image.title}
+						className={this.classes.image}
+						focusVisibleClassName={this.classes.focusVisible}
+						style={{
+							width: image.width
+						}}
+						onClick={this.onClick}
+						value={index}
+						type="button"
+					>
+						{/* <span
 					className={this.classes.imageSrc}
 					style={{
 						backgroundImage: `url(${image.url})`
@@ -173,18 +168,18 @@ class ItemManagementPageBase extends Component {
 				/>
 				<span className={this.classes.imageBackdrop} />
 				<span className={this.classes.imageButton}> */}
-					{/* <Typography
+						{/* <Typography
 						component="span"
 						variant="subtitle1"
 						color="inherit"
 						className={this.classes.imageTitle}
 					> */}
-					{image.title}
-					{/* <span className={this.classes.imageMarked} />
+						{image.title}
+						{/* <span className={this.classes.imageMarked} />
 					</Typography> */}
-					{/* </span> */}
-				</ButtonBase>
-        </Paper>
+						{/* </span> */}
+					</ButtonBase>
+				</Paper>
 			</Grid>
 		);
 	}
@@ -192,14 +187,10 @@ class ItemManagementPageBase extends Component {
 	render() {
 		return (
 			// <p>Hi</p>
-			<Container
-				component="main"
-				maxWidth="xs"
-				className={this.classes.root}
-			>
+			<Container component="main" maxWidth="xs" className={this.classes.root}>
 				<CssBaseline />
 				<Grid container spacing={3}>
-				{images.map((image, index) => this.renderButtons(image, index))}
+					{images.map((image, index) => this.renderButtons(image, index))}
 				</Grid>
 			</Container>
 		);

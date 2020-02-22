@@ -126,7 +126,7 @@ class DeliveryFormBase extends Component {
 
 		this.props.history.push({
 			pathname: './post-delivery-form',
-			orderid: this.state.oID,
+			orderID: this.state.oID,
 			driver: this.state.driver,
 			url: this.state.imageURL
 		  })
@@ -166,7 +166,7 @@ class DeliveryFormBase extends Component {
 		this.setState({ ...this.props, [name]: event.target.checked });
 	};
 
-	onChange = event => {	
+	onChange = event => {
 		this.setState({ [event.target.name]: event.target.value });
 	};
 

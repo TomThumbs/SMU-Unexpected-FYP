@@ -91,7 +91,7 @@ class DeliverySelectionBase extends Component {
 			changes.forEach(change => {
 				let orderidnum = Number(change.doc.data().orderNumber);
 				this.setState({
-					orderid: orderidnum + 1,
+					orderID: orderidnum + 1,
 					orderiddoc: change.doc.id
 				});
 			});
