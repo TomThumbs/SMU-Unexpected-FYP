@@ -1,335 +1,235 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
+import { withFirebase } from "../Firebase";
+import { Link, withRouter } from "react-router-dom";
 
-import '../../App.css';
+import { makeStyles } from "@material-ui/core/styles";
+// import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
+import Container from "@material-ui/core/Container";
+import Paper from "@material-ui/core/Paper";
+import Button from "@material-ui/core/Button";
+// import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 
-import { withRouter } from 'react-router-dom';
-import { withFirebase } from '../Firebase';
-
-// import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Button from '@material-ui/core/Button';
-
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-
-import Checkbox from '@material-ui/core/Checkbox';
-
-
-import { withAuthorization } from '../Session'
-
-import 'date-fns'; 
-
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-
-const INITIAL_STATE = {
-  orderid: 0,
-  date: '',
-  starttime:'',
-  endtime:'',
-  venue: '',
-  pax: 0,
-  hour: '',
-  minute:'',
-  custname: '',
-  custcontact: '',
-  custemail: '',
-  custcompany: '',
-  custID:0,
-  custref:'',
-  selectedmenu:[],
-  finalmenu:[],
-  ingredientsUsed:[],
-  ingredientTagsUsed:''
-}
+import * as ROUTES from "../../constants/routes";
 
 const useStyles = makeStyles(theme => ({
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
-  },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
+  root: {
+    flexGrow: 1
   },
   paper: {
-    padding: theme.spacing(2),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
+    marginTop: theme.spacing(8),
+    display: "flex",
+    flexDirection: "column",
+    maxWidth: 400,
+    textAlign: "center"
+    // margin: `${theme.spacing(1)}px auto`,
+    // padding: theme.spacing(2),
   },
+  form: {
+    width: "100%", // Fix IE 11 issue.
+    marginTop: theme.spacing(1)
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2)
+  },
+  text: {
+    textAlign: "center"
+  }
 }));
 
-class CookingFormBase extends Component {
+const INITIAL_STATE = {
+  docID: "",
+  orderID: "",
+  menu:[],
+  IngredientsUsed: [],
+  Ingredient:"",
+  Tag:"",
+  chosenMenu:""
+};
 
+class OrderPreparationEditBase extends Component {
   constructor(props) {
     super(props);
-    this.state = { ...INITIAL_STATE };
-    this.classes = { useStyles }
+    this.state = { ...INITIAL_STATE, docID: "28" }; //props.location.state.docID
+    this.classes = { useStyles };
   }
 
+  mmenu = ''
 
-  componentDidMount() {  
-//this.props.location.docID
-    this.props.firebase.fs.collection('Catering_orders').doc(this.props.location.docID).get().then(doc=> {
-      // console.log(doc.data())
-          this.setState({
-            orderid: doc.data().orderID,
-            docId: doc.id,
-            date: String(doc.data().Date.toDate()).split("GMT")[0].split(" ")[1] + " " + String(doc.data().Date.toDate()).split("GMT")[0].split(" ")[2] + " "+ String(doc.data().Date.toDate()).split("GMT")[0].split(" ")[3],
-            menu: doc.data().Menu,
-            venue: doc.data().venue,
-            pax: doc.data().Pax,
-            ingredientTagsUsed: doc.data().Ingredient_Tags_Used
-          }) 
-          // console.log((doc.data().Date.toDate()).getMinutes())
-          if (Number(doc.data().Date.toDate().getHours()) === 12) {
-            this.setState({
-              time: doc.data().Date.toDate().getHours() + ":" + doc.data().Date.toDate().getMinutes() + " PM"
-              }
-            )
-          }  
-          if (Number(doc.data().Date.toDate().getHours()) >= 12) {
-            this.setState({
-              time: (Number(doc.data().Date.toDate().getHours())-12) + ":" + doc.data().Date.toDate().getMinutes() + " PM"
-              }
-            )
-          }
-          if (Number(doc.data().Date.toDate().getHours()) < 12) {
-            this.setState({
-              time: doc.data().Date.toDate().getHours() + ":" + doc.data().Date.toDate().getMinutes() + " AM"
-              }
-            )
-          }
+  componentDidMount() {
+    // let queryString = window.location.search;
+    // let urlParams = new URLSearchParams(queryString);
+    // let urlId = "28" //Number(urlParams.get("id"));
+    
+    this.setState({
+      orderID: "28",// urlId,
+    });
 
-        this.props.firebase.fs.collection('Customers').doc(doc.data().Customer.id).get().then(docu=>{
-          this.setState({
-            custname:docu.data().Name,
-            custcompany:docu.data().Company,
-            custemail:docu.data().Email
+    // ---------- RETRIEVE CATERING ORDER ----------
+    console.log("Retrieving Catering Order");
+    this.props.firebase.fs
+      .collection("Catering_orders")
+      .where("orderID", "==", 28) //urlId)
+      .get()
+      .then(querySnapshot => {
+        querySnapshot.forEach(doc => {
+          let data = doc.data();
+          this.mmenu = Array.from(new Set(data.Menu))
+
+          // ---------- RETRIEVE MENU INGREDIENTS ----------
+          this.mmenu.forEach((item,id) => { //supposed to be doing a multi one already. This hinges on how data is uploaded from order prep
+            // let spacetrim = item.replace(/\s/g,'')
+            // spacetrim = spacetrim.replace('&','')
+            // console.log(spacetrim)
+
+            this.setState({
+              [item]: data.SweetSourFish // the problem. i cannot use space trim, & trim, trimmed stuff. 
+              // i tried data.spacetrim doesnt work
+            })
           })
-        })  
-      }) 
 
-    // SHOW list of menu items selected. 
-    this.props.firebase.fs.collection('Menu').orderBy("Type").onSnapshot(snapshot => {
-      let changes = snapshot.docChanges();
-          changes.forEach(change => {
-            let dishname = change.doc.data().name
-            let dishtype = change.doc.data().Type
-            this.setState((prevstate) => ({
-            selectedmenu:[...prevstate.selectedmenu,{dish:dishname, type:dishtype, selected:"false"}]
-        }))
+          this.setState({
+            docID: doc.id,
+            menu: Array.from(new Set(data.Menu)),
+            IngredientsUsed: Array.from(new Set(data.Ingredients_Used)),
+            chosenMenu: data.Menu[0]
+          });
+        });
       })
-    })
+      .catch(function(error) {
+        console.log("Error getting documents: ", error);
+      });
   }
-  //my rationale for trying to detect the ingredient linked to the rfid, BUT NOT creating a reference object is cuz
-  //these tags and codes should be reusable. So I will dig out the tags and add an additional field for reference
-  onSubmit = event => {
-    event.preventDefault();
-    // console.log(this.state.ingredientTagsUsed)
-    let ingredientsTempList = this.state.ingredientTagsUsed.split(",")
-    let ingredientsTempListLength = ingredientsTempList.length  
-    for (var i = 0; i < ingredientsTempListLength; i++) {
-      this.props.firebase.fs.collection('Ingredient_RFID').doc(ingredientsTempList[i]).get().then(doc=>{
-        this.setState((prevstate) => ({
-          ingredientsUsed: [...prevstate.ingredientsUsed, doc.data().Name + ": " + doc.data().Date_of_expiry]
-        }));
-        this.props.firebase.fs.collection('Catering_orders').doc(this.props.location.docID).update({
-          Ingredients_Used: this.state.ingredientsUsed
-        })
-      })
-    }
-  
-    this.props.firebase.fs.collection('Catering_orders').doc(this.props.location.docID).update({
-      Ingredient_Tags_Used: this.state.ingredientTagsUsed,
-        })
-    this.handleClickOpen()
-  }
-  
-  handleClickOpen = () => {
-    this.setState({
-      open: true
-    })
-  };
-
-  handleClose = () => {
-    this.setState({
-      open: false,
-    })
-    this.props.history.push({
-      pathname: './cooking-selection',
-    })
-  };
 
   onChange = event => {
     this.setState({ 
-      [event.target.name]: event.target.value 
+      chosenMenu: event.target.name
     });
+    this.renderMenu()
   }
 
-  onMenuChange = event => {
-    const dishname = event.target.value;
-
-    this.setState((prevstate) => ({
-      finalmenu: [...prevstate.finalmenu, dishname]
-    }));
+  renderMenuItem(item) {
+    const ingredients = this.state[item];
+    // console.log(ingredient)
+    let menu = [];
+    if (ingredients !== undefined) {
+      ingredients.forEach((ingt, id) => {
+        menu.push(
+          <tr> 
+            <td key={id}>{ingt.split(":")[0]}</td>
+            <td key={id}>{ingt.split(", ")[1]}</td>
+          </tr>
+        );
+      });
+    }
+    return menu;
   }
 
-  createTextField = (name, temp, label, placeholder) =>{
-    return(
-      <TextField
-        margin="normal"
-        fullWidth
-        name={name}
-        value={temp}
-        label={label}
-        onChange={this.onChange}
-        type="text"
-        placeholder={placeholder}
-        InputProps={{
-          readOnly: true,
-        }}
-      />
-    )
-  }
-
-  renderMenu = () => {
-    let listofmenu = [];
-    let dishtype = []
-
-    this.state.selectedmenu.forEach(item => {
-
-      if(dishtype.includes(item.type) === false){
-        dishtype.push(item.type);
-        listofmenu.push(<p key={item.type}>{item.type}</p>);
+  renderMenu() {
+    let list = [];
+    this.state.menu.forEach((item, id) => {
+      if (item === this.state.chosenMenu) {
+        list.push(
+          <div key={id}>
+            <Paper className={this.classes.paper}>
+              <Typography variant="h5">
+                <Link name={item} onClick={this.onChange}>
+                {item}
+                </Link>
+              </Typography>
+            </Paper>
+          </div>
+        );
+      } else {
+        list.push(
+          <div key={id}>
+            <Paper className={this.classes.paper}>
+              <Typography variant="h6" underline="none"> {/*Problem: I cant remove the underline. Think ans is here: https://material-ui.com/api/link/    */}              
+                <Link name={item} onClick={this.onChange}>
+                {item}
+                </Link>
+              </Typography>
+            </Paper>
+          </div>
+        );
       }
+    })
 
-      listofmenu.push(
-        <div key={item.dish}>
-          <FormControlLabel 
-            control={
-            <Checkbox 
-              // checked={item.selected} 
-              onChange={this.onMenuChange} 
-              name={item.dish} 
-              value={item.dish} 
-              color="primary" 
-            />} 
-          label={item.dish} 
-          />
-          <br/>
+    if (this.state.menu.length !== 0) {
+      console.log("chosen menu is " , this.state.chosenMenu)
+      this.state.menu.forEach((item, id) => {
+        if (item === this.state.chosenMenu) {
+          list.push(
+            <table>
+              <tr>
+                <th>
+                  Item
+                </th>
+                <th>
+                  Item ID
+                </th>
+              </tr>
+              {this.renderMenuItem(item)}
+            </table>
+          );
+        } 
+      })
+    } else {
+      console.log("chosen menu is empty.")
+      list.push(
+        <div>
+          <Paper className={this.classes.paper}>
+            <table>
+              <tr>
+                  <th>
+                    Item
+                  </th>
+                  <th>
+                    Item ID
+                  </th>
+                </tr>
+            </table>
+          </Paper>
         </div>
       )
-    })
-    return listofmenu;
+    }
+    return list;
   }
 
-  render () {
-    // let isInvalid = this.state.ingredientTagsUsed.length === 0
-
-    return(
-      <Container component="main" maxWidth="sm">
-        <div className={this.classes.root}>
-          <Typography variant="h6" align="center" gutterBottom>
-          Order Preparation
-          </Typography>
-          
-          <form onSubmit={this.onSubmit}>
-            <TextField
-              variant="filled"
-              margin="dense"
-              fullWidth
-              name="orderid"
-              value={this.state.orderid}
-              label="Order ID"
-              placeholder="Order ID"
-              autoFocus
-              InputProps={{
-                readOnly: true,
-              }}
-            />
-            <div><br></br></div>
-            {/* Delivery Date */}
-            {this.createTextField("date", this.state.date, "Delivery Date and Time:", "date")}
-            
-            {/* Delivery Time */}
-            {this.createTextField("time", this.state.time, "", "Time")}
-
-            {/* Deliver Pax */}
-            {this.createTextField("pax", this.state.pax, "Pax:", "pax")}
-
-            {/* Customer Name */}
-            {this.createTextField("custname", this.state.custname, "Customer Name:", "Customer Name")}
-
-            {/* Customer Email */}
-            {this.createTextField("custemail", this.state.custemail, "Customer Email:", "Customer Email")}
-
-            {/* Customer Company */}
-            {this.createTextField("custcompany", this.state.custcompany, "Customer Company:", "Customer Company")}
-            
-            {/* Postal Code */}
-            {this.createTextField("venue", this.state.venue, "Postal Code:", "Postal Code")}
-
-            {/* Display Menu */}
-            {/* {this.renderMenu()} */}
-
-            Ingredients Used:    
-            <TextField
-              margin="normal"
-              id="standard-number"
-              fullWidth
-              name="ingredientTagsUsed"
-              value={this.state.ingredientTagsUsed}
-              label="Scan tags here"
-              type="string"
-              onChange={this.onChange}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-
-
-            <Button 
-              // disabled={isInvalid} 
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={this.classes.submit}>
-              Submit
-            </Button>
-          </form>
-
-          <Dialog
-        open={this.state.open}
-        onClose={this.handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
+  renderBackButton() {
+    return (
+      <Link
+        to={{
+          pathname: ROUTES.ORDER_TIMELINE,
+          search: "?id=29" //+ this.state.orderID
+        }}
       >
-        <DialogTitle id="alert-dialog-title">{"Submission Notification"}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-          Ingredients have been tagged.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={this.handleClose} color="primary" autoFocus>
-            Noted
-          </Button>
-        </DialogActions>
-      </Dialog>
-        </div>
+        <Button>Back</Button>
+      </Link>
+    );
+  }
+
+  render() {
+    console.log(this.state)
+    return (
+      <Container component="main" maxWidth="xs" className={this.classes.root}>
+        {this.renderBackButton()}
+        <Paper className={this.classes.paper}>
+        <Typography variant="h4" align="center" gutterBottom>
+          Order ID #{this.state.orderID}
+          </Typography>
+          <Typography variant="h6" align="center" gutterBottom>
+          Ingredient Breakdown
+          </Typography>
+
+          {this.renderMenu()}          
+
+        </Paper>
       </Container>
-    )
+    );
   }
 }
 
-const CookingForm = withRouter(withFirebase(CookingFormBase));
-const condition = authUser => !!authUser;
+const OrderPreparationEdit = withRouter(withFirebase(OrderPreparationEditBase));
 
-export default withAuthorization(condition) (CookingForm);
-
+export default OrderPreparationEdit;

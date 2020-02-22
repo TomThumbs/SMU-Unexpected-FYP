@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -26,6 +27,8 @@ import {
   KeyboardTimePicker,
   KeyboardDatePicker,
 } from '@material-ui/pickers'; 
+
+
 const INITIAL_STATE = {
   orderid: 0,
   orderiddoc: '',
@@ -43,7 +46,9 @@ const INITIAL_STATE = {
   custID:0,
   custref:'',
   selectedmenu:[],
-  finalmenu:[]
+  finalmenu:[],
+  remarks:''
+  
 }
 
 const useStyles = makeStyles(theme => ({
@@ -88,7 +93,6 @@ class OrderFormBase extends Component {
       this.setState({
         custID: Number(docu.data().ID)+1
       })   
-      
   });    
 
     // Get list of menu items
@@ -109,11 +113,18 @@ class OrderFormBase extends Component {
     
     let strhour = String(this.state.hour)
     let strmonth = Number(this.state.date.getMonth())+1
-    let strtime = ''
-    if (strhour.includes("8")||strhour.includes("9")) {
-      strtime = "0"+String(this.state.hour)+String(this.state.minute)
+    let strmin = ''
+    if (this.state.minute.length === 1) {
+      strmin = "0"+ String(this.state.minute)
     } else {
-      strtime = String(this.state.hour)+String(this.state.minute)
+      strmin = String(this.state.minute)
+    }
+
+    let strtime = ''
+    if (strhour.length === 1) {
+      strtime = "0"+String(this.state.hour) + strmin
+    } else {
+      strtime = String(this.state.hour) + strmin
     }  
     let strDate = this.state.date.getFullYear()+"-"+strmonth+"-"+this.state.date.getDate()
     let submitDate = new Date(this.state.date.getFullYear(),this.state.date.getMonth(),this.state.date.getDate(),this.state.hour,this.state.minute,0)
@@ -127,14 +138,14 @@ class OrderFormBase extends Component {
       Status: "Order Received",
       Date: submitDate, 
       DateOnly: strDate,
-      DeliveryCheck: false,
+      // DeliveryCheck: false,
       Menu: this.state.finalmenu,
       Pax: Number(this.state.pax),
       Time: strtime, 
-      TruckImgUrl: '',
+      // TruckImgUrl: '',
       venue: this.state.venue,
       orderID: this.state.orderid,
-      Ingredient_Tags_Used: '',
+      // Ingredient_Tags_Used: '',
       Created_On:new Date().getFullYear()+"-"+strMonth+"-"+new Date().getDate()
     });
     let notCreated = true
@@ -155,8 +166,6 @@ class OrderFormBase extends Component {
                   this.props.firebase.fs.doc('Catering_orders/'+change.doc.id).update({ Customer: dbcustref })
                   // console.log('linked catering order to customer')
                   notCreated = false
-                    
-                  
               }) 
             })           
           } 
@@ -186,12 +195,15 @@ class OrderFormBase extends Component {
       })
     }
 
+    let nPax = Number(this.state.pax)
+
     this.props.history.push({
       pathname: './post-order-form',
       orderid: this.state.orderid,
       date: strSubmitDate,
       venue: this.state.venue,
-      pax: this.state.pax,
+      pax: nPax,
+      Menu: this.state.finalmenu
     })
   }
 
@@ -286,10 +298,11 @@ class OrderFormBase extends Component {
 
     return(
       <Container component="main" maxWidth="sm">
+        <div class="body">
         <div className={this.classes.root}>
           <br></br>
           <Typography variant="h4" align="center" gutterBottom>
-          Order Creation
+          Order Form
           </Typography>
           
           <form onSubmit={this.onSubmit}>
@@ -307,6 +320,7 @@ class OrderFormBase extends Component {
               }}
             />
             <div><br></br></div>
+            <Grid container align-items="left">
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
               Date: 
               <KeyboardDatePicker
@@ -320,6 +334,7 @@ class OrderFormBase extends Component {
                   'aria-label': 'change date',
                 }}
               />
+              
               Time: 
               <KeyboardTimePicker
                 margin="none"
@@ -331,6 +346,7 @@ class OrderFormBase extends Component {
                 }}
               />
             </MuiPickersUtilsProvider>
+            </Grid>
 
             <TextField
               margin="normal"
@@ -354,18 +370,25 @@ class OrderFormBase extends Component {
             {this.createTextField("custemail", this.state.custemail, "Customer Email:", "Customer Email")}
 
             {/* Customer Company */}
+            {this.createTextField("custcontact", this.state.custcontact, "Customer Phone Number:", "Customer Phone Number")}
+
+            {/* Customer Company */}
             {this.createTextField("custcompany", this.state.custcompany, "Customer Company:", "Customer Company")}
             
             {/* Postal Code */}
-            {this.createTextField("venue", this.state.venue, "Postal Code:", "Postal Code")}
+            {this.createTextField("venue", this.state.venue, "Venue:", "Venue")}
 
             <br></br><br></br>
             <Divider variant="il" />
+            <br></br>
             <Typography component="h5" variant="h5" >Menu</Typography>
-            <Divider variant="il" />
+            
 
             {/* Display Menu */}
             {this.renderMenu()}
+
+            {/* Remarks */}
+            {this.createTextField("remarks", this.state.remarks, "Remarks:", "Remarks")}
 
             <Button 
               disabled={isInvalid} 
@@ -377,6 +400,7 @@ class OrderFormBase extends Component {
               Submit
             </Button>
           </form>
+        </div>
         </div>
       </Container>
     )

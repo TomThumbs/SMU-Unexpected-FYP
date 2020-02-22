@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { withFirebase } from '../Firebase';
 import { withRouter } from 'react-router-dom';
+import { withAuthorization } from '../Session'
 
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 // import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 // import Paper from '@material-ui/core/Paper';
-import { CssBaseline } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -64,16 +64,18 @@ class DisplayOrdersBase extends Component{
 
   render(){
     return(
+      <div class="body">
       <Container component="main" maxWidth="xs">
-        <CssBaseline/>
         <Grid container justify="center" spacing={3} alignItems="center">
 
         </Grid>
       </Container>
+      </div>
     )
   }
 }
 
 const DisplayOrders = withRouter(withFirebase(DisplayOrdersBase));
+const condition = authUser => !!authUser;
 
-export default DisplayOrders;
+export default withAuthorization(condition) (DisplayOrders);

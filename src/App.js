@@ -18,6 +18,8 @@ import OrderForm from './components/OrderForm'
 import PostOrderForm from './components/PostOrderForm'
 import DeliverySelection from './components/DeliverySelection'
 import NewIngredient from './components/NewIngredient'
+import DisplayIngredient from './components/DisplayIngredient'
+
 import DisplayOrders from './components/DisplayOrders'
 
 import SearchOrder from './components/SearchOrder'
@@ -56,6 +58,8 @@ const App = () => (
         <Route path={ROUTES.ORDER_FORM} component={OrderForm} />
 
         <Route path={ROUTES.NEW_INGREDIENT} component={NewIngredient} />
+        <Route path={ROUTES.DISPLAY_INGREDIENT} component={DisplayIngredient} />
+
         <Route path={ROUTES.DISPLAY_ORDERS} component={DisplayOrders} />
 
         <Route path={ROUTES.SEARCH_ORDER} component={SearchOrder} />

@@ -7,13 +7,22 @@ import { withFirebase } from '../Firebase';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Typography } from '@material-ui/core';
-// console.log = console.warn = console.error = () => {};
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+// import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
   },
 });
+// console.log = console.warn = console.error = () => {};
+
 
 const INITIAL_STATE = {
   orderiddoc: '',
@@ -26,6 +35,7 @@ const INITIAL_STATE = {
   events_list: [],
   week_events_list: []
 }
+
 
 class LandingPageBase extends Component {
 
@@ -58,9 +68,12 @@ class LandingPageBase extends Component {
             this.setState((prevstate) => ({
               events_list: [...prevstate.events_list, {
                 docID:doc.id,
+                orderID: doc.data().orderID,
                 date: doc.data().DateOnly,
                 venue: doc.data().venue,
-                pax: doc.data().Pax
+                pax: doc.data().Pax,
+                status: doc.data().Status,
+                time: doc.data().Time,
               }]
             }))
 
@@ -76,9 +89,12 @@ class LandingPageBase extends Component {
             this.setState((prevstate) => ({
               week_events_list: [...prevstate.week_events_list, {
                 docID: doc.id,
+                orderID: doc.data().orderID,
                 date: doc.data().DateOnly,
                 venue: doc.data().venue,
-                pax: doc.data().Pax
+                pax: doc.data().Pax,
+                status: doc.data().Status,
+                time: doc.data().Time,
               }]
             }))
         });
@@ -87,7 +103,7 @@ class LandingPageBase extends Component {
     }
 
   renderEvents(eventlist){
-    let result = [];
+    let eventid = [];
     // console.log(eventlist)
     eventlist.forEach((evt) => {
       // console.log(evt)
@@ -97,29 +113,79 @@ class LandingPageBase extends Component {
         // console.log(entry);
       })
       temp.push(<br/>)
-      result.push(temp);
+      eventid.push(temp[0]);
     })
-    return result;
+    return eventid;
   }
+
+
+  linktoevent(id){
+    var link = ""
+    return (link.concat("order-timeline?id=", id))
+  }
+
+
+
+  createTable(eventlist) {
+		if (
+      eventlist.length === 0
+		) {
+			return (
+				"No Upcoming Events"
+			);
+		} else {
+			return (
+				<TableContainer>
+        <Table className={this.classes.table} >
+          <TableHead>
+            <TableRow>
+              <TableCell>Date</TableCell>
+              <TableCell align="right">Time</TableCell>
+              <TableCell align="right">Order ID</TableCell>
+              <TableCell align="right">Venue</TableCell>
+              <TableCell align="right">Pax</TableCell>
+              <TableCell align="right">Status</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+          {eventlist.map(row => (
+              <TableRow key={row.date}>
+                <TableCell component="th" scope="row">{row.date}</TableCell>
+                <TableCell align="right">{row.time}</TableCell>
+                <TableCell align="right">{row.orderID}</TableCell>
+                <TableCell align="right">{row.venue}</TableCell>
+                <TableCell align="right">{row.pax}</TableCell>
+                <TableCell align="right">
+                  <Button href={this.linktoevent(row.orderID)} color="primary">{row.status}</Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+			);
+		}
+	}
+
+
 
   render() {
 
   return (
-    <Container component="main" maxWidth="xs">
-  <div>
-
-
-    <h1>Events for Today</h1>
-    
-      {this.renderEvents(this.state.events_list)}
-
-    <h1>Events for the week</h1>
-
-      {this.renderEvents(this.state.week_events_list)}
-
-  </div>
+    <div class="body">
+      <Container component="main" maxWidth="md">
+        
+        <div>
+          <h1>Events for Today</h1>
+          {this.createTable(this.state.events_list)}
+        </div>
+        <br></br><br></br>
+        <div>
+          <h1>Events for the Next 7 Days</h1>
+          {this.createTable(this.state.week_events_list)}
+        </div>
   </Container>
-
+  </div>
 
     );
   }
@@ -139,3 +205,4 @@ export default LandingPage;
 // );
 
 // export default LandingPage;
+
