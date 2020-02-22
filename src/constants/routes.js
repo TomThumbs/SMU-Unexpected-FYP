@@ -12,12 +12,15 @@ export const HOME = '/home';
 // ---------- SMART HEATING ----------
 export const SMART_HEATING = '/smart-heating';
 
+// ---------- ITEM MANAGEMENT PAGE ----------
+export const ITEM_MANAGEMENT ='/item-management';
+
 // ---------- ADD A NEW INGREDIENT ----------
-export const NEW_INGREDIENT = '/new-ingredient'
-export const DISPLAY_INGREDIENT = '/display-ingredient'
+export const NEW_INGREDIENT = '/new-ingredient';
+export const DISPLAY_INGREDIENT = '/display-ingredient';
 
 // ---------- ADD NEW ORDER ----------
-export const ORDER_FORM = '/order-form'
+export const ORDER_FORM = '/order-form';
 export const POST_ORDER_FORM = '/post-order-form';
 
 // ---------- ADD DELIVERY FORM ----------

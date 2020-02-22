@@ -172,7 +172,7 @@ class LandingPageBase extends Component {
   render() {
 
   return (
-    <div class="body">
+    <div className="body">
       <Container component="main" maxWidth="md">
         
         <div>
