@@ -45,16 +45,21 @@ const NavigationAuth = () => (
 				Create New Order
 			</Link>
 		</li>
-		<li className="nav-link">
+		{/* <li className="nav-link">
 			<Link className="navigation-link" to={ROUTES.NEW_INGREDIENT}>
 				Tag New Ingredients
 			</Link>
-		</li>
+		</li> */}
 		<li className="nav-link">
+			<Link className="navigation-link" to={ROUTES.ITEM_MANAGEMENT}>
+				Item Management
+			</Link>
+		</li>
+		{/* <li className="nav-link">
 			<Link className="navigation-link" to={ROUTES.DISPLAY_INGREDIENT}>
 				Check Ingredients
 			</Link>
-		</li>
+		</li> */}
 		<li className="nav-link">
 			<Link
 				className="navigation-link"
