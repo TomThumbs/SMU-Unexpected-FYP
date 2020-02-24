@@ -168,7 +168,7 @@ class OrderPreparationSopBase extends Component {
 		this.setState({ [event.target.name]: event.target.value });
 	};
 
-  render() {
+    render() {
 	let isInvalid = this.state.hands === false || this.state.workspace === false || this.state.imageURL.length === 0
     return (
       <div class="body">
