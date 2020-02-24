@@ -69,10 +69,19 @@ class OrderPreparationEditBase extends Component {
 		this.setState({
 			orderID: urlId
 		});	
+		this.props.firebase.fs.collection("Catering_orders")
+		.where("orderID", "==", urlId)
+		.get()
+		.then(snap => {
+			snap.forEach(doc => {
+				this.setState({
+					docID: doc.id
+				})
+			});
+		});
 	}
 
 	onChange = event => {
-		console.log([event.target.name], this.state.completion)
 		if (this.state.completion === false) { 
 			this.setState({
 				[event.target.name]: true 
@@ -88,7 +97,7 @@ class OrderPreparationEditBase extends Component {
 		event.preventDefault();
 		this.props.firebase.fs
 			.collection("Catering_orders")
-			.doc(this.state.orderID)
+			.doc(String(this.state.docID))
 			.update({
 				Status: "Order Complete"
 			})
@@ -141,6 +150,8 @@ class OrderPreparationEditBase extends Component {
 					{this.renderBackButton()}
 					<Paper className={this.classes.paper}>
 						<Typography>Confirm Completion</Typography>
+						<Typography>Order ID</Typography>
+						<Typography>#{this.state.orderID}</Typography>
 
 						<FormControlLabel
 							control={
