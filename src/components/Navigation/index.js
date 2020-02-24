@@ -32,11 +32,11 @@ const NavigationAuth = () => (
 				Heater IoT
 			</Link>
 		</li>
-		<li className="nav-link">
+		{/* <li className="nav-link">
 			<Link className="navigation-link" to={ROUTES.DELIVERY_SELECTION}>
 				Delivery Selection
 			</Link>
-		</li>
+		</li> */}
 		{/* <li className="nav-link">
 <Link className="navigation-link" to={ROUTES.DISPLAY_ORDERS}>Display Orders</Link>
 </li> */}

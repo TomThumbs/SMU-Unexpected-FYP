@@ -12,11 +12,11 @@ import LandingPage from './components/Landing'
 import SignUpPage from './components/SignUp'
 import SignInPage from './components/SignIn'
 import HomePage from './components/Home'
-import DeliveryForm from './components/DeliveryForm'
-import PostDeliveryForm from './components/PostDeliveryForm'
+// import DeliveryForm from './components/DeliveryForm'
+// import PostDeliveryForm from './components/PostDeliveryForm'
 import OrderForm from './components/OrderForm'
 import PostOrderForm from './components/PostOrderForm'
-import DeliverySelection from './components/DeliverySelection'
+// import DeliverySelection from './components/DeliverySelection'
 import ItemManagementPage from './components/ItemManagementPage'
 import NewIngredient from './components/NewIngredient'
 import DisplayIngredient from './components/DisplayIngredient'
@@ -27,14 +27,7 @@ import SearchOrder from './components/SearchOrder'
 import DisplayOrderTimeline from './components/DisplayOrderTimeline'
 import OrderReceived from './components/OrderReceived'
 
-
-import FinalOverview from './components/PostCompletion'
-
-
-import OrderPreparationPostSop from './components/PostSop'
-
-
-import { OrderPreparation , OrderPreparationEdit, OrderPreparationSop } from './components/OrderPreparation'
+import { OrderPreparation, OrderPreparationEdit, OrderPreparationSop, OrderCompletion, OrderDelivery, FinalOverview, PostDeliveryForm, OrderPreparationPostSop } from './components/OrderPreparation'
 import OrderService from './components/OrderService'
 
 import DishToIngredientForm from './components/DishToIngredientForm'
@@ -76,9 +69,9 @@ const App = () => (
         <Route path={ROUTES.POST_ORDER_FORM} component={PostOrderForm} />
 
         {/* ---------- ADD DELIVERY FORM ---------- */}
-        <Route path={ROUTES.DELIVERY_FORM} component={DeliveryForm} />
+        <Route path={ROUTES.ORDER_DELIVERY} component={OrderDelivery} />
         <Route path={ROUTES.POST_DELIVERY_FORM} component={PostDeliveryForm} />
-        <Route path={ROUTES.DELIVERY_SELECTION} component={DeliverySelection} />
+        {/* <Route path={ROUTES.DELIVERY_SELECTION} component={DeliverySelection} /> */}
 
         {/* ---------- FIND EXISTING ORDER ---------- */}
         <Route path={ROUTES.SEARCH_ORDER} component={SearchOrder} />
@@ -93,6 +86,9 @@ const App = () => (
 
 
         <Route path={ROUTES.FINAL_OVERVIEW} component={FinalOverview}/>
+        
+
+        <Route path={ROUTES.ORDER_COMPLETE} component={OrderCompletion}/>
         
 
         <Route path={ROUTES.ORDER_SERVICE} component={OrderService}/>

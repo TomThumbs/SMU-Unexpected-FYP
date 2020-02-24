@@ -55,7 +55,7 @@ const INITIAL_STATE = {
 	status: "",
 };
 
-class OrderPreparationEditBase extends Component {
+class OrderCompletionBase extends Component {
 	constructor(props) {
 		super(props);
 		this.state = { ...INITIAL_STATE, docID: props.location.state.docID };
@@ -69,6 +69,23 @@ class OrderPreparationEditBase extends Component {
 		this.setState({
 			orderID: urlId
 		});	
+
+		this.props.firebase.fs.collection("Catering_orders")
+		.where("orderID", "==", urlId)
+		.get()
+		.then(snap => {
+			snap.forEach(doc => {
+				if (doc.data().Status === "Order Complete") {
+					console.log(doc.id)
+					this.props.history.push({
+						pathname: ROUTES.FINAL_OVERVIEW,
+						search: "?id=" + this.state.orderID,
+						docID: doc.id
+					});
+				}
+			});
+		});
+
 		this.props.firebase.fs.collection("Catering_orders")
 		.where("orderID", "==", urlId)
 		.get()
@@ -107,27 +124,30 @@ class OrderPreparationEditBase extends Component {
 			.catch(function(error) {
 				console.error("Error writing document: ", error);
 			});
-		this.handleClickOpen();
-	};
-
-	handleClickOpen = () => {
-		this.setState({
-			open: true
-		});
-	};
-
-	handleTimeline = () => {
-		this.setState({
-			open: false
-		});
-		this.props.history.push({
-			pathname: ROUTES.ORDER_TIMELINE,
+		// this.handleClickOpen();
+			this.props.history.push({
+			pathname: ROUTES.FINAL_OVERVIEW,
 			search: "?id=" + this.state.orderID,
-			state: {
-				orderID: this.state.orderID
-			}
+			docID: this.state.docID
 		});
 	};
+
+	// handleClickOpen = () => {
+	// 	this.setState({
+	// 		open: true
+	// 	});
+	// };
+
+	// handleTimeline = () => {
+	// 	this.setState({
+	// 		open: false
+	// 	});
+	// 	this.props.history.push({
+	// 		pathname: ROUTES.FINAL_OVERVIEW,
+	// 		search: "?id=" + this.state.orderID,
+	// 		docID: this.state.docID
+	// 	});
+	// };
 
 	renderBackButton() {
 		return (
@@ -175,7 +195,7 @@ class OrderPreparationEditBase extends Component {
 								Submit
 							</Button>
 						</form>
-						<Dialog
+						{/* <Dialog
 							open={this.state.open}
 							onClose={this.handleClose}
 							aria-labelledby="alert-dialog-title"
@@ -194,7 +214,7 @@ class OrderPreparationEditBase extends Component {
 									Back to Timeline
 								</Button>
 							</DialogActions>
-						</Dialog>
+						</Dialog> */}
 					</Paper>
 				</Container>
 			</div>
@@ -202,6 +222,6 @@ class OrderPreparationEditBase extends Component {
 	}
 }
 
-const OrderPreparationEdit = withRouter(withFirebase(OrderPreparationEditBase));
+const OrderCompletion = withRouter(withFirebase(OrderCompletionBase));
 const condition = authUser => !!authUser;
-export default withAuthorization(condition)(OrderPreparationEdit);
+export default withAuthorization(condition)(OrderCompletion);

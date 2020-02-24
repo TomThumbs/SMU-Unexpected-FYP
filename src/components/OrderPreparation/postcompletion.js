@@ -53,14 +53,13 @@ const INITIAL_STATE = {
 	orderID:"",
 	pax:"",
 	deliveryDate:"",
-	docID: "3Opv2UHEwKHd8Rw7WPJu"
+	docID: ""
 }
 
 class FinalOverviewBase extends Component {
-
 	constructor(props) {
 		super(props);
-		this.state = { ...INITIAL_STATE, };// docID: props.location.state.docID 
+		this.state = { ...INITIAL_STATE, docID: this.props.location.docID };// docID: props.location.state.docID 
 		this.classes = { useStyles };
 	}
 	

@@ -34,7 +34,7 @@ const INITIAL_STATE = {
 		"Order Received",
 		"Preparation",
 		"Delivery",
-		"Service",
+		"Event in Progress",
 		"Order Complete"
 	],
 	routeList: [
