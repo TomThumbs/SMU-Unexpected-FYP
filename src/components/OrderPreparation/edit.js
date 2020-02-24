@@ -51,8 +51,14 @@ const INITIAL_STATE = {
 	open: false,
 	docID: "",
 	orderID: "",
-	completion: false,
+	// statusList: ['Order Received', 'Preparation', 'Delivery', 'Service', 'Order Complete'],
+	dateOnly: "",
+	time: "",
+	venue: "",
+	pax: "",
 	status: "",
+	menu: []
+	// menuIngredients:[]
 };
 
 class OrderPreparationEditBase extends Component {
@@ -66,40 +72,131 @@ class OrderPreparationEditBase extends Component {
 		let queryString = window.location.search;
 		let urlParams = new URLSearchParams(queryString);
 		let urlId = Number(urlParams.get("id"));
+		// console.log(urlId)
 		this.setState({
 			orderID: urlId
-		});	
-		this.props.firebase.fs.collection("Catering_orders")
-		.where("orderID", "==", urlId)
-		.get()
-		.then(snap => {
-			snap.forEach(doc => {
-				this.setState({
-					docID: doc.id
-				})
-			});
 		});
-	}
 
-	onChange = event => {
-		if (this.state.completion === false) { 
-			this.setState({
-				[event.target.name]: true 
-			}) 
-		} else {
-			this.setState({
-				[event.target.name]: false 
-			}) 
-		}
+		// ---------- RETRIEVE CATERING ORDER ----------
+		console.log("Retreving Catering Order");
+		this.props.firebase.fs
+			.collection("Catering_orders")
+			.where("orderID", "==", urlId)
+			.get()
+			.then(querySnapshot => {
+				querySnapshot.forEach(doc => {
+					let data = doc.data();
+					this.setState({
+						docID: doc.id,
+						dateOnly: data.DateOnly,
+						time: data.Time,
+						venue: data.venue,
+						pax: Number(data.Pax),
+						status: data.Status,
+						menu: Array.from(new Set(data.Menu))
+					});
+					if (data.IngredientsUsed !== null) {
+						Object.keys(data.IngredientsUsed).forEach(dish => {
+							this.setState({
+								[dish + " barcodes"]: data.IngredientsUsed[dish]
+							});
+						});
+					}
+				});
+			})
+			.catch(function(error) {
+				console.log("Error getting documents: ", error);
+			});
+
+		// ---------- RETRIEVE MENU INGREDIENTS ----------
+		console.log("Retreving Menu Ingredients");
+		this.props.firebase.fs
+			.collection("Menu")
+			.get()
+			.then(querySnapshot => {
+				querySnapshot.forEach(doc => {
+					let data = doc.data();
+					if (this.state.menu.includes(data.name)) {
+						this.setState({
+							[data.name]: data.Ingredients
+						});
+						data.Ingredients.forEach(ingt => {
+							let dishIngt = data.name + " " + ingt;
+							this.setState({
+								[dishIngt]: false
+							});
+						});
+					}
+				});
+			})
+			.catch(function(error) {
+				console.log("Error getting documents: ", error);
+			});
+
+		// ---------- RETRIEVE INGREDIENTS ----------
+		console.log("Retreving Menu Ingredients");
+		this.props.firebase.fs
+			.collection("Ingredients")
+			.get()
+			.then(querySnapshot => {
+				querySnapshot.forEach(doc => {
+					let data = doc.data();
+					let ingtname = data.name;
+					// ingtname = ingtname.toLowerCase();
+					this.setState({
+						// [data.name.toLowerCase()]: Number(data.barcode),
+						[Number(data.barcode)]: ingtname
+					});
+				});
+			})
+			.catch(function(error) {
+				console.log("Error getting documents: ", error);
+			});
 	}
 
 	onSubmit = event => {
 		event.preventDefault();
+
+		// ingredientTagsUsed is the equivalent of the TextareaAutosize. For whatever text in there, it splits by comma
+		// gets the RFID details and appends it to a new variable called ingredientsUsed
+		// then it writes to the db, under the name of Ingredients_Used.
+		// let ingredientsTempList = this.state.ingredientTagsUsed.split(",");
+		// let ingredientsTempListLength = ingredientsTempList.length;
+		// for (var i = 0; i < ingredientsTempListLength; i++) {
+		// 	//Get
+		// 	this.props.firebase.fs
+		// 		.collection("Ingredient")
+		// 		.doc(ingredientsTempList[i])
+		// 		.get()
+		// 		.then(doc => {
+		// 			this.setState(prevstate => ({
+		// 				ingredientsUsed: [
+		// 					...prevstate.ingredientsUsed,
+		// 					doc.data().Name +
+		// 						": " +
+		// 						doc.data().Date_of_expiry +
+		// 						", " +
+		// 						ingredientsTempList[i]
+		// 				]
+		// 			}));
+		//Write
+		// Why this writing code is being initiated many times in this for loop is because ingredientsUsed becomes blank
+		// after this for loop is done. its weird. if this code is outside the for loop, itll write blank to the db.
+		// 			this.props.firebase.fs
+		// 				.collection("Catering_orders")
+		// 				.doc(this.props.location.docID)
+		// 				.update({
+		// 					Ingredients_Used: this.state.ingredientsUsed
+		// 				});
+		// 		});
+		// }
+
+		console.log(this.state.docID);
 		this.props.firebase.fs
 			.collection("Catering_orders")
-			.doc(String(this.state.docID))
+			.doc(this.state.docID)
 			.update({
-				Status: "Order Complete"
+				Status: "Preparation"
 			})
 			.then(function() {
 				console.log("Document successfully written!");
@@ -107,6 +204,28 @@ class OrderPreparationEditBase extends Component {
 			.catch(function(error) {
 				console.error("Error writing document: ", error);
 			});
+
+		let ingredientsUsed = {};
+
+		this.state.menu.forEach(dish => {
+			let ingredients = this.state[dish + " barcodes"];
+			ingredientsUsed = { ...ingredientsUsed, [dish]: ingredients };
+		});
+
+		console.log(ingredientsUsed);
+		this.props.firebase.fs
+			.collection("Catering_orders")
+			.doc(this.state.docID)
+			.update({
+				IngredientsUsed: ingredientsUsed
+			})
+			.then(function() {
+				console.log("Document successfully written!");
+			})
+			.catch(function(error) {
+				console.error("Error writing document: ", error);
+			});
+
 		this.handleClickOpen();
 	};
 
@@ -129,6 +248,88 @@ class OrderPreparationEditBase extends Component {
 		});
 	};
 
+	onItemTextChange = dish => event => {
+		let tempValue = event.target.value.trim();
+		this.setState({
+			// [dish + " barcodes"]: event.target.value
+			[dish + " barcodes"]: tempValue
+		});
+		let barcodes = event.target.value.split(",");
+
+		const ingredients = this.state[dish];
+		// console.log(ingredients);
+
+		ingredients.forEach(ingt => {
+			let dishIngt = dish + " " + ingt;
+			// console.log(dishIngt);
+
+			this.setState({
+				[dishIngt]: false
+			});
+		});
+
+		// console.log(this.state);
+
+		barcodes.forEach(barcode => {
+			barcode = barcode.trim();
+			if (barcode in this.state) {
+				this.setState({
+					[dish + " " + this.state[barcode]]: true
+				});
+			}
+		});
+
+		console.log(this.state);
+	};
+
+	validator(dishIngt) {
+		return this.state[dishIngt] === true;
+	}
+
+	renderMenuItem(dish) {
+		const ingredients = this.state[dish];
+
+		let menu = [];
+
+		if (ingredients !== undefined) {
+			ingredients.forEach((ingt, id) => {
+				let dishIngt = dish + " " + ingt; // E.g. Sweet and Sour Fish Fish
+
+				menu.push(
+					<div key={id}>
+						<FormControlLabel
+							control={<Checkbox disabled checked={this.validator(dishIngt)} />}
+							label={ingt}
+						/>
+					</div>
+				);
+			});
+		}
+		return menu;
+	}
+
+	renderMenu() {
+		let list = [];
+		this.state.menu.forEach((dish, id) => {
+			list.push(
+				<div key={id}>
+					<Paper className={this.classes.paper}>
+						<Typography variant="h6">{dish}</Typography>
+						{this.renderMenuItem(dish)}
+						<TextareaAutosize
+							aria-label="minimum height"
+							rowsMin={3}
+							placeholder="Minimum 3 rows"
+							value={this.state[dish + " barcodes"]}
+							onChange={this.onItemTextChange(dish)}
+						/>
+					</Paper>
+				</div>
+			);
+		});
+		return list;
+	}
+
 	renderBackButton() {
 		return (
 			<Link
@@ -143,30 +344,18 @@ class OrderPreparationEditBase extends Component {
 	}
 
 	render() {
-		let isInvalid = this.state.completion === false
+		// console.log(this.state)
 		return (
 			<div className="body">
 				<Container component="main" maxWidth="xs" className={this.classes.root}>
 					{this.renderBackButton()}
 					<Paper className={this.classes.paper}>
-						<Typography>Confirm Completion</Typography>
-						<Typography>Order ID</Typography>
-						<Typography>#{this.state.orderID}</Typography>
-
-						<FormControlLabel
-							control={
-							<Checkbox
-								onChange={this.onChange}
-								name="completion"
-								value="true"
-								color="primary"
-							/>}
-							label="The order has been successfully delivered!"
-						/>
+						<Typography>Order Preparation Edit</Typography>
 
 						<form onSubmit={this.onSubmit}>
+							{this.renderMenu()}
+
 							<Button
-								disabled={isInvalid}
 								type="submit"
 								fullWidth
 								variant="contained"
@@ -187,7 +376,7 @@ class OrderPreparationEditBase extends Component {
 							</DialogTitle>
 							<DialogContent dividers>
 								<DialogContentText id="alert-dialog-description">
-									Order Completed!
+									Dish successfully tagged!
 								</DialogContentText>
 							</DialogContent>
 							<DialogActions>
