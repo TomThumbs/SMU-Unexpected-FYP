@@ -163,7 +163,6 @@ class OrderPreparationEditBase extends Component {
 							/>}
 							label="The order has been successfully delivered!"
 						/>
-
 						<form onSubmit={this.onSubmit}>
 							<Button
 								disabled={isInvalid}

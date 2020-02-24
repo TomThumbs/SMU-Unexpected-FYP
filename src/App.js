@@ -26,6 +26,7 @@ import DisplayOrders from './components/DisplayOrders'
 import SearchOrder from './components/SearchOrder'
 import DisplayOrderTimeline from './components/DisplayOrderTimeline'
 import OrderReceived from './components/OrderReceived'
+import OrderPreparationPostSop from './components/PostSop'
 import { OrderPreparation , OrderPreparationEdit, OrderPreparationSop } from './components/OrderPreparation'
 import OrderService from './components/OrderService'
 
@@ -79,8 +80,8 @@ const App = () => (
         <Route path={ROUTES.ORDER_PREPARATION} component={OrderPreparation}/>
         <Route path={ROUTES.ORDER_PREPARATION_EDIT} component={OrderPreparationEdit}/>
         <Route path={ROUTES.ORDER_PREPARATION_SOP} component={OrderPreparationSop}/>
+        <Route path={ROUTES.ORDER_PREPARATION_POST_SOP} component={OrderPreparationPostSop}/>
         <Route path={ROUTES.ORDER_SERVICE} component={OrderService}/>
-
 
         <Route path={ROUTES.DISPLAY_ORDERS} component={DisplayOrders} />
         <Route path={ROUTES.DISH_TO_INGREDIENT_FORM} component={DishToIngredientForm}/>

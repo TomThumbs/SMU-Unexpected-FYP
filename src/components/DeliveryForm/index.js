@@ -333,8 +333,6 @@ class DeliveryFormBase extends Component {
 						</h4>
 					</React.Fragment>
 
-					{/* <label> Progress: {this.props.imageURL}</label> */}
-					{/* <p>{this.state.progress}</p> */}
 
 					<FileUploader
 						accept="image/*"
