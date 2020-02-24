@@ -161,7 +161,7 @@ class OrderPreparationEditBase extends Component {
 								value="true"
 								color="primary"
 							/>}
-							label="The order has been successfully delivered!"
+							label="The order has been successfully completed!"
 						/>
 						<form onSubmit={this.onSubmit}>
 							<Button

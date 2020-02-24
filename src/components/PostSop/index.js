@@ -60,6 +60,9 @@ class OrderPreparationPostSopBase extends Component {
 					</Grid>
 				</Grid>
 				<br></br>
+
+				<Typography variant="h6" component="h2">Order Commence: {this.props.location.preparationCommencement}</Typography>
+
 				<Button
 				type="submit"
 				fullWidth

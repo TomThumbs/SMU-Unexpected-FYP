@@ -50,7 +50,8 @@ const INITIAL_STATE = {
 	hands:false,
 	workspace:false,
 	image:"",
-	imageURL:""
+	imageURL:"",
+	commencement: new Date()
 };
 
 class OrderPreparationSopBase extends Component {
@@ -61,6 +62,22 @@ class OrderPreparationSopBase extends Component {
 	}
 
 	componentDidMount() {
+		let day = this.state.commencement.getDate()
+		let month = Number(this.state.commencement.getMonth())+1
+		let year = this.state.commencement.getFullYear()
+		let hour = this.state.commencement.getHours()
+		let minute = String(this.state.commencement.getMinutes())
+		if (month.length === 1) {
+			month = "0" + month
+		}
+		if (hour.length === 1) {
+			hour = "0" + hour
+		}
+		if (minute.length === 1) {
+			minute = "0" + minute
+		}
+		this.setState({commencement: day + "/" + month + "/" + year + " " + hour + ":" + minute})
+
 		this.props.firebase.fs
 			.collection("Catering_orders")
 			.doc(this.state.docID)
@@ -81,7 +98,7 @@ class OrderPreparationSopBase extends Component {
 		});
 
 		this.props.firebase.stg
-			.ref("truckHistory")
+			.ref("kitchenHistory")
 			.child(filename)
 			.getDownloadURL()
 			.then(url =>
@@ -111,7 +128,9 @@ class OrderPreparationSopBase extends Component {
 			.update({
 				headchef: this.state.headchef,
 				assistantA: this.state.assistantA,
-				assistantB: this.state.assistantB
+				assistantB: this.state.assistantB,
+				kitchenImageURL: this.state.imageURL,
+				preparationCommencement: this.state.commencement,
 			})
 			.then(function() {
 				console.log("Document successfully written!");
@@ -126,7 +145,8 @@ class OrderPreparationSopBase extends Component {
 			assistantA: this.state.assistantA,
 			assistantB: this.state.assistantB,
 			imageURL: this.state.imageURL,
-			orderID: this.state.orderID
+			orderID: this.state.orderID,
+			preparationCommencement: this.state.commencement,
 		});
 	};
 
