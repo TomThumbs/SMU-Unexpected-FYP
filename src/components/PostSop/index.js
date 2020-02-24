@@ -31,8 +31,8 @@ class OrderPreparationPostSopBase extends Component {
 			<div class="body">
 				<Container component="main" maxWidth="xs">
 				<Typography variant="h5" component="h2">Head Chef: {this.props.location.headchef}</Typography>
-				<Typography variant="h5" component="h2">Assistant A: {this.props.location.assistanta}</Typography>
-				<Typography variant="h5" component="h2">Assistant B: {this.props.location.assistantb}</Typography>
+				<Typography variant="h5" component="h2">Assistant A: {this.props.location.assistantA}</Typography>
+				<Typography variant="h5" component="h2">Assistant B: {this.props.location.assistantB}</Typography>
 				<FormControlLabel
 				control={<Checkbox checked="true" name="hands"  value="remember" color="primary" />}
 				label="Hands washed?"
