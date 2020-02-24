@@ -62,6 +62,14 @@ class OrderPreparationSopBase extends Component {
 	}
 
 	componentDidMount() {
+		let queryString = window.location.search;
+		let urlParams = new URLSearchParams(queryString);
+		let urlId = Number(urlParams.get("id")); 
+
+		this.setState({
+			orderID: urlId 
+		});
+		
 		let day = this.state.commencement.getDate()
 		let month = Number(this.state.commencement.getMonth())+1
 		let year = this.state.commencement.getFullYear()
