@@ -60,7 +60,7 @@ const INITIAL_STATE = {
 class OrderPreparationBase extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { ...INITIAL_STATE, orderID: 2 }; //props.location.state.orderID
+		this.state = { ...INITIAL_STATE, orderID: props.location.state.orderID }; //props.location.state.orderID
 		this.classes = { useStyles };
 	}
 
