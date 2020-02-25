@@ -70,10 +70,10 @@ class OrderPreparationSopBase extends Component {
 			orderID: urlId 
 		});
 		
-		let day = this.state.commencement.getDate()
+		let day = String(this.state.commencement.getDate())
 		let month = Number(this.state.commencement.getMonth())+1
-		let year = this.state.commencement.getFullYear()
-		let hour = this.state.commencement.getHours()
+		let year = String(this.state.commencement.getFullYear())
+		let hour = String(this.state.commencement.getHours())
 		let minute = String(this.state.commencement.getMinutes())
 		if (month.length === 1) {
 			month = "0" + month
