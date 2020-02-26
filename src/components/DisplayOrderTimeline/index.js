@@ -112,7 +112,7 @@ class DisplayOrderTimelineBase extends Component {
 				<div className="timeline-item-content">
           <span className="circle" />
           <span className="tag">{itemIndex}</span>
-					<br></br>
+			
 					
           {isPrep ? (
 						<Link
