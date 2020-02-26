@@ -19,6 +19,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import * as ROUTES from "../../constants/routes";
+import Grid from "@material-ui/core/Grid";
 
 const useStyles = makeStyles(theme => ({
 	paper: {
@@ -209,21 +210,28 @@ class NewIngredientForm extends Component {
 								readOnly: true
 							}}
 						/>
-
+						<Grid container>
+              				<Grid item xs>
+								Expiry Date:
+							</Grid>
+							<Grid item> 
 						<MuiPickersUtilsProvider utils={DateFnsUtils}>
-							Expiry Date:
+						
 							<KeyboardDatePicker
-								minDate={this.today}
-								variant="inline"
-								format="dd/MM/yyyy"
-								id="date-picker-inline"
-								value={this.state.expiryDate}
-								onChange={this.handleDateChange}
-								KeyboardButtonProps={{
-									"aria-label": "change date"
-								}}
-							/>
-						</MuiPickersUtilsProvider>
+									minDate={this.today}
+									variant="inline"
+									format="dd/MM/yyyy"
+									id="date-picker-inline"
+									value={this.state.expiryDate}
+									onChange={this.handleDateChange}
+									KeyboardButtonProps={{
+										"aria-label": "change date"
+									}}
+								/>
+								</MuiPickersUtilsProvider>
+							</Grid>
+						</Grid>
+				
 
 						<Dialog
 							open={this.state.open}
