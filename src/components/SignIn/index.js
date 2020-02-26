@@ -13,6 +13,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 
 import { withRouter } from "react-router-dom";
+import { Link as RouterLink } from 'react-router-dom';
 import { compose } from "recompose";
 
 // import { SignUpLink } from '../SignUp';
@@ -143,12 +144,12 @@ class SignInFormBase extends Component {
 
             <Grid container>
               <Grid item xs>
-                <Link href="pw-forget" variant="body">
+                <Link component={RouterLink} to={ROUTES.PASSWORD_FORGET} variant="body">
                   Forgot password?
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="signup" variant="body2">
+                <Link component={RouterLink} to={ROUTES.SIGN_UP} variant="body2">
                   Don't have an account? Sign Up
                 </Link>
               </Grid>

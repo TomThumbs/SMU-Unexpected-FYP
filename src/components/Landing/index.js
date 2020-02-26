@@ -3,6 +3,7 @@ import '../../App.css';
 
 import { withRouter } from 'react-router-dom';
 import { withFirebase } from '../Firebase';
+import { Link as RouterLink } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -136,7 +137,7 @@ class LandingPageBase extends Component {
 		} else {
 			return (
 				<TableContainer>
-        <Table className={this.classes.table} >
+        <Table className={this.classes.table} size="small">
           <TableHead>
             <TableRow>
               <TableCell>Date</TableCell>
@@ -156,7 +157,7 @@ class LandingPageBase extends Component {
                 <TableCell align="right">{row.venue}</TableCell>
                 <TableCell align="right">{row.pax}</TableCell>
                 <TableCell align="right">
-                  <Button href={this.linktoevent(row.orderID)} color="primary">{row.status}</Button>
+                  <Button component={RouterLink} to={this.linktoevent(row.orderID)} color="primary">{row.status}</Button>
                 </TableCell>
               </TableRow>
             ))}
