@@ -48,7 +48,10 @@ class SearchOrderBase extends Component {
 		// const serch =
 		this.props.history.push({
 			pathname: ROUTES.ORDER_TIMELINE,
-			search: "?id=" + this.state.searchId
+			search: "?id=" + this.state.searchId,
+			state: {
+				orderID: this.state.searchId
+			}
 		});
 	};
 
@@ -62,7 +65,7 @@ class SearchOrderBase extends Component {
 		let isInvalid = this.state.searchId.length === 0;
 
 		return (
-			<div class="body">
+			<div className="body">
 				<Container component="main" maxWidth="xs">
 					<form onSubmit={this.onSubmit}>
 						<TextField
@@ -73,7 +76,7 @@ class SearchOrderBase extends Component {
 							value={this.state.searchId}
 							label="Search Order ID"
 							onChange={this.onChange}
-							type="text"
+							type="string"
 							placeholder="Order ID"
 						/>
 						<Button

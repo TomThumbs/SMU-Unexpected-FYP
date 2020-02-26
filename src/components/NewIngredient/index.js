@@ -42,10 +42,10 @@ const INITIAL_STATE = {
 	foodName: "",
 	storageDate: "",
 	expiryDate: "",
-	open: "",
+	open: false,
 	foodId: "",
-	month:"",
-	priFoodId:""
+	month: "",
+	priFoodId: ""
 };
 
 class NewIngredientForm extends Component {
@@ -83,7 +83,12 @@ class NewIngredientForm extends Component {
 			.doc(this.state.foodId)
 			.set({
 				ingredientId: this.state.foodId,
-				Date_of_expiry: String(this.state.expiryDate).split(' ')[2]+"-"+this.state.month+"-"+String(this.state.expiryDate).split(' ')[3],
+				Date_of_expiry:
+					String(this.state.expiryDate).split(" ")[2] +
+					"-" +
+					this.state.month +
+					"-" +
+					String(this.state.expiryDate).split(" ")[3],
 				Name: this.state.foodName,
 				Primary_Ingredients: this.state.priFoodId,
 				Date_of_Storage: this.state.storageDate
@@ -123,9 +128,9 @@ class NewIngredientForm extends Component {
 
 	handleDateChange = event => {
 		// console.log(Number(event.getMonth())+1)
-		let tempMonth = (Number(event.getMonth())+1).toString()
-		if (tempMonth.length === 1) { 
-			tempMonth = "0"+tempMonth
+		let tempMonth = (Number(event.getMonth()) + 1).toString();
+		if (tempMonth.length === 1) {
+			tempMonth = "0" + tempMonth;
 		}
 		this.setState({
 			expiryDate: event,
@@ -161,19 +166,6 @@ class NewIngredientForm extends Component {
 			<div class="body">
 				<Container component="main" maxWidth="xs">
 					<div className={this.classes.paper}>
-
-						<TextField
-							variant="outlined"
-							margin="normal"
-							fullWidth
-							name="priFoodId"
-							value={this.state.priFoodId}
-							label="Primary Ingredients"
-							onChange={this.onChange}
-							type="text"
-							placeholder="Primary Ingredients"
-						/>
-
 						{this.createTextField(
 							"foodId",
 							this.state.foodId,
@@ -188,6 +180,18 @@ class NewIngredientForm extends Component {
 							"Food Name",
 							"Food Name"
 						)}
+
+						<TextField
+							variant="outlined"
+							margin="normal"
+							fullWidth
+							name="priFoodId"
+							value={this.state.priFoodId}
+							label="Contains"
+							onChange={this.onChange}
+							type="text"
+							placeholder="Barcodes of other ingredients"
+						/>
 
 						{/* Storage Date */}
 						<TextField
@@ -244,11 +248,20 @@ class NewIngredientForm extends Component {
 									Expiry Date: {this.state.expiryDate}
 								</Typography> */}
 								<DialogContentText id="alert-dialog-description">
-								{this.state.foodName} has been tagged.<br/>
-								Primary ingredients(if any):{this.state.priFoodId}<br/>
-								Food ID: {this.state.foodId}<br/>
-								Storage Date: {this.state.storageDate}<br/>
-								Expiry Date: {String(this.state.expiryDate).split(' ')[2]+"/"+this.state.month+"/"+String(this.state.expiryDate).split(' ')[3]}
+									{this.state.foodName} has been tagged.
+									<br />
+									Primary ingredients(if any):{this.state.priFoodId}
+									<br />
+									Food ID: {this.state.foodId}
+									<br />
+									Storage Date: {this.state.storageDate}
+									<br />
+									Expiry Date:{" "}
+									{String(this.state.expiryDate).split(" ")[2] +
+										"/" +
+										this.state.month +
+										"/" +
+										String(this.state.expiryDate).split(" ")[3]}
 								</DialogContentText>
 								{/* <DialogContentText id="alert-dialog-description">
                 Food ID: {this.state.foodId}
@@ -261,18 +274,10 @@ class NewIngredientForm extends Component {
 								</DialogContentText> */}
 							</DialogContent>
 							<DialogActions>
-								<Button
-									onClick={this.handleClose}
-									color="primary"
-									autoFocus
-								>
+								<Button onClick={this.handleClose} color="primary" autoFocus>
 									Continue Tagging
 								</Button>
-								<Button
-									onClick={this.handleHome}
-									color="primary"
-									autoFocus
-								>
+								<Button onClick={this.handleHome} color="primary" autoFocus>
 									Home
 								</Button>
 							</DialogActions>

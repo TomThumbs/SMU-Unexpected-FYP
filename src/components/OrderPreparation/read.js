@@ -12,229 +12,258 @@ import Button from "@material-ui/core/Button";
 
 import * as ROUTES from "../../constants/routes";
 
-import { withAuthorization } from '../Session'
+import { withAuthorization } from "../Session";
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1
-  },
-  paper: {
-    marginTop: theme.spacing(8),
-    display: "flex",
-    flexDirection: "column",
-    maxWidth: 400,
-    textAlign: "center"
-    // margin: `${theme.spacing(1)}px auto`,
-    // padding: theme.spacing(2),
-  },
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1)
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2)
-  },
-  text: {
-    textAlign: "center"
-  }
+	root: {
+		flexGrow: 1
+	},
+	paper: {
+		marginTop: theme.spacing(8),
+		display: "flex",
+		flexDirection: "column",
+		maxWidth: 400,
+		textAlign: "center"
+		// margin: `${theme.spacing(1)}px auto`,
+		// padding: theme.spacing(2),
+	},
+	form: {
+		width: "100%", // Fix IE 11 issue.
+		marginTop: theme.spacing(1)
+	},
+	submit: {
+		margin: theme.spacing(3, 0, 2)
+	},
+	text: {
+		textAlign: "center"
+	}
 }));
 
 const INITIAL_STATE = {
-  docID: "",
-  orderID: "",
-  menu:[],
-  IngredientsUsed: [],
-  Ingredient:"",
-  Tag:"",
-  chosenMenu:""
+	docID: "",
+	orderID: "",
+	menu: [],
+	IngredientsUsed: [],
+	Ingredient: "",
+	Tag: "",
+	chosenMenu: "",
+	menuIngreDict: {},
+	orderID: "",
+	headchef: "",
+	assistantA: "",
+	assistantB: "",
+	kitchenImageURL:"",
+	commence:"",
+	searchId:""
 };
 
 class OrderPreparationBase extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { ...INITIAL_STATE, docID: props.location.state.docID }; //props.location.state.docID
-    this.classes = { useStyles };
-  }
+	constructor(props) {
+		super(props);
+		this.state = { ...INITIAL_STATE, orderID: props.location.state.orderID }; //props.location.state.orderID
+		this.classes = { useStyles };
+	}
 
-  mmenu = ''
+	componentDidMount() {
+		let queryString = window.location.search;
+		let urlParams = new URLSearchParams(queryString);
+		let urlId = Number(urlParams.get("id")); 
 
-  componentDidMount() {
-    let queryString = window.location.search;
-    let urlParams = new URLSearchParams(queryString);
-    let urlId = Number(urlParams.get("id")); //Number(urlParams.get("id"));
-    
-    this.setState({
-      orderID: urlId,// urlId,
-    });
+		this.setState({
+			orderID: urlId 
+		});
 
-    // ---------- RETRIEVE CATERING ORDER ----------
-    console.log("Retrieving Catering Order");
-    this.props.firebase.fs
-      .collection("Catering_orders")
-      .where("orderID", "==", urlId) //urlId)
-      .get()
-      .then(querySnapshot => {
-        querySnapshot.forEach(doc => {
-          let data = doc.data();
-          this.mmenu = Array.from(new Set(data.Menu))
+		// ---------- RETRIEVE CATERING ORDER ----------
+		this.props.firebase.fs
+			.collection("Catering_orders")
+			.where("orderID", "==", urlId) 
+			.get()
+			.then(querySnapshot => {
+				querySnapshot.forEach(doc => {
+					let data = doc.data();
+					this.setState({
+						orderID: data.orderID,
+						headchef: data.headchef,
+						assistantA: data.assistantA,
+						assistantB: data.assistantB,
+						kitchenImageURL: data.kitchenImageURL,
+						commence: data.preparationCommencement
+					});
+					for (var key in data.IngredientsUsed){
+						this.setState({
+							...this.state,
+							menuIngreDict: {
+								...this.state.menuIngreDict,
+								[key]: data.IngredientsUsed[key]
+							}
+						})
+						this.setState(
+							{ menu: [...this.state.menu, key] }
+						)    
 
-          // ---------- RETRIEVE MENU INGREDIENTS ----------
-          this.mmenu.forEach((item,id) => { //supposed to be doing a multi one already. This hinges on how data is uploaded from order prep
-            // let spacetrim = item.replace(/\s/g,'')
-            // spacetrim = spacetrim.replace('&','')
-            // console.log(spacetrim)
+					}
+				});
+			})
+	}
 
-            this.setState({
-              [item]: data.SweetSourFish // the problem. i cannot use space trim, & trim, trimmed stuff. 
-              // i tried data.spacetrim doesnt work
-            })
-          })
+	onChange = event => {
+		this.setState({
+			chosenMenu: event.target.name
+		});
+		this.renderMenu();
+	};
 
-          this.setState({
-            docID: doc.id,
-            menu: Array.from(new Set(data.Menu)),
-            IngredientsUsed: Array.from(new Set(data.Ingredients_Used)),
-            chosenMenu: data.Menu[0]
-          });
-        });
-      })
-      .catch(function(error) {
-        console.log("Error getting documents: ", error);
-      });
-  }
+	onSubmit = event => {
+		console.log("thsdfa")
+			this.props.history.push({
+			pathname: './order-preparation-post-sop',
+			search: "?id=" + this.state.searchId,
+			headchef: this.state.headchef,
+			assistantA: this.state.assistantA,
+			assistantB: this.state.assistantB,
+			imageURL: this.state.kitchenImageURL,
+			preparationCommencement: this.state.commence
+		});
+	};
 
-  onChange = event => {
-    this.setState({ 
-      chosenMenu: event.target.name
-    });
-    this.renderMenu()
-  }
+	renderMenuItem(item, value) {
+		let menu = [];
+		if (item !== undefined) {
+				menu.push(
+					<tr>
+						<td >{item}</td>
+						<td >{value}</td> 
+					</tr>
+				);
+			;
+		}
+		return menu;
+	}
 
-  renderMenuItem(item) {
-    const ingredients = this.state[item];
-    // console.log(ingredient)
-    let menu = [];
-    if (ingredients !== undefined) {
-      ingredients.forEach((ingt, id) => {
-        menu.push(
-          <tr> 
-            <td key={id}>{ingt.split(":")[0]}</td>
-            <td key={id}>{ingt.split(", ")[1]}</td>
-          </tr>
-        );
-      });
-    }
-    return menu;
-  }
+	// ---------- Dish Selection ----------
+	renderMenu() {
+		let list = [];
+		this.state.menu.forEach((item, id) => {
+			if (item === this.state.chosenMenu) {
+				list.push(
+					<div key={id}>
+						<Paper className={this.classes.paper}>
+							<Typography variant="h5">
+								<Link name={item} onClick={this.onChange}>
+									{item}
+								</Link>
+							</Typography>
+						</Paper>
+					</div>
+				);
+			} else {
+				list.push(
+					<div key={id}>
+						<Paper className={this.classes.paper}>
+							<Typography variant="h6" underline="none">
+								{" "}
+								{/*Problem: I cant remove the underline. Think ans is here: https://material-ui.com/api/link/ */}
+								<Link name={item} onClick={this.onChange}>
+									{item}
+								</Link>
+							</Typography>
+						</Paper>
+					</div>
+				);
+			}
+		});
 
-  renderMenu() {
-    let list = [];
-    this.state.menu.forEach((item, id) => {
-      if (item === this.state.chosenMenu) {
-        list.push(
-          <div key={id}>
-            <Paper className={this.classes.paper}>
-              <Typography variant="h5">
-                <Link name={item} onClick={this.onChange}>
-                {item}
-                </Link>
-              </Typography>
-            </Paper>
-          </div>
-        );
-      } else {
-        list.push(
-          <div key={id}>
-            <Paper className={this.classes.paper}>
-              <Typography variant="h6" underline="none"> {/*Problem: I cant remove the underline. Think ans is here: https://material-ui.com/api/link/    */}              
-                <Link name={item} onClick={this.onChange}>
-                {item}
-                </Link>
-              </Typography>
-            </Paper>
-          </div>
-        );
-      }
-    })
+			for (var key in this.state.menuIngreDict){
+				if (key === this.state.chosenMenu) {
+					list.push(
+						<table>
+							<tr>
+								<th>Item</th>
+								<th>Item ID</th>
+							</tr>
+							{this.renderMenuItem(key, this.state.menuIngreDict[key])} 
+						</table>
+					);
+				}
+			};
 
-    if (this.state.menu.length !== 0) {
-      console.log("chosen menu is " , this.state.chosenMenu)
-      this.state.menu.forEach((item, id) => {
-        if (item === this.state.chosenMenu) {
-          list.push(
-            <table>
-              <tr>
-                <th>
-                  Item
-                </th>
-                <th>
-                  Item ID
-                </th>
-              </tr>
-              {this.renderMenuItem(item)}
-            </table>
-          );
-        } 
-      })
-    } else {
-      console.log("chosen menu is empty.")
-      list.push(
-        <div>
-          <Paper className={this.classes.paper}>
-            <table>
-              <tr>
-                  <th>
-                    Item
-                  </th>
-                  <th>
-                    Item ID
-                  </th>
-                </tr>
-            </table>
-          </Paper>
-        </div>
-      )
-    }
-    return list;
-  }
+		if (this.state.chosenMenu.length === 0) {
+			list.push(
+				<div>
+				<Paper className={this.classes.paper}>
+				<Typography variant="h6" align="center" gutterBottom>
+					Preparation Details
+				</Typography>
+				<Typography variant="h6" align="center" gutterBottom>
+					Head Chef: {this.state.headchef}
+				</Typography>
+				<Typography variant="h6" align="center" gutterBottom>
+					Assistant A: {this.state.assistantA}
+				</Typography>
+				<Typography variant="h6" align="center" gutterBottom>
+					Assistant B: {this.state.assistantB}
+				</Typography>	
+				<br></br>	
+				<Typography variant="h6" align="center" gutterBottom>
+					Order Commence: {this.state.commence}
+				</Typography>	
+				<form onSubmit={this.onSubmit}>
+				<Button
+					type="submit"
+					fullWidth
+					variant="contained"
+					color="primary"
+					className={this.classes.submit}
+				>
+					Declaration
+				</Button>
+				</form>
+				</Paper>
+			</div>
+			)
+		}
 
-  renderBackButton() {
-    return (
-      <Link
-        to={{
-          pathname: ROUTES.ORDER_TIMELINE,
-          search: "?id="+this.state.orderID //+ this.state.orderID
-        }}
-      >
-        <Button>Back</Button>
-      </Link>
-    );
-  }
+		return list;
+	}
 
-  render() {
-    console.log(this.state)
-    return (
-      <div class="body">
-      <Container component="main" maxWidth="xs" className={this.classes.root}>
-        {this.renderBackButton()}
-        <Paper className={this.classes.paper}>
-        <Typography variant="h4" align="center" gutterBottom>
-          Order ID #{this.state.orderID}
-          </Typography>
-          <Typography variant="h6" align="center" gutterBottom>
-          Ingredient Breakdown
-          </Typography>
+	renderBackButton() {
+		return (
+			<Link
+				to={{
+					pathname: ROUTES.ORDER_TIMELINE,
+					search: "?id=" + this.state.orderID //+ this.state.orderID
+				}}
+			>
+				<Button>Back</Button>
+			</Link>
+		);
+	}
 
-          {this.renderMenu()}          
-
-        </Paper>
-      </Container>
-      </div>
-    );
-  }
+	render() {
+		// console.log(this.state);
+		return (
+			<div class="body">
+				<Container component="main" maxWidth="xs" className={this.classes.root}>
+					{this.renderBackButton()}
+					<Paper className={this.classes.paper}>
+						<Typography variant="h3" align="center" gutterBottom>
+							Preparation
+							</Typography>
+						<Typography variant="h4" align="center" gutterBottom>
+							Order ID <br></br>#{this.state.orderID}
+						</Typography>
+						<Typography variant="h6" align="center" gutterBottom>
+							Ingredient Breakdown
+						</Typography>
+						{this.renderMenu()}
+					</Paper>
+				</Container>
+			</div>
+		);
+	}
 }
 
 const OrderPreparation = withRouter(withFirebase(OrderPreparationBase));
 const condition = authUser => !!authUser;
 
-export default withAuthorization(condition) (OrderPreparation);
+export default withAuthorization(condition)(OrderPreparation);

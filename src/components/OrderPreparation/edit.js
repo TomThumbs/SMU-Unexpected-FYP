@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { withFirebase } from "../Firebase";
 import { Link, withRouter } from "react-router-dom";
 
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, createStyles } from "@material-ui/core/styles";
 // import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
@@ -11,36 +11,44 @@ import Button from "@material-ui/core/Button";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+// import Typography from "@material-ui/core/Typography";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
 
 import * as ROUTES from "../../constants/routes";
 import { withAuthorization } from "../Session";
 
-const useStyles = makeStyles(theme => ({
-	root: {
-		flexGrow: 1
-	},
-	paper: {
-		marginTop: theme.spacing(8),
-		display: "flex",
-		flexDirection: "column",
-		maxWidth: 400,
-		textAlign: "center"
-		// margin: `${theme.spacing(1)}px auto`,
-		// padding: theme.spacing(2),
-	},
-	form: {
-		width: "100%", // Fix IE 11 issue.
-		marginTop: theme.spacing(1)
-	},
-	submit: {
-		margin: theme.spacing(3, 0, 2)
-	},
-	text: {
-		textAlign: "center"
-	}
-}));
+const useStyles = makeStyles(theme =>
+	createStyles({
+		// const useStyles = makeStyles({
+		root: {
+			flexGrow: 1
+		},
+		paper: {
+			marginTop: theme.spacing(8),
+			display: "flex",
+			flexDirection: "column",
+			maxWidth: 400,
+			textAlign: "center"
+		},
+		form: {
+			width: "100%", // Fix IE 11 issue.
+			marginTop: theme.spacing(1)
+		},
+		submit: {
+			margin: theme.spacing(3, 0, 2)
+		},
+		text: {
+			textAlign: "center"
+		}
+	})
+);
 
 const INITIAL_STATE = {
+	open: false,
 	docID: "",
 	orderID: "",
 	// statusList: ['Order Received', 'Preparation', 'Delivery', 'Service', 'Order Complete'],
@@ -64,7 +72,6 @@ class OrderPreparationEditBase extends Component {
 		let queryString = window.location.search;
 		let urlParams = new URLSearchParams(queryString);
 		let urlId = Number(urlParams.get("id"));
-		// console.log(urlId)
 		this.setState({
 			orderID: urlId
 		});
@@ -87,6 +94,13 @@ class OrderPreparationEditBase extends Component {
 						status: data.Status,
 						menu: Array.from(new Set(data.Menu))
 					});
+					if (data.IngredientsUsed !== null) {
+						Object.keys(data.IngredientsUsed).forEach(dish => {
+							this.setState({
+								[dish + " barcodes"]: data.IngredientsUsed[dish]
+							});
+						});
+					}
 				});
 			})
 			.catch(function(error) {
@@ -139,120 +153,135 @@ class OrderPreparationEditBase extends Component {
 			});
 	}
 
-	// onSubmit = event => {
-	// 	event.preventDefault();
+	onSubmit = event => {
+		event.preventDefault();
 
-	// 	// ingredientTagsUsed is the equivalent of the TextareaAutosize. For whatever text in there, it splits by comma
-	// 	// gets the RFID details and appends it to a new variable called ingredientsUsed
-	// 	// then it writes to the db, under the name of Ingredients_Used.
-	// 	let ingredientsTempList = this.state.ingredientTagsUsed.split(",");
-	// 	let ingredientsTempListLength = ingredientsTempList.length;
-	// 	for (var i = 0; i < ingredientsTempListLength; i++) {
-	// 		//Get
-	// 		this.props.firebase.fs
-	// 			.collection("Ingredient")
-	// 			.doc(ingredientsTempList[i])
-	// 			.get()
-	// 			.then(doc => {
-	// 				this.setState(prevstate => ({
-	// 					ingredientsUsed: [
-	// 						...prevstate.ingredientsUsed,
-	// 						doc.data().Name +
-	// 							": " +
-	// 							doc.data().Date_of_expiry +
-	// 							", " +
-	// 							ingredientsTempList[i]
-	// 					]
-	// 				}));
-	// 				//Write
-	// 				// Why this writing code is being initiated many times in this for loop is because ingredientsUsed becomes blank
-	// 				// after this for loop is done. its weird. if this code is outside the for loop, itll write blank to the db.
-	// 				this.props.firebase.fs
-	// 					.collection("Catering_orders")
-	// 					.doc(this.props.location.docID)
-	// 					.update({
-	// 						Ingredients_Used: this.state.ingredientsUsed
-	// 					});
-	// 			});
-	// 	}
+		// ingredientTagsUsed is the equivalent of the TextareaAutosize. For whatever text in there, it splits by comma
+		// gets the RFID details and appends it to a new variable called ingredientsUsed
+		// then it writes to the db, under the name of Ingredients_Used.
+		// let ingredientsTempList = this.state.ingredientTagsUsed.split(",");
+		// let ingredientsTempListLength = ingredientsTempList.length;
+		// for (var i = 0; i < ingredientsTempListLength; i++) {
+		// 	//Get
+		// 	this.props.firebase.fs
+		// 		.collection("Ingredient")
+		// 		.doc(ingredientsTempList[i])
+		// 		.get()
+		// 		.then(doc => {
+		// 			this.setState(prevstate => ({
+		// 				ingredientsUsed: [
+		// 					...prevstate.ingredientsUsed,
+		// 					doc.data().Name +
+		// 						": " +
+		// 						doc.data().Date_of_expiry +
+		// 						", " +
+		// 						ingredientsTempList[i]
+		// 				]
+		// 			}));
+		//Write
+		// Why this writing code is being initiated many times in this for loop is because ingredientsUsed becomes blank
+		// after this for loop is done. its weird. if this code is outside the for loop, itll write blank to the db.
+		// 			this.props.firebase.fs
+		// 				.collection("Catering_orders")
+		// 				.doc(this.props.location.docID)
+		// 				.update({
+		// 					Ingredients_Used: this.state.ingredientsUsed
+		// 				});
+		// 		});
+		// }
 
-	// 	// console.log(this.state.docID);
-	// 	this.props.firebase.fs
-	// 		.collection("Catering_orders")
-	// 		.doc(this.state.docID)
-	// 		.update({
-	// 			Status: "Preparation"
-	// 		})
-	// 		.then(function() {
-	// 			console.log("Document successfully written!");
-	// 		})
-	// 		.catch(function(error) {
-	// 			console.error("Error writing document: ", error);
-	// 		});
-	// };
+		console.log(this.state.docID);
+		this.props.firebase.fs
+			.collection("Catering_orders")
+			.doc(this.state.docID)
+			.update({
+				Status: "Preparation"
+			})
+			.then(function() {
+				console.log("Document successfully written!");
+			})
+			.catch(function(error) {
+				console.error("Error writing document: ", error);
+			});
 
-	onChange = event => {
-		this.setState({
-			[event.target.name]: event.target.value
+		let ingredientsUsed = {};
+
+		this.state.menu.forEach(dish => {
+			let ingredients = this.state[dish + " barcodes"];
+			ingredientsUsed = { ...ingredientsUsed, [dish]: ingredients };
 		});
-		// console.log(this.state);
+
+		console.log(ingredientsUsed);
+		this.props.firebase.fs
+			.collection("Catering_orders")
+			.doc(this.state.docID)
+			.update({
+				IngredientsUsed: ingredientsUsed
+			})
+			.then(function() {
+				console.log("Document successfully written!");
+			})
+			.catch(function(error) {
+				console.error("Error writing document: ", error);
+			});
+
+		this.handleClickOpen();
 	};
 
-	// onMenuItemChange = (dish, ingt) => event => {
-	// 	// if(this.state.menuIngredients[item])
-	// 	let name = dish + " " + ingt;
-	// 	this.setState({
-	// 		...this.state,
-	// 		[name]: !event.target.checked
-	// 	});
-	// 	// console.log(this.state[name]);
-	// 	if (this.state[name] === true) {
-	// 		console.log(this.state[name]);
-	// 	}
-	// };
+	handleClickOpen = () => {
+		this.setState({
+			open: true
+		});
+	};
+
+	handleTimeline = () => {
+		this.setState({
+			open: false
+		});
+		this.props.history.push({
+			pathname: ROUTES.ORDER_TIMELINE,
+			search: "?id=" + this.state.orderID,
+			state: {
+				orderID: this.state.orderID
+			}
+		});
+	};
 
 	onItemTextChange = dish => event => {
+		let tempValue = event.target.value.trim();
 		this.setState({
-			[dish + " barcodes"]: event.target.value
+			// [dish + " barcodes"]: event.target.value
+			[dish + " barcodes"]: tempValue
 		});
 		let barcodes = event.target.value.split(",");
 
 		const ingredients = this.state[dish];
-		console.log(ingredients)
+		// console.log(ingredients);
 
 		ingredients.forEach(ingt => {
 			let dishIngt = dish + " " + ingt;
-			console.log(dishIngt)
+			// console.log(dishIngt);
 
-			// if (true) {
 			this.setState({
 				[dishIngt]: false
 			});
-			// }
-			// console.log(dishIngt);
-			// console.log(this.state[dishIngt]);
-			// console.log(this.state)
 		});
-		
-		console.log(this.state)
+
+		// console.log(this.state);
 
 		barcodes.forEach(barcode => {
+			barcode = barcode.trim();
 			if (barcode in this.state) {
-				// console.log(dish)
-				// console.log(ingt)
-				// console.log(dishIngt)
-				// console.log(barcode)
 				this.setState({
 					[dish + " " + this.state[barcode]]: true
 				});
 			}
-		}); // console.log(barcodes);
+		});
 
-		console.log(this.state)
+		console.log(this.state);
 	};
 
 	validator(dishIngt) {
-		// console.log("Validator: " + dishIngt);
 		return this.state[dishIngt] === true;
 	}
 
@@ -268,14 +297,7 @@ class OrderPreparationEditBase extends Component {
 				menu.push(
 					<div key={id}>
 						<FormControlLabel
-							control={
-								<Checkbox
-									disabled
-									checked={this.validator(dishIngt)}
-									// onChange={this.onMenuItemChange(item, ingt)}
-									// name={dishIngt}
-								/>
-							}
+							control={<Checkbox disabled checked={this.validator(dishIngt)} />}
 							label={ingt}
 						/>
 					</div>
@@ -287,9 +309,7 @@ class OrderPreparationEditBase extends Component {
 
 	renderMenu() {
 		let list = [];
-		// console.log(this.state);
 		this.state.menu.forEach((dish, id) => {
-			// let dishBarcodes = "";
 			list.push(
 				<div key={id}>
 					<Paper className={this.classes.paper}>
@@ -299,8 +319,8 @@ class OrderPreparationEditBase extends Component {
 							aria-label="minimum height"
 							rowsMin={3}
 							placeholder="Minimum 3 rows"
+							value={this.state[dish + " barcodes"]}
 							onChange={this.onItemTextChange(dish)}
-							// name={dish + ' ' + barcodes}
 						/>
 					</Paper>
 				</div>
@@ -326,16 +346,11 @@ class OrderPreparationEditBase extends Component {
 		// console.log(this.state)
 		return (
 			<div className="body">
-				<Container
-					component="main"
-					maxWidth="xs"
-					className={this.classes.root}
-				>
+				<Container component="main" maxWidth="xs" className={this.classes.root}>
 					{this.renderBackButton()}
 					<Paper className={this.classes.paper}>
 						<Typography>Order Preparation Edit</Typography>
 
-						{/* <Grid container spacing={3}> */}
 						<form onSubmit={this.onSubmit}>
 							{this.renderMenu()}
 
@@ -349,7 +364,26 @@ class OrderPreparationEditBase extends Component {
 								Submit
 							</Button>
 						</form>
-						{/* </Grid> */}
+						<Dialog
+							open={this.state.open}
+							onClose={this.handleClose}
+							aria-labelledby="alert-dialog-title"
+							aria-describedby="alert-dialog-description"
+						>
+							<DialogTitle id="alert-dialog-title">
+								{"Submission Notification"}
+							</DialogTitle>
+							<DialogContent dividers>
+								<DialogContentText id="alert-dialog-description">
+									Dish successfully tagged!
+								</DialogContentText>
+							</DialogContent>
+							<DialogActions>
+								<Button onClick={this.handleTimeline} color="primary" autoFocus>
+									Back to Timeline
+								</Button>
+							</DialogActions>
+						</Dialog>
 					</Paper>
 				</Container>
 			</div>

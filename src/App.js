@@ -12,11 +12,12 @@ import LandingPage from './components/Landing'
 import SignUpPage from './components/SignUp'
 import SignInPage from './components/SignIn'
 import HomePage from './components/Home'
-import DeliveryForm from './components/DeliveryForm'
-import PostDeliveryForm from './components/PostDeliveryForm'
+// import DeliveryForm from './components/DeliveryForm'
+// import PostDeliveryForm from './components/PostDeliveryForm'
 import OrderForm from './components/OrderForm'
 import PostOrderForm from './components/PostOrderForm'
-import DeliverySelection from './components/DeliverySelection'
+// import DeliverySelection from './components/DeliverySelection'
+import ItemManagementPage from './components/ItemManagementPage'
 import NewIngredient from './components/NewIngredient'
 import DisplayIngredient from './components/DisplayIngredient'
 
@@ -25,7 +26,8 @@ import DisplayOrders from './components/DisplayOrders'
 import SearchOrder from './components/SearchOrder'
 import DisplayOrderTimeline from './components/DisplayOrderTimeline'
 import OrderReceived from './components/OrderReceived'
-import { OrderPreparation , OrderPreparationEdit, OrderPreparationSop } from './components/OrderPreparation'
+
+import { OrderPreparation, OrderPreparationEdit, OrderPreparationSop, OrderCompletion, OrderDelivery, FinalOverview, PostDeliveryForm, OrderPreparationPostSop } from './components/OrderPreparation'
 import OrderService from './components/OrderService'
 
 import DishToIngredientForm from './components/DishToIngredientForm'
@@ -42,34 +44,56 @@ const App = () => (
       <Router>
         <Navigation />
 
+        {/* ---------- LANDING PAGE ---------- */}
         <Route exact path={ROUTES.LANDING} component={LandingPage} />
-        <Route path={ROUTES.HOME} component={HomePage} />
 
-        <Route path={ROUTES.SMART_HEATING} component={SmartHeaterDisplay} />
-
+        {/* ---------- LOGIN ---------- */}
         <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
         <Route path={ROUTES.SIGN_IN} component={SignInPage} />
 
-        <Route path={ROUTES.DELIVERY_FORM} component={DeliveryForm} />
-        <Route path={ROUTES.POST_DELIVERY_FORM} component={PostDeliveryForm} />
-        <Route path={ROUTES.DELIVERY_SELECTION} component={DeliverySelection} />
+        {/* ---------- HOME PAGE ---------- */}
+        <Route path={ROUTES.HOME} component={HomePage} />
 
-        <Route path={ROUTES.POST_ORDER_FORM} component={PostOrderForm} />
-        <Route path={ROUTES.ORDER_FORM} component={OrderForm} />
+        {/* ---------- SMART HEATING ---------- */}
+        <Route path={ROUTES.SMART_HEATING} component={SmartHeaterDisplay} />
 
+        {/* ---------- ITEM MANAGEMENT PAGE ---------- */}
+        <Route path={ROUTES.ITEM_MANAGEMENT} component={ItemManagementPage} />
+
+        {/* ---------- ADD A NEW INGREDIENT ---------- */}
         <Route path={ROUTES.NEW_INGREDIENT} component={NewIngredient} />
         <Route path={ROUTES.DISPLAY_INGREDIENT} component={DisplayIngredient} />
 
-        <Route path={ROUTES.DISPLAY_ORDERS} component={DisplayOrders} />
+        {/* ---------- ADD NEW ORDER ---------- */}
+        <Route path={ROUTES.ORDER_FORM} component={OrderForm} />
+        <Route path={ROUTES.POST_ORDER_FORM} component={PostOrderForm} />
 
+        {/* ---------- ADD DELIVERY FORM ---------- */}
+        <Route path={ROUTES.ORDER_DELIVERY} component={OrderDelivery} />
+        <Route path={ROUTES.POST_DELIVERY_FORM} component={PostDeliveryForm} />
+        {/* <Route path={ROUTES.DELIVERY_SELECTION} component={DeliverySelection} /> */}
+
+        {/* ---------- FIND EXISTING ORDER ---------- */}
         <Route path={ROUTES.SEARCH_ORDER} component={SearchOrder} />
         <Route path={ROUTES.ORDER_TIMELINE} component={DisplayOrderTimeline}/>
         <Route path={ROUTES.ORDER_RECEIVED} component={OrderReceived}/>
         <Route path={ROUTES.ORDER_PREPARATION} component={OrderPreparation}/>
         <Route path={ROUTES.ORDER_PREPARATION_EDIT} component={OrderPreparationEdit}/>
         <Route path={ROUTES.ORDER_PREPARATION_SOP} component={OrderPreparationSop}/>
+
+
+        <Route path={ROUTES.ORDER_PREPARATION_POST_SOP} component={OrderPreparationPostSop}/>
+
+
+        <Route path={ROUTES.FINAL_OVERVIEW} component={FinalOverview}/>
+        
+
+        <Route path={ROUTES.ORDER_COMPLETE} component={OrderCompletion}/>
+        
+
         <Route path={ROUTES.ORDER_SERVICE} component={OrderService}/>
 
+        <Route path={ROUTES.DISPLAY_ORDERS} component={DisplayOrders} />
         <Route path={ROUTES.DISH_TO_INGREDIENT_FORM} component={DishToIngredientForm}/>
         <Route path={ROUTES.COOKING_SELECTION} component={CookingSelection}/>
         <Route path={ROUTES.COOKING_FORM} component={CookingForm}/>

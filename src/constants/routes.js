@@ -12,12 +12,15 @@ export const HOME = '/home';
 // ---------- SMART HEATING ----------
 export const SMART_HEATING = '/smart-heating';
 
+// ---------- ITEM MANAGEMENT PAGE ----------
+export const ITEM_MANAGEMENT ='/item-management';
+
 // ---------- ADD A NEW INGREDIENT ----------
-export const NEW_INGREDIENT = '/new-ingredient'
-export const DISPLAY_INGREDIENT = '/display-ingredient'
+export const NEW_INGREDIENT = '/new-ingredient';
+export const DISPLAY_INGREDIENT = '/display-ingredient';
 
 // ---------- ADD NEW ORDER ----------
-export const ORDER_FORM = '/order-form'
+export const ORDER_FORM = '/order-form';
 export const POST_ORDER_FORM = '/post-order-form';
 
 // ---------- ADD DELIVERY FORM ----------
@@ -34,6 +37,15 @@ export const ORDER_RECEIVED = '/order-received'
 export const ORDER_PREPARATION = '/order-preparation'
 export const ORDER_PREPARATION_EDIT = '/order-preparation-edit'
 export const ORDER_PREPARATION_SOP = '/order-preparation-sop'
+
+
+export const ORDER_PREPARATION_POST_SOP = '/order-preparation-post-sop'
+
+
+
+export const FINAL_OVERVIEW = '/final-overview'
+
+
 export const ORDER_DELIVERY = '/order-delivery'
 export const ORDER_SERVICE = '/order-service'
 export const ORDER_COMPLETE = '/order-complete'

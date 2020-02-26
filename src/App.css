@@ -19,7 +19,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center; 
+  justify-content: center;
   font-size: calc(10px + 2vmin);
   color: black;
 }
@@ -43,26 +43,26 @@
 }
 
 .button {
-  background-color: rgb(172, 172, 172); /* Green */
-  border: none;
-  color: white;
-  padding: 23px 15px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 15px;
+	background-color: rgb(172, 172, 172); /* Green */
+	border: none;
+	color: white;
+	padding: 23px 15px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 15px;
 }
 
-.button-link{
-  float: right;
+.button-link {
+	float: right;
 }
 
 .body { 
   padding-top: 100px; 
 }
 
-#nav{
-  /* display: flex;
+#nav {
+	/* display: flex;
   justify-content: space-around;
   align-items: center;
   min-height: 10vh;
@@ -92,27 +92,28 @@
 
 }
 
-.nav-link{
-  float: left;
+.nav-link {
+	float: left;
 }
 
-.navigation-link{
-  display: block;
-  color: white;
-  text-align: center;
-  padding: 23px 10px;
-  text-decoration: none;
+.navigation-link {
+	display: block;
+	color: white;
+	text-align: center;
+	padding: 23px 10px;
+	text-decoration: none;
+	font-size: 10px;
 }
 
 li a:hover {
-  background-color: #111;
-  padding: 23px 10px;
+	background-color: #111;
+	padding: 23px 10px;
 }
 
 ul {
-  position: fixed;
-  top: 0;
-  width: 100%;
+	position: fixed;
+	top: 0;
+	width: 100%;
 }
 
 /* ----------TIMELINE---------- */
@@ -192,16 +193,16 @@ ul {
 
 
 .timeline-item-content time {
-  color: #777;
-  font-size: 12px;
-  font-weight: bold;
+	color: #777;
+	font-size: 12px;
+	font-weight: bold;
 }
 
 .timeline-item-content p {
-  font-size: 16px;
-  line-height: 24px;
-  margin: 15px 0;
-  max-width: 250px;
+	font-size: 16px;
+	line-height: 24px;
+	margin: 15px 0;
+	max-width: 250px;
 }
 
 .timeline-item-content a {
@@ -211,8 +212,8 @@ ul {
 }
 
 .timeline-item-content a::after {
-  content: ' ►';
-  font-size: 12px;
+	content: " ►";
+	font-size: 12px;
 }
 
 .timeline-item-content .circle {

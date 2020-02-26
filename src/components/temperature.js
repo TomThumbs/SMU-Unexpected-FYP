@@ -9,6 +9,12 @@ import TextField from '@material-ui/core/TextField';
 // import Grid from '@material-ui/core/Grid';
 // import Paper from '@material-ui/core/Paper';
 // import { positions } from '@material-ui/system';
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+// import Typography from "@material-ui/core/Typography";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
 
 const useStyles = makeStyles(theme => ({
     submit: {
@@ -69,8 +75,21 @@ class TemperatureDisplayBase extends Component{
                     this.setState({current: change.doc.data().temp}) //this is what the temp is. if i replace temp with timestamp then it changes
                 })
             })
+        
     }
 
+    handleClickOpen = () => {
+		this.setState({
+			open: true
+		});
+	};
+
+	handleClose = () => {
+		this.setState({
+			open: false,
+		});
+    };
+    
     onSubmit = event => {
         event.preventDefault();
         let num = Number(this.state.newMinTemp); //sets the var
@@ -83,7 +102,9 @@ class TemperatureDisplayBase extends Component{
                 minimum: num 
             }); //UPDATE FIRESTORE
 
+        this.handleClickOpen()
         this.setState({newMinTemp: ''}) 
+
     }
 
     onChange = event => {
@@ -125,6 +146,27 @@ class TemperatureDisplayBase extends Component{
                         Submit
                     </Button>
             
+                    <Dialog
+							open={this.state.open}
+							onClose={this.handleClose}
+							aria-labelledby="alert-dialog-title"
+							aria-describedby="alert-dialog-description"
+						>
+							<DialogTitle id="alert-dialog-title">
+								{"Submission Notification"}
+							</DialogTitle>
+							<DialogContent dividers>
+								<DialogContentText id="alert-dialog-description">
+									Temperature has been changed to {this.state.minTemp}
+								</DialogContentText>
+							</DialogContent>
+							<DialogActions>
+								<Button onClick={this.handleClose} color="primary" autoFocus>
+									Confirm
+								</Button>
+							</DialogActions>
+						</Dialog>
+
                 </form>
                 {/* </Paper>   */}
             </div>

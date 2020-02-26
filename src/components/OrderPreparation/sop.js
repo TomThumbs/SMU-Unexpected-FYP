@@ -11,6 +11,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
+import FileUploader from "react-firebase-file-uploader";
 
 import { withAuthorization } from '../Session'
 
@@ -45,7 +46,12 @@ const useStyles = makeStyles(theme => ({
 
 const INITIAL_STATE = {
 	docID: "",
-	orderID: ""
+	orderID: "",
+	hands:false,
+	workspace:false,
+	image:"",
+	imageURL:"",
+	commencement: new Date()
 };
 
 class OrderPreparationSopBase extends Component {
@@ -56,6 +62,30 @@ class OrderPreparationSopBase extends Component {
 	}
 
 	componentDidMount() {
+		let queryString = window.location.search;
+		let urlParams = new URLSearchParams(queryString);
+		let urlId = Number(urlParams.get("id")); 
+
+		this.setState({
+			orderID: urlId 
+		});
+		
+		let day = String(this.state.commencement.getDate())
+		let month = Number(this.state.commencement.getMonth())+1
+		let year = String(this.state.commencement.getFullYear())
+		let hour = String(this.state.commencement.getHours())
+		let minute = String(this.state.commencement.getMinutes())
+		if (month.length === 1) {
+			month = "0" + month
+		}
+		if (hour.length === 1) {
+			hour = "0" + hour
+		}
+		if (minute.length === 1) {
+			minute = "0" + minute
+		}
+		this.setState({commencement: day + "/" + month + "/" + year + " " + hour + ":" + minute})
+
 		this.props.firebase.fs
 			.collection("Catering_orders")
 			.doc(this.state.docID)
@@ -69,6 +99,22 @@ class OrderPreparationSopBase extends Component {
 				});
 			});
 	}
+
+	handleUploadSuccess = filename => {
+		this.setState({
+			image: filename,
+		});
+
+		this.props.firebase.stg
+			.ref("kitchenHistory")
+			.child(filename)
+			.getDownloadURL()
+			.then(url =>
+				this.setState({
+					imageURL: url
+				})
+			);
+	};
 
 	renderBackButton() {
 		return (
@@ -90,7 +136,9 @@ class OrderPreparationSopBase extends Component {
 			.update({
 				headchef: this.state.headchef,
 				assistantA: this.state.assistantA,
-				assistantB: this.state.assistantB
+				assistantB: this.state.assistantB,
+				kitchenImageURL: this.state.imageURL,
+				preparationCommencement: this.state.commencement,
 			})
 			.then(function() {
 				console.log("Document successfully written!");
@@ -99,16 +147,29 @@ class OrderPreparationSopBase extends Component {
 				console.error("Error writing document: ", error);
 			});
 		this.props.history.push({
-			pathname: ROUTES.ORDER_TIMELINE,
-			search: "?id=" + this.state.searchId
+			pathname: './order-preparation-post-sop',
+			search: "?id=" + this.state.searchId,
+			headchef: this.state.headchef,
+			assistantA: this.state.assistantA,
+			assistantB: this.state.assistantB,
+			imageURL: this.state.imageURL,
+			orderID: this.state.orderID,
+			preparationCommencement: this.state.commencement,
 		});
 	};
+
+	onBoxChange = event => {
+			this.setState({
+				[event.target.name]: true 
+			}) 
+	}
 
 	onChange = event => {
 		this.setState({ [event.target.name]: event.target.value });
 	};
 
-  render() {
+    render() {
+	let isInvalid = this.state.hands === false || this.state.workspace === false || this.state.imageURL.length === 0
     return (
       <div class="body">
       <Container component="main" maxWidth="xs" className={this.classes.root}>
@@ -159,15 +220,32 @@ class OrderPreparationSopBase extends Component {
               autoFocus
             />
             <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Hands washed?"
+              control={<Checkbox name="hands" onChange={this.onBoxChange} value="remember" color="primary" />}
+              label="Washed hands?"
             />
             <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Workspace clean?"
+              control={<Checkbox name="workspace" onChange={this.onBoxChange} value="remember" color="primary" />}
+              label="Use of Mask and gloves?"
+            />
+            <FormControlLabel
+              control={<Checkbox name="workspace" onChange={this.onBoxChange} value="remember" color="primary" />}
+              label="Clean workspace?"
+            />
+            <FormControlLabel
+              control={<Checkbox name="workspace" onChange={this.onBoxChange} value="remember" color="primary" />}
+              label="Clean kitchen tools?"
             />
             <p>Add photo here</p>
+
+			<FileUploader
+				accept="image/*"
+				name="image"
+				storageRef={this.props.firebase.stg.ref("kitchenHistory")}
+				onUploadSuccess={this.handleUploadSuccess}
+			/>
+
             <Button
+			  disabled={isInvalid}
               type="submit"
               fullWidth
               variant="contained"

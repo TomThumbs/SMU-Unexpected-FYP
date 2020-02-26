@@ -57,7 +57,7 @@ const INITIAL_STATE = {
 	oID:""
 };
 
-class DeliveryFormBase extends Component {
+class OrderDeliveryBase extends Component {
 	constructor(props) {
 		super(props);
 		this.state = { ...INITIAL_STATE, docID: props.location.state.docID };
@@ -126,7 +126,7 @@ class DeliveryFormBase extends Component {
 
 		this.props.history.push({
 			pathname: './post-delivery-form',
-			orderid: this.state.oID,
+			orderID: this.state.oID,
 			driver: this.state.driver,
 			url: this.state.imageURL
 		  })
@@ -166,7 +166,7 @@ class DeliveryFormBase extends Component {
 		this.setState({ ...this.props, [name]: event.target.checked });
 	};
 
-	onChange = event => {	
+	onChange = event => {
 		this.setState({ [event.target.name]: event.target.value });
 	};
 
@@ -333,8 +333,6 @@ class DeliveryFormBase extends Component {
 						</h4>
 					</React.Fragment>
 
-					{/* <label> Progress: {this.props.imageURL}</label> */}
-					{/* <p>{this.state.progress}</p> */}
 
 					<FileUploader
 						accept="image/*"
@@ -352,8 +350,8 @@ class DeliveryFormBase extends Component {
 	}
 }
 
-const DeliveryForm = withRouter(withFirebase(DeliveryFormBase));
+const OrderDelivery = withRouter(withFirebase(OrderDeliveryBase));
 const condition = authUser => !!authUser;
-export default withAuthorization(condition)(DeliveryForm);
+export default withAuthorization(condition)(OrderDelivery);
 
 //this.state.docID
