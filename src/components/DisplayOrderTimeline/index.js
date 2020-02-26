@@ -99,53 +99,63 @@ class DisplayOrderTimelineBase extends Component {
     ];
 
     return (
+      
       <div key={key} className="timeline-item">
+        
         <div className="timeline-item-content">
-          <span className="tag"></span>
-          <h5>{itemIndex}</h5>
-          {isPrep ? (
-            <Link
-              to={{
-                pathname: ROUTES.ORDER_PREPARATION_EDIT,
-                search: "?id=" + this.state.orderID,
-                state: {
-                  docID: this.state.docID
-                }
-              }}
-            >
-              Edit
-            </Link>
-          ) : null}
-          {isPrep ? (
-            <Link
-              to={{
-                pathname: ROUTES.ORDER_PREPARATION_SOP,
-                search: "?id=" + this.state.orderID,
-                state: {
-                  docID: this.state.docID
-                }
-              }}
-            >
-              SOP
-            </Link>
-          ) : null}
-          {isService ? <Link>Collected</Link> : null}
-          {isDone ? (
-            <Link
-              to={{
-                pathname: routepath,
-                search: "?id=" + this.state.orderID,
-                state: {
-                  docID: this.state.docID
-                }
-              }}
-            >
-              Read
-            </Link>
-          ) : (
-            <p>Not done yet</p>
-          )}
-          <span className="circle" />
+        <span className="tag">{itemIndex}</span>
+        <span className="circle" />
+          <div className="timeline-item-content-text">
+           
+            
+
+            {isPrep ? (
+              <Link
+                to={{
+                  pathname: ROUTES.ORDER_PREPARATION_EDIT,
+                  search: "?id=" + this.state.orderID,
+                  state: {
+                    docID: this.state.docID
+                  }
+                }}
+              >
+                <br></br>
+                Edit 
+              </Link>
+            ) : null}
+            {isPrep ? (
+              <Link
+                to={{
+                  pathname: ROUTES.ORDER_PREPARATION_SOP,
+                  search: "?id=" + this.state.orderID,
+                  state: {
+                    docID: this.state.docID
+                  }
+                }}
+              >
+                <br></br>
+                SOP 
+              </Link>
+            ) : null}
+            {isService ? <Link>Collected</Link> : null}
+            {isDone ? (
+              <Link
+                to={{
+                  pathname: routepath,
+                  search: "?id=" + this.state.orderID,
+                  state: {
+                    docID: this.state.docID
+                  }
+                }}
+              >
+                <br></br>
+                Read
+              </Link>
+            ) : (
+              <p>Not done yet</p>
+            )}
+            </div>
+          
         </div>
       </div>
     );
@@ -164,7 +174,7 @@ class DisplayOrderTimelineBase extends Component {
   render() {
     return (
       <div class="body">
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="md">
         {this.timeline()}
       </Container>
       </div>
