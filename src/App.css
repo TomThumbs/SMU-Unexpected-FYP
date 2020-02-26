@@ -58,7 +58,7 @@
 }
 
 .body { 
-  padding-top: 100px; 
+  padding-top: 1.5%; 
 }
 
 #nav {
@@ -69,27 +69,25 @@
   background: rgb(73, 79, 82
   );
   */
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  background-color: #333;
-  min-height: 6vh;
-  width: 100%;
-  align-items: center;
- 
+	list-style-type: none;
+	margin-bottom: 50px;
+	padding: 0;
+	overflow: hidden;
+	background-color: #333;
+	min-height: 6vh;
+	width: 100%;
+	align-items: center;
 }
 
-.nav-links{
-  list-style-type: none;
-  margin: 0;
-  padding: 0px;
-  overflow: hidden;
-  background-color: #333;
-  min-height: 6vh;
+.nav-links {
+	list-style-type: none;
+	margin: 0;
+	padding: 0px;
+	overflow: hidden;
+	background-color: #333;
+	min-height: 6vh;
   width: 100%;
-  z-index: 9999999
-
+  z-index: 500;
 }
 
 .nav-link {
@@ -102,7 +100,7 @@
 	text-align: center;
 	padding: 23px 10px;
 	text-decoration: none;
-	font-size: 10px;
+	font-size: 15px;
 }
 
 li a:hover {
@@ -208,7 +206,7 @@ ul {
 .timeline-item-content a {
   font-size: 14px;
   font-weight: bold;
-  line-height: 2px
+
 }
 
 .timeline-item-content a::after {
