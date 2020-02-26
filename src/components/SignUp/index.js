@@ -1,14 +1,34 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
-
 import { withFirebase } from '../Firebase';
-
 import * as ROUTES from '../../constants/routes';
 
+
+import Container from "@material-ui/core/Container";
+import { makeStyles } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
+
+const useStyles = makeStyles(theme => ({
+  paper: {
+    marginTop: theme.spacing(8),
+    display: "flex",
+    flexDirection: "column"
+  },
+  form: {
+    width: "100%", // Fix IE 11 issue.
+    marginTop: theme.spacing(1)
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2)
+  }
+}));
+
 const SignUpPage = () => (
-  <div>
-    <h1>SignUp</h1>
+  <div class="body">
     <SignUpForm />
   </div>
 );
@@ -25,6 +45,7 @@ class SignUpFormBase extends Component {
   constructor(props) {
     super(props);
     this.state = { ...INITIAL_STATE };
+    this.classes = { useStyles } 
 
   }
 
@@ -63,39 +84,81 @@ class SignUpFormBase extends Component {
 
 
     return (
-      <form onSubmit={this.onSubmit}>
-        <input
-          name="username"
-          value={username}
-          onChange={this.onChange}
-          type="text"
-          placeholder="Full Name"
-        />
-        <input
-          name="email"
-          value={email}
-          onChange={this.onChange}
-          type="text"
-          placeholder="Email Address"
-        />
-        <input
-          name="passwordOne"
-          value={passwordOne}
-          onChange={this.onChange}
-          type="password"
-          placeholder="Password"
-        />
-        <input
-          name="passwordTwo"
-          value={passwordTwo}
-          onChange={this.onChange}
-          type="password"
-          placeholder="Confirm Password"
-        />
-        <button type="submit" disabled={isInvalid}>Sign Up</button>
-        {error && <p>{error.message}</p>}
+   
+      <Container component="main" maxWidth="xs">
+        <div className={this.classes.paper}>
+        <Grid container spacing={12}>
+          <Grid item xs >
+            <Typography component="h1" variant="h4">Sign Up</Typography>
+          </Grid>
+        </Grid>
 
-      </form>
+        <br></br>
+          
+          <form onSubmit={this.onSubmit}>
+            <TextField
+              variant="outlined"
+              margin="dense"
+              required
+              fullWidth
+              name="username"
+              value={username}
+              onChange={this.onChange}
+              type="text"
+              placeholder="Full Name"
+              label="Full Name"
+            />
+            <TextField
+              variant="outlined"
+              margin="dense"
+              required
+              fullWidth
+              name="email"
+              value={email}
+              onChange={this.onChange}
+              type="text"
+              placeholder="Email Address"
+              label="Email Address"
+            />
+            <TextField
+              variant="outlined"
+              margin="dense"
+              required
+              fullWidth
+              name="passwordOne"
+              value={passwordOne}
+              onChange={this.onChange}
+              type="password"
+              placeholder="Password"
+              label="Password"
+            />
+            <TextField
+              variant="outlined"
+              margin="dense"
+              required
+              fullWidth
+              name="passwordTwo"
+              value={passwordTwo}
+              onChange={this.onChange}
+              type="password"
+              placeholder="Confirm Password"
+              label="Confirm Password"
+            />
+            <br></br>
+            <br></br>
+            <Button 
+              type="submit" 
+              disabled={isInvalid}
+              fullWidth
+              variant="contained"
+              color="primary">
+                Sign Up
+            </Button>
+            {error && <p>{error.message}</p>}
+
+          </form>
+        </div>
+      </Container>
     );
   }
 }
