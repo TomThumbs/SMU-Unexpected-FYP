@@ -5,6 +5,7 @@ import "../../App.css";
 import { withRouter } from "react-router-dom";
 import { withFirebase } from "../Firebase";
 import { withAuthorization } from "../Session";
+import { Link as RouterLink } from 'react-router-dom';
 
 // import { makeStyles } from '@material-ui/core/styles';
 import Container from "@material-ui/core/Container";
@@ -17,7 +18,7 @@ class PostDeliveryFormBase extends Component {
 	render() {
 		console.log(this.props.location);
 		return (
-			<div class="body">
+			<div className="body">
 				<Container component="main" maxWidth="xs">
 					<Typography variant="h5" component="h2">
 						Declaration for Order #{this.props.location.orderID} Successful.
@@ -37,7 +38,7 @@ class PostDeliveryFormBase extends Component {
 					</Grid>
 					<br></br>
 					<Button
-						href={ROUTES.LANDING}
+						component={RouterLink} to={ROUTES.LANDING}
 						color="primary"
 						fullWidth
 						variant="contained"

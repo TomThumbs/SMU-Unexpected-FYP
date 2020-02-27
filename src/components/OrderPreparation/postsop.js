@@ -28,7 +28,7 @@ class OrderPreparationPostSopBase extends Component {
 	render() {
 		// console.log(this.props.location);
 		return (
-			<div class="body">
+			<div className="body">
 				<Container component="main" maxWidth="xs">
 				<Typography variant="h5" component="h2">Head Chef: {this.props.location.headchef}</Typography>
 				<Typography variant="h5" component="h2">Assistant A: {this.props.location.assistantA}</Typography>
@@ -63,18 +63,16 @@ class OrderPreparationPostSopBase extends Component {
 
 				<Typography variant="h6" component="h2">Order Commence: {this.props.location.preparationCommencement}</Typography>
 
+				<Button
+				type="submit"
+				fullWidth
+				variant="contained"
+				color="primary"
+				// className={this.classes.submit}
+				>
+				Back To Order
+            </Button>
 				</Container>
-				{/* <form onSubmit={this.onSubmit}>
-					<Button
-						type="submit"
-						fullWidth
-						variant="contained"
-						color="primary"
-						className={this.classes.submit}
-					>
-						Back To Order
-					</Button>
-				</form> */}
 			</div>
 		);
 	}

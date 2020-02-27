@@ -298,7 +298,7 @@ class OrderFormBase extends Component {
 
     return(
       <Container component="main" maxWidth="sm">
-        <div class="body">
+        <div className="body">
         <div className={this.classes.root}>
           <br></br>
           <Typography variant="h4" align="center" gutterBottom>

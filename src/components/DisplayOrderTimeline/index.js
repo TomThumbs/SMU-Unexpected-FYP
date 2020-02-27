@@ -1,10 +1,14 @@
 import React, { Component } from "react";
 import { withFirebase } from "../Firebase";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
+import Link from "@material-ui/core/Link";
+import { Link as RouterLink } from 'react-router-dom';
 
 import { makeStyles } from "@material-ui/core/styles";
+import 'typeface-roboto';
+
 // import Grid from '@material-ui/core/Grid';
-import Typography from "@material-ui/core/Typography";
+// import Typography from '@material-ui/core/Typography';
 import Container from "@material-ui/core/Container";
 // import Paper from '@material-ui/core/Paper';
 // import TimelineItem from './timelineItem'
@@ -94,8 +98,7 @@ class DisplayOrderTimelineBase extends Component {
 		const isPrep = itemIndex === "Preparation";
 
 		// Check if current item is to be delivered
-		const makeDelivery =
-			itemIndex === "Delivery" && status === "Preparation";
+		const makeDelivery = itemIndex === "Delivery" && status === "Preparation";
 
 		// Check if order is delivered and to be set up
 		const setUpService = itemIndex === "Event in Progress" && status === "Delivery";
@@ -111,53 +114,50 @@ class DisplayOrderTimelineBase extends Component {
 		return (
 			<div key={key} className="timeline-item">
 				<div className="timeline-item-content">
-					<span className="circle" />
 					<span className="tag">{itemIndex}</span>
-
+				
 					{isPrep ? (
 						<Link
-							to={{
+							component={RouterLink} to={{
 								pathname: ROUTES.ORDER_PREPARATION_EDIT,
 								search: "?id=" + this.state.orderID,
 								state: {
 									docID: this.state.docID
 								}
 							}}
-						>
-							<br></br>Edit
+						><br></br>
+							Edit
 						</Link>
 					) : null}
 					{isPrep ? (
 						<Link
-							to={{
+							component={RouterLink} to={{
 								pathname: ROUTES.ORDER_PREPARATION_SOP,
 								search: "?id=" + this.state.orderID,
 								state: {
 									docID: this.state.docID
 								}
 							}}
-						>
-							<br></br>
+						><br></br>
 							SOP
 						</Link>
 					) : null}
 					{makeDelivery ? (
 						<Link
-							to={{
+							component={RouterLink} to={{
 								pathname: ROUTES.DELIVERY_FORM,
 								search: "?id=" + this.state.orderID,
 								state: {
 									docID: this.state.docID
 								}
 							}}
-						>
-							<br></br>
+						><br></br>
 							Make Delivery
 						</Link>
 					) : null}
-					{setUpService ? (
+          			{setUpService ? (
 						<Link
-							to={{
+							component={RouterLink} to={{
 								pathname: ROUTES.ORDER_SERVICE,
 								search: "?id=" + this.state.orderID,
 								state: {
@@ -165,29 +165,27 @@ class DisplayOrderTimelineBase extends Component {
 									menu: this.state.menu
 								}
 							}}
-						>
-							<br></br>
+						><br></br>
 							Set up Temperature Monitors
 						</Link>
 					) : null}
 					{toBeCollected ? (<p>Potato</p>) : null}
 					{isDone ? (
 						<Link
-							to={{
+							component={RouterLink} to={{
 								pathname: routepath,
 								search: "?id=" + this.state.orderID,
 								state: {
-									docID: this.state.docID,
-									menu: this.state.menu
+									docID: this.state.docID
 								}
 							}}
-						>
-							<br></br>
+						><br></br>
 							Read
 						</Link>
 					) : (
 						<p>Not done yet</p>
 					)}
+					<span className="circle" />
 				</div>
 			</div>
 		);
@@ -204,13 +202,9 @@ class DisplayOrderTimelineBase extends Component {
 	}
 
 	render() {
-		console.log(this.state)
 		return (
 			<div className="body">
 				<Container component="main" maxWidth="md">
-					<Typography variant="h2">
-						Order #{this.state.orderID}
-					</Typography>
 					{this.timeline()}
 				</Container>
 			</div>

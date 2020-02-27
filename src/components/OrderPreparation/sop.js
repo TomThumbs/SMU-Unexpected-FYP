@@ -148,7 +148,7 @@ class OrderPreparationSopBase extends Component {
 			});
 		this.props.history.push({
 			pathname: './order-preparation-post-sop',
-			search: "?id=" + this.state.searchId,
+			search: "?id=" + this.state.orderID,
 			headchef: this.state.headchef,
 			assistantA: this.state.assistantA,
 			assistantB: this.state.assistantB,
@@ -171,7 +171,7 @@ class OrderPreparationSopBase extends Component {
     render() {
 	let isInvalid = this.state.hands === false || this.state.workspace === false || this.state.imageURL.length === 0
     return (
-      <div class="body">
+      <div className="body">
       <Container component="main" maxWidth="xs" className={this.classes.root}>
         {this.renderBackButton()}
         <Paper className={this.classes.paper}>

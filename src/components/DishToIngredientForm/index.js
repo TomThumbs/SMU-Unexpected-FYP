@@ -207,7 +207,7 @@ class DishToIngredientFormBase extends Component {
   render() {
     
     return (  
-      <div class="body">
+      <div className="body">
       <Container component="main" maxWidth="xs" >
     
 

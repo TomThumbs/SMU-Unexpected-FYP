@@ -18,6 +18,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Divider from "@material-ui/core/Divider";
 
 import { withAuthorization } from "../Session";
+import * as ROUTES from "../../constants/routes";
 
 const useStyles = makeStyles(theme => ({
 	formControl: {
@@ -68,10 +69,26 @@ class OrderDeliveryBase extends Component {
 		let queryString = window.location.search;
 		let urlParams = new URLSearchParams(queryString);
 		let urlId = Number(urlParams.get("id"));
-		console.log(urlId);
+		// console.log(urlId);
 		this.setState({
 			orderID: urlId
 		});
+
+		this.props.firebase.fs
+		.collection("Catering_orders")
+		.doc(this.state.docID)
+		.get()
+		.then(doc => {
+			if (doc.data().Status === "Delivery" || doc.data().Status === "Event in Progress" || doc.data().Status === "Order Completed") {
+				this.props.history.push({
+					pathname: ROUTES.POST_DELIVERY_FORM,
+					orderID: this.state.orderID,
+					driver: doc.data().Driver,
+					url: doc.data().TruckImgURL
+				  })
+			}
+		})
+
 
 		// ---------- GET ORDER DETAILS ----------
 		this.props.firebase.fs
@@ -91,7 +108,7 @@ class OrderDeliveryBase extends Component {
 				});
 				this.props.firebase.fs
 					.collection("Customers")
-					.doc(this.state.name)
+					.doc(doc.data().Customer.id)
 					.get()
 					.then(docu => {
 						this.setState({
@@ -125,7 +142,7 @@ class OrderDeliveryBase extends Component {
 		this.setState({ imageURL: "" });
 
 		this.props.history.push({
-			pathname: './post-delivery-form',
+			pathname: ROUTES.POST_DELIVERY_FORM,
 			orderID: this.state.oID,
 			driver: this.state.driver,
 			url: this.state.imageURL
@@ -208,7 +225,7 @@ class OrderDeliveryBase extends Component {
 		// console.log(typeof this.state.menu)
 		return (
 			<Container component="main" maxWidth="sm">
-				<div class="body">
+				<div className="body">
 					{/* <h1>Customer {this.state.cID}</h1> */}
 					<h1>Order #{this.state.oID}</h1>
 					<React.Fragment>
