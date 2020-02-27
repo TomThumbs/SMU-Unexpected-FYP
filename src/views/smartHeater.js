@@ -12,7 +12,7 @@ import { withAuthorization } from '../components/Session';
 class SmartHeaterDisplay extends Component{
     render(){
         return(
-            <div class="body"> 
+            <div className="body"> 
             <Container component="main" maxWidth="lg">
             <div>
                 <TemperatureDisplay/>

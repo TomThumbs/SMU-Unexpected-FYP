@@ -121,7 +121,7 @@ class FinalOverviewBase extends Component {
 
 	render() {
 		return (
-			<div class="body">
+			<div className="body">
 				<Container component="main" maxWidth="xs">
 				<Typography variant="h5" component="h2">Order Created: {this.state.createdOn}</Typography>
 				<Typography variant="h5" component="h2">Order Created by: {this.state.createdBy}</Typography>

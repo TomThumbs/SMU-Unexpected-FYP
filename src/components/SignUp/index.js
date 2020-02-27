@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const SignUpPage = () => (
-  <div class="body">
+  <div className="body">
     <SignUpForm />
   </div>
 );

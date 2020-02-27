@@ -111,7 +111,7 @@ class CookingSelectionBase extends Component {
 	render() {
 		return (
 			<Container component="main" maxWidth="xs">
-				<div class="body">
+				<div className="body">
 					<FormControl
 						component="fieldset"
 						id="cafe-list"

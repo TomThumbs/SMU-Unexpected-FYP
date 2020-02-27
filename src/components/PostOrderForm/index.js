@@ -54,7 +54,7 @@ class PostOrderFormBase extends Component {
 	render() {
 		console.log(this.props.location.Menu);
 		return (
-			<div class="body">
+			<div className="body">
 				<Container component="main" maxWidth="xs">
 					{/* <Typography component="h4" variant="h4">Order Summary</Typography>
                 <Typography component="h5" variant="h7">Order No.</Typography>

@@ -164,7 +164,7 @@ class NewIngredientForm extends Component {
 			this.state.storageDate === this.state.expiryDate ||
 			this.state.foodName.length === 0;
 		return (
-			<div class="body">
+			<div className="body">
 				<Container component="main" maxWidth="xs">
 					<div className={this.classes.paper}>
 						{this.createTextField(

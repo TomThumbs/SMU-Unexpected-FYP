@@ -43,7 +43,7 @@ const INITIAL_STATE = {
 };
 
 const SignInPage = () => (
-  <div class="body">
+  <div className="body">
     <br></br>
     <br></br>
     <h1>

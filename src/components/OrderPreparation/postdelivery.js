@@ -17,7 +17,7 @@ class PostDeliveryFormBase extends Component {
 	render() {
 		console.log(this.props.location);
 		return (
-			<div class="body">
+			<div className="body">
 				<Container component="main" maxWidth="xs">
 					<Typography variant="h5" component="h2">
 						Declaration for Order #{this.props.location.orderID} Successful.

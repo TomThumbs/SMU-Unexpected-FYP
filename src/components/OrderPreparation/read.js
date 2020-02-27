@@ -242,7 +242,7 @@ class OrderPreparationBase extends Component {
 	render() {
 		// console.log(this.state);
 		return (
-			<div class="body">
+			<div className="body">
 				<Container component="main" maxWidth="xs" className={this.classes.root}>
 					{this.renderBackButton()}
 					<Paper className={this.classes.paper}>

@@ -208,7 +208,7 @@ class OrderDeliveryBase extends Component {
 		// console.log(typeof this.state.menu)
 		return (
 			<Container component="main" maxWidth="sm">
-				<div class="body">
+				<div className="body">
 					{/* <h1>Customer {this.state.cID}</h1> */}
 					<h1>Order #{this.state.oID}</h1>
 					<React.Fragment>

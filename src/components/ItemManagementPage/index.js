@@ -30,7 +30,7 @@ class IngredientManagementBase extends Component {
     render() {
         
         return(
-        <div class="body">
+        <div className="body">
              <Container component="main" maxWidth="md">
 
                 <Typography component="h4" variant="h4">Ingredient Management</Typography>
