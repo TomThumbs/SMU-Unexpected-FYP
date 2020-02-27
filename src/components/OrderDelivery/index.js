@@ -119,27 +119,26 @@ class OrderDeliveryBase extends Component {
 
   render() {
     return (
-      <div class="body"> 
+      <div className="body"> 
       <Container className={this.classes.root}>
         {this.renderBackButton()}
         <Paper className={this.classes.paper}>
           <Grid className="grid" item xs={12}>
             <Paper className={this.classes.paper}>Order Delivery</Paper>
           </Grid>
+			<Grid className="grid" item xs={12}>
+				<Paper className={this.classes.paper}>
+					Order #{this.state.orderID}
+				</Paper>
+			</Grid>
 
-					<Grid className="grid" item xs={12}>
-						<Paper className={this.classes.paper}>
-							Order #{this.state.orderID}
-						</Paper>
-					</Grid>
-
-					<Grid container spacing={3}>
-						<Grid item xs={12}>
-							<Typography>Deliver to:</Typography>
-							<Typography> {this.state.venue}</Typography>
-							<Typography> {this.state.dateOnly}</Typography>
-							<Typography> {this.state.time}</Typography>
-						</Grid>
+			<Grid container spacing={3}>
+				<Grid item xs={12}>
+					<Typography>Deliver to:</Typography>
+					<Typography> {this.state.venue}</Typography>
+					<Typography> {this.state.dateOnly}</Typography>
+					<Typography> {this.state.time}</Typography>
+				</Grid>
 
             <Grid item xs={12}>
               <Typography>Menu: ({this.state.pax} pax)</Typography>

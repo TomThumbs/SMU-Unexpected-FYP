@@ -64,7 +64,7 @@ class DisplayOrdersBase extends Component{
 
   render(){
     return(
-      <div class="body">
+      <div className="body">
       <Container component="main" maxWidth="xs">
         <Grid container justify="center" spacing={3} alignItems="center">
 
