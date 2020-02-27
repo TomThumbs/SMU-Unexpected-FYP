@@ -40,7 +40,7 @@ class IngredientManagementBase extends Component {
                 <Grid container spacing={8}>
                     <Grid container item xs={4}>
                         <Button component={RouterLink} to={ROUTES.NEW_INGREDIENT}>
-                            <Grid container justify="center" spacing={3}>
+                            <Grid container justify="center" spacing={2}>
                                 <Grid item xs={12}>
                                     <img class="image" src={tagnew} alt="logo"/>
                                 </Grid>
@@ -53,7 +53,7 @@ class IngredientManagementBase extends Component {
                     
                     <Grid container item xs={4}>
                         <Button component={RouterLink} to={ROUTES.DISH_TO_INGREDIENT_FORM}>
-                            <Grid container justify="center" spacing={3}>
+                            <Grid container justify="center" spacing={2}>
                                 <Grid item xs={12}>
                                     <img class="image" src={recipecreation} alt="recipecreation"/>
                                 </Grid>
@@ -66,7 +66,7 @@ class IngredientManagementBase extends Component {
 
                     <Grid container item xs={4}>
                         <Button component={RouterLink} to={ROUTES.DISPLAY_INGREDIENT}>
-                            <Grid container justify="center" spacing={3}>
+                            <Grid container justify="center" spacing={2}>
                                 <Grid item xs={12}>
                                     <img class="image" src={checkingredients} alt="checkingredients"/>
                                 </Grid>

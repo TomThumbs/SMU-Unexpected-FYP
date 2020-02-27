@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { withFirebase } from "../Firebase";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
+import { Link as RouterLink } from 'react-router-dom';
 
 import { makeStyles } from "@material-ui/core/styles";
 // import Grid from "@material-ui/core/Grid";
@@ -12,6 +13,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import FileUploader from "react-firebase-file-uploader";
+import Link from "@material-ui/core/Link";
 
 import { withAuthorization } from '../Session'
 
@@ -24,13 +26,13 @@ const useStyles = makeStyles(theme => ({
 		flexGrow: 1
 	},
 	paper: {
-		marginTop: theme.spacing(8),
+		marginTop: theme.spacing(50),
 		display: "flex",
 		flexDirection: "column",
 		maxWidth: 400,
-		textAlign: "center"
-		// margin: `${theme.spacing(1)}px auto`,
-		// padding: theme.spacing(2),
+		textAlign: "center",
+		margin: "1em",
+		padding: theme.spacing(2),
 	},
 	form: {
 		width: "100%", // Fix IE 11 issue.
@@ -42,6 +44,7 @@ const useStyles = makeStyles(theme => ({
 	text: {
 		textAlign: "center"
 	}
+	
 }));
 
 const INITIAL_STATE = {
@@ -118,14 +121,17 @@ class OrderPreparationSopBase extends Component {
 
 	renderBackButton() {
 		return (
-			<Link
-				to={{
-					pathname: ROUTES.ORDER_TIMELINE,
-					search: "?id=" + this.state.orderID
+			<Button
+				variant="outlined"
+				fullWidth
+				component={RouterLink} to={{
+				pathname: ROUTES.ORDER_TIMELINE,
+				search: "?id=" + this.state.orderID
+		
 				}}
 			>
-				<Button>Back</Button>
-			</Link>
+				Back
+			</Button>
 		);
 	}
 
@@ -173,8 +179,9 @@ class OrderPreparationSopBase extends Component {
 	let isInvalid = this.state.hands === false || this.state.workspace === false || this.state.imageURL.length === 0
     return (
       <div className="body">
+		  
       <Container component="main" maxWidth="xs" className={this.classes.root}>
-        {this.renderBackButton()}
+        
         <Paper className={this.classes.paper}>
           <Typography>Order Preparation SOP Agreement</Typography>
           <Typography>Order #{this.state.orderID}</Typography>
@@ -257,6 +264,7 @@ class OrderPreparationSopBase extends Component {
             </Button>
           </form>
         </Paper>
+		{this.renderBackButton()}
       </Container>
       </div>
     );

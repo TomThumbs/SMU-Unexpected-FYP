@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { withFirebase } from "../Firebase";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
+import { Link as RouterLink } from 'react-router-dom';
 
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 // import Grid from "@material-ui/core/Grid";
@@ -17,6 +18,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import Grid from '@material-ui/core/Grid';
 
 import * as ROUTES from "../../constants/routes";
 import { withAuthorization } from "../Session";
@@ -278,17 +280,27 @@ class OrderPreparationEditBase extends Component {
 		this.state.menu.forEach((dish, id) => {
 			list.push(
 				<div key={id}>
-					<Paper className={this.classes.paper}>
-						<Typography variant="h6">{dish}</Typography>
-						{this.renderMenuItem(dish)}
+		
+					<Grid container style={{ paddingTop: 6, paddingBottom: 6}}>
+						<Grid item xs={12}>
+							<Typography variant="h6">{dish}</Typography>
+						</Grid>
+						
+						<Grid item xs={12}>
+							{this.renderMenuItem(dish)}
+						</Grid>
+						
+						<Grid item xs={12}>
 						<TextareaAutosize
 							aria-label="minimum height"
 							rowsMin={3}
 							placeholder="scan barcodes here"
 							value={this.state[dish + " barcodes"]}
-							onChange={this.onItemTextChange(dish)}
-						/>
-					</Paper>
+							onChange={this.onItemTextChange(dish)}/>
+						</Grid>
+					</Grid>
+					
+			
 				</div>
 			);
 		});
@@ -297,14 +309,16 @@ class OrderPreparationEditBase extends Component {
 
 	renderBackButton() {
 		return (
-			<Link
-				to={{
+			<Button
+				variant="outlined"
+				fullWidth
+				component={RouterLink} to={{
 					pathname: ROUTES.ORDER_TIMELINE,
 					search: "?id=" + this.state.orderID
 				}}
 			>
-				<Button>Back</Button>
-			</Link>
+				Back
+			</Button>
 		);
 	}
 
@@ -313,23 +327,33 @@ class OrderPreparationEditBase extends Component {
 		return (
 			<div className="body">
 				<Container component="main" maxWidth="xs" className={this.classes.root}>
-					{this.renderBackButton()}
+					
 					<Paper className={this.classes.paper}>
 						<Typography>Order Preparation Edit</Typography>
 
 						<form onSubmit={this.onSubmit}>
 							{this.renderMenu()}
-
-							<Button
-								type="submit"
-								fullWidth
-								variant="contained"
-								color="primary"
-								className={this.classes.submit}
-							>
-								Submit
-							</Button>
+							<br></br>
+							<Grid container spacing={1}>
+								<Grid item xs={12}>
+									<Button
+										type="submit"
+										fullWidth
+										variant="contained"
+										color="primary"
+										className={this.classes.submit}
+									>Submit
+									</Button>
+								</Grid>
+								<Grid item xs={12}>
+								{this.renderBackButton()}
+								</Grid>
+							</Grid>
 						</form>
+						
+						
+						
+						
 						<Dialog
 							open={this.state.open}
 							onClose={this.handleClose}
