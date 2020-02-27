@@ -20,9 +20,7 @@ import Divider from '@material-ui/core/Divider';
 import checkingredients from "./checkingredients.png";
 import tagnew from "./tagnew.png";
 import tagtoorder from "./tagtoorder.png";
-
-
-
+import recipecreation from "./recipecreation.png";
 
 class IngredientManagementBase extends Component {
 	
@@ -41,42 +39,42 @@ class IngredientManagementBase extends Component {
           
                 <Grid container spacing={10}>
                     <Grid container item xs >
-                        <Link component={RouterLink} to={ROUTES.NEW_INGREDIENT} variant="body">
-                            <Grid container justify="center" spacing={2}>
+                        <Button component={RouterLink} to={ROUTES.NEW_INGREDIENT}>
+                            <Grid container justify="center" spacing={3}>
                                 <Grid item xs={12}>
                                     <img class="image" src={tagnew} alt="logo"/>
                                 </Grid>
-                                <Grid item xs={12} align="center">
-                                    <Typography component="h5" variant="h5">Tag New Ingredient</Typography>
+                                <Grid item xs={12} align="center" spacing={3}>
+                                    <Typography component="h6" variant="h6">Tag New Ingredient</Typography>
                                 </Grid>
                             </Grid>
-                        </Link>
+                        </Button>
                     </Grid>
                     
                     <Grid container item xs >
-                        <Link component={RouterLink} to={ROUTES.ORDER_PREPARATION_EDIT} variant="body">
+                        <Button component={RouterLink} to={ROUTES.DISH_TO_INGREDIENT_FORM}>
                             <Grid container justify="center" spacing={3}>
                                 <Grid item xs={12}>
-                                    <img class="image" src={tagtoorder} alt="tagtoorder"/>
+                                    <img class="image" src={recipecreation} alt="recipecreation"/>
                                 </Grid>
-                                <Grid item xs={12} align="center">
-                                    <Typography component="h5" variant="h5">Tag Ingredients To Order</Typography>
+                                <Grid item xs={12} align="center" spacing={3}>
+                                    <Typography component="h6" variant="h6">Create Recipe</Typography>
                                 </Grid>
                             </Grid>
-                        </Link>
+                        </Button>
                     </Grid>
 
                     <Grid container item xs >
-                        <Link component={RouterLink} to={ROUTES.DISPLAY_INGREDIENT} variant="body">
+                        <Button component={RouterLink} to={ROUTES.DISPLAY_INGREDIENT} variant="body">
                             <Grid container justify="center" spacing={3}>
                                 <Grid item xs={12}>
                                     <img class="image" src={checkingredients} alt="checkingredients"/>
                                 </Grid>
-                                <Grid item xs={12} align="center">
-                                    <Typography component="h5" variant="h5">Check Ingredient </Typography>
+                                <Grid item xs={12} align="center" spacing={3}>
+                                    <Typography component="h6" variant="h6">Check Ingredient </Typography>
                                 </Grid>
                             </Grid>
-                        </Link>
+                        </Button>
                     </Grid>
                 </Grid>
 		

@@ -126,20 +126,19 @@ class OrderDeliveryBase extends Component {
           <Grid className="grid" item xs={12}>
             <Paper className={this.classes.paper}>Order Delivery</Paper>
           </Grid>
+			<Grid className="grid" item xs={12}>
+				<Paper className={this.classes.paper}>
+					Order #{this.state.orderID}
+				</Paper>
+			</Grid>
 
-					<Grid className="grid" item xs={12}>
-						<Paper className={this.classes.paper}>
-							Order #{this.state.orderID}
-						</Paper>
-					</Grid>
-
-					<Grid container spacing={3}>
-						<Grid item xs={12}>
-							<Typography>Deliver to:</Typography>
-							<Typography> {this.state.venue}</Typography>
-							<Typography> {this.state.dateOnly}</Typography>
-							<Typography> {this.state.time}</Typography>
-						</Grid>
+			<Grid container spacing={3}>
+				<Grid item xs={12}>
+					<Typography>Deliver to:</Typography>
+					<Typography> {this.state.venue}</Typography>
+					<Typography> {this.state.dateOnly}</Typography>
+					<Typography> {this.state.time}</Typography>
+				</Grid>
 
             <Grid item xs={12}>
               <Typography>Menu: ({this.state.pax} pax)</Typography>
