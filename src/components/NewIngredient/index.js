@@ -83,7 +83,7 @@ class NewIngredientForm extends Component {
 			.collection("Ingredients")
 			.doc(this.state.foodId)
 			.set({
-				ingredientId: this.state.foodId,
+				barcode: this.state.foodId,
 				Date_of_expiry:
 					String(this.state.expiryDate).split(" ")[2] +
 					"-" +

@@ -147,7 +147,7 @@ class DisplayOrderTimelineBase extends Component {
 					{makeDelivery ? (
 						<Link
 							component={RouterLink} to={{
-								pathname: ROUTES.DELIVERY_FORM,
+								pathname: ROUTES.ORDER_DELIVERY,
 								search: "?id=" + this.state.orderID,
 								state: {
 									docID: this.state.docID

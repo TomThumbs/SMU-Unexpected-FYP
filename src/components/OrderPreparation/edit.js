@@ -156,40 +156,6 @@ class OrderPreparationEditBase extends Component {
 	onSubmit = event => {
 		event.preventDefault();
 
-		// ingredientTagsUsed is the equivalent of the TextareaAutosize. For whatever text in there, it splits by comma
-		// gets the RFID details and appends it to a new variable called ingredientsUsed
-		// then it writes to the db, under the name of Ingredients_Used.
-		// let ingredientsTempList = this.state.ingredientTagsUsed.split(",");
-		// let ingredientsTempListLength = ingredientsTempList.length;
-		// for (var i = 0; i < ingredientsTempListLength; i++) {
-		// 	//Get
-		// 	this.props.firebase.fs
-		// 		.collection("Ingredient")
-		// 		.doc(ingredientsTempList[i])
-		// 		.get()
-		// 		.then(doc => {
-		// 			this.setState(prevstate => ({
-		// 				ingredientsUsed: [
-		// 					...prevstate.ingredientsUsed,
-		// 					doc.data().Name +
-		// 						": " +
-		// 						doc.data().Date_of_expiry +
-		// 						", " +
-		// 						ingredientsTempList[i]
-		// 				]
-		// 			}));
-		//Write
-		// Why this writing code is being initiated many times in this for loop is because ingredientsUsed becomes blank
-		// after this for loop is done. its weird. if this code is outside the for loop, itll write blank to the db.
-		// 			this.props.firebase.fs
-		// 				.collection("Catering_orders")
-		// 				.doc(this.props.location.docID)
-		// 				.update({
-		// 					Ingredients_Used: this.state.ingredientsUsed
-		// 				});
-		// 		});
-		// }
-
 		console.log(this.state.docID);
 		this.props.firebase.fs
 			.collection("Catering_orders")
@@ -318,7 +284,7 @@ class OrderPreparationEditBase extends Component {
 						<TextareaAutosize
 							aria-label="minimum height"
 							rowsMin={3}
-							placeholder="Minimum 3 rows"
+							placeholder="scan barcodes here"
 							value={this.state[dish + " barcodes"]}
 							onChange={this.onItemTextChange(dish)}
 						/>

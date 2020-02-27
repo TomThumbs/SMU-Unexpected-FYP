@@ -103,6 +103,20 @@ class OrderServiceBase extends Component {
 
 	onSubmit = event => {
 		event.preventDefault();
+
+		this.props.firebase.fs
+		.collection("Catering_orders")
+		.doc(String(this.state.docID))
+		.update({
+			Status: "Event in Progress"
+		})
+		.then(function() {
+			console.log("Document successfully written!");
+		})
+		.catch(function(error) {
+			console.error("Error writing document: ", error);
+		});
+
 		let heatersUsed = {};
 
 		this.state.menu.forEach(dish => {

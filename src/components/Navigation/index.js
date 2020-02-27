@@ -19,7 +19,7 @@ const NavigationAuth = () => (
 	<ul className="nav-links">
 		<li className="nav-link">
 			<Link className="navigation-link" to={ROUTES.LANDING}>
-				Landing
+				Home
 			</Link>
 		</li>
 		<li className="nav-link">
@@ -60,14 +60,14 @@ const NavigationAuth = () => (
 				Check Ingredients
 			</Link>
 		</li> */}
-		<li className="nav-link">
+		{/* <li className="nav-link">
 			<Link
 				className="navigation-link"
 				to={ROUTES.DISH_TO_INGREDIENT_FORM}
 			>
 				Recipe Creation
 			</Link>
-		</li>
+		</li> */}
 		{/* <li className="nav-link">
 <Link className="navigation-link" to={ROUTES.COOKING_SELECTION}>Cooking Tag Form</Link>
 </li> */}
