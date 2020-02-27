@@ -8,15 +8,15 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
-import TextareaAutosize from "@material-ui/core/TextareaAutosize";
+// import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
+// import Dialog from "@material-ui/core/Dialog";
+// import DialogActions from "@material-ui/core/DialogActions";
 // import Typography from "@material-ui/core/Typography";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
+// import DialogContent from "@material-ui/core/DialogContent";
+// import DialogContentText from "@material-ui/core/DialogContentText";
+// import DialogTitle from "@material-ui/core/DialogTitle";
 
 import * as ROUTES from "../../constants/routes";
 import { withAuthorization } from "../Session";
@@ -69,7 +69,7 @@ class OrderCompletionBase extends Component {
 		let urlId = Number(urlParams.get("id"));
 		this.setState({
 			orderID: urlId
-		});	
+		});
 
 		this.props.firebase.fs.collection("Catering_orders")
 		.where("orderID", "==", urlId)
@@ -106,14 +106,14 @@ class OrderCompletionBase extends Component {
 
 
 	onChange = event => {
-		if (this.state.completion === false) { 
+		if (this.state.completion === false) {
 			this.setState({
-				[event.target.name]: true 
-			}) 
+				[event.target.name]: true
+			})
 		} else {
 			this.setState({
-				[event.target.name]: false 
-			}) 
+				[event.target.name]: false
+			})
 		}
 	}
 
@@ -135,7 +135,7 @@ class OrderCompletionBase extends Component {
 					})
 				});
 			})
-		}) 
+		})
 
 		this.props.firebase.fs
 			.collection("Catering_orders")

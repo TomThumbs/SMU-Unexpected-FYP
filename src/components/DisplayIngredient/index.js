@@ -18,8 +18,6 @@ const INITIAL_STATE = {
 	dateOfStorage: "",
 	dateOfExpiry: "",
 	ingredientName: "",
-	dateOfStorage: "",
-	dateOfExpiry: "",
 	ingredientId:""
 };
 
