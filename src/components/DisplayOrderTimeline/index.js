@@ -78,7 +78,8 @@ class DisplayOrderTimelineBase extends Component {
 					this.setState({
 						docID: doc.id,
 						status: doc.data().Status,
-						menu: Array.from(new Set(doc.data().Menu))
+						menu: Array.from(new Set(doc.data().Menu)),
+						sopStatus: doc.data().sop
 					});
 				});
 			})
@@ -95,6 +96,7 @@ class DisplayOrderTimelineBase extends Component {
 
 		// Check if current item is preparation
 		const isPrep = itemIndex === "Preparation";
+		const isSop = itemIndex === "Preparation" && this.state.sopStatus == false;
 
 		// Check if current item is to be delivered
 		const makeDelivery = itemIndex === "Delivery" && status === "Preparation";
@@ -128,7 +130,7 @@ class DisplayOrderTimelineBase extends Component {
 							Edit
 						</Link>
 					) : null}
-					{isPrep ? (
+					{isSop ? (
 						<Link
 							component={RouterLink} to={{
 								pathname: ROUTES.ORDER_PREPARATION_SOP,
@@ -168,14 +170,25 @@ class DisplayOrderTimelineBase extends Component {
 							Set up Temperature Monitors
 						</Link>
 					) : null}
-					{toBeCollected ? <Link>Collected</Link> : null}
+					{toBeCollected ? (<Link
+							component={RouterLink} to={{
+								pathname: ROUTES.ORDER_COMPLETE,
+								search: "?id=" + this.state.orderID,
+								state: {
+									docID: this.state.docID
+								}
+							}}
+						><br></br>
+							Items Collected
+						</Link>) : null}
 					{isDone ? (
 						<Link
 							component={RouterLink} to={{
 								pathname: routepath,
 								search: "?id=" + this.state.orderID,
 								state: {
-									docID: this.state.docID
+									docID: this.state.docID,
+									menu: this.state.menu
 								}
 							}}
 						><br></br>

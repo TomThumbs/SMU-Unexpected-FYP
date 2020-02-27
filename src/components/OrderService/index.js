@@ -8,7 +8,7 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
-// import Button from "@material-ui/core/Button";
+import Button from "@material-ui/core/Button";
 // import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -79,7 +79,8 @@ class OrderServiceBase extends Component {
 					if (data.status === "Unused") {
 						let tempHeater = {
 							ID: data.ID,
-							status: data.status
+							status: data.status,
+							docID: doc.id
 						};
 						this.setState(prevState => ({
 							IoTHeaters: [...prevState.IoTHeaters, tempHeater]
@@ -98,6 +99,40 @@ class OrderServiceBase extends Component {
 			dataIsLoaded: true
 		});
 	}
+
+	onSubmit = event => {
+		event.preventDefault();
+		let heatersUsed = {};
+
+		this.state.menu.forEach(dish => {
+			let heater = this.state[dish + " heater"];
+			heatersUsed = { ...heatersUsed, [dish]: heater };
+
+			let heaterID = this.state.IoTHeaters[Number(heater)].docID;
+			// console.log(heaterID)
+			this.props.firebase.fs
+				.collection("IoTHeaters")
+				.doc(heaterID)
+				.update({
+					status: "In use",
+					orderID: this.state.orderID
+				});
+		});
+
+		this.props.firebase.fs
+			.collection("Catering_orders")
+			.doc(this.state.docID)
+			.update({
+				HeatersUsed: heatersUsed
+			})
+			.then(function() {
+				console.log("Document successfully written!");
+			})
+			.catch(function(error) {
+				console.error("Error writing document: ", error);
+			});
+
+	};
 
 	onChange = dish => event => {
 		this.setState({
@@ -136,15 +171,27 @@ class OrderServiceBase extends Component {
 
 	render() {
 		const dataIsLoaded = this.state.dataIsLoaded === true;
-
+		console.log(this.state);
 		return (
 			<div className="body">
 				<Container component="main" maxWidth="xs">
-				<Typography variant='h2'>Order #{this.state.orderID}</Typography>
+					<Typography variant="h2">
+						Order #{this.state.orderID}
+					</Typography>
 
 					<Grid container justify="center" spacing={3}>
 						{dataIsLoaded && this.renderHeaters()}
 					</Grid>
+					<form onSubmit={this.onSubmit}>
+						<Button
+							type="submit"
+							fullWidth
+							variant="contained"
+							color="primary"
+						>
+							Submit
+						</Button>
+					</form>
 				</Container>
 			</div>
 		);

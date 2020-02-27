@@ -91,7 +91,7 @@ class DishToIngredientFormBase extends Component {
       snapshot.forEach(doc => {
         
         this.setState((prevstate) => ({
-          availableIngredients: [...prevstate.availableIngredients, {ingredient: doc.id}]
+          availableIngredients: [...prevstate.availableIngredients, {ingredient: doc.data().name}]
         }));
       })
     })
@@ -135,7 +135,8 @@ class DishToIngredientFormBase extends Component {
       })
     } else {
       this.props.firebase.fs.collection('Ingredients').doc(this.state.newIngredientName).set({ 
-        Properties:''
+        // Properties:''
+        name: this.state.newIngredientName
       })
     }
     this.handleClickOpen()
@@ -143,9 +144,9 @@ class DishToIngredientFormBase extends Component {
 
 
   handleChange= name => event =>  {
-    let dictIndex = event.target.id.split("-")[2]
-    // console.log(this.state)
-    this.setState({...this.props, [name.id]: Object.values(this.state.availableIngredients)[dictIndex].ingredient});
+    let dictIndex = event.target.id.split("-")[4]
+    // console.log(Object.values(this.state.availableIngredients)[dictIndex].ingredient)
+    this.setState({...this.props, [name.fooditem]: Object.values(this.state.availableIngredients)[dictIndex].ingredient});
   }
 
   renderSubmit() {
@@ -185,7 +186,7 @@ class DishToIngredientFormBase extends Component {
     window.location.reload(true);
   };
 
-  createTextField = (id) =>{
+  createTextField = (fooditem) =>{
     return(
       <Autocomplete
       id="combo-box-demo"
@@ -193,7 +194,7 @@ class DishToIngredientFormBase extends Component {
       getOptionLabel={option => option.ingredient}
       style={{ width: 300 }}
       // id={id}  
-      onChange={this.handleChange({id})}  
+      onChange={this.handleChange({fooditem})}  
       renderInput={params => (
         <TextField {...params} 
         label="Ingredient:" 
@@ -271,14 +272,14 @@ class DishToIngredientFormBase extends Component {
         {this.createTextField("ingredientTen")}
         {this.createTextField("ingredientEleven")}
         {this.createTextField("ingredientTwelve")}
-        {this.createTextField("ingredientThirteen")}
+        {/* {this.createTextField("ingredientThirteen")}
         {this.createTextField("ingredientFourteen")}
         {this.createTextField("ingredientFifteen")}
         {this.createTextField("ingredientSixteen")}
         {this.createTextField("ingredientSeventeen")}
         {this.createTextField("ingredientEighteen")}
         {this.createTextField("ingredientNineteen")}
-        {this.createTextField("ingredientTwenty")}
+        {this.createTextField("ingredientTwenty")} */}
         </Grid>
         </Grid>
        

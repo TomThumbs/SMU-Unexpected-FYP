@@ -90,7 +90,7 @@ class NewIngredientForm extends Component {
 					this.state.month +
 					"-" +
 					String(this.state.expiryDate).split(" ")[3],
-				Name: this.state.foodName,
+				name: this.state.foodName,
 				Primary_Ingredients: this.state.priFoodId,
 				Date_of_Storage: this.state.storageDate
 			});

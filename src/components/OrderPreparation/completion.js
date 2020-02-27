@@ -53,6 +53,7 @@ const INITIAL_STATE = {
 	orderID: "",
 	completion: false,
 	status: "",
+	IOTs: []
 };
 
 class OrderCompletionBase extends Component {
@@ -91,12 +92,18 @@ class OrderCompletionBase extends Component {
 		.get()
 		.then(snap => {
 			snap.forEach(doc => {
+				// console.log(Object.values(doc.data().HeatersUsed))
 				this.setState({
-					docID: doc.id
+					docID: doc.id,
+					IOTs: Object.values(doc.data().HeatersUsed)
+
 				})
 			});
 		});
 	}
+
+
+
 
 	onChange = event => {
 		if (this.state.completion === false) { 
@@ -112,6 +119,23 @@ class OrderCompletionBase extends Component {
 
 	onSubmit = event => {
 		event.preventDefault();
+
+		this.state.IOTs.forEach(item=>{
+			this.props.firebase.fs
+			.collection("IoTHeaters")
+			.where("ID", "==", item)
+			.update({
+				status: "Unused",
+				orderID: "Unused"
+			})
+			.then(function() {
+				console.log("Document successfully written!");
+			})
+			.catch(function(error) {
+				console.error("Error writing document: ", error);
+			});
+		}) 
+
 		this.props.firebase.fs
 			.collection("Catering_orders")
 			.doc(String(this.state.docID))
