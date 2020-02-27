@@ -148,7 +148,7 @@ class OrderPreparationSopBase extends Component {
 			});
 		this.props.history.push({
 			pathname: './order-preparation-post-sop',
-			search: "?id=" + this.state.searchId,
+			search: "?id=" + this.state.orderID,
 			headchef: this.state.headchef,
 			assistantA: this.state.assistantA,
 			assistantB: this.state.assistantB,

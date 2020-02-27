@@ -16,20 +16,49 @@ import { withAuthorization } from '../Session'
 // import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import * as ROUTES from "../../constants/routes";
 
+const INITIAL_STATE = {
+	docID: "",
+	orderID: "",
+
+};
+
 class OrderPreparationPostSopBase extends Component {
 
-	onSubmit = event => {
-		this.props.history.push({
-			pathname: ROUTES.ORDER_TIMELINE,
-			search: "?id=" + this.props.location.orderID,
+	constructor(props) {
+		super(props);
+		this.state = { ...INITIAL_STATE, docID: props.location.docID };
+		// this.classes = { useStyles };
+	}
+
+	componentDidMount() {
+		let queryString = window.location.search;
+		let urlParams = new URLSearchParams(queryString);
+		let urlId = Number(urlParams.get("id")); 
+
+		this.setState({
+			orderID: urlId 
 		});
-	};
+	}
+
+	renderBackButton() {
+		return (
+			<Link
+				to={{
+					pathname: ROUTES.ORDER_TIMELINE,
+					search: "?id=" + this.props.location.orderID
+				}}
+			>
+				<Button>Back</Button>
+			</Link>
+		);
+	}
 
 	render() {
-		// console.log(this.props.location);
+		console.log(this.props.location);
 		return (
 			<div class="body">
 				<Container component="main" maxWidth="xs">
+				{this.renderBackButton()}
 				<Typography variant="h5" component="h2">Head Chef: {this.props.location.headchef}</Typography>
 				<Typography variant="h5" component="h2">Assistant A: {this.props.location.assistantA}</Typography>
 				<Typography variant="h5" component="h2">Assistant B: {this.props.location.assistantB}</Typography>
@@ -64,17 +93,7 @@ class OrderPreparationPostSopBase extends Component {
 				<Typography variant="h6" component="h2">Order Commence: {this.props.location.preparationCommencement}</Typography>
 
 				</Container>
-				{/* <form onSubmit={this.onSubmit}>
-					<Button
-						type="submit"
-						fullWidth
-						variant="contained"
-						color="primary"
-						className={this.classes.submit}
-					>
-						Back To Order
-					</Button>
-				</form> */}
+
 			</div>
 		);
 	}

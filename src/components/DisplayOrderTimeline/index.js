@@ -192,8 +192,10 @@ class DisplayOrderTimelineBase extends Component {
 							Submit
 						</Link>
 					) : null}
-					{viewComplete ? <Link>Collected</Link> : null} 
-					{isDone ? (
+					{viewComplete ? 
+					// <Link>Collected</Link> : null} 
+					// {isDone ? 
+					(
 						<Link
 							to={{
 								pathname: ROUTES.ORDER_COMPLETE,

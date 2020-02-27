@@ -18,6 +18,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Divider from "@material-ui/core/Divider";
 
 import { withAuthorization } from "../Session";
+import * as ROUTES from "../../constants/routes";
 
 const useStyles = makeStyles(theme => ({
 	formControl: {
@@ -73,6 +74,22 @@ class OrderDeliveryBase extends Component {
 			orderID: urlId
 		});
 
+		this.props.firebase.fs
+		.collection("Catering_orders")
+		.doc(this.state.docID)
+		.get()
+		.then(doc => {
+			if (doc.data().Status === "Delivery") {
+				this.props.history.push({
+					pathname: ROUTES.POST_DELIVERY_FORM,
+					orderID: urlId,
+					driver: doc.data().Driver,
+					url: doc.data().TruckImgURL
+				  })
+			}
+		})
+
+
 		// ---------- GET ORDER DETAILS ----------
 		this.props.firebase.fs
 			.collection("Catering_orders")
@@ -125,7 +142,7 @@ class OrderDeliveryBase extends Component {
 		this.setState({ imageURL: "" });
 
 		this.props.history.push({
-			pathname: './post-delivery-form',
+			pathname: ROUTES.POST_DELIVERY_FORM,
 			orderID: this.state.oID,
 			driver: this.state.driver,
 			url: this.state.imageURL
