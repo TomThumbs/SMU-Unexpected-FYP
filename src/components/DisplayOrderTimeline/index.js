@@ -35,7 +35,7 @@ const INITIAL_STATE = {
 		"Preparation",
 		"Delivery",
 		"Event in Progress",
-		"Order Complete"
+		"Order Completed"
 	],
 	routeList: [
 		ROUTES.ORDER_RECEIVED,
@@ -98,11 +98,15 @@ class DisplayOrderTimelineBase extends Component {
 			itemIndex === "Delivery" && status === "Preparation";
 
 		// Check if order is delivered and to be set up
-		const setUpService = itemIndex === "Service" && status === "Delivery";
+		const setUpService = itemIndex === "Event in Progress" && status === "Delivery";
 
 		// Check if order is to be collected
 		const toBeCollected =
-			itemIndex === "Order Completed" && status === "Service";
+			itemIndex === "Order Completed" && status === "Event in Progress";
+
+		// Check if order is to be collected
+		const viewComplete =
+		itemIndex === "Order Completed" && status === "Order Completed";
 
 		const routepath = this.state.routeList[
 			this.state.statusList.indexOf(itemIndex)
@@ -110,11 +114,14 @@ class DisplayOrderTimelineBase extends Component {
 
 		return (
 			<div key={key} className="timeline-item">
+				
 				<div className="timeline-item-content">
-					<span className="circle" />
-					<span className="tag">{itemIndex}</span>
-
-					{isPrep ? (
+					
+          <span className="circle" />
+          <span className="tag">{itemIndex}</span>
+	
+					
+          {isPrep ? (
 						<Link
 							to={{
 								pathname: ROUTES.ORDER_PREPARATION_EDIT,
@@ -170,11 +177,10 @@ class DisplayOrderTimelineBase extends Component {
 							Set up Temperature Monitors
 						</Link>
 					) : null}
-					{toBeCollected ? <Link>Collected</Link> : null}
-					{isDone ? (
+					{toBeCollected ? (
 						<Link
 							to={{
-								pathname: routepath,
+								pathname: ROUTES.ORDER_COMPLETE,
 								search: "?id=" + this.state.orderID,
 								state: {
 									docID: this.state.docID,
@@ -183,7 +189,22 @@ class DisplayOrderTimelineBase extends Component {
 							}}
 						>
 							<br></br>
-							Read
+							Submit
+						</Link>
+					) : null}
+					{viewComplete ? (
+						<Link
+							to={{
+								pathname: ROUTES.ORDER_COMPLETE,
+								search: "?id=" + this.state.orderID,
+								state: {
+									docID: this.state.docID,
+									menu: this.state.menu
+								}
+							}}
+						>
+							<br></br>
+							View
 						</Link>
 					) : (
 						<p>Not done yet</p>
