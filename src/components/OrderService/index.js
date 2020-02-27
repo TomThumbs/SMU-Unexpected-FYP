@@ -109,7 +109,7 @@ class OrderServiceBase extends Component {
 			heatersUsed = { ...heatersUsed, [dish]: heater };
 
 			let heaterID = this.state.IoTHeaters[Number(heater)].docID;
-			// console.log(heaterID)
+
 			this.props.firebase.fs
 				.collection("IoTHeaters")
 				.doc(heaterID)
