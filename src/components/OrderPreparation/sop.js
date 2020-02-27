@@ -134,6 +134,7 @@ class OrderPreparationSopBase extends Component {
 			.collection("Catering_orders")
 			.doc(this.state.docID)
 			.update({
+				sop: true,
 				headchef: this.state.headchef,
 				assistantA: this.state.assistantA,
 				assistantB: this.state.assistantB,

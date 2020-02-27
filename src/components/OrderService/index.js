@@ -114,7 +114,8 @@ class OrderServiceBase extends Component {
 				.collection("IoTHeaters")
 				.doc(heaterID)
 				.update({
-					status: "In use"
+					status: "In use",
+					orderID: this.state.orderID
 				});
 		});
 
@@ -131,24 +132,6 @@ class OrderServiceBase extends Component {
 				console.error("Error writing document: ", error);
 			});
 
-		// this.props.firebase.fs
-		// .collection("IoTHeaters")
-		// .doc()
-		// .get()
-		// .then(querySnapshot => {
-		// 	querySnapshot.forEach(doc => {
-		// 		let data = doc.data();
-		// 		if (data.status === "Unused") {
-		// 			let tempHeater = {
-		// 				ID: data.ID,
-		// 				status: data.status
-		// 			};
-		// 			this.setState(prevState => ({
-		// 				IoTHeaters: [...prevState.IoTHeaters, tempHeater]
-		// 			}));
-		// 		}
-		// 	});
-		// });
 	};
 
 	onChange = dish => event => {
