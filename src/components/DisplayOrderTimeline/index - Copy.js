@@ -4,7 +4,7 @@ import { Link, withRouter } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core/styles";
 // import Grid from '@material-ui/core/Grid';
-// import Typography from '@material-ui/core/Typography';
+import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 // import Paper from '@material-ui/core/Paper';
 // import TimelineItem from './timelineItem'
@@ -35,7 +35,7 @@ const INITIAL_STATE = {
 		"Preparation",
 		"Delivery",
 		"Event in Progress",
-		"Order Complete"
+		"Order Completed"
 	],
 	routeList: [
 		ROUTES.ORDER_RECEIVED,
@@ -94,14 +94,19 @@ class DisplayOrderTimelineBase extends Component {
 		const isPrep = itemIndex === "Preparation";
 
 		// Check if current item is to be delivered
-		const makeDelivery = itemIndex === "Delivery" && status === "Preparation";
+		const makeDelivery =
+			itemIndex === "Delivery" && status === "Preparation";
 
 		// Check if order is delivered and to be set up
-		const setUpService = itemIndex === "Service" && status === "Delivery";
+		const setUpService = itemIndex === "Event in Progress" && status === "Delivery";
 
 		// Check if order is to be collected
 		const toBeCollected =
-			itemIndex === "Order Completed" && status === "Service";
+			itemIndex === "Order Completed" && status === "Event in Progress";
+
+		// Check if order is to be collected
+		const viewComplete =
+		itemIndex === "Order Completed" && status === "Order Completed";
 
 		const routepath = this.state.routeList[
 			this.state.statusList.indexOf(itemIndex)
@@ -109,10 +114,14 @@ class DisplayOrderTimelineBase extends Component {
 
 		return (
 			<div key={key} className="timeline-item">
+				
 				<div className="timeline-item-content">
-					<span className="tag"></span>
-					<h5>{itemIndex}</h5>
-					{isPrep ? (
+					
+          <span className="circle" />
+          <span className="tag">{itemIndex}</span>
+	
+					
+          {isPrep ? (
 						<Link
 							to={{
 								pathname: ROUTES.ORDER_PREPARATION_EDIT,
@@ -122,7 +131,7 @@ class DisplayOrderTimelineBase extends Component {
 								}
 							}}
 						>
-							Edit
+							<br></br>Edit
 						</Link>
 					) : null}
 					{isPrep ? (
@@ -135,6 +144,7 @@ class DisplayOrderTimelineBase extends Component {
 								}
 							}}
 						>
+							<br></br>
 							SOP
 						</Link>
 					) : null}
@@ -148,10 +158,11 @@ class DisplayOrderTimelineBase extends Component {
 								}
 							}}
 						>
+							<br></br>
 							Make Delivery
 						</Link>
 					) : null}
-          {setUpService ? (
+					{setUpService ? (
 						<Link
 							to={{
 								pathname: ROUTES.ORDER_SERVICE,
@@ -162,26 +173,45 @@ class DisplayOrderTimelineBase extends Component {
 								}
 							}}
 						>
+							<br></br>
 							Set up Temperature Monitors
 						</Link>
 					) : null}
-					{toBeCollected ? <Link>Collected</Link> : null}
-					{isDone ? (
+					{toBeCollected ? (
 						<Link
 							to={{
-								pathname: routepath,
+								pathname: ROUTES.ORDER_COMPLETE,
 								search: "?id=" + this.state.orderID,
 								state: {
-									docID: this.state.docID
+									docID: this.state.docID,
+									menu: this.state.menu
 								}
 							}}
 						>
-							Read
+							<br></br>
+							Submit
+						</Link>
+					) : null}
+					{viewComplete ? 
+					// <Link>Collected</Link> : null} 
+					// {isDone ? 
+					(
+						<Link
+							to={{
+								pathname: ROUTES.ORDER_COMPLETE,
+								search: "?id=" + this.state.orderID,
+								state: {
+									docID: this.state.docID,
+									menu: this.state.menu
+								}
+							}}
+						>
+							<br></br>
+							View
 						</Link>
 					) : (
 						<p>Not done yet</p>
 					)}
-					<span className="circle" />
 				</div>
 			</div>
 		);
@@ -198,9 +228,13 @@ class DisplayOrderTimelineBase extends Component {
 	}
 
 	render() {
+		console.log(this.state)
 		return (
 			<div className="body">
-				<Container component="main" maxWidth="xs">
+				<Container component="main" maxWidth="md">
+					<Typography variant="h2">
+						Order #{this.state.orderID}
+					</Typography>
 					{this.timeline()}
 				</Container>
 			</div>
