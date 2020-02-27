@@ -35,7 +35,7 @@ const INITIAL_STATE = {
 		"Preparation",
 		"Delivery",
 		"Event in Progress",
-		"Order Complete"
+		"Order Completed"
 	],
 	routeList: [
 		ROUTES.ORDER_RECEIVED,
@@ -97,11 +97,11 @@ class DisplayOrderTimelineBase extends Component {
 		const makeDelivery = itemIndex === "Delivery" && status === "Preparation";
 
 		// Check if order is delivered and to be set up
-		const setUpService = itemIndex === "Service" && status === "Delivery";
+		const setUpService = itemIndex === "Event in Progress" && status === "Delivery";
 
 		// Check if order is to be collected
 		const toBeCollected =
-			itemIndex === "Order Completed" && status === "Service";
+			itemIndex === "Order Completed" && status === "Event in Progress";
 
 		const routepath = this.state.routeList[
 			this.state.statusList.indexOf(itemIndex)
@@ -151,7 +151,7 @@ class DisplayOrderTimelineBase extends Component {
 							Make Delivery
 						</Link>
 					) : null}
-          {setUpService ? (
+          			{setUpService ? (
 						<Link
 							to={{
 								pathname: ROUTES.ORDER_SERVICE,

@@ -69,7 +69,7 @@ class OrderDeliveryBase extends Component {
 		let queryString = window.location.search;
 		let urlParams = new URLSearchParams(queryString);
 		let urlId = Number(urlParams.get("id"));
-		console.log(urlId);
+		// console.log(urlId);
 		this.setState({
 			orderID: urlId
 		});
@@ -79,10 +79,10 @@ class OrderDeliveryBase extends Component {
 		.doc(this.state.docID)
 		.get()
 		.then(doc => {
-			if (doc.data().Status === "Delivery") {
+			if (doc.data().Status === "Delivery" || doc.data().Status === "Event in Progress" || doc.data().Status === "Order Completed") {
 				this.props.history.push({
 					pathname: ROUTES.POST_DELIVERY_FORM,
-					orderID: urlId,
+					orderID: this.state.orderID,
 					driver: doc.data().Driver,
 					url: doc.data().TruckImgURL
 				  })
@@ -108,7 +108,7 @@ class OrderDeliveryBase extends Component {
 				});
 				this.props.firebase.fs
 					.collection("Customers")
-					.doc(this.state.name)
+					.doc(doc.data().Customer.id)
 					.get()
 					.then(docu => {
 						this.setState({
