@@ -5,6 +5,7 @@ import "../../App.css";
 import { withRouter } from "react-router-dom";
 import { withFirebase } from "../Firebase";
 import { withAuthorization } from "../Session";
+import { Link as RouterLink } from 'react-router-dom';
 
 // import { makeStyles } from '@material-ui/core/styles';
 import Container from "@material-ui/core/Container";
@@ -37,7 +38,7 @@ class PostDeliveryFormBase extends Component {
 					</Grid>
 					<br></br>
 					<Button
-						href={ROUTES.LANDING}
+						component={RouterLink} to={ROUTES.LANDING}
 						color="primary"
 						fullWidth
 						variant="contained"

@@ -10,6 +10,7 @@ import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 
 import * as ROUTES from "../../constants/routes";
+import { Link as RouterLink } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -96,23 +97,22 @@ class OrderReceivedBase extends Component {
 
 	renderBackButton() {
 		return (
-			<Link
-				to={{
+			<Button
+					component={RouterLink} to={{
 					pathname: ROUTES.ORDER_TIMELINE,
 					search: "?id=" + this.state.orderID
 				}}
-			>
-				<Button>Back</Button>
-			</Link>
+			> Back
+			</Button>
 		);
 	}
 
 	render() {
 		return (
 			<div className="body">
-				<Container className={this.classes.root}>
+				<Container className={this.classes.root} component="main" maxWidth="md">
 					{this.renderBackButton()}
-					<Paper className={this.classes.paper}>
+					
 						<Grid container spacing={3}>
 							<Grid item xs={6}>
 								<Typography>Deliver to:</Typography>
@@ -128,7 +128,7 @@ class OrderReceivedBase extends Component {
 								{this.renderMenu()}
 							</Grid>
 						</Grid>
-					</Paper>
+				
 				</Container>
 			</div>
 		);

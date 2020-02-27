@@ -37,45 +37,47 @@ class IngredientManagementBase extends Component {
                 {/* <Button href={ROUTES.ORDER_FORM}><img class="image" src={tagnew} alt="logo"/></Button> */}
                 
           
-                <Grid container spacing={10}>
-                    <Grid container item xs >
+                <Grid container spacing={8}>
+                    <Grid container item xs={4}>
                         <Button component={RouterLink} to={ROUTES.NEW_INGREDIENT}>
                             <Grid container justify="center" spacing={3}>
                                 <Grid item xs={12}>
                                     <img class="image" src={tagnew} alt="logo"/>
                                 </Grid>
-                                <Grid item xs={12} align="center" spacing={3}>
+                                <Grid item xs={12} align="center">
                                     <Typography component="h6" variant="h6">Tag New Ingredient</Typography>
                                 </Grid>
                             </Grid>
                         </Button>
                     </Grid>
                     
-                    <Grid container item xs >
+                    <Grid container item xs={4}>
                         <Button component={RouterLink} to={ROUTES.DISH_TO_INGREDIENT_FORM}>
                             <Grid container justify="center" spacing={3}>
                                 <Grid item xs={12}>
                                     <img class="image" src={recipecreation} alt="recipecreation"/>
                                 </Grid>
-                                <Grid item xs={12} align="center" spacing={3}>
+                                <Grid item xs={12} align="center">
                                     <Typography component="h6" variant="h6">Create Recipe</Typography>
                                 </Grid>
                             </Grid>
                         </Button>
                     </Grid>
 
-                    <Grid container item xs >
-                        <Button component={RouterLink} to={ROUTES.DISPLAY_INGREDIENT} variant="body">
+                    <Grid container item xs={4}>
+                        <Button component={RouterLink} to={ROUTES.DISPLAY_INGREDIENT}>
                             <Grid container justify="center" spacing={3}>
                                 <Grid item xs={12}>
                                     <img class="image" src={checkingredients} alt="checkingredients"/>
                                 </Grid>
-                                <Grid item xs={12} align="center" spacing={3}>
-                                    <Typography component="h6" variant="h6">Check Ingredient </Typography>
+                                <Grid item xs={12} align="center">
+                                    <Typography component="h6" variant="h6">Check Ingredient</Typography>
                                 </Grid>
                             </Grid>
                         </Button>
                     </Grid>
+
+                    
                 </Grid>
 		
             </Container>
