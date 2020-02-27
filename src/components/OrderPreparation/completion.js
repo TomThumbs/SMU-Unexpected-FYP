@@ -77,7 +77,7 @@ class OrderCompletionBase extends Component {
 		.then(snap => {
 			snap.forEach(doc => {
 				if (doc.data().Status === "Order Completed") {
-					console.log(doc.id)
+					// console.log(doc.id)
 					this.props.history.push({
 						pathname: ROUTES.FINAL_OVERVIEW,
 						search: "?id=" + this.state.orderID,
@@ -121,19 +121,20 @@ class OrderCompletionBase extends Component {
 		event.preventDefault();
 
 		this.state.IOTs.forEach(item=>{
+
 			this.props.firebase.fs
 			.collection("IoTHeaters")
 			.where("ID", "==", item)
-			.update({
-				status: "Unused",
-				orderID: "Unused"
+			.get()
+			.then(snap => {
+				snap.forEach(doc => {
+					this.props.firebase.fs.collection("IoTHeaters")
+					.doc(doc.id).update({
+						status: "Unused",
+						orderID: "Unused"
+					})
+				});
 			})
-			.then(function() {
-				console.log("Document successfully written!");
-			})
-			.catch(function(error) {
-				console.error("Error writing document: ", error);
-			});
 		}) 
 
 		this.props.firebase.fs

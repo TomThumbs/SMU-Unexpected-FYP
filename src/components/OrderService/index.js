@@ -62,13 +62,14 @@ class OrderServiceBase extends Component {
 		this.state = {
 			...INITIAL_STATE,
 			docID: props.location.state.docID,
-			menu: props.location.state.menu
+			menu: props.location.state.menu,
+			orderID: props.location.state.orderID
 		};
 		this.classes = { useStyles };
 	}
 
 	componentDidMount() {
-		console.log(this.state);
+		console.log(this.props.location)	;
 		this.props.firebase.fs
 			.collection("IoTHeaters")
 			.orderBy("ID", "asc")

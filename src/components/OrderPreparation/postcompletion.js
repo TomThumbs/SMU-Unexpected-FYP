@@ -110,7 +110,7 @@ class FinalOverviewBase extends Component {
 
 	renderMenu = () => {
 		let listofmenu = [];
-		console.log(this.state.menu.length)
+		// console.log(this.state.menu.length)
 		let i = 0
 		for (i = 0; i < this.state.menu.length; i++) {
 			let dish = this.state.menu[i]

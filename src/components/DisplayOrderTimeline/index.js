@@ -164,7 +164,8 @@ class DisplayOrderTimelineBase extends Component {
 								search: "?id=" + this.state.orderID,
 								state: {
 									docID: this.state.docID,
-									menu: this.state.menu
+									menu: this.state.menu,
+									orderID: this.state.orderID
 								}
 							}}
 						><br></br>
@@ -189,7 +190,8 @@ class DisplayOrderTimelineBase extends Component {
 								search: "?id=" + this.state.orderID,
 								state: {
 									docID: this.state.docID,
-									menu: this.state.menu
+									menu: this.state.menu,
+									orderID: this.state.orderID
 								}
 							}}
 						><br></br>
