@@ -75,7 +75,7 @@ class OrderCompletionBase extends Component {
 		.get()
 		.then(snap => {
 			snap.forEach(doc => {
-				if (doc.data().Status === "Order Complete") {
+				if (doc.data().Status === "Order Completed") {
 					console.log(doc.id)
 					this.props.history.push({
 						pathname: ROUTES.FINAL_OVERVIEW,
@@ -116,7 +116,7 @@ class OrderCompletionBase extends Component {
 			.collection("Catering_orders")
 			.doc(String(this.state.docID))
 			.update({
-				Status: "Order Complete"
+				Status: "Order Completed"
 			})
 			.then(function() {
 				console.log("Document successfully written!");

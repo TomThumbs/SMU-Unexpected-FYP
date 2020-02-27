@@ -5,7 +5,7 @@ import { withAuthorization } from "../Session";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-// import Typography from "@material-ui/core/Typography";
+import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 // import Button from "@material-ui/core/Button";
@@ -140,6 +140,8 @@ class OrderServiceBase extends Component {
 		return (
 			<div className="body">
 				<Container component="main" maxWidth="xs">
+				<Typography variant='h2'>Order #{this.state.orderID}</Typography>
+
 					<Grid container justify="center" spacing={3}>
 						{dataIsLoaded && this.renderHeaters()}
 					</Grid>

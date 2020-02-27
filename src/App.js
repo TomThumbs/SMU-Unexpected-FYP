@@ -80,6 +80,8 @@ const App = () => (
         <Route path={ROUTES.ORDER_PREPARATION} component={OrderPreparation}/>
         <Route path={ROUTES.ORDER_PREPARATION_EDIT} component={OrderPreparationEdit}/>
         <Route path={ROUTES.ORDER_PREPARATION_SOP} component={OrderPreparationSop}/>
+        <Route path={ROUTES.ORDER_SERVICE} component={OrderService}/>
+        <Route path={ROUTES.ORDER_COMPLETE} component={OrderCompletion}/>
 
 
         <Route path={ROUTES.ORDER_PREPARATION_POST_SOP} component={OrderPreparationPostSop}/>
@@ -88,10 +90,8 @@ const App = () => (
         <Route path={ROUTES.FINAL_OVERVIEW} component={FinalOverview}/>
         
 
-        <Route path={ROUTES.ORDER_COMPLETE} component={OrderCompletion}/>
         
 
-        <Route path={ROUTES.ORDER_SERVICE} component={OrderService}/>
 
         <Route path={ROUTES.DISPLAY_ORDERS} component={DisplayOrders} />
         <Route path={ROUTES.DISH_TO_INGREDIENT_FORM} component={DishToIngredientForm}/>

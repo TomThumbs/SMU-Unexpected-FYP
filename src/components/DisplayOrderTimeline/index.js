@@ -4,7 +4,7 @@ import { Link, withRouter } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core/styles";
 // import Grid from '@material-ui/core/Grid';
-// import Typography from '@material-ui/core/Typography';
+import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 // import Paper from '@material-ui/core/Paper';
 // import TimelineItem from './timelineItem'
@@ -35,7 +35,7 @@ const INITIAL_STATE = {
 		"Preparation",
 		"Delivery",
 		"Event in Progress",
-		"Order Complete"
+		"Order Completed"
 	],
 	routeList: [
 		ROUTES.ORDER_RECEIVED,
@@ -94,14 +94,19 @@ class DisplayOrderTimelineBase extends Component {
 		const isPrep = itemIndex === "Preparation";
 
 		// Check if current item is to be delivered
-		const makeDelivery = itemIndex === "Delivery" && status === "Preparation";
+		const makeDelivery =
+			itemIndex === "Delivery" && status === "Preparation";
 
 		// Check if order is delivered and to be set up
-		const setUpService = itemIndex === "Service" && status === "Delivery";
+		const setUpService = itemIndex === "Event in Progress" && status === "Delivery";
 
 		// Check if order is to be collected
 		const toBeCollected =
-			itemIndex === "Order Completed" && status === "Service";
+			itemIndex === "Order Completed" && status === "Event in Progress";
+
+		// Check if order is to be collected
+		const viewComplete =
+		itemIndex === "Order Completed" && status === "Order Completed";
 
 		const routepath = this.state.routeList[
 			this.state.statusList.indexOf(itemIndex)
@@ -109,10 +114,12 @@ class DisplayOrderTimelineBase extends Component {
 
 		return (
 			<div key={key} className="timeline-item">
+				
 				<div className="timeline-item-content">
+					
           <span className="circle" />
           <span className="tag">{itemIndex}</span>
-			
+	
 					
           {isPrep ? (
 						<Link
@@ -136,7 +143,8 @@ class DisplayOrderTimelineBase extends Component {
 									docID: this.state.docID
 								}
 							}}
-						><br></br>
+						>
+							<br></br>
 							SOP
 						</Link>
 					) : null}
@@ -149,11 +157,12 @@ class DisplayOrderTimelineBase extends Component {
 									docID: this.state.docID
 								}
 							}}
-						><br></br>
+						>
+							<br></br>
 							Make Delivery
 						</Link>
 					) : null}
-          {setUpService ? (
+					{setUpService ? (
 						<Link
 							to={{
 								pathname: ROUTES.ORDER_SERVICE,
@@ -163,27 +172,44 @@ class DisplayOrderTimelineBase extends Component {
 									menu: this.state.menu
 								}
 							}}
-						><br></br>
+						>
+							<br></br>
 							Set up Temperature Monitors
 						</Link>
 					) : null}
-					{toBeCollected ? <Link>Collected</Link> : null}
+					{toBeCollected ? (
+						<Link
+							to={{
+								pathname: ROUTES.ORDER_COMPLETE,
+								search: "?id=" + this.state.orderID,
+								state: {
+									docID: this.state.docID,
+									menu: this.state.menu
+								}
+							}}
+						>
+							<br></br>
+							Submit
+						</Link>
+					) : null}
+					{viewComplete ? <Link>Collected</Link> : null} 
 					{isDone ? (
 						<Link
 							to={{
-								pathname: routepath,
+								pathname: ROUTES.ORDER_COMPLETE,
 								search: "?id=" + this.state.orderID,
 								state: {
-									docID: this.state.docID
+									docID: this.state.docID,
+									menu: this.state.menu
 								}
 							}}
-						><br></br>
-							Read
+						>
+							<br></br>
+							View
 						</Link>
 					) : (
 						<p>Not done yet</p>
 					)}
-					
 				</div>
 			</div>
 		);
@@ -200,9 +226,13 @@ class DisplayOrderTimelineBase extends Component {
 	}
 
 	render() {
+		console.log(this.state)
 		return (
 			<div className="body">
 				<Container component="main" maxWidth="md">
+					<Typography variant="h2">
+						Order #{this.state.orderID}
+					</Typography>
 					{this.timeline()}
 				</Container>
 			</div>
@@ -213,4 +243,3 @@ class DisplayOrderTimelineBase extends Component {
 const DisplayOrderTimeline = withRouter(withFirebase(DisplayOrderTimelineBase));
 const condition = authUser => !!authUser;
 export default withAuthorization(condition)(DisplayOrderTimeline);
-
