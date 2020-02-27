@@ -94,10 +94,44 @@ function timeMinEvent(timeIn){ //for 3 hours event
 };
 
 
+function write_db(event){ 
+    var dbtoday = new Date();
+    var dbdate = dbtoday.getDate()+'/'+(dbtoday.getMonth()+1)+'/'+dbtoday.getFullYear();
+    
+
+    var min = dbtoday.getMinutes();
+    var hour = dbtoday.getHours();
+    if (String(hour).length < 2) {
+        var hour = "0" + String(hour)
+    };
+    if (String(min).length < 2){
+        var min = "0" + String(min)
+    } ;
+    var newTime = String(hour) + ':'+ String(min);
+    
+    var datetime = dbdate + " " + newTime; //this gives 27/2/2020 13:02
+    
+
+    db.collection("Catering_orders").doc(event)
+    .update({
+        notified: datetime,
+    })
+    .then(function() {
+        console.log("Document successfully written!");
+    })
+    .catch(function(error) {
+        console.error("Error writing document: ", error);
+    });
+
+   
+};
+
+
 function smsCustomer(listEvents){
     listEvents.forEach(
         event => {
             let cateringRef = db.collection('Catering_orders').doc(event);
+            
             let getDoc = cateringRef.get()
             .then(doc => {
                 if (!doc.exists) {
@@ -113,7 +147,8 @@ function smsCustomer(listEvents){
                             if (!doc.exists) {
                             console.log('No such document!');
                             } else {
-                            // console.log(doc.data().HP); //this directly extracts the phone number. Can swap out to Twillo SMS function
+                            write_db(event); //writes the notification onto the DB
+                            //console.log(doc.data().HP); //this directly extracts the phone number. Can swap out to Twillo SMS function
                             twillioSms(doc.data().HP);
                             }
                         })
