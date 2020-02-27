@@ -46,7 +46,8 @@ const INITIAL_STATE = {
   custref: "",
   selectedmenu: [],
   finalmenu: [],
-  remarks: ""
+  remarks: "",
+  commencement: new Date()
 };
 
 const useStyles = makeStyles(theme => ({
@@ -72,6 +73,23 @@ class OrderFormBase extends Component {
   }
 
   componentDidMount() {
+
+    let day = this.state.commencement.getDate()
+		let month = Number(this.state.commencement.getMonth())+1
+		let year = this.state.commencement.getFullYear()
+		let hour = this.state.commencement.getHours()
+		let minute = String(this.state.commencement.getMinutes())
+		if (month.length === 1) {
+			month = "0" + month
+			}
+		if (hour.length === 1) {
+			hour = "0" + hour
+			}
+		if (minute.length === 1) {
+			 minute = "0" + minute
+			}
+		this.setState({commencement: day + "/" + month + "/" + year + " " + hour + ":" + minute})
+
     // Detect latest order ID
     this.props.firebase.fs
       .collection("Catering_orders")
@@ -175,8 +193,8 @@ class OrderFormBase extends Component {
       orderID: this.state.orderID,
       sop: false,
       HeatersUsed: heatersUsed,
-      Created_On:
-        new Date().getFullYear() + "-" + strMonth + "-" + new Date().getDate()
+      Created_On: this.state.commencement
+        // new Date().getFullYear() + "-" + strMonth + "-" + new Date().getDate()
     });
 
     // this.props.firebase.fs

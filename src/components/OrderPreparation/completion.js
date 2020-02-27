@@ -53,7 +53,8 @@ const INITIAL_STATE = {
 	orderID: "",
 	completion: false,
 	status: "",
-	IOTs: []
+	IOTs: [],
+	commencement: new Date()
 };
 
 class OrderCompletionBase extends Component {
@@ -100,6 +101,22 @@ class OrderCompletionBase extends Component {
 				})
 			});
 		});
+
+		let day = this.state.commencement.getDate()
+		let month = Number(this.state.commencement.getMonth())+1
+		let year = this.state.commencement.getFullYear()
+		let hour = this.state.commencement.getHours()
+		let minute = String(this.state.commencement.getMinutes())
+		if (month.length === 1) {
+			month = "0" + month
+			}
+		if (hour.length === 1) {
+			hour = "0" + hour
+			}
+		if (minute.length === 1) {
+			 minute = "0" + minute
+			}
+		this.setState({commencement: day + "/" + month + "/" + year + " " + hour + ":" + minute})
 	}
 
 
@@ -121,7 +138,7 @@ class OrderCompletionBase extends Component {
 		event.preventDefault();
 
 		this.state.IOTs.forEach(item=>{
-
+			console.log(item)
 			this.props.firebase.fs
 			.collection("IoTHeaters")
 			.where("ID", "==", item)
@@ -141,7 +158,8 @@ class OrderCompletionBase extends Component {
 			.collection("Catering_orders")
 			.doc(String(this.state.docID))
 			.update({
-				Status: "Order Completed"
+				Status: "Order Completed",
+				orderComplete: this.state.commencement
 			})
 			.then(function() {
 				console.log("Document successfully written!");
@@ -149,30 +167,12 @@ class OrderCompletionBase extends Component {
 			.catch(function(error) {
 				console.error("Error writing document: ", error);
 			});
-		// this.handleClickOpen();
 			this.props.history.push({
 			pathname: ROUTES.FINAL_OVERVIEW,
 			search: "?id=" + this.state.orderID,
 			docID: this.state.docID
 		});
 	};
-
-	// handleClickOpen = () => {
-	// 	this.setState({
-	// 		open: true
-	// 	});
-	// };
-
-	// handleTimeline = () => {
-	// 	this.setState({
-	// 		open: false
-	// 	});
-	// 	this.props.history.push({
-	// 		pathname: ROUTES.FINAL_OVERVIEW,
-	// 		search: "?id=" + this.state.orderID,
-	// 		docID: this.state.docID
-	// 	});
-	// };
 
 	renderBackButton() {
 		return (
@@ -220,26 +220,6 @@ class OrderCompletionBase extends Component {
 								Submit
 							</Button>
 						</form>
-						{/* <Dialog
-							open={this.state.open}
-							onClose={this.handleClose}
-							aria-labelledby="alert-dialog-title"
-							aria-describedby="alert-dialog-description"
-						>
-							<DialogTitle id="alert-dialog-title">
-								{"Submission Notification"}
-							</DialogTitle>
-							<DialogContent dividers>
-								<DialogContentText id="alert-dialog-description">
-									Order Completed!
-								</DialogContentText>
-							</DialogContent>
-							<DialogActions>
-								<Button onClick={this.handleTimeline} color="primary" autoFocus>
-									Back to Timeline
-								</Button>
-							</DialogActions>
-						</Dialog> */}
 					</Paper>
 				</Container>
 			</div>
