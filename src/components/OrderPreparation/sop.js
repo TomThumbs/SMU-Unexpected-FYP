@@ -53,7 +53,8 @@ const INITIAL_STATE = {
 	workspace: false,
 	image: "",
 	imageURL: "",
-	commencement: new Date()
+	commencement: new Date(),
+	StatusDates: []
 };
 
 class OrderPreparationSopBase extends Component {
@@ -62,8 +63,10 @@ class OrderPreparationSopBase extends Component {
 		this.state = { ...INITIAL_STATE, docID: props.location.state.docID };
 		this.classes = { useStyles };
 	}
-
+	
 	componentDidMount() {
+		let allStatus = ""
+		// console.log(this.props.location.state.docID)
 		let queryString = window.location.search;
 		let urlParams = new URLSearchParams(queryString);
 		let urlId = Number(urlParams.get("id"));
@@ -99,9 +102,11 @@ class OrderPreparationSopBase extends Component {
 					orderID: data.orderID,
 					headchef: data.headchef,
 					assistantA: data.assistantA,
-					assistantB: data.assistantB
+					assistantB: data.assistantB,
+					StatusDates: data.StatusDates.concat(this.state.commencement)
 				});
 			});
+
 	}
 
 	handleUploadSuccess = filename => {
@@ -146,7 +151,7 @@ class OrderPreparationSopBase extends Component {
 				assistantA: this.state.assistantA,
 				assistantB: this.state.assistantB,
 				kitchenImageURL: this.state.imageURL,
-				preparationCommencement: this.state.commencement
+				StatusDates: this.state.StatusDates
 			})
 			.then(function() {
 				console.log("Document successfully written!");

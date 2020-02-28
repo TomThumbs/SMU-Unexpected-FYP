@@ -54,7 +54,8 @@ const INITIAL_STATE = {
 	completion: false,
 	status: "",
 	IOTs: [],
-	commencement: new Date()
+	commencement: new Date(),
+	StatusDates: ""
 };
 
 class OrderCompletionBase extends Component {
@@ -88,20 +89,6 @@ class OrderCompletionBase extends Component {
 			});
 		});
 
-		this.props.firebase.fs.collection("Catering_orders")
-		.where("orderID", "==", urlId)
-		.get()
-		.then(snap => {
-			snap.forEach(doc => {
-				// console.log(Object.values(doc.data().HeatersUsed))
-				this.setState({
-					docID: doc.id,
-					IOTs: Object.values(doc.data().HeatersUsed)
-
-				})
-			});
-		});
-
 		let day = this.state.commencement.getDate()
 		let month = Number(this.state.commencement.getMonth())+1
 		let year = this.state.commencement.getFullYear()
@@ -117,10 +104,22 @@ class OrderCompletionBase extends Component {
 			 minute = "0" + minute
 			}
 		this.setState({commencement: day + "/" + month + "/" + year + " " + hour + ":" + minute})
+
+		this.props.firebase.fs.collection("Catering_orders")
+		.where("orderID", "==", urlId)
+		.get()
+		.then(snap => {
+			snap.forEach(doc => {
+				console.log(Object.values(doc.data().HeatersUsed))
+				console.log(doc.data().StatusDates.concat(this.state.commencement))
+				this.setState({
+					docID: doc.id,
+					IOTs: Object.values(doc.data().HeatersUsed),
+					StatusDates: doc.data().StatusDates.concat(this.state.commencement)
+				})
+			});
+		});
 	}
-
-
-
 
 	onChange = event => {
 		if (this.state.completion === false) {
@@ -159,7 +158,7 @@ class OrderCompletionBase extends Component {
 			.doc(String(this.state.docID))
 			.update({
 				Status: "Order Completed",
-				orderComplete: this.state.commencement
+				StatusDates: this.state.StatusDates
 			})
 			.then(function() {
 				console.log("Document successfully written!");

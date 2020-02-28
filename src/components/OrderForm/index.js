@@ -193,8 +193,9 @@ class OrderFormBase extends Component {
       orderID: this.state.orderID,
       sop: false,
       HeatersUsed: heatersUsed,
+      StatusDates: [this.state.commencement],
       Created_On: this.state.commencement
-        // new Date().getFullYear() + "-" + strMonth + "-" + new Date().getDate()
+  
     });
 
     // this.props.firebase.fs

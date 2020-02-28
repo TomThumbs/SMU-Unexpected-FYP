@@ -60,7 +60,9 @@ const INITIAL_STATE = {
 	status: "",
 	menu: [],
 	IoTHeaters: [{ ID: 0, status: null }],
-	dataIsLoaded: false
+	dataIsLoaded: false,
+	commencement: new Date (),
+	StatusDates: ""
 };
 
 class OrderServiceBase extends Component {
@@ -106,6 +108,32 @@ class OrderServiceBase extends Component {
 		this.setState({
 			dataIsLoaded: true
 		});
+
+		let day = this.state.commencement.getDate()
+		let month = Number(this.state.commencement.getMonth())+1
+		let year = this.state.commencement.getFullYear()
+		let hour = this.state.commencement.getHours()
+		let minute = String(this.state.commencement.getMinutes())
+		if (month.length === 1) {
+			month = "0" + month
+			}
+		if (hour.length === 1) {
+			hour = "0" + hour
+			}
+		if (minute.length === 1) {
+			 minute = "0" + minute
+			}
+		this.setState({commencement: day + "/" + month + "/" + year + " " + hour + ":" + minute})
+
+		this.props.firebase.fs
+			.collection("Catering_orders")
+			.doc(this.state.docID)
+			.get()
+			.then(doc => {
+				this.setState({
+					StatusDates: doc.data().StatusDates.concat(this.state.commencement)
+				});
+			});
 	}
 
 	handleClickOpen = () => {
@@ -133,7 +161,9 @@ class OrderServiceBase extends Component {
 		.collection("Catering_orders")
 		.doc(String(this.state.docID))
 		.update({
-			Status: "Event in Progress"
+			Status: "Event in Progress",
+			StatusDates: this.state.StatusDates,
+			orderComplete: this.state.commencement
 		})
 		.then(function() {
 			console.log("Document successfully written!");

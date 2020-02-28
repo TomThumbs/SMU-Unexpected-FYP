@@ -56,7 +56,8 @@ const INITIAL_STATE = {
 	decor:"",
 	driver:"",
 	oID:"",
-	commencement: new Date()
+	commencement: new Date(),
+	StatusDates:""
 };
 
 class OrderDeliveryBase extends Component {
@@ -90,6 +91,21 @@ class OrderDeliveryBase extends Component {
 			}
 		})
 
+		let day = this.state.commencement.getDate()
+		let month = Number(this.state.commencement.getMonth())+1
+		let year = this.state.commencement.getFullYear()
+		let hour = this.state.commencement.getHours()
+		let minute = String(this.state.commencement.getMinutes())
+		if (month.length === 1) {
+			month = "0" + month
+			}
+		if (hour.length === 1) {
+			hour = "0" + hour
+			}
+		if (minute.length === 1) {
+			 minute = "0" + minute
+			}
+		this.setState({commencement: day + "/" + month + "/" + year + " " + hour + ":" + minute})
 
 		// ---------- GET ORDER DETAILS ----------
 		this.props.firebase.fs
@@ -105,7 +121,8 @@ class OrderDeliveryBase extends Component {
 					venue: doc.data().venue,
 					pax: doc.data().Pax,
 					name: doc.data().Customer.id,
-					oID: doc.data().orderID
+					oID: doc.data().orderID,
+					StatusDates: doc.data().StatusDates.concat(this.state.commencement)
 				});
 				this.props.firebase.fs
 					.collection("Customers")
@@ -125,22 +142,6 @@ class OrderDeliveryBase extends Component {
 		this.setState({
 			strDate: temp_date.split("GMT")[0]
 		});
-
-		let day = this.state.commencement.getDate()
-		let month = Number(this.state.commencement.getMonth())+1
-		let year = this.state.commencement.getFullYear()
-		let hour = this.state.commencement.getHours()
-		let minute = String(this.state.commencement.getMinutes())
-		if (month.length === 1) {
-			month = "0" + month
-			}
-		if (hour.length === 1) {
-			hour = "0" + hour
-			}
-		if (minute.length === 1) {
-			 minute = "0" + minute
-			}
-		this.setState({commencement: day + "/" + month + "/" + year + " " + hour + ":" + minute})
 	}
 
 	onSubmit = event => {
@@ -153,7 +154,7 @@ class OrderDeliveryBase extends Component {
 				TruckImgURL: this.state.imageURL,
 				Status: "Delivery",
 				Driver: this.state.driver,
-				OrderDelivery: this.state.commencement
+				StatusDates: this.state.StatusDates
 			}); //UPDATE FIRESTORE
 		// this.props.firebase.fs.collection('Catering_orders').doc(this.state.catering_event_doc).update({ TruckImgURL: this.state.imageURL });
 

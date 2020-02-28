@@ -113,7 +113,6 @@ class OrderPreparationBase extends Component {
 	};
 
 	onSubmit = event => {
-		console.log("thsdfa")
 			this.props.history.push({
 			pathname: './order-preparation-post-sop',
 			search: "?id=" + this.state.orderID,
