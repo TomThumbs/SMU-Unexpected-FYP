@@ -48,7 +48,6 @@ const INITIAL_STATE = {
 	Tag: "",
 	chosenMenu: "",
 	menuIngreDict: {},
-	orderID: "",
 	headchef: "",
 	assistantA: "",
 	assistantB: "",
@@ -67,16 +66,16 @@ class OrderPreparationBase extends Component {
 	componentDidMount() {
 		let queryString = window.location.search;
 		let urlParams = new URLSearchParams(queryString);
-		let urlId = Number(urlParams.get("id")); 
+		let urlId = Number(urlParams.get("id"));
 
 		this.setState({
-			orderID: urlId 
+			orderID: urlId
 		});
 
 		// ---------- RETRIEVE CATERING ORDER ----------
 		this.props.firebase.fs
 			.collection("Catering_orders")
-			.where("orderID", "==", urlId) 
+			.where("orderID", "==", urlId)
 			.get()
 			.then(querySnapshot => {
 				querySnapshot.forEach(doc => {
@@ -99,7 +98,7 @@ class OrderPreparationBase extends Component {
 						})
 						this.setState(
 							{ menu: [...this.state.menu, key] }
-						)    
+						)
 
 					}
 				});
@@ -133,7 +132,7 @@ class OrderPreparationBase extends Component {
 				menu.push(
 					<tr>
 						<td >{item}</td>
-						<td >{value}</td> 
+						<td >{value}</td>
 					</tr>
 				);
 			;
@@ -182,7 +181,7 @@ class OrderPreparationBase extends Component {
 								<th>Item</th>
 								<th>Item ID</th>
 							</tr>
-							{this.renderMenuItem(key, this.state.menuIngreDict[key])} 
+							{this.renderMenuItem(key, this.state.menuIngreDict[key])}
 						</table>
 					);
 				}
@@ -203,11 +202,11 @@ class OrderPreparationBase extends Component {
 				</Typography>
 				<Typography variant="h6" align="center" gutterBottom>
 					Assistant B: {this.state.assistantB}
-				</Typography>	
-				<br></br>	
+				</Typography>
+				<br></br>
 				<Typography variant="h6" align="center" gutterBottom>
 					Order Commence: {this.state.commence}
-				</Typography>	
+				</Typography>
 				<form onSubmit={this.onSubmit}>
 				<Button
 					type="submit"
