@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import logo from "../../images/ffl_logo.png";
 
 import SignOutButton from "../SignOut";
 import * as ROUTES from "../../constants/routes";
@@ -17,11 +18,14 @@ const Navigation = () => (
 
 const NavigationAuth = () => (
 	<ul className="nav-links">
-		<li className="nav-link">
+		<Link to={ROUTES.LANDING}>
+			<img src={logo} alt="logo" />
+		</Link>
+		{/* <li className="nav-link">
 			<Link className="navigation-link" to={ROUTES.LANDING}>
 				Home
 			</Link>
-		</li>
+		</li> */}
 		<li className="nav-link">
 			<Link className="navigation-link" to={ROUTES.SEARCH_ORDER}>
 				Search Order

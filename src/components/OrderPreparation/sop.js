@@ -54,7 +54,10 @@ const INITIAL_STATE = {
 	image: "",
 	imageURL: "",
 	commencement: new Date(),
-	StatusDates: []
+	StatusDates: [],
+	headchef: "",
+	assistantA: "",
+	assistantB: ""
 };
 
 class OrderPreparationSopBase extends Component {
@@ -63,7 +66,7 @@ class OrderPreparationSopBase extends Component {
 		this.state = { ...INITIAL_STATE, docID: props.location.state.docID };
 		this.classes = { useStyles };
 	}
-	
+
 	componentDidMount() {
 		// let allStatus = ""
 		// console.log(this.props.location.state.docID)
@@ -90,7 +93,8 @@ class OrderPreparationSopBase extends Component {
 			minute = "0" + minute;
 		}
 		this.setState({
-			commencement: day + "/" + month + "/" + year + " " + hour + ":" + minute
+			commencement:
+				day + "/" + month + "/" + year + " " + hour + ":" + minute
 		});
 
 		this.props.firebase.fs
@@ -103,10 +107,11 @@ class OrderPreparationSopBase extends Component {
 					headchef: data.headchef,
 					assistantA: data.assistantA,
 					assistantB: data.assistantB,
-					StatusDates: data.StatusDates.concat(this.state.commencement)
+					StatusDates: data.StatusDates.concat(
+						this.state.commencement
+					)
 				});
 			});
-
 	}
 
 	handleUploadSuccess = filename => {
@@ -178,7 +183,9 @@ class OrderPreparationSopBase extends Component {
 	};
 
 	onChange = event => {
-		this.setState({ [event.target.name]: event.target.value });
+		this.setState({
+			[event.target.name]: event.target.value
+		});
 	};
 
 	render() {
@@ -188,7 +195,11 @@ class OrderPreparationSopBase extends Component {
 			this.state.imageURL.length === 0;
 		return (
 			<div className="body">
-				<Container component="main" maxWidth="xs" className={this.classes.root}>
+				<Container
+					component="main"
+					maxWidth="xs"
+					className={this.classes.root}
+				>
 					<Paper className={this.classes.paper}>
 						<Typography>Order Preparation SOP Agreement</Typography>
 						<Typography>Order #{this.state.orderID}</Typography>
@@ -283,7 +294,9 @@ class OrderPreparationSopBase extends Component {
 							<FileUploader
 								accept="image/*"
 								name="image"
-								storageRef={this.props.firebase.stg.ref("kitchenHistory")}
+								storageRef={this.props.firebase.stg.ref(
+									"kitchenHistory"
+								)}
 								onUploadSuccess={this.handleUploadSuccess}
 							/>
 
