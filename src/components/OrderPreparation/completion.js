@@ -8,15 +8,15 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
-import TextareaAutosize from "@material-ui/core/TextareaAutosize";
+// import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
+// import Dialog from "@material-ui/core/Dialog";
+// import DialogActions from "@material-ui/core/DialogActions";
 // import Typography from "@material-ui/core/Typography";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
+// import DialogContent from "@material-ui/core/DialogContent";
+// import DialogContentText from "@material-ui/core/DialogContentText";
+// import DialogTitle from "@material-ui/core/DialogTitle";
 
 import * as ROUTES from "../../constants/routes";
 import { withAuthorization } from "../Session";
@@ -53,7 +53,9 @@ const INITIAL_STATE = {
 	orderID: "",
 	completion: false,
 	status: "",
-	IOTs: []
+	IOTs: [],
+	commencement: new Date(),
+	StatusDates: ""
 };
 
 class OrderCompletionBase extends Component {
@@ -69,7 +71,7 @@ class OrderCompletionBase extends Component {
 		let urlId = Number(urlParams.get("id"));
 		this.setState({
 			orderID: urlId
-		});	
+		});
 
 		this.props.firebase.fs.collection("Catering_orders")
 		.where("orderID", "==", urlId)
@@ -77,7 +79,7 @@ class OrderCompletionBase extends Component {
 		.then(snap => {
 			snap.forEach(doc => {
 				if (doc.data().Status === "Order Completed") {
-					console.log(doc.id)
+					// console.log(doc.id)
 					this.props.history.push({
 						pathname: ROUTES.FINAL_OVERVIEW,
 						search: "?id=" + this.state.orderID,
@@ -87,33 +89,47 @@ class OrderCompletionBase extends Component {
 			});
 		});
 
+		let day = this.state.commencement.getDate()
+		let month = Number(this.state.commencement.getMonth())+1
+		let year = this.state.commencement.getFullYear()
+		let hour = this.state.commencement.getHours()
+		let minute = String(this.state.commencement.getMinutes())
+		if (month.length === 1) {
+			month = "0" + month
+			}
+		if (hour.length === 1) {
+			hour = "0" + hour
+			}
+		if (minute.length === 1) {
+			 minute = "0" + minute
+			}
+		this.setState({commencement: day + "/" + month + "/" + year + " " + hour + ":" + minute})
+
 		this.props.firebase.fs.collection("Catering_orders")
 		.where("orderID", "==", urlId)
 		.get()
 		.then(snap => {
 			snap.forEach(doc => {
-				// console.log(Object.values(doc.data().HeatersUsed))
+				console.log(Object.values(doc.data().HeatersUsed))
+				console.log(doc.data().StatusDates.concat(this.state.commencement))
 				this.setState({
 					docID: doc.id,
-					IOTs: Object.values(doc.data().HeatersUsed)
-
+					IOTs: Object.values(doc.data().HeatersUsed),
+					StatusDates: doc.data().StatusDates.concat(this.state.commencement)
 				})
 			});
 		});
 	}
 
-
-
-
 	onChange = event => {
-		if (this.state.completion === false) { 
+		if (this.state.completion === false) {
 			this.setState({
-				[event.target.name]: true 
-			}) 
+				[event.target.name]: true
+			})
 		} else {
 			this.setState({
-				[event.target.name]: false 
-			}) 
+				[event.target.name]: false
+			})
 		}
 	}
 
@@ -121,26 +137,28 @@ class OrderCompletionBase extends Component {
 		event.preventDefault();
 
 		this.state.IOTs.forEach(item=>{
+			console.log(item)
 			this.props.firebase.fs
 			.collection("IoTHeaters")
 			.where("ID", "==", item)
-			.update({
-				status: "Unused",
-				orderID: "Unused"
+			.get()
+			.then(snap => {
+				snap.forEach(doc => {
+					this.props.firebase.fs.collection("IoTHeaters")
+					.doc(doc.id).update({
+						status: "Unused",
+						orderID: "Unused"
+					})
+				});
 			})
-			.then(function() {
-				console.log("Document successfully written!");
-			})
-			.catch(function(error) {
-				console.error("Error writing document: ", error);
-			});
-		}) 
+		})
 
 		this.props.firebase.fs
 			.collection("Catering_orders")
 			.doc(String(this.state.docID))
 			.update({
-				Status: "Order Completed"
+				Status: "Order Completed",
+				StatusDates: this.state.StatusDates
 			})
 			.then(function() {
 				console.log("Document successfully written!");
@@ -148,30 +166,12 @@ class OrderCompletionBase extends Component {
 			.catch(function(error) {
 				console.error("Error writing document: ", error);
 			});
-		// this.handleClickOpen();
 			this.props.history.push({
 			pathname: ROUTES.FINAL_OVERVIEW,
 			search: "?id=" + this.state.orderID,
 			docID: this.state.docID
 		});
 	};
-
-	// handleClickOpen = () => {
-	// 	this.setState({
-	// 		open: true
-	// 	});
-	// };
-
-	// handleTimeline = () => {
-	// 	this.setState({
-	// 		open: false
-	// 	});
-	// 	this.props.history.push({
-	// 		pathname: ROUTES.FINAL_OVERVIEW,
-	// 		search: "?id=" + this.state.orderID,
-	// 		docID: this.state.docID
-	// 	});
-	// };
 
 	renderBackButton() {
 		return (
@@ -219,26 +219,6 @@ class OrderCompletionBase extends Component {
 								Submit
 							</Button>
 						</form>
-						{/* <Dialog
-							open={this.state.open}
-							onClose={this.handleClose}
-							aria-labelledby="alert-dialog-title"
-							aria-describedby="alert-dialog-description"
-						>
-							<DialogTitle id="alert-dialog-title">
-								{"Submission Notification"}
-							</DialogTitle>
-							<DialogContent dividers>
-								<DialogContentText id="alert-dialog-description">
-									Order Completed!
-								</DialogContentText>
-							</DialogContent>
-							<DialogActions>
-								<Button onClick={this.handleTimeline} color="primary" autoFocus>
-									Back to Timeline
-								</Button>
-							</DialogActions>
-						</Dialog> */}
 					</Paper>
 				</Container>
 			</div>

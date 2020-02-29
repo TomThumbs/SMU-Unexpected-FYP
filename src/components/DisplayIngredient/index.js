@@ -14,7 +14,11 @@ import Button from "@material-ui/core/Button";
 
 const INITIAL_STATE = {
 	searchId: "",
-	prevId: ""
+	prevId: "",
+	dateOfStorage: "",
+	dateOfExpiry: "",
+	ingredientName: "",
+	ingredientId:""
 };
 
 class DisplayIngredientBase extends Component {
@@ -33,13 +37,10 @@ class DisplayIngredientBase extends Component {
 					// console.log(data);
 					this.setState({
 						[data.ingredientId]: {
-							ingredientName: data.name
-							// dateOfStorage: data.dateOfStorage,
-							// dateOfExpiry: data.dateOfExpiry
+							ingredientName: data.name,
+							dateOfStorage: data.Date_of_Storage,
+							dateOfExpiry: data.Date_of_expiry,
 						}
-						// ingredientName: data.name
-						// dateOfStorage: data.dateOfStorage,
-						// dateOfExpiry: data.dateOfExpiry
 					});
 				});
 			})
@@ -50,7 +51,7 @@ class DisplayIngredientBase extends Component {
 
 	onSubmit = event => {
 		event.preventDefault();
-
+		console.log(this.state)
 		const result = document.querySelector("#Result");
 
 		// Remove existing result if any
@@ -66,22 +67,22 @@ class DisplayIngredientBase extends Component {
 			let div = document.createElement("div");
 			let id = document.createElement("p");
 			let name = document.createElement("p");
-			// let storagedate = document.createElement("p");
-			// let expirydate = document.createElement("p");
+			let storagedate = document.createElement("p");
+			let expirydate = document.createElement("p");
 
 			div.setAttribute("data-id", "id" + this.state.searchId);
 			// div.textContent = this.state.searchId;
-			id.textContent = this.state.searchId;
-			name.textContent = this.state[this.state.searchId].ingredientName;
-			// storagedate.textContent = this.state[this.state.searchId].dateOfStorage;
-			// expirydate.textContent = this.state[this.state.searchId].dateOfExpiry;
+			id.textContent = "Barcode: " + this.state.searchId;
+			name.textContent = "Ingredient Name: " +this.state[this.state.searchId].ingredientName;
+			storagedate.textContent = "Storage Date: " + this.state[this.state.searchId].dateOfStorage;
+			expirydate.textContent = "Expiry Date: "+this.state[this.state.searchId].dateOfExpiry;
 
 			div.appendChild(id);
 			div.appendChild(name);
-			// div.appendChild(storagedate);
-			// div.appendChild(expirydate);
+			div.appendChild(storagedate);
+			div.appendChild(expirydate);
 			result.appendChild(div);
-			console.log(div);
+			console.log("zzzzz",div);
 		} else {
 			let error = document.createElement("p");
 			error.setAttribute("data-id", "id" + this.state.searchId);
@@ -131,7 +132,8 @@ class DisplayIngredientBase extends Component {
 						Search
 					</Button>
 				</form>
-				<Paper id="Result"></Paper>
+				<br></br>
+				<Paper margin="10px" variant="outlined" align="center" padding="10px" id="Result"></Paper>
 			</Container>
 			</div>
 		);

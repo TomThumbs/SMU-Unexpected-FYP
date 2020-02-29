@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { withFirebase } from "../Firebase";
 import { withRouter } from "react-router-dom";
 import { withAuthorization } from "../Session";
-
+import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
@@ -13,7 +13,14 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
 
-// import * as ROUTES from "../../constants/routes";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+// import Typography from "@material-ui/core/Typography";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+
+import * as ROUTES from "../../constants/routes";
 import { compose } from "recompose";
 
 const useStyles = makeStyles(theme => ({
@@ -53,7 +60,9 @@ const INITIAL_STATE = {
 	status: "",
 	menu: [],
 	IoTHeaters: [{ ID: 0, status: null }],
-	dataIsLoaded: false
+	dataIsLoaded: false,
+	commencement: new Date (),
+	StatusDates: ""
 };
 
 class OrderServiceBase extends Component {
@@ -62,13 +71,14 @@ class OrderServiceBase extends Component {
 		this.state = {
 			...INITIAL_STATE,
 			docID: props.location.state.docID,
-			menu: props.location.state.menu
+			menu: props.location.state.menu,
+			orderID: props.location.state.orderID
 		};
 		this.classes = { useStyles };
 	}
 
 	componentDidMount() {
-		console.log(this.state);
+		// console.log(this.props.location)	;
 		this.props.firebase.fs
 			.collection("IoTHeaters")
 			.orderBy("ID", "asc")
@@ -98,10 +108,70 @@ class OrderServiceBase extends Component {
 		this.setState({
 			dataIsLoaded: true
 		});
+
+		let day = this.state.commencement.getDate()
+		let month = Number(this.state.commencement.getMonth())+1
+		let year = this.state.commencement.getFullYear()
+		let hour = this.state.commencement.getHours()
+		let minute = String(this.state.commencement.getMinutes())
+		if (month.length === 1) {
+			month = "0" + month
+			}
+		if (hour.length === 1) {
+			hour = "0" + hour
+			}
+		if (minute.length === 1) {
+			 minute = "0" + minute
+			}
+		this.setState({commencement: day + "/" + month + "/" + year + " " + hour + ":" + minute})
+
+		this.props.firebase.fs
+			.collection("Catering_orders")
+			.doc(this.state.docID)
+			.get()
+			.then(doc => {
+				this.setState({
+					StatusDates: doc.data().StatusDates.concat(this.state.commencement)
+				});
+			});
 	}
 
+	handleClickOpen = () => {
+		this.setState({
+			open: true
+		});
+	};
+
+	handleClose = () => {
+		this.setState({
+			open: false
+		});
+		this.props.history.push({
+			pathname: ROUTES.ORDER_TIMELINE,
+			search: "?id=" + this.state.orderID,
+			state: {
+				orderID: this.state.orderID
+			}
+		});
+	};
 	onSubmit = event => {
 		event.preventDefault();
+
+		this.props.firebase.fs
+		.collection("Catering_orders")
+		.doc(String(this.state.docID))
+		.update({
+			Status: "Event in Progress",
+			StatusDates: this.state.StatusDates,
+			orderComplete: this.state.commencement
+		})
+		.then(function() {
+			console.log("Document successfully written!");
+		})
+		.catch(function(error) {
+			console.error("Error writing document: ", error);
+		});
+
 		let heatersUsed = {};
 
 		this.state.menu.forEach(dish => {
@@ -131,7 +201,7 @@ class OrderServiceBase extends Component {
 			.catch(function(error) {
 				console.error("Error writing document: ", error);
 			});
-
+		this.handleClickOpen();
 	};
 
 	onChange = dish => event => {
@@ -169,9 +239,24 @@ class OrderServiceBase extends Component {
 		return heaters;
 	}
 
+	renderBackButton() {
+		return (
+			<Button
+				variant="outlined"
+				fullWidth
+				component={RouterLink} to={{
+					pathname: ROUTES.ORDER_TIMELINE,
+					search: "?id=" + this.state.orderID
+				}}
+			>
+				Back
+			</Button>
+		);
+	}
+
 	render() {
 		const dataIsLoaded = this.state.dataIsLoaded === true;
-		console.log(this.state);
+		// console.log(this.state);
 		return (
 			<div className="body">
 				<Container component="main" maxWidth="xs">
@@ -182,6 +267,28 @@ class OrderServiceBase extends Component {
 					<Grid container justify="center" spacing={3}>
 						{dataIsLoaded && this.renderHeaters()}
 					</Grid>
+
+					<Dialog
+							open={this.state.open}
+							onClose={this.handleClose}
+							aria-labelledby="alert-dialog-title"
+							aria-describedby="alert-dialog-description"
+						>
+							<DialogTitle id="alert-dialog-title">
+								{"Submission Notification"}
+							</DialogTitle>
+							<DialogContent dividers>
+								<DialogContentText id="alert-dialog-description">
+									The Raspberry Pi have been tagged.
+								</DialogContentText>
+							</DialogContent>
+							<DialogActions>
+								<Button onClick={this.handleClose} color="primary" autoFocus>
+									Back to Timeline
+								</Button>
+							</DialogActions>
+						</Dialog>
+
 					<form onSubmit={this.onSubmit}>
 						<Button
 							type="submit"
@@ -192,6 +299,9 @@ class OrderServiceBase extends Component {
 							Submit
 						</Button>
 					</form>
+					<Grid item xs={12}>
+					{this.renderBackButton()}
+					</Grid>
 				</Container>
 			</div>
 		);

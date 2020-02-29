@@ -1,19 +1,19 @@
 import React, { Component } from "react";
 import { withFirebase } from "../Firebase";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
+// import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
-import Paper from "@material-ui/core/Paper";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import Button from "@material-ui/core/Button";
+// import Paper from "@material-ui/core/Paper";
+// import FormControlLabel from "@material-ui/core/FormControlLabel";
+// import Checkbox from "@material-ui/core/Checkbox";
+// import Button from "@material-ui/core/Button";
 
 import { withAuthorization } from '../Session'
 
-import * as ROUTES from "../../constants/routes";
+// import * as ROUTES from "../../constants/routes";
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -59,10 +59,10 @@ const INITIAL_STATE = {
 class FinalOverviewBase extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { ...INITIAL_STATE, docID: this.props.location.docID };// docID: props.location.state.docID 
+		this.state = { ...INITIAL_STATE, docID: this.props.location.docID };// docID: props.location.state.docID
 		this.classes = { useStyles };
 	}
-	
+
 	// onSubmit = event => {
 	// 	this.props.history.push({
 	// 		pathname: ROUTES.ORDER_TIMELINE,
@@ -73,10 +73,10 @@ class FinalOverviewBase extends Component {
 	componentDidMount() {
 		let queryString = window.location.search;
 		let urlParams = new URLSearchParams(queryString);
-		let urlId = Number(urlParams.get("id")); 
+		let urlId = Number(urlParams.get("id"));
 
 		this.setState({
-			orderID: urlId 
+			orderID: urlId
 		});
 
 		this.props.firebase.fs
@@ -110,12 +110,12 @@ class FinalOverviewBase extends Component {
 
 	renderMenu = () => {
 		let listofmenu = [];
-		console.log(this.state.menu.length)
+		// console.log(this.state.menu.length)
 		let i = 0
 		for (i = 0; i < this.state.menu.length; i++) {
 			let dish = this.state.menu[i]
 			listofmenu.push(<p> {dish}</p>);
-		}	
+		}
 		return listofmenu;
 	}
 

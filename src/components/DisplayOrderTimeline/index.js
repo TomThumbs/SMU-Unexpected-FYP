@@ -5,11 +5,11 @@ import Link from "@material-ui/core/Link";
 import { Link as RouterLink } from 'react-router-dom';
 
 import { makeStyles } from "@material-ui/core/styles";
-// import 'typeface-roboto';
 
 // import Grid from '@material-ui/core/Grid';
 // import Typography from '@material-ui/core/Typography';
 import Container from "@material-ui/core/Container";
+// import Divider from '@material-ui/core/Divider';
 // import Paper from '@material-ui/core/Paper';
 // import TimelineItem from './timelineItem'
 
@@ -48,7 +48,8 @@ const INITIAL_STATE = {
 		ROUTES.ORDER_SERVICE,
 		ROUTES.ORDER_COMPLETE
 	],
-	status: ""
+	status: "",
+	dataIsLoaded: false
 };
 
 class DisplayOrderTimelineBase extends Component {
@@ -80,7 +81,10 @@ class DisplayOrderTimelineBase extends Component {
 						docID: doc.id,
 						status: doc.data().Status,
 						menu: Array.from(new Set(doc.data().Menu)),
-						sopStatus: doc.data().sop
+						sopStatus: doc.data().sop,
+						statusDates: doc.data().StatusDates,
+						dataIsLoaded: true
+
 					});
 				});
 			})
@@ -88,16 +92,21 @@ class DisplayOrderTimelineBase extends Component {
 				console.log("Error getting documents: ", error);
 			});
 		console.log("Retrieved doc");
+
+		// this.setState({
+		// 	dataIsLoaded: true
+		// });
 	}
 
 	timelineItem(key, itemIndex, status) {
+		console.log(this.state)
 		const isDone =
 			this.state.statusList.indexOf(itemIndex) <=
 			this.state.statusList.indexOf(status);
 
 		// Check if current item is preparation
 		const isPrep = itemIndex === "Preparation";
-		const isSop = itemIndex === "Preparation" && this.state.sopStatus == false;
+		const isSop = itemIndex === "Preparation" && this.state.sopStatus === false;
 
 		// Check if current item is to be delivered
 		const makeDelivery = itemIndex === "Delivery" && status === "Preparation";
@@ -113,11 +122,22 @@ class DisplayOrderTimelineBase extends Component {
 			this.state.statusList.indexOf(itemIndex)
 		];
 
+		let date = ''
+		let statusDates = this.state.statusDates
+
+		if(key <= 2){
+			date = statusDates[key]
+		}else{
+			date = ''
+		}
+
 		return (
 			<div key={key} className="timeline-item">
 				<div className="timeline-item-content">
 					<span className="tag">{itemIndex}</span>
-				
+					<hr/>
+					{date !== '' ? (<span className="tag">{date}</span>) : null}
+
 					{isPrep ? (
 						<Link
 							component={RouterLink} to={{
@@ -147,7 +167,7 @@ class DisplayOrderTimelineBase extends Component {
 					{makeDelivery ? (
 						<Link
 							component={RouterLink} to={{
-								pathname: ROUTES.DELIVERY_FORM,
+								pathname: ROUTES.ORDER_DELIVERY,
 								search: "?id=" + this.state.orderID,
 								state: {
 									docID: this.state.docID
@@ -164,7 +184,8 @@ class DisplayOrderTimelineBase extends Component {
 								search: "?id=" + this.state.orderID,
 								state: {
 									docID: this.state.docID,
-									menu: this.state.menu
+									menu: this.state.menu,
+									orderID: this.state.orderID
 								}
 							}}
 						><br></br>
@@ -189,7 +210,8 @@ class DisplayOrderTimelineBase extends Component {
 								search: "?id=" + this.state.orderID,
 								state: {
 									docID: this.state.docID,
-									menu: this.state.menu
+									menu: this.state.menu,
+									orderID: this.state.orderID
 								}
 							}}
 						><br></br>
@@ -215,10 +237,12 @@ class DisplayOrderTimelineBase extends Component {
 	}
 
 	render() {
+		const dataIsLoaded = this.state.dataIsLoaded === true;
+
 		return (
 			<div className="body">
 				<Container component="main" maxWidth="md">
-					{this.timeline()}
+					{dataIsLoaded && this.timeline()}
 				</Container>
 			</div>
 		);

@@ -83,7 +83,7 @@ class NewIngredientForm extends Component {
 			.collection("Ingredients")
 			.doc(this.state.foodId)
 			.set({
-				ingredientId: this.state.foodId,
+				barcode: this.state.foodId,
 				Date_of_expiry:
 					String(this.state.expiryDate).split(" ")[2] +
 					"-" +
@@ -111,7 +111,6 @@ class NewIngredientForm extends Component {
 			foodName: "",
 			priFoodId: ""
 		});
-		// window.location.reload(true);
 	};
 
 	handleHome = () => {
@@ -128,7 +127,7 @@ class NewIngredientForm extends Component {
 	};
 
 	handleDateChange = event => {
-		// console.log(Number(event.getMonth())+1)
+
 		let tempMonth = (Number(event.getMonth()) + 1).toString();
 		if (tempMonth.length === 1) {
 			tempMonth = "0" + tempMonth;
@@ -243,18 +242,6 @@ class NewIngredientForm extends Component {
 								{"Submission Notification"}
 							</DialogTitle>
 							<DialogContent dividers>
-								{/* <Typography gutterBottom>
-									{this.state.foodName} has been tagged.
-								</Typography>
-								<Typography gutterBottom>
-									Food ID: {this.state.foodId}
-								</Typography>
-								<Typography gutterBottom>
-									Storage Date: {this.state.storageDate}
-								</Typography>
-								<Typography gutterBottom>
-									Expiry Date: {this.state.expiryDate}
-								</Typography> */}
 								<DialogContentText id="alert-dialog-description">
 									{this.state.foodName} has been tagged.
 									<br />
@@ -271,15 +258,6 @@ class NewIngredientForm extends Component {
 										"/" +
 										String(this.state.expiryDate).split(" ")[3]}
 								</DialogContentText>
-								{/* <DialogContentText id="alert-dialog-description">
-                Food ID: {this.state.foodId}
-								</DialogContentText>
-								<DialogContentText id="alert-dialog-description">
-                Storage Date: {this.state.storageDate}
-								</DialogContentText>
-								<DialogContentText id="alert-dialog-description">
-                Expiry Date: {this.state.expiryDate}
-								</DialogContentText> */}
 							</DialogContent>
 							<DialogActions>
 								<Button onClick={this.handleClose} color="primary" autoFocus>

@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { withFirebase } from "../Firebase";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
-import Paper from "@material-ui/core/Paper";
+// import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 
 import * as ROUTES from "../../constants/routes";
@@ -112,7 +112,7 @@ class OrderReceivedBase extends Component {
 			<div className="body">
 				<Container className={this.classes.root} component="main" maxWidth="md">
 					{this.renderBackButton()}
-					
+
 						<Grid container spacing={3}>
 							<Grid item xs={6}>
 								<Typography>Deliver to:</Typography>
@@ -128,7 +128,7 @@ class OrderReceivedBase extends Component {
 								{this.renderMenu()}
 							</Grid>
 						</Grid>
-				
+
 				</Container>
 			</div>
 		);
