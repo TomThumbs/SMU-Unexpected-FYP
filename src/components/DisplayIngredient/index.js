@@ -51,7 +51,7 @@ class DisplayIngredientBase extends Component {
 
 	onSubmit = event => {
 		event.preventDefault();
-		console.log(this.state)
+		// console.log(this.state)
 		const result = document.querySelector("#Result");
 
 		// Remove existing result if any
@@ -82,13 +82,13 @@ class DisplayIngredientBase extends Component {
 			div.appendChild(storagedate);
 			div.appendChild(expirydate);
 			result.appendChild(div);
-			console.log("zzzzz",div);
+			// console.log("zzzzz",div);
 		} else {
 			let error = document.createElement("p");
 			error.setAttribute("data-id", "id" + this.state.searchId);
 			error.textContent = "Item does not exist";
 			result.appendChild(error);
-			console.log(error);
+			// console.log(error);
 		}
 
 		this.setState({
@@ -100,7 +100,7 @@ class DisplayIngredientBase extends Component {
 		this.setState({
 			[event.target.name]: event.target.value
 		});
-		console.log(event.target.value);
+		// console.log(event.target.value);
 	};
 
 	render() {

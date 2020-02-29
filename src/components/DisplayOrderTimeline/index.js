@@ -49,7 +49,8 @@ const INITIAL_STATE = {
 		ROUTES.ORDER_COMPLETE
 	],
 	status: "",
-	dataIsLoaded: false
+	dataIsLoaded: false,
+	statusDates: []
 };
 
 class DisplayOrderTimelineBase extends Component {
@@ -125,8 +126,12 @@ class DisplayOrderTimelineBase extends Component {
 		let date = ''
 		let statusDates = this.state.statusDates
 
-		if(key <= 2){
-			date = statusDates[key]
+		if(key <= 2 && statusDates !== undefined){
+			if(statusDates.length >= key){
+				date = statusDates[key]
+			}else{
+				date = ''
+			}
 		}else{
 			date = ''
 		}

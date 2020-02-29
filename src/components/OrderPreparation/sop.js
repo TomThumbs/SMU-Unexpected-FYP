@@ -65,7 +65,7 @@ class OrderPreparationSopBase extends Component {
 	}
 	
 	componentDidMount() {
-		let allStatus = ""
+		// let allStatus = ""
 		// console.log(this.props.location.state.docID)
 		let queryString = window.location.search;
 		let urlParams = new URLSearchParams(queryString);
