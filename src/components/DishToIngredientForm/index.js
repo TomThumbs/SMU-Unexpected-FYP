@@ -192,7 +192,7 @@ class DishToIngredientFormBase extends Component {
       id="combo-box-demo"
       options={this.state.availableIngredients}
       getOptionLabel={option => option.ingredient}
-      style={{ width: 300 }}
+      fullWidth
       // id={id}  
       onChange={this.handleChange({fooditem})}  
       renderInput={params => (
@@ -241,11 +241,13 @@ class DishToIngredientFormBase extends Component {
           placeholder="New Ingredient:"
         />
 
-        <FormControl style={{minWidth:300}}>
+        <FormControl style={{minWidth:395}}>
           <InputLabel>Select Dish Type:</InputLabel>
           <Select
+      
             value={this.state.chosen_menu}
             onChange={this.handleMenuChange}
+            
           >
           {this.state.menu_List.map((event, index) =>
             <MenuItem value={event}>{event}</MenuItem>

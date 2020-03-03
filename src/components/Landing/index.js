@@ -168,12 +168,9 @@ class LandingPageBase extends Component {
 		}
 	}
 
-
-
   render() {
 
   return (
-    <div className="body">
       <Container component="main" maxWidth="md">
         
         <div>
@@ -186,7 +183,7 @@ class LandingPageBase extends Component {
           {this.createTable(this.state.week_events_list)}
         </div>
   </Container>
-  </div>
+
 
     );
   }

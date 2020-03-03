@@ -140,8 +140,8 @@ class DisplayOrderTimelineBase extends Component {
 			<div key={key} className="timeline-item">
 				<div className="timeline-item-content">
 					<span className="tag">{itemIndex}</span>
-					<hr/>
-					{date !== '' ? (<span className="tag">{date}</span>) : null}
+					
+					{date !== '' ? (<span className="time">{date}</span>) : null}
 
 					{isPrep ? (
 						<Link
@@ -152,7 +152,7 @@ class DisplayOrderTimelineBase extends Component {
 									docID: this.state.docID
 								}
 							}}
-						><br></br>
+						>
 							Edit
 						</Link>
 					) : null}
@@ -165,7 +165,7 @@ class DisplayOrderTimelineBase extends Component {
 									docID: this.state.docID
 								}
 							}}
-						><br></br>
+						>
 							SOP
 						</Link>
 					) : null}
@@ -178,7 +178,7 @@ class DisplayOrderTimelineBase extends Component {
 									docID: this.state.docID
 								}
 							}}
-						><br></br>
+						>
 							Make Delivery
 						</Link>
 					) : null}
@@ -193,7 +193,7 @@ class DisplayOrderTimelineBase extends Component {
 									orderID: this.state.orderID
 								}
 							}}
-						><br></br>
+						>
 							Set up Temperature Monitors
 						</Link>
 					) : null}
@@ -205,7 +205,7 @@ class DisplayOrderTimelineBase extends Component {
 									docID: this.state.docID
 								}
 							}}
-						><br></br>
+						>
 							Items Collected
 						</Link>) : null}
 					{isDone ? (
@@ -219,7 +219,7 @@ class DisplayOrderTimelineBase extends Component {
 									orderID: this.state.orderID
 								}
 							}}
-						><br></br>
+						>
 							Read
 						</Link>
 					) : (
@@ -245,11 +245,11 @@ class DisplayOrderTimelineBase extends Component {
 		const dataIsLoaded = this.state.dataIsLoaded === true;
 
 		return (
-			<div className="body">
-				<Container component="main" maxWidth="md">
-					{dataIsLoaded && this.timeline()}
-				</Container>
-			</div>
+		
+			<Container component="main" maxWidth="md">
+				{dataIsLoaded && this.timeline()}
+			</Container>
+		
 		);
 	}
 }
