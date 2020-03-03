@@ -22,6 +22,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import * as ROUTES from "../../constants/routes";
 import Grid from "@material-ui/core/Grid";
 import { Paper } from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles(theme => ({
 	paper: {
