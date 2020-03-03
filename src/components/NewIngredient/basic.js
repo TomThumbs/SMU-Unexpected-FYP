@@ -279,7 +279,7 @@ class NewBasicIngredientForm extends Component {
 								</Button>
 							</DialogActions>
 						</Dialog>
-
+											
 						<form onSubmit={this.onSubmit}>
 							<Button
 								disabled={isInvalid}

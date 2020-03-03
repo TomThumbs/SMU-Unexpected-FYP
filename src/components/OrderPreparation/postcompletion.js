@@ -134,7 +134,7 @@ class FinalOverviewBase extends Component {
 	render() {
 		return (
 		
-		<Container component="main" maxWidth="xs">
+		<Container component="main" maxWidth="sm">
 			<Typography variant="h4" gutterBottom>Order Overview</Typography>
 			<Paper>
 
