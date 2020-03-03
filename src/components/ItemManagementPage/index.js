@@ -36,7 +36,7 @@ class IngredientManagementBase extends Component {
 
 					<Grid container spacing={8}>
 						<Grid container item xs={4}>
-							<Button component={RouterLink} to={ROUTES.NEW_INGREDIENT}>
+							<Button component={RouterLink} to={ROUTES.NEW_INGREDIENT_BASIC}>
 								<Grid container justify="center" spacing={2}>
 									<Grid item xs={12}>
 										<img class="image" src={tagnew} alt="logo" />

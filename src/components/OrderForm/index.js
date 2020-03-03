@@ -144,7 +144,7 @@ class OrderFormBase extends Component {
 
 	// onSubmit = event => {
 	// 	event.preventDefault();
-		
+
 	// 	let finalmenu = []
 
 	// 	this.state.selectedmenu.forEach(item => {
@@ -201,17 +201,17 @@ class OrderFormBase extends Component {
 
 		strSubmitDate = strSubmitDate.split("GMT")[0];
 
-		let finalmenu = []
+		let finalmenu = [];
 
 		this.state.selectedmenu.forEach(item => {
 			let dishname = item.dish + " checkbox";
 			if (dishname in this.state) {
 				if (this.state[dishname] === true) {
-					finalmenu.push(item.dish)
+					finalmenu.push(item.dish);
 				}
 			}
-    });
-    
+		});
+
 		let heatersUsed = {};
 
 		finalmenu.forEach(dish => {
@@ -389,7 +389,7 @@ class OrderFormBase extends Component {
 		this.state.selectedmenu.forEach(item => {
 			if (dishtype.includes(item.type) === false) {
 				dishtype.push(item.type);
-				listofmenu.push(<p key={item.type}>{item.type}</p>);
+				listofmenu.push(<Typography variant='h6' key={item.type}>{item.type}</Typography>);
 			}
 
 			listofmenu.push(
@@ -451,32 +451,33 @@ class OrderFormBase extends Component {
 							<div>
 								<br></br>
 							</div>
-							<Grid container align-items="left">
-								<MuiPickersUtilsProvider utils={DateFnsUtils}>
-									Date:
-									<KeyboardDatePicker
-										variant="inline"
-										format="dd/MM/yyyy"
-										minDate={this.today}
-										id="date-picker-inline"
-										value={this.state.date}
-										onChange={this.handleDateChange}
-										KeyboardButtonProps={{
-											"aria-label": "change date"
-										}}
-									/>
-									Time:
-									<KeyboardTimePicker
-										margin="none"
-										id="time-picker"
-										value={this.state.starttime}
-										onChange={this.handleTimeChange}
-										KeyboardButtonProps={{
-											"aria-label": "change time"
-										}}
-									/>
-								</MuiPickersUtilsProvider>
-							</Grid>
+							{/* <Grid container align-items="left"> */}
+							<MuiPickersUtilsProvider utils={DateFnsUtils}>
+								Date:
+								<KeyboardDatePicker
+									variant="inline"
+									format="dd/MM/yyyy"
+									minDate={this.today}
+									id="date-picker-inline"
+									value={this.state.date}
+									onChange={this.handleDateChange}
+									KeyboardButtonProps={{
+										"aria-label": "change date"
+									}}
+								/>
+								<br />
+								Time:
+								<KeyboardTimePicker
+									margin="none"
+									id="time-picker"
+									value={this.state.starttime}
+									onChange={this.handleTimeChange}
+									KeyboardButtonProps={{
+										"aria-label": "change time"
+									}}
+								/>
+							</MuiPickersUtilsProvider>
+							{/* </Grid> */}
 
 							<TextField
 								margin="normal"
@@ -540,7 +541,8 @@ class OrderFormBase extends Component {
 							<Typography component="h5" variant="h5">
 								Menu
 							</Typography>
-
+							<br/>
+							
 							{/* Display Menu */}
 							{this.renderMenu()}
 

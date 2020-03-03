@@ -50,7 +50,7 @@ const NavigationAuth = () => (
 			</Link>
 		</li>
 		{/* <li className="nav-link">
-			<Link className="navigation-link" to={ROUTES.NEW_INGREDIENT}>
+			<Link className="navigation-link" to={ROUTES.NEW_INGREDIENT_BASIC}>
 				Tag New Ingredients
 			</Link>
 		</li> */}

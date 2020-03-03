@@ -18,7 +18,7 @@ import OrderForm from './components/OrderForm'
 import PostOrderForm from './components/PostOrderForm'
 // import DeliverySelection from './components/DeliverySelection'
 import ItemManagementPage from './components/ItemManagementPage'
-import NewIngredient from './components/NewIngredient'
+import { NewBasicIngredient, NewComplexIngredient } from './components/NewIngredient'
 import DisplayIngredient from './components/DisplayIngredient'
 
 import DisplayOrders from './components/DisplayOrders'
@@ -61,7 +61,7 @@ const App = () => (
         <Route path={ROUTES.ITEM_MANAGEMENT} component={ItemManagementPage} />
 
         {/* ---------- ADD A NEW INGREDIENT ---------- */}
-        <Route path={ROUTES.NEW_INGREDIENT} component={NewIngredient} />
+        <Route path={ROUTES.NEW_INGREDIENT_BASIC} component={NewBasicIngredient} />
         <Route path={ROUTES.DISPLAY_INGREDIENT} component={DisplayIngredient} />
 
         {/* ---------- ADD NEW ORDER ---------- */}

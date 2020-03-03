@@ -201,8 +201,8 @@ class OrderPreparationSopBase extends Component {
 					className={this.classes.root}
 				>
 					<Paper className={this.classes.paper}>
-						<Typography>Order Preparation SOP Agreement</Typography>
-						<Typography>Order #{this.state.orderID}</Typography>
+						<Typography variant='h5'>Order Preparation SOP Agreement</Typography>
+						<Typography variant='h5'>Order #{this.state.orderID}</Typography>
 
 						{/* ---------- FORM ---------- */}
 						<form onSubmit={this.onSubmit}>
