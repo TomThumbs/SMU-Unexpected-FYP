@@ -7,7 +7,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from "@material-ui/core/styles";
 
 // import Grid from '@material-ui/core/Grid';
-// import Typography from '@material-ui/core/Typography';
+import Typography from '@material-ui/core/Typography';
 import Container from "@material-ui/core/Container";
 // import Divider from '@material-ui/core/Divider';
 // import Paper from '@material-ui/core/Paper';
@@ -247,6 +247,7 @@ class DisplayOrderTimelineBase extends Component {
 		return (
 		
 			<Container component="main" maxWidth="md">
+				<Typography variant="h2" align="center">Order #{this.state.orderID}</Typography>
 				{dataIsLoaded && this.timeline()}
 			</Container>
 		
