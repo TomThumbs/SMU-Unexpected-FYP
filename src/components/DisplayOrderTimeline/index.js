@@ -50,7 +50,7 @@ const INITIAL_STATE = {
 	],
 	status: "",
 	dataIsLoaded: false,
-	statusDates: []
+	statusDates: [],
 };
 
 class DisplayOrderTimelineBase extends Component {
@@ -84,7 +84,10 @@ class DisplayOrderTimelineBase extends Component {
 						menu: Array.from(new Set(doc.data().Menu)),
 						sopStatus: doc.data().sop,
 						statusDates: doc.data().StatusDates,
-						dataIsLoaded: true
+						dataIsLoaded: true,
+						prepStatus: (doc.data().Status === "Delivery" || 
+									doc.data().Status === "Event in Progress" || 
+									doc.data().Status === "Order Completed")
 
 					});
 				});
@@ -106,7 +109,8 @@ class DisplayOrderTimelineBase extends Component {
 			this.state.statusList.indexOf(status);
 
 		// Check if current item is preparation
-		const isPrep = itemIndex === "Preparation";
+		// const isRec = itemIndex === "Order Received";
+		const isPrep = itemIndex === "Preparation" && this.state.prepStatus === false;
 		const isSop = itemIndex === "Preparation" && this.state.sopStatus === false;
 
 		// Check if current item is to be delivered
