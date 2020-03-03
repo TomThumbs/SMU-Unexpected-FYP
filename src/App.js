@@ -62,6 +62,7 @@ const App = () => (
 
         {/* ---------- ADD A NEW INGREDIENT ---------- */}
         <Route path={ROUTES.NEW_INGREDIENT_BASIC} component={NewBasicIngredient} />
+        <Route path={ROUTES.NEW_INGREDIENT_COMPLEX} component={NewComplexIngredient} />
         <Route path={ROUTES.DISPLAY_INGREDIENT} component={DisplayIngredient} />
 
         {/* ---------- ADD NEW ORDER ---------- */}
