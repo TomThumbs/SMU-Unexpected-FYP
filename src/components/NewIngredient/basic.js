@@ -3,6 +3,7 @@ import { withFirebase } from "../Firebase";
 import { withRouter } from "react-router-dom";
 import { withAuthorization } from "../Session";
 import "date-fns";
+import { Link as RouterLink } from 'react-router-dom';
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import DateFnsUtils from "@date-io/date-fns";
@@ -279,7 +280,18 @@ class NewBasicIngredientForm extends Component {
 								</Button>
 							</DialogActions>
 						</Dialog>
-											
+
+						<Grid item xs={12}>
+							<Button
+								variant="outlined"
+								fullWidth
+								component={RouterLink} to={{
+								pathname: ROUTES.NEW_INGREDIENT_COMPLEX,
+								search: "?id=" + this.state.orderID
+							}}>Complex Ingredient
+							</Button>
+						</Grid>
+
 						<form onSubmit={this.onSubmit}>
 							<Button
 								disabled={isInvalid}
@@ -298,6 +310,8 @@ class NewBasicIngredientForm extends Component {
 		);
 	}
 }
+
+// NEW_INGREDIENT_COMPLEX
 
 const NewBasicIngredient = withRouter(withFirebase(NewBasicIngredientForm));
 const condition = authUser => !!authUser;
