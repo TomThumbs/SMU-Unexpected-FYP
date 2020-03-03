@@ -251,8 +251,8 @@ class OrderDeliveryBase extends Component {
 	render() {
 		// console.log(typeof this.state.menu)
 		return (
-			<Container component="main" maxWidth="sm">
-				<Typography variant="h4">Delivery Form</Typography>
+			<Container component="main" maxWidth="xs">
+				<Typography variant="h4" gutterBottom>Delivery Form</Typography>
 				<Paper>
 					<React.Fragment>
 					
@@ -283,13 +283,13 @@ class OrderDeliveryBase extends Component {
 							</Typography>
 							
 							<Grid container xs={12}>
-								<Grid item xs={6}>
+								<Grid item xs={12}>
 									<FormControlLabel
 										control={
 											<Checkbox
 												checked={this.state.cleanReady}
 												onChange={this.handleChange("cleanReady")}
-												color="secondary"
+												color="primary"
 												name="cleanReady"
 												value="cleanReady"
 											/>
@@ -305,7 +305,7 @@ class OrderDeliveryBase extends Component {
 											<Checkbox
 												checked={this.state.allItems}
 												onChange={this.handleChange("allItems")}
-												color="secondary"
+												color="primary"
 												name="allItems"
 												value="allItems"
 											/>
@@ -314,13 +314,13 @@ class OrderDeliveryBase extends Component {
 									/>
 								</Grid>
 								
-								<Grid item xs={6}>		
+								<Grid item xs={12}>		
 								<FormControlLabel
 									control={
 										<Checkbox
 											checked={this.state.foodWrap}
 											onChange={this.handleChange("foodWrap")}
-											color="secondary"
+											color="primary"
 											name="foodWrap"
 											value="foodWrap"
 										/>
@@ -336,7 +336,7 @@ class OrderDeliveryBase extends Component {
 										<Checkbox
 											checked={this.state.decor}
 											onChange={this.handleChange("decor")}
-											color="secondary"
+											color="primary"
 											name="foodWrap"
 											value="foodWrap"
 										/>
@@ -349,7 +349,7 @@ class OrderDeliveryBase extends Component {
 							<p><Divider variant="li" /></p>
 							
 							
-							<Typography variant="h6" gutterBottom>Attach Image</Typography>
+							<Typography variant="h6" gutterBottom>Attach Image of Truck</Typography>
 
 							</Typography>
 					</React.Fragment>
@@ -364,9 +364,7 @@ class OrderDeliveryBase extends Component {
 								onUploadSuccess={this.handleUploadSuccess}
 								onProgress={this.handleProgress}
 							/>
-					</Grid>
-					
-					
+						</Grid>
 					
 						<Grid item xs={12}>
 							{this.renderSubmit()}
