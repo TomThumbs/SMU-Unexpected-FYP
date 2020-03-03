@@ -12,6 +12,8 @@ import Button from "@material-ui/core/Button";
 // import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
+import { sizing } from '@material-ui/system';
+
 
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -214,24 +216,30 @@ class OrderServiceBase extends Component {
 		let heaters = [];
 		this.state.menu.forEach((dish, index) => {
 			heaters.push(
-				<Grid item xs={4} key={index}>
-					<Paper className={this.classes.paper}>
-						{dish}
-						<br />
-						<TextField
-							id="standard-select"
-							select
-							label="Select Heater"
-							value={this.state[dish + " heater"]}
-							onChange={this.onChange(dish)}
-							helperText="Please select the heater"
-						>
-							{this.state.IoTHeaters.map(option => (
-								<MenuItem key={option.ID} value={option.ID}>
-									Heater {option.ID}
-								</MenuItem>
-							))}
-						</TextField>
+				<Grid item xs={6} key={index}>
+					
+					<Paper variant="outlined">
+						<Grid container spacing={2} >
+							<Grid item minHeight="500">{dish}</Grid>
+
+							<Grid item xs={12}> 
+								<TextField 
+									fullWidth
+									id="standard-select"
+									select
+									label="Select Heater"
+									value={this.state[dish + " heater"]}
+									onChange={this.onChange(dish)}
+									//helperText="Please select the heater"
+								>
+									{this.state.IoTHeaters.map(option => (
+										<MenuItem key={option.ID} value={option.ID}>
+											Heater {option.ID}
+										</MenuItem>
+									))}
+								</TextField>
+							</Grid>
+						</Grid>
 					</Paper>
 				</Grid>
 			);
@@ -258,11 +266,11 @@ class OrderServiceBase extends Component {
 		const dataIsLoaded = this.state.dataIsLoaded === true;
 		// console.log(this.state);
 		return (
-			<div className="body">
-				<Container component="main" maxWidth="xs">
-					<Typography variant="h2">
-						Order #{this.state.orderID}
-					</Typography>
+			<Container component="main" maxWidth="sm">
+				{/* <Typography variant="h2">Order #{this.state.orderID}</Typography> */}
+				<Typography variant="h4" gutterBottom>Tag Heater to Dish</Typography>
+				
+				<Paper>
 
 					<Grid container justify="center" spacing={3}>
 						{dataIsLoaded && this.renderHeaters()}
@@ -289,21 +297,49 @@ class OrderServiceBase extends Component {
 							</DialogActions>
 						</Dialog>
 
-					<form onSubmit={this.onSubmit}>
-						<Button
-							type="submit"
-							fullWidth
-							variant="contained"
-							color="primary"
-						>
-							Submit
-						</Button>
-					</form>
-					<Grid item xs={12}>
-					{this.renderBackButton()}
+					<br></br>
+					<Grid container spacing={1}>	
+					
+						<Grid item xs={12}>
+							<form onSubmit={this.onSubmit}>
+								<Button
+									type="submit"
+									fullWidth
+									variant="contained"
+									color="primary"
+								>
+									Submit
+								</Button>
+							</form>
+						</Grid>
+						
+						<Grid item xs={12}>
+							<Button
+								variant="outlined"
+								fullWidth
+								component={RouterLink} to={{
+								pathname: ROUTES.ORDER_TIMELINE,
+								search: "?id=" + this.state.orderID
+							}}>Back to Timeline
+							</Button>
+						</Grid>
+						<Grid item xs={12}>
+							<Button
+								variant="outlined"
+								color="primary"
+								fullWidth
+								component={RouterLink} 
+								to={ROUTES.LANDING}
+								>Home
+							</Button>
+						</Grid>
 					</Grid>
+
+				
+
+					</Paper>
 				</Container>
-			</div>
+
 		);
 	}
 }
