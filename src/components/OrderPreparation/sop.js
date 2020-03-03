@@ -13,6 +13,8 @@ import Checkbox from "@material-ui/core/Checkbox";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import FileUploader from "react-firebase-file-uploader";
+import Grid from '@material-ui/core/Grid';
+import Divider from "@material-ui/core/Divider";
 // import Link from "@material-ui/core/Link";
 
 import { withAuthorization } from "../Session";
@@ -146,6 +148,37 @@ class OrderPreparationSopBase extends Component {
 		);
 	}
 
+	renderSubmit() {
+		if (
+			this.state.hands === true &&
+			this.state.imageURL.length !== 0 &&
+			this.state.workspace !== 0
+		) {
+			return (
+				<form onSubmit={this.onSubmit}>
+					<Button
+						type="submit"
+						fullWidth
+						variant="contained"
+						color="primary"
+						className={this.classes.submit}
+					>
+						Submit
+					</Button>
+				</form>
+			);
+		} else {
+			return (
+				<Typography variant="subtitle2" color="secondary">
+						Please check all 4 checkboxes and upload a picture of the state of the kitchen.
+				</Typography>
+			);
+		}
+	}
+
+	
+
+
 	onSubmit = event => {
 		this.props.firebase.fs
 			.collection("Catering_orders")
@@ -194,21 +227,21 @@ class OrderPreparationSopBase extends Component {
 			this.state.workspace === false ||
 			this.state.imageURL.length === 0;
 		return (
-			<div className="body">
-				<Container
-					component="main"
-					maxWidth="xs"
-					className={this.classes.root}
-				>
-					<Paper className={this.classes.paper}>
-						<Typography>Order Preparation SOP Agreement</Typography>
-						<Typography>Order #{this.state.orderID}</Typography>
 
-						{/* ---------- FORM ---------- */}
-						<form onSubmit={this.onSubmit}>
+			<Container component="main" maxWidth="xs" >
+				<Typography gutterBottom variant="h4">Order Preparation SOP</Typography>
+				<Paper className={this.classes.paper}>
+					
+					<Typography variant="h6" gutterBottom>Order #{this.state.orderID}</Typography>
+
+					{/* ---------- FORM ---------- */}
+					
+					<form onSubmit={this.onSubmit}>
+					<React.Fragment>
+					<Grid container spacing={2}>
+						<Grid item xs={12}>
 							<TextField
 								variant="outlined"
-								margin="normal"
 								required
 								fullWidth
 								name="headchef"
@@ -219,9 +252,11 @@ class OrderPreparationSopBase extends Component {
 								placeholder="Head Chef"
 								autoFocus
 							/>
+						</Grid>
+						<Grid item xs={12}>
 							<TextField
 								variant="outlined"
-								margin="normal"
+								
 								required
 								fullWidth
 								name="assistantA"
@@ -232,9 +267,10 @@ class OrderPreparationSopBase extends Component {
 								placeholder="Assistant A"
 								autoFocus
 							/>
+						</Grid>
+						<Grid item xs={12}>
 							<TextField
 								variant="outlined"
-								margin="normal"
 								required
 								fullWidth
 								name="assistantB"
@@ -245,6 +281,16 @@ class OrderPreparationSopBase extends Component {
 								placeholder="Assistant B"
 								autoFocus
 							/>
+						</Grid>
+						
+						<Grid item xs={12}>
+							<Typography variant="h6" gutterBottom>Checklist</Typography>
+						</Grid>
+					
+					</Grid>
+
+					<Grid container xs={12}>
+						<Grid item xs={12}>
 							<FormControlLabel
 								control={
 									<Checkbox
@@ -256,6 +302,9 @@ class OrderPreparationSopBase extends Component {
 								}
 								label="Washed hands?"
 							/>
+						</Grid>
+						
+						<Grid item xs={12}>
 							<FormControlLabel
 								control={
 									<Checkbox
@@ -263,10 +312,14 @@ class OrderPreparationSopBase extends Component {
 										onChange={this.onBoxChange}
 										value="remember"
 										color="primary"
+										
 									/>
 								}
 								label="Use of Mask and gloves?"
 							/>
+						</Grid>
+
+						<Grid item xs={12}>
 							<FormControlLabel
 								control={
 									<Checkbox
@@ -278,6 +331,8 @@ class OrderPreparationSopBase extends Component {
 								}
 								label="Clean workspace?"
 							/>
+						</Grid>
+						<Grid item xs={12}>
 							<FormControlLabel
 								control={
 									<Checkbox
@@ -289,32 +344,55 @@ class OrderPreparationSopBase extends Component {
 								}
 								label="Clean kitchen tools?"
 							/>
-							<p>Add photo here</p>
+						</Grid>
+					</Grid>
+						<p><Divider variant="li" /></p>
+						
+						<Typography variant="h6" gutterBottom>Attach Image of Kitchen</Typography>
+						</React.Fragment>
+						<Grid container spacing={1}>	
+							<Grid item xs={12}>
+								<FileUploader
+									accept="image/*"
+									name="image"
+									storageRef={this.props.firebase.stg.ref(
+										"kitchenHistory"
+									)}
+									onUploadSuccess={this.handleUploadSuccess}
+								/>
+							</Grid>
 
-							<FileUploader
-								accept="image/*"
-								name="image"
-								storageRef={this.props.firebase.stg.ref(
-									"kitchenHistory"
-								)}
-								onUploadSuccess={this.handleUploadSuccess}
-							/>
+							<Grid item xs={12}>
+								{this.renderSubmit()}
+							</Grid>
 
+							<Grid item xs={12}>
 							<Button
-								disabled={isInvalid}
-								type="submit"
+								variant="outlined"
 								fullWidth
-								variant="contained"
-								color="primary"
-								className={this.classes.submit}
-							>
-								Submit
+								component={RouterLink} to={{
+								pathname: ROUTES.ORDER_TIMELINE,
+								search: "?id=" + this.state.orderID
+							}}>Back to Timeline
 							</Button>
-						</form>
-					</Paper>
-					{this.renderBackButton()}
-				</Container>
-			</div>
+						</Grid>
+						<Grid item xs={12}>
+							<Button
+								variant="outlined"
+								color="primary"
+								fullWidth
+								component={RouterLink} 
+								to={ROUTES.LANDING}
+								>Home
+							</Button>
+						</Grid>
+
+								
+						</Grid>
+					</form>
+				</Paper>
+			</Container>
+	
 		);
 	}
 }
@@ -323,3 +401,15 @@ const OrderPreparationSop = withRouter(withFirebase(OrderPreparationSopBase));
 const condition = authUser => !!authUser;
 
 export default withAuthorization(condition)(OrderPreparationSop);
+
+
+{/* <Button
+	disabled={isInvalid}
+	type="submit"
+	fullWidth
+	variant="contained"
+	color="primary"
+	className={this.classes.submit}
+>
+	Submit
+</Button> */}

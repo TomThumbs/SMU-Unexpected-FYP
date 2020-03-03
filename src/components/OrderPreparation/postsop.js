@@ -6,10 +6,12 @@ import { withRouter } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
-// import Paper from "@material-ui/core/Paper";
+import Paper from "@material-ui/core/Paper";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Button from "@material-ui/core/Button";
+import Divider from "@material-ui/core/Divider";
+import { Link as RouterLink } from 'react-router-dom';
 
 import { withAuthorization } from '../Session'
 
@@ -28,54 +30,84 @@ class OrderPreparationPostSopBase extends Component {
 	render() {
 		// console.log(this.props.location);
 		return (
-			<div className="body">
-				<Container component="main" maxWidth="xs">
-				<Typography variant="h5" component="h2">Head Chef: {this.props.location.headchef}</Typography>
-				<Typography variant="h5" component="h2">Assistant A: {this.props.location.assistantA}</Typography>
-				<Typography variant="h5" component="h2">Assistant B: {this.props.location.assistantB}</Typography>
-				<FormControlLabel
-				control={<Checkbox checked="true" name="hands"  value="remember" color="primary" />}
-				label="Hands washed?"
-				/>
-				<FormControlLabel
-				control={<Checkbox checked="true" name="workspace" value="remember" color="primary" />}
-				label="Workspace clean?"
-				/>
-				<FormControlLabel
-				control={<Checkbox checked="true" name="workspace" value="remember" color="primary" />}
-				label="Clean workspace?"
-				/>
-				<FormControlLabel
-				control={<Checkbox checked="true" name="workspace" value="remember" color="primary" />}
-				label="Clean kitchen tools?"
-				/>
-				<br></br>
-				<Grid container spacing={3}>
-					<Grid item xs spacing={3}>
-						<img
-							class="image"
-							src={this.props.location.imageURL}
-							alt="Delivery Van"
-						></img>
-					</Grid>
-				</Grid>
-				<br></br>
+			<Container component="main" maxWidth="sm">
+				<Typography gutterBottom variant="h4">Kitchen SOP Declaration</Typography>
+				<Paper>
+					<Typography variant="h6">Kitchen SOP Declaration for Order #{this.props.location.orderID} Successful.</Typography>
+					<Typography variant="h6">Order Commence: {this.props.location.preparationCommencement}</Typography>
+					<Typography variant="body1">Head Chef: {this.props.location.headchef}</Typography>
+					<Typography variant="body1">Assistant A: {this.props.location.assistantA}</Typography>
+					<Typography variant="body1">Assistant B: {this.props.location.assistantB}</Typography>
 
-				<Typography variant="h6" component="h2">Order Commence: {this.props.location.preparationCommencement}</Typography>
-				<form onSubmit={this.onSubmit}>
-				<Button
-				type="submit"
-				fullWidth
-				variant="contained"
-				color="primary"
-				// className={this.classes.submit}
-				>
-				Back To Order
-            	</Button>
-				</form>
-				
-				</Container>
-			</div>
+					<p><Divider variant="li" /></p>
+
+
+					<Grid container xs={12}>
+						<Grid container xs={6}>
+							<FormControlLabel
+								control={<Checkbox checked="true" name="hands"  value="remember" color="primary" />}
+								label="Hands washed?"
+							/>
+						</Grid>
+						<Grid item xs>
+							<FormControlLabel
+								control={<Checkbox checked="true" name="workspace" value="remember" color="primary" />}
+								label="Workspace clean?"
+							/>
+						</Grid>
+						<Grid item xs={6}>
+							<FormControlLabel
+								control={<Checkbox checked="true" name="workspace" value="remember" color="primary" />}
+								label="Clean workspace?"
+							/>
+						</Grid>
+						<Grid item xs>
+							<FormControlLabel
+								control={<Checkbox checked="true" name="workspace" value="remember" color="primary" />}
+								label="Clean kitchen tools?"
+							/>
+						</Grid>
+					</Grid>
+
+		
+
+					<br></br>
+					<Grid container spacing={3}>
+						<Grid item xs spacing={3}>
+							<img
+								class="image"
+								src={this.props.location.imageURL}
+								alt="Delivery Van"
+							></img>
+						</Grid>
+					</Grid>
+					<br></br>
+
+					<Grid container spacing={1}>
+						<Grid item xs={12}>
+							<Button
+								variant="outlined"
+								fullWidth
+								component={RouterLink} to={{
+								pathname: ROUTES.ORDER_TIMELINE,
+								search: "?id=" + this.props.location.orderID
+							}}>Back to Timeline
+							</Button>
+						</Grid>
+						<Grid item xs={12}>
+							<Button
+								variant="outlined"
+								color="primary"
+								fullWidth
+								component={RouterLink} 
+								to={ROUTES.LANDING}
+								>Home
+							</Button>
+						</Grid>
+					</Grid>
+				</Paper>
+			</Container>
+		
 		);
 	}
 }

@@ -281,7 +281,7 @@ class OrderPreparationEditBase extends Component {
 			list.push(
 				<div key={id}>
 		
-					<Grid container style={{ paddingTop: 6, paddingBottom: 6}}>
+					<Grid container style={{paddingBottom: 18}}>
 						<Grid item xs={12}>
 							<Typography variant="h6">{dish}</Typography>
 						</Grid>
@@ -325,58 +325,76 @@ class OrderPreparationEditBase extends Component {
 	render() {
 		// console.log(this.state)
 		return (
-			<div className="body">
-				<Container component="main" maxWidth="xs" className={this.classes.root}>
+			<Container component="main" maxWidth="xs" className={this.classes.root}>
+			
+			<Typography gutterBottom variant="h4">Order Preparation Edit</Typography>
+				<Paper className={this.classes.paper}>
 					
-					<Paper className={this.classes.paper}>
-						<Typography>Order Preparation Edit</Typography>
 
-						<form onSubmit={this.onSubmit}>
-							{this.renderMenu()}
-							<br></br>
-							<Grid container spacing={1}>
-								<Grid item xs={12}>
-									<Button
-										type="submit"
-										fullWidth
-										variant="contained"
-										color="primary"
-										className={this.classes.submit}
-									>Submit
-									</Button>
-								</Grid>
-								<Grid item xs={12}>
-								{this.renderBackButton()}
-								</Grid>
-							</Grid>
-						</form>
+					<form onSubmit={this.onSubmit}>
+						{this.renderMenu()}
+					
+		
+					<Grid container spacing={1}>
+						<Grid item xs={12}>
+							<Button
+								type="submit"
+								fullWidth
+								variant="contained"
+								color="primary"
+								className={this.classes.submit}
+							>Submit
+							</Button>
+						</Grid>
 						
-						
-						
-						
-						<Dialog
-							open={this.state.open}
-							onClose={this.handleClose}
-							aria-labelledby="alert-dialog-title"
-							aria-describedby="alert-dialog-description"
-						>
-							<DialogTitle id="alert-dialog-title">
-								{"Submission Notification"}
-							</DialogTitle>
-							<DialogContent dividers>
-								<DialogContentText id="alert-dialog-description">
-									Dish successfully tagged!
-								</DialogContentText>
-							</DialogContent>
-							<DialogActions>
-								<Button onClick={this.handleTimeline} color="primary" autoFocus>
-									Back to Timeline
-								</Button>
-							</DialogActions>
-						</Dialog>
-					</Paper>
-				</Container>
-			</div>
+						<Grid item xs={12}>
+							<Button
+								variant="outlined"
+								fullWidth
+								component={RouterLink} to={{
+								pathname: ROUTES.ORDER_TIMELINE,
+								search: "?id=" + this.state.orderID
+							}}>Back to Timeline
+							</Button>
+						</Grid>
+						<Grid item xs={12}>
+							<Button
+								variant="outlined"
+								color="primary"
+								fullWidth
+								component={RouterLink} 
+								to={ROUTES.LANDING}
+								>Home
+							</Button>
+						</Grid>
+					</Grid>
+					</form>
+					
+					
+					
+					<Dialog
+						open={this.state.open}
+						onClose={this.handleClose}
+						aria-labelledby="alert-dialog-title"
+						aria-describedby="alert-dialog-description"
+					>
+						<DialogTitle id="alert-dialog-title">
+							{"Submission Notification"}
+						</DialogTitle>
+						<DialogContent dividers>
+							<DialogContentText id="alert-dialog-description">
+								Dish successfully tagged!
+							</DialogContentText>
+						</DialogContent>
+						<DialogActions>
+							<Button onClick={this.handleTimeline} color="primary" autoFocus>
+								Back to Timeline
+							</Button>
+						</DialogActions>
+					</Dialog>
+				</Paper>
+			</Container>
+		
 		);
 	}
 }
