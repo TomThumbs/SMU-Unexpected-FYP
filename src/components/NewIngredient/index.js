@@ -163,127 +163,126 @@ class NewIngredientForm extends Component {
 			this.state.storageDate === this.state.expiryDate ||
 			this.state.foodName.length === 0;
 		return (
-			<div className="body">
-				<Container component="main" maxWidth="xs">
-					<div className={this.classes.paper}>
-						{this.createTextField(
-							"foodId",
-							this.state.foodId,
-							"Food ID",
-							"Food ID"
-						)}
 
-						{/* Food Name */}
-						{this.createTextField(
-							"foodName",
-							this.state.foodName,
-							"Food Name",
-							"Food Name"
-						)}
+			<Container component="main" maxWidth="xs">
+				<div className={this.classes.paper}>
+					{this.createTextField(
+						"foodId",
+						this.state.foodId,
+						"Food ID",
+						"Food ID"
+					)}
 
-						<TextField
-							variant="outlined"
-							margin="normal"
-							fullWidth
-							name="priFoodId"
-							value={this.state.priFoodId}
-							label="Contains"
-							onChange={this.onChange}
-							type="text"
-							placeholder="Barcodes of other ingredients"
-						/>
+					{/* Food Name */}
+					{this.createTextField(
+						"foodName",
+						this.state.foodName,
+						"Food Name",
+						"Food Name"
+					)}
 
-						{/* Storage Date */}
-						<TextField
-							variant="outlined"
-							margin="normal"
-							required
-							fullWidth
-							name="storageDate"
-							value={this.state.storageDate}
-							label="Date of Storage"
-							onChange={this.onChange}
-							type="text"
-							placeholder="Date of Storage"
-							InputProps={{
-								readOnly: true
-							}}
-						/>
-						<Grid container>
-              				<Grid item xs>
-								Expiry Date:
-							</Grid>
-							<Grid item> 
-						<MuiPickersUtilsProvider utils={DateFnsUtils}>
-						
-							<KeyboardDatePicker
-									minDate={this.today}
-									variant="inline"
-									format="dd/MM/yyyy"
-									id="date-picker-inline"
-									value={this.state.expiryDate}
-									onChange={this.handleDateChange}
-									KeyboardButtonProps={{
-										"aria-label": "change date"
-									}}
-								/>
-								</MuiPickersUtilsProvider>
-							</Grid>
-						</Grid>
-				
+					<TextField
+						variant="outlined"
+						margin="normal"
+						fullWidth
+						name="priFoodId"
+						value={this.state.priFoodId}
+						label="Contains"
+						onChange={this.onChange}
+						type="text"
+						placeholder="Barcodes of other ingredients"
+					/>
 
-						<Dialog
-							open={this.state.open}
-							onClose={this.handleClose}
-							aria-labelledby="alert-dialog-title"
-							aria-describedby="alert-dialog-description"
-						>
-							<DialogTitle id="alert-dialog-title">
-								{"Submission Notification"}
-							</DialogTitle>
-							<DialogContent dividers>
-								<DialogContentText id="alert-dialog-description">
-									{this.state.foodName} has been tagged.
-									<br />
-									Primary ingredients(if any):{this.state.priFoodId}
-									<br />
-									Food ID: {this.state.foodId}
-									<br />
-									Storage Date: {this.state.storageDate}
-									<br />
-									Expiry Date:{" "}
-									{String(this.state.expiryDate).split(" ")[2] +
-										"/" +
-										this.state.month +
-										"/" +
-										String(this.state.expiryDate).split(" ")[3]}
-								</DialogContentText>
-							</DialogContent>
-							<DialogActions>
-								<Button onClick={this.handleClose} color="primary" autoFocus>
-									Continue Tagging
-								</Button>
-								<Button onClick={this.handleHome} color="primary" autoFocus>
-									Home
-								</Button>
-							</DialogActions>
-						</Dialog>
-
-						<form onSubmit={this.onSubmit}>
-							<Button
-								disabled={isInvalid}
-								type="submit"
+					{/* Storage Date */}
+					<TextField
+						variant="outlined"
+						margin="normal"
+						required
+						fullWidth
+						name="storageDate"
+						value={this.state.storageDate}
+						label="Date of Storage"
+						onChange={this.onChange}
+						type="text"
+						placeholder="Date of Storage"
+						InputProps={{
+							readOnly: true
+						}}
+					/>
+					
+					<MuiPickersUtilsProvider utils={DateFnsUtils}>
+					
+						<KeyboardDatePicker
+								minDate={this.today}
+								variant="inline"
 								fullWidth
-								variant="contained"
-								color="primary"
-								className={this.classes.submit}
-							>
-								Submit
+								margin="normal"
+								inputVariant="outlined"
+								format="dd/MM/yyyy"
+								label="Expiry Date:"
+								id="date-picker-inline"
+								value={this.state.expiryDate}
+								onChange={this.handleDateChange}
+								KeyboardButtonProps={{
+									"aria-label": "change date"
+								}}
+							/>
+							</MuiPickersUtilsProvider>
+		
+			
+
+					<Dialog
+						open={this.state.open}
+						onClose={this.handleClose}
+						aria-labelledby="alert-dialog-title"
+						aria-describedby="alert-dialog-description"
+					>
+						<DialogTitle id="alert-dialog-title">
+							{"Submission Notification"}
+						</DialogTitle>
+						<DialogContent dividers>
+							<DialogContentText id="alert-dialog-description">
+								{this.state.foodName} has been tagged.
+								<br />
+								Primary ingredients(if any):{this.state.priFoodId}
+								<br />
+								Food ID: {this.state.foodId}
+								<br />
+								Storage Date: {this.state.storageDate}
+								<br />
+								Expiry Date:{" "}
+								{String(this.state.expiryDate).split(" ")[2] +
+									"/" +
+									this.state.month +
+									"/" +
+									String(this.state.expiryDate).split(" ")[3]}
+							</DialogContentText>
+						</DialogContent>
+						<DialogActions>
+							<Button onClick={this.handleClose} color="primary" autoFocus>
+								Continue Tagging
 							</Button>
-						</form>
-					</div>
-				</Container>
-			</div>
+							<Button onClick={this.handleHome} color="primary" autoFocus>
+								Home
+							</Button>
+						</DialogActions>
+					</Dialog>
+
+					<form onSubmit={this.onSubmit}>
+						<Button
+							disabled={isInvalid}
+							type="submit"
+							fullWidth
+							variant="contained"
+							color="primary"
+							className={this.classes.submit}
+						>
+							Submit
+						</Button>
+					</form>
+				</div>
+			</Container>
+		
 		);
 	}
 }
