@@ -127,7 +127,7 @@ class NewIngredientForm extends Component {
 	};
 
 	handleDateChange = event => {
-
+		
 		let tempMonth = (Number(event.getMonth()) + 1).toString();
 		if (tempMonth.length === 1) {
 			tempMonth = "0" + tempMonth;
@@ -214,12 +214,13 @@ class NewIngredientForm extends Component {
 					
 						<KeyboardDatePicker
 								minDate={this.today}
+								InputLabelProps={{ shrink: true }}
 								variant="inline"
 								fullWidth
 								margin="normal"
 								inputVariant="outlined"
-								format="dd/MM/yyyy"
 								label="Expiry Date:"
+								format="dd/MM/yyyy"
 								id="date-picker-inline"
 								value={this.state.expiryDate}
 								onChange={this.handleDateChange}

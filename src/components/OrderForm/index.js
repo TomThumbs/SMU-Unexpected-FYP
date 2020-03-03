@@ -5,7 +5,7 @@ import "../../App.css";
 import { withRouter } from "react-router-dom";
 import { withFirebase } from "../Firebase";
 
-// import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -369,7 +369,7 @@ class OrderFormBase extends Component {
 	createTextField = (name, temp, label, placeholder) => {
 		return (
 			<TextField
-				margin="normal"
+				margin="densed"
 				fullWidth
 				name={name}
 				value={temp}
@@ -389,7 +389,7 @@ class OrderFormBase extends Component {
 		this.state.selectedmenu.forEach(item => {
 			if (dishtype.includes(item.type) === false) {
 				dishtype.push(item.type);
-				listofmenu.push(<p key={item.type}>{item.type}</p>);
+				listofmenu.push(<p key={item.type}><b>{item.type}</b></p>);
 			}
 
 			listofmenu.push(
@@ -427,59 +427,117 @@ class OrderFormBase extends Component {
 
 		return (
 			<Container component="main" maxWidth="sm">
-				<div className="body">
-					<div className={this.classes.root}>
-						<br></br>
-						<Typography variant="h4" align="center" gutterBottom>
-							Order Form
-						</Typography>
-
-						<form onSubmit={this.onSubmit}>
-							<TextField
-								variant="filled"
-								margin="dense"
-								fullWidth
-								name="orderID"
-								value={this.state.orderID}
-								label="Order ID"
-								placeholder="Order ID"
-								autoFocus
-								InputProps={{
-									readOnly: true
-								}}
-							/>
-							<div>
-								<br></br>
-							</div>
-							<Grid container align-items="left">
-								<MuiPickersUtilsProvider utils={DateFnsUtils}>
-									Date:
-									<KeyboardDatePicker
-										variant="inline"
-										format="dd/MM/yyyy"
-										minDate={this.today}
-										id="date-picker-inline"
-										value={this.state.date}
-										onChange={this.handleDateChange}
-										KeyboardButtonProps={{
-											"aria-label": "change date"
-										}}
-									/>
-									Time:
-									<KeyboardTimePicker
-										margin="none"
-										id="time-picker"
-										value={this.state.starttime}
-										onChange={this.handleTimeChange}
-										KeyboardButtonProps={{
-											"aria-label": "change time"
-										}}
-									/>
-								</MuiPickersUtilsProvider>
+				<Typography variant="h4"  gutterBottom>Order Form</Typography>
+				<Paper>
+					<form onSubmit={this.onSubmit}>
+						<TextField
+							variant="filled"
+							margin="dense"
+							fullWidth
+							name="orderID"
+							value={this.state.orderID}
+							label="Order ID"
+							placeholder="Order ID"
+							autoFocus
+							InputProps={{
+								readOnly: true
+							}}
+						/>
+						<div>
+							<br></br>
+						</div>
+						<Grid container spacing={3}>
+							
+							<MuiPickersUtilsProvider utils={DateFnsUtils} >
+							<Grid item xs={6} >
+								<KeyboardDatePicker
+									variant="inline"
+									InputLabelProps={{ shrink: true }}
+									fullWidth
+									margin="densed"
+									
+									label="Date:"
+									format="dd/MM/yyyy"
+									minDate={this.today}
+									id="date-picker-inline"
+									value={this.state.date}
+									onChange={this.handleDateChange}
+									KeyboardButtonProps={{
+										"aria-label": "change date"
+									}}
+								/>
+							</Grid>
+							<Grid item xs={6}>
+								<KeyboardTimePicker
+									InputLabelProps={{ shrink: true }}
+						
+									id="time-picker"
+									fullWidth
+									margin="densed"
+									label="Time:"
+									value={this.state.starttime}
+									onChange={this.handleTimeChange}
+									KeyboardButtonProps={{
+										"aria-label": "change time"
+									}}
+								/>
+							</Grid>
+							</MuiPickersUtilsProvider>
+						
+						
+							<Grid item xs={6} >
+								{/* Customer Name */}
+								{this.createTextField(
+									"custname",
+									this.state.custname,
+									"Customer Name:",
+									"Customer Name"
+								)}
 							</Grid>
 
+							<Grid item xs={6} >
+								{/* Customer Company */}
+								{this.createTextField(
+									"custcompany",
+									this.state.custcompany,
+									"Customer Company:",
+									"Customer Company"
+								)}
+							</Grid>
+							
+							<Grid item xs={6} >
+								{/* Customer Email */}
+								{this.createTextField(
+									"custemail",
+									this.state.custemail,
+									"Customer Email:",
+									"Customer Email"
+								)}
+							</Grid>
+							
+							<Grid item xs={6} >
+								{/* Customer HP */}
+								{this.createTextField(
+									"custcontact",
+									this.state.custcontact,
+									"Customer Phone Number:",
+									"Customer Phone Number"
+								)}
+							</Grid>
+							
+							<Grid item xs={6} >
+								{/* Postal Code */}
+								{this.createTextField(
+									"venue",
+									this.state.venue,
+									"Venue:",
+									"Venue"
+								)}
+							</Grid>
+
+							<Grid item xs={6} >
 							<TextField
-								margin="normal"
+								margin="densedl"
 								id="standard-number"
 								fullWidth
 								name="pax"
@@ -492,58 +550,21 @@ class OrderFormBase extends Component {
 								}}
 								inputProps={{ min: 30 }}
 							/>
-
-							{/* Customer Name */}
-							{this.createTextField(
-								"custname",
-								this.state.custname,
-								"Customer Name:",
-								"Customer Name"
-							)}
-
-							{/* Customer Email */}
-							{this.createTextField(
-								"custemail",
-								this.state.custemail,
-								"Customer Email:",
-								"Customer Email"
-							)}
-
-							{/* Customer Company */}
-							{this.createTextField(
-								"custcontact",
-								this.state.custcontact,
-								"Customer Phone Number:",
-								"Customer Phone Number"
-							)}
-
-							{/* Customer Company */}
-							{this.createTextField(
-								"custcompany",
-								this.state.custcompany,
-								"Customer Company:",
-								"Customer Company"
-							)}
-
-							{/* Postal Code */}
-							{this.createTextField(
-								"venue",
-								this.state.venue,
-								"Venue:",
-								"Venue"
-							)}
+							</Grid>
+							
 
 							<br></br>
 							<br></br>
 							<Divider variant="il" />
 							<br></br>
-							<Typography component="h5" variant="h5">
-								Menu
-							</Typography>
+							<Grid item xs={12} >
+							<Typography component="h5" variant="h5">Menu</Typography>
 
 							{/* Display Menu */}
 							{this.renderMenu()}
-
+							</Grid>
+							
+							<Grid item xs={12} >
 							{/* Remarks */}
 							{this.createTextField(
 								"remarks",
@@ -551,7 +572,9 @@ class OrderFormBase extends Component {
 								"Remarks:",
 								"Remarks"
 							)}
-
+							</Grid>
+							
+							<Grid item xs={12} >
 							<Button
 								disabled={isInvalid}
 								type="submit"
@@ -562,9 +585,11 @@ class OrderFormBase extends Component {
 							>
 								Submit
 							</Button>
-						</form>
-					</div>
-				</div>
+							</Grid>
+						</Grid>
+					</form>
+				</Paper>
+			
 			</Container>
 		);
 	}
