@@ -281,7 +281,7 @@ class NewBasicIngredientForm extends Component {
 							</DialogActions>
 						</Dialog>
 
-						<Grid item xs={12}>
+						{/* <Grid item xs={12}>
 							<Button
 								variant="outlined"
 								fullWidth
@@ -290,7 +290,7 @@ class NewBasicIngredientForm extends Component {
 								search: "?id=" + this.state.orderID
 							}}>Complex Ingredient
 							</Button>
-						</Grid>
+						</Grid> */}
 
 						<form onSubmit={this.onSubmit}>
 							<Button
