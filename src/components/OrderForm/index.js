@@ -138,6 +138,8 @@ class OrderFormBase extends Component {
 
 	onSubmit = event => {
 		event.preventDefault();
+		let apmTime = "AM"
+		let apmHour = String(this.state.hour)
 		let strhour = String(this.state.hour);
 		let strmonth = Number(this.state.date.getMonth()) + 1;
 		let strmin = "";
@@ -149,9 +151,19 @@ class OrderFormBase extends Component {
 		let strtime = "";
 		if (strhour.length === 1) {
 			strtime = "0" + String(this.state.hour) + strmin;
+			apmHour = "0" + String(this.state.hour)
 		} else {
 			strtime = String(this.state.hour) + strmin;
 		}
+
+		if (Number(strhour) > 12) {
+			apmTime = "PM"
+		}
+
+		if (Number(strhour)> 12) {
+			apmHour = (Number(strhour) - 12)
+		}
+
 		let strDate =
 			this.state.date.getFullYear() +
 			"-" +
@@ -276,6 +288,7 @@ class OrderFormBase extends Component {
 			pax: nPax,
 			Menu: finalmenu,
 			remarks: this.state.remarks,
+			time: apmHour+ ":" + strmin + " " + apmTime
 		});
 	};
 
@@ -325,7 +338,7 @@ class OrderFormBase extends Component {
 			hour: time.getHours(),
 			minute: time.getMinutes()
 		});
-		// console.log(this.state.starttime)
+		console.log(time, time.getHours(), time.getMinutes())
 	};
 	createTextField = (name, temp, label, placeholder) => {
 		return (
