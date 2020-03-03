@@ -198,7 +198,7 @@ class OrderFormBase extends Component {
 			HeatersUsed: heatersUsed,
 			StatusDates: [this.state.commencement],
 			Created_On: this.state.commencement,
-			remarks: this.state.remarks,
+			Remarks: this.state.remarks,
 		});
 
 		let notCreated = true;
@@ -272,6 +272,7 @@ class OrderFormBase extends Component {
 			orderID: this.state.orderID,
 			date: strSubmitDate,
 			venue: this.state.venue,
+			payment: this.state.chosen_payment,
 			pax: nPax,
 			Menu: finalmenu,
 			remarks: this.state.remarks,

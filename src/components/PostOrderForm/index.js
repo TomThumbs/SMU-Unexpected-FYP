@@ -80,6 +80,7 @@ class PostOrderFormBase extends Component {
 					{this.griditem("Time:", this.props.location.date.split(" ")[4])}
 					{this.griditem("Venue:", this.props.location.venue)}
 					{this.griditem("Pax:", this.props.location.pax)}
+					{this.griditem("Payment Method:", this.props.location.payment)}
 					<br></br>
 					{this.renderRemarks()}
 
