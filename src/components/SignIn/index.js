@@ -7,7 +7,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
-// import Box from '@material-ui/core/Box';
+import Paper from '@material-ui/core/Paper';
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
@@ -23,7 +23,7 @@ import * as ROUTES from "../../constants/routes";
 
 const useStyles = makeStyles(theme => ({
   paper: {
-    marginTop: theme.spacing(8),
+   
     display: "flex",
     flexDirection: "column"
   },
@@ -43,16 +43,15 @@ const INITIAL_STATE = {
 };
 
 const SignInPage = () => (
-  <div className="body">
-    <br></br>
-    <br></br>
-    <h1>
-      <center>
-        <img src={logo} alt="logo" />
-      </center>
-    </h1>
+ <Container component="main" maxWidth="xs">
+   <br></br>
+   <center>
+     <img src={logo} alt="logo" />
+  </center>
+  <br></br>
+   
     <SignInForm />
-  </div>
+ </Container>
 );
 
 class SignInFormBase extends Component {
@@ -85,10 +84,7 @@ class SignInFormBase extends Component {
     const isInvalid = password === "" || email === "";
 
     return (
-      <Container component="main" maxWidth="xs">
-        <div className={this.classes.paper}>
-          <Typography component="h1" variant="h4" align="center"></Typography>
-
+        <Paper >
           <form onSubmit={this.onSubmit}>
             <TextField
               variant="outlined"
@@ -155,8 +151,8 @@ class SignInFormBase extends Component {
               </Grid>
             </Grid>
           </form>
-        </div>
-      </Container>
+        </Paper>
+
     );
   }
 }

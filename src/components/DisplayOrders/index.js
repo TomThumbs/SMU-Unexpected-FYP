@@ -64,13 +64,11 @@ class DisplayOrdersBase extends Component{
 
   render(){
     return(
-      <div className="body">
       <Container component="main" maxWidth="xs">
         <Grid container justify="center" spacing={3} alignItems="center">
 
         </Grid>
       </Container>
-      </div>
     )
   }
 }

@@ -65,33 +65,33 @@ class SearchOrderBase extends Component {
 		let isInvalid = this.state.searchId.length === 0;
 
 		return (
-			<div className="body">
-				<Container component="main" maxWidth="xs">
-					<form onSubmit={this.onSubmit}>
-						<TextField
-							variant="outlined"
-							margin="normal"
-							fullWidth
-							name="searchId"
-							value={this.state.searchId}
-							label="Search Order ID"
-							onChange={this.onChange}
-							type="string"
-							placeholder="Order ID"
-						/>
-						<Button
-							disabled={isInvalid}
-							type="submit"
-							fullWidth
-							variant="contained"
-							color="primary"
-							classes={this.classes.submit}
-						>
-							Search
-						</Button>
-					</form>
-				</Container>
-			</div>
+		
+			<Container component="main" maxWidth="xs">
+				<form onSubmit={this.onSubmit}>
+					<TextField
+						variant="outlined"
+						margin="normal"
+						fullWidth
+						name="searchId"
+						value={this.state.searchId}
+						label="Search Order ID"
+						onChange={this.onChange}
+						type="string"
+						placeholder="Order ID"
+					/>
+					<Button
+						disabled={isInvalid}
+						type="submit"
+						fullWidth
+						variant="contained"
+						color="primary"
+						classes={this.classes.submit}
+					>
+						Search
+					</Button>
+				</form>
+			</Container>
+		
 		);
 	}
 }

@@ -208,7 +208,7 @@ class DishToIngredientFormBase extends Component {
   render() {
     
     return (  
-      <div className="body">
+    
       <Container component="main" maxWidth="xs" >
     
 
@@ -311,7 +311,7 @@ class DishToIngredientFormBase extends Component {
       </Dialog>
     
     </Container>
-    </div>
+   
     );
   }
 }

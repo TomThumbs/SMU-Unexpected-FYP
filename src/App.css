@@ -261,6 +261,7 @@ ul {
 
 .MuiContainer-root {
   padding-top: 5%; 
+  padding-bottom: 2%; 
   font-family: 'Roboto';
   flex-grow: 1;
 }

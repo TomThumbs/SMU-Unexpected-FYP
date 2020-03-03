@@ -81,6 +81,7 @@ class OrderReceivedBase extends Component {
 						venue: data.venue,
 						pax: Number(data.Pax),
 						status: data.Status,
+						remarks: data.Status,
 						menu: Array.from(new Set(data.Menu))
 					});
 				});

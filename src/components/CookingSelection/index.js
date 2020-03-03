@@ -111,45 +111,45 @@ class CookingSelectionBase extends Component {
 	render() {
 		return (
 			<Container component="main" maxWidth="xs">
-				<div className="body">
-					<FormControl
-						component="fieldset"
+	
+				<FormControl
+					component="fieldset"
+					id="cafe-list"
+					className={this.classes.formControl}
+				>
+					<FormLabel component="legend">
+						<h2>Catering Events For The Day</h2>
+					</FormLabel>
+					<RadioGroup
+						aria-label="docID"
+						name="docID"
 						id="cafe-list"
-						className={this.classes.formControl}
+						value={this.value}
+						onChange={this.handleChange}
 					>
-						<FormLabel component="legend">
-							<h2>Catering Events For The Day</h2>
-						</FormLabel>
-						<RadioGroup
-							aria-label="docID"
-							name="docID"
-							id="cafe-list"
-							value={this.value}
-							onChange={this.handleChange}
-						>
-							{this.state.events.map((event, index) => (
-								<FormControlLabel
-									value={event}
-									control={<Radio />}
-									label={event}
-								/>
-							))}
-							<br></br>
-						</RadioGroup>
-					</FormControl>
+						{this.state.events.map((event, index) => (
+							<FormControlLabel
+								value={event}
+								control={<Radio />}
+								label={event}
+							/>
+						))}
+						<br></br>
+					</RadioGroup>
+				</FormControl>
 
-					<form onSubmit={this.onSubmit}>
-						<Button
-							type="submit"
-							fullWidth
-							variant="contained"
-							color="primary"
-							className={this.classes.submit}
-						>
-							Submit
-						</Button>
-					</form>
-				</div>
+				<form onSubmit={this.onSubmit}>
+					<Button
+						type="submit"
+						fullWidth
+						variant="contained"
+						color="primary"
+						className={this.classes.submit}
+					>
+						Submit
+					</Button>
+				</form>
+			
 			</Container>
 		);
 	}

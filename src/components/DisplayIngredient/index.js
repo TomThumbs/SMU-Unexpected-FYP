@@ -107,7 +107,6 @@ class DisplayIngredientBase extends Component {
 		let isInvalid = this.state.searchId === "";
 
 		return (
-			<div className="body">
 			<Container component="main" maxWidth="xs">
 				<form onSubmit={this.onSubmit}>
 					<TextField
@@ -135,7 +134,6 @@ class DisplayIngredientBase extends Component {
 				<br></br>
 				<Paper margin="10px" variant="outlined" align="center" padding="10px" id="Result"></Paper>
 			</Container>
-			</div>
 		);
 	}
 }

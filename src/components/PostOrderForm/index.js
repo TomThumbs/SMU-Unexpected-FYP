@@ -18,36 +18,25 @@ import Typography from "@material-ui/core/Typography";
 // import TableContainer from '@material-ui/core/TableContainer';
 // import TableHead from '@material-ui/core/TableHead';
 // import TableRow from '@material-ui/core/TableRow';
-// import Paper from '@material-ui/core/Paper';
+import Paper from '@material-ui/core/Paper';
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
 
-// const useStyles = makeStyles({
-//   table: {
-//     minWidth: 650,
-//   },
-// });
-
 class PostOrderFormBase extends Component {
-	griditem = (header, item) => {
+	griditem(title,info){
 		return (
-			<Grid container spacing={2}>
-				<Grid item xs>
-					{header}
-				</Grid>
-
-				<Grid item>
-					<b> {item} </b>
-				</Grid>
+			<Grid container> 
+				<Grid item xs={5}>{title}</Grid>
+				<Grid item xs={7}><b>{info}</b></Grid>
 			</Grid>
-		);
-	};
+		)
+	}
 
 	renderMenu() {
 		let list = [];
 		this.props.location.Menu.forEach((item, id) => {
-			list.push(<Typography key={id}>{item}</Typography>);
+			list.push(<li key={id}>{item}</li>);
 		});
 		return list;
 	}
@@ -55,8 +44,8 @@ class PostOrderFormBase extends Component {
 	render() {
 		console.log(this.props.location.Menu);
 		return (
-			<div className="body">
-				<Container component="main" maxWidth="xs">
+			<Container component="main" maxWidth="xs">
+				
 					{/* <Typography component="h4" variant="h4">Order Summary</Typography>
                 <Typography component="h5" variant="h7">Order No.</Typography>
                 <Typography component="h5" variant="h7">#{this.props.location.orderID}</Typography>
@@ -65,11 +54,11 @@ class PostOrderFormBase extends Component {
                 <Typography component="h5" variant="h7"> Venue Postal Code: {this.props.location.venue}</Typography>
                 <Typography component="h5" variant="h7">{this.props.location.pax} pax</Typography> */}
 
-					<Typography component="h4" variant="h4">
-						Order Summary
-					</Typography>
+				<Typography component="h4" variant="h4">
+					Order Summary
+				</Typography>
 					<br></br>
-
+				<Paper>
 					{this.griditem("Order ID:", this.props.location.orderID)}
 					{this.griditem(
 						"Date:",
@@ -90,13 +79,11 @@ class PostOrderFormBase extends Component {
                 {this.griditem("Unit Number:","test")}
                 {this.griditem("Pax:", "test")} */}
 
-					<br></br>
-					<Divider variant="il" />
-					<br></br>
-					<Typography component="h5" variant="h5">
-						Menu
-					</Typography>
-					<br></br>
+				
+					<p><Divider variant="il" /></p>
+			
+					<Typography variant="h5" >Menu</Typography>
+					
 					{this.renderMenu()}
 					<br></br>
 
@@ -106,7 +93,7 @@ class PostOrderFormBase extends Component {
 								component={RouterLink} to={ROUTES.ORDER_FORM}
 								color="secondary"
 								fullWidth
-								variant="contained"
+								variant="outlined"
 							>
 								Create New Order
 							</Button>
@@ -116,14 +103,15 @@ class PostOrderFormBase extends Component {
 								component={RouterLink} to={ROUTES.LANDING}
 								color="primary"
 								fullWidth
-								variant="contained"
+								variant="outlined"
 							>
 								Home
 							</Button>
 						</Grid>
 					</Grid>
-				</Container>
-			</div>
+					</Paper>
+			</Container>
+			
 		);
 	}
 }
