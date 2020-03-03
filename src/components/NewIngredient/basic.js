@@ -20,6 +20,9 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import * as ROUTES from "../../constants/routes";
 import Grid from "@material-ui/core/Grid";
+import { Paper } from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
+
 
 const useStyles = makeStyles(theme => ({
 	paper: {
@@ -162,9 +165,9 @@ class NewBasicIngredientForm extends Component {
 			this.state.storageDate === this.state.expiryDate ||
 			this.state.foodName.length === 0;
 		return (
-			<div className="body">
 				<Container component="main" maxWidth="xs">
-					<div className={this.classes.paper}>
+					<Typography variant="h4"  gutterBottom>Tag Simple Ingredient</Typography>
+					<Paper>
 						{this.createTextField(
 							"foodId",
 							this.state.foodId,
@@ -208,26 +211,24 @@ class NewBasicIngredientForm extends Component {
 								readOnly: true
 							}}
 						/>
-						<Grid container>
-							<Grid item xs>
-								Expiry Date:
-							</Grid>
-							<Grid item>
-								<MuiPickersUtilsProvider utils={DateFnsUtils}>
-									<KeyboardDatePicker
-										minDate={this.today}
-										variant="inline"
-										format="dd/MM/yyyy"
-										id="date-picker-inline"
-										value={this.state.expiryDate}
-										onChange={this.handleDateChange}
-										KeyboardButtonProps={{
-											"aria-label": "change date"
-										}}
-									/>
-								</MuiPickersUtilsProvider>
-							</Grid>
-						</Grid>
+						<MuiPickersUtilsProvider utils={DateFnsUtils}>
+							<KeyboardDatePicker
+									minDate={this.today}
+									InputLabelProps={{ shrink: true }}
+									variant="inline"
+									fullWidth
+									margin="normal"
+									inputVariant="outlined"
+									label="Expiry Date:"
+									format="dd/MM/yyyy"
+									id="date-picker-inline"
+									value={this.state.expiryDate}
+									onChange={this.handleDateChange}
+									KeyboardButtonProps={{
+										"aria-label": "change date"
+									}}
+								/>
+						</MuiPickersUtilsProvider>
 
 						<Dialog
 							open={this.state.open}
@@ -291,9 +292,9 @@ class NewBasicIngredientForm extends Component {
 								Submit
 							</Button>
 						</form>
-					</div>
+					</Paper>
 				</Container>
-			</div>
+		
 		);
 	}
 }

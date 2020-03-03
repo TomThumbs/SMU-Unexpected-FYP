@@ -38,6 +38,7 @@ class IngredientManagementBase extends Component {
 						<Grid container item xs={4}>
 							<Button component={RouterLink} to={ROUTES.NEW_INGREDIENT_BASIC}>
 								<Grid container justify="center" spacing={2}>
+									
 									<Grid item xs={12}>
 										<img class="image" src={tagnew} alt="logo" />
 									</Grid>
@@ -47,20 +48,14 @@ class IngredientManagementBase extends Component {
 										</Typography>
 									</Grid>
 								</Grid>
-								<Grid item xs={12} align="center">
-									<Typography component="h6" variant="h6">
-										Tag New Ingredient
-									</Typography>
-								</Grid>
-							</Grid>
+
 						</Button>
 					</Grid>
 
 					<Grid container item xs={4}>
 						<Button
 							component={RouterLink}
-							to={ROUTES.DISH_TO_INGREDIENT_FORM}
-						>
+							to={ROUTES.DISH_TO_INGREDIENT_FORM}>
 							<Grid container justify="center" spacing={2}>
 								<Grid item xs={12}>
 									<img
