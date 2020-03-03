@@ -8,6 +8,8 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
+import Grid from "@material-ui/core/Grid";
+import { Link as RouterLink } from 'react-router-dom';
 // import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
@@ -189,14 +191,12 @@ class OrderCompletionBase extends Component {
 	render() {
 		let isInvalid = this.state.completion === false
 		return (
-			<div className="body">
+		
 				<Container component="main" maxWidth="xs" className={this.classes.root}>
-					{this.renderBackButton()}
+					<Typography gutterBottom variant="h4">Order Completion</Typography>
 					<Paper className={this.classes.paper}>
-						<Typography>Confirm Completion</Typography>
-						<Typography>Order ID</Typography>
-						<Typography>#{this.state.orderID}</Typography>
-
+					<Typography variant="h6">Confirm completion for Order #{this.state.orderID}.</Typography>
+						
 						<FormControlLabel
 							control={
 							<Checkbox
@@ -207,21 +207,47 @@ class OrderCompletionBase extends Component {
 							/>}
 							label="The order has been successfully completed!"
 						/>
+						
+							
+
+						<Grid container spacing={1}>
+						<Grid item xs={12}>
 						<form onSubmit={this.onSubmit}>
 							<Button
-								disabled={isInvalid}
-								type="submit"
-								fullWidth
-								variant="contained"
-								color="primary"
-								className={this.classes.submit}
-							>
+									disabled={isInvalid}
+									type="submit"
+									fullWidth
+									variant="contained"
+									color="primary"
+									className={this.classes.submit}
+								>
 								Submit
 							</Button>
 						</form>
+						</Grid>
+						<Grid item xs={12}>
+							<Button
+								variant="outlined"
+								fullWidth
+								component={RouterLink} to={{
+								pathname: ROUTES.ORDER_TIMELINE,
+								search: "?id=" + this.props.location.orderID
+							}}>Back to Timeline
+							</Button>
+						</Grid>
+						<Grid item xs={12}>
+							<Button
+								variant="outlined"
+								color="primary"
+								fullWidth
+								component={RouterLink} 
+								to={ROUTES.LANDING}
+								>Home
+							</Button>
+						</Grid>
+						</Grid>
 					</Paper>
 				</Container>
-			</div>
 		);
 	}
 }
