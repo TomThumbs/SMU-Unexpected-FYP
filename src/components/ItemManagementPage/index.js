@@ -44,12 +44,27 @@ class IngredientManagementBase extends Component {
 									</Grid>
 									<Grid item xs={12} align="center">
 										<Typography component="h6" variant="h6">
-											Tag New Ingredient
+											Tag New Simple Ingredient
 										</Typography>
 									</Grid>
 								</Grid>
+							</Button>
+					</Grid>
 
-						</Button>
+					<Grid container item xs={4}>
+							<Button component={RouterLink} to={ROUTES.NEW_INGREDIENT_COMPLEX}>
+								<Grid container justify="center" spacing={2}>
+									
+									<Grid item xs={12}>
+										<img class="image" src={tagnew} alt="logo" />
+									</Grid>
+									<Grid item xs={12} align="center">
+										<Typography component="h6" variant="h6">
+											Tag New Complex Ingredient
+										</Typography>
+									</Grid>
+								</Grid>
+							</Button>
 					</Grid>
 
 					<Grid container item xs={4}>
