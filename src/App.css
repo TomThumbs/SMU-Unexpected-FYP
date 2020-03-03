@@ -46,12 +46,12 @@
 	background-color: rgb(172, 172, 172); 
 	border: none;
 	color: white;
-  padding: 23px;
+  padding: 10px;
 	text-align: center;
 	text-decoration: none;
 	display: inline-block;
   font-size: 15px;
-  height: 101px;
+  height: 78px;
 }
 
 .button-link {
@@ -64,13 +64,18 @@
 }
 
 #nav img{
-  margin: 20px;
+  padding: 10px 10px;
   /* margin-top: -20px; */
   /* margin-left: 20px;
   margin-right: 20px; */
   height: auto;
-  width: 150px;
+  width: 143px;
   float:left;
+}
+
+#nav a:hover img{
+	background-color: #111;
+	padding: 10px 10px;
 }
 
 #nav {
@@ -116,7 +121,7 @@
 	display: block;
 	color: white;
 	text-align: center;
-	padding: 40px 20px;
+  padding: 30px 10px;
 	text-decoration: none;
   font-size: 15px;
   /* height:20px; */
@@ -124,13 +129,9 @@
 
 li a:hover {
 	background-color: #111;
-	padding: 40px 20px;
+	padding: 30px 10px;
 }
 
-li a:hover img{
-	background-color: #111;
-	padding: 50px 20px;
-}
 
 
 ul {
