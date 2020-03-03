@@ -24,6 +24,15 @@ import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
 
 class PostOrderFormBase extends Component {
+	
+	renderRemarks() {
+		if (this.props.location.remarks.length !== 0) {
+			return (
+				this.griditem("Remarks",this.props.location.remarks)
+			);
+		}
+	}
+
 	griditem(title,info){
 		return (
 			<Grid container> 
@@ -71,6 +80,8 @@ class PostOrderFormBase extends Component {
 					{this.griditem("Time:", this.props.location.date.split(" ")[4])}
 					{this.griditem("Venue:", this.props.location.venue)}
 					{this.griditem("Pax:", this.props.location.pax)}
+					<br></br>
+					{this.renderRemarks()}
 
 					{/* {this.griditem("Order ID:","test")}
                 {this.griditem("Date:","test")}
@@ -82,9 +93,13 @@ class PostOrderFormBase extends Component {
 				
 					<p><Divider variant="il" /></p>
 			
-					<Typography variant="h5" >Menu</Typography>
+					<Typography variant="h6" >Menu</Typography>
 					
 					{this.renderMenu()}
+
+					
+					
+					
 					<br></br>
 
 					<Grid container spacing={1}>

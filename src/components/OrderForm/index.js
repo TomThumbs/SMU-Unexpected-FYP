@@ -80,7 +80,8 @@ class OrderFormBase extends Component {
 		let minute = String(this.state.commencement.getMinutes());
 		if (month.length === 1) {
 			month = "0" + month;
-		}
+		} 
+		
 		if (hour.length === 1) {
 			hour = "0" + hour;
 		}
@@ -234,7 +235,8 @@ class OrderFormBase extends Component {
 			sop: false,
 			HeatersUsed: heatersUsed,
 			StatusDates: [this.state.commencement],
-			Created_On: this.state.commencement
+			Created_On: this.state.commencement,
+			remarks: this.state.remarks,
 		});
 
 		let notCreated = true;
@@ -314,7 +316,8 @@ class OrderFormBase extends Component {
 			date: strSubmitDate,
 			venue: this.state.venue,
 			pax: nPax,
-			Menu: finalmenu
+			Menu: finalmenu,
+			remarks: this.state.remarks,
 		});
 	};
 
@@ -389,7 +392,7 @@ class OrderFormBase extends Component {
 		this.state.selectedmenu.forEach(item => {
 			if (dishtype.includes(item.type) === false) {
 				dishtype.push(item.type);
-				listofmenu.push(<Typography variant='h6' key={item.type}>{item.type}</Typography>);
+				listofmenu.push(<p margin-block-end="2em" key={item.type}><b>{item.type}</b></p>);
 			}
 
 			listofmenu.push(
@@ -447,7 +450,7 @@ class OrderFormBase extends Component {
 							<br></br>
 						</div>
 						<Grid container spacing={3}>
-							
+						
 							<MuiPickersUtilsProvider utils={DateFnsUtils} >
 							<Grid item xs={6} >
 								<KeyboardDatePicker
@@ -552,13 +555,11 @@ class OrderFormBase extends Component {
 							/>
 							</Grid>
 							
+							<p><Divider variant="il" /></p>
 
-							<br></br>
-							<br></br>
-							<Divider variant="il" />
-							<br></br>
+							
 							<Grid item xs={12} >
-							<Typography component="h5" variant="h5">Menu</Typography>
+								<Typography component="h5" variant="h5">Menu</Typography>
 
 							{/* Display Menu */}
 							{this.renderMenu()}
