@@ -34,12 +34,18 @@ class IngredientManagementBase extends Component {
 
 				{/* <Button href={ROUTES.ORDER_FORM}><img class="image" src={tagnew} alt="logo"/></Button> */}
 
-				<Grid container spacing={8}>
-					<Grid container item xs={4}>
-						<Button component={RouterLink} to={ROUTES.NEW_INGREDIENT}>
-							<Grid container justify="center" spacing={2}>
-								<Grid item xs={12}>
-									<img class="image" src={tagnew} alt="logo" />
+					<Grid container spacing={8}>
+						<Grid container item xs={4}>
+							<Button component={RouterLink} to={ROUTES.NEW_INGREDIENT_BASIC}>
+								<Grid container justify="center" spacing={2}>
+									<Grid item xs={12}>
+										<img class="image" src={tagnew} alt="logo" />
+									</Grid>
+									<Grid item xs={12} align="center">
+										<Typography component="h6" variant="h6">
+											Tag New Ingredient
+										</Typography>
+									</Grid>
 								</Grid>
 								<Grid item xs={12} align="center">
 									<Typography component="h6" variant="h6">

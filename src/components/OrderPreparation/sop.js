@@ -227,6 +227,15 @@ class OrderPreparationSopBase extends Component {
 			this.state.workspace === false ||
 			this.state.imageURL.length === 0;
 		return (
+			<div className="body">
+				<Container
+					component="main"
+					maxWidth="xs"
+					className={this.classes.root}
+				>
+					<Paper className={this.classes.paper}>
+						<Typography variant='h5'>Order Preparation SOP Agreement</Typography>
+						<Typography variant='h5'>Order #{this.state.orderID}</Typography>
 
 			<Container component="main" maxWidth="xs" >
 				<Typography gutterBottom variant="h4">Order Preparation SOP</Typography>
