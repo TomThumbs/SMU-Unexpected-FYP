@@ -6,14 +6,16 @@ import { makeStyles } from "@material-ui/core/styles";
 // import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
-// import Paper from "@material-ui/core/Paper";
+import Paper from "@material-ui/core/Paper";
+import Grid from "@material-ui/core/Grid";
+import { Link as RouterLink } from 'react-router-dom';
 // import FormControlLabel from "@material-ui/core/FormControlLabel";
 // import Checkbox from "@material-ui/core/Checkbox";
-// import Button from "@material-ui/core/Button";
+import Button from "@material-ui/core/Button";
 
 import { withAuthorization } from '../Session'
 
-// import * as ROUTES from "../../constants/routes";
+import * as ROUTES from "../../constants/routes";
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -73,10 +75,10 @@ class FinalOverviewBase extends Component {
 	componentDidMount() {
 		let queryString = window.location.search;
 		let urlParams = new URLSearchParams(queryString);
-		let urlId = Number(urlParams.get("id"));
+		let urlId = Number(urlParams.get("id")); 
 
 		this.setState({
-			orderID: urlId
+			orderID: urlId 
 		});
 
 		this.props.firebase.fs
@@ -110,37 +112,87 @@ class FinalOverviewBase extends Component {
 
 	renderMenu = () => {
 		let listofmenu = [];
-		// console.log(this.state.menu.length)
+		console.log(this.state.menu.length)
 		let i = 0
 		for (i = 0; i < this.state.menu.length; i++) {
 			let dish = this.state.menu[i]
-			listofmenu.push(<p> {dish}</p>);
-		}
-		return listofmenu;
+			listofmenu.push(<li> {dish}</li>);
+		}	
+		return listofmenu[0];
 	}
+
+	griditem(title,info){
+		return (
+			<Grid container> 
+				<Grid item xs={5}>{title}</Grid>
+				<Grid item xs={7}><b>{info}</b></Grid>
+			</Grid>
+		)
+	}
+
 
 	render() {
 		return (
-			<div className="body">
-				<Container component="main" maxWidth="xs">
-				<Typography variant="h5" component="h2">Order Created: {this.state.createdOn}</Typography>
-				<Typography variant="h5" component="h2">Order Created by: {this.state.createdBy}</Typography>
-				<Typography variant="h5" component="h2">Order Fulfilled On: {this.state.fulfilledOn}</Typography>
-				<Typography variant="h5" component="h2">Notification sent: {this.state.notification}</Typography>
-				<br></br>
-				<Typography variant="h5" component="h2">{this.state.custName}</Typography>
-				<Typography variant="h5" component="h2">{this.state.custHp}</Typography>
-				<br></br>
-				<Typography variant="h5" component="h2">Deliver to:</Typography>
-				<Typography variant="h5" component="h2">{this.state.venue}</Typography>
-				<Typography variant="h5" component="h2">{this.state.deliveryDate}</Typography>
-				<Typography variant="h5" component="h2">{this.state.deliveryTime}</Typography>
+		
+		<Container component="main" maxWidth="xs">
+			<Typography variant="h4" gutterBottom>Order Overview</Typography>
+			<Paper>
 
-				<Typography variant="h5" component="h2">Menu ({this.state.pax} Pax)</Typography>
-				{this.renderMenu()}
+					<Typography variant="h6" gutterBottom>Order #{this.state.orderID}</Typography>
+					<Typography variant="body1">
 
-				</Container>
-			</div>
+						{this.griditem("Created On:",this.state.createdOn)}
+						{this.griditem("Created By:",this.state.createdBy)}
+						{this.griditem("Fulfilled On:",this.state.fulfilledOn)}
+						{this.griditem("Notification Sent:",this.state.notification)}
+						
+						<br></br>
+
+						{this.griditem("Customer Name:",this.state.custName)}
+						{this.griditem("Customer HP No.:",this.state.custHp)}
+						
+						<br></br>
+
+						{this.griditem("Delivery Venue:",this.state.venue)}
+						{this.griditem("Delivery Date:",this.state.deliveryDate)}
+						{this.griditem("Delivery Time:",this.state.deliveryTime)}
+						{this.griditem("No. of Pax:",this.state.pax)}
+
+						<br></br>
+
+						{this.griditem("Menu:",this.renderMenu())}
+
+				</Typography>
+				<br></br>
+			
+
+				<Grid container spacing={1}>
+					<Grid item xs={12}>
+						<Button
+							variant="outlined"
+							fullWidth
+							component={RouterLink} to={{
+							pathname: ROUTES.ORDER_TIMELINE,
+							search: "?id=" + this.state.orderID
+						}}>Back to Timeline
+						</Button>
+					</Grid>
+					<Grid item xs={12}>
+						<Button
+							variant="outlined"
+							color="primary"
+							fullWidth
+							component={RouterLink} 
+							to={ROUTES.LANDING}
+							>Home
+						</Button>
+					</Grid>
+				</Grid>
+			
+			</Paper>
+			
+		</Container>
+		
 		);
 	}
 }
@@ -148,3 +200,15 @@ class FinalOverviewBase extends Component {
 const FinalOverview = withRouter(withFirebase(FinalOverviewBase));
 const condition = authUser => !!authUser;
 export default withAuthorization(condition)(FinalOverview);
+
+
+
+// createdOn: "data.Created_On",
+// createdBy:"Kelvin",
+// fulfilledOn:"data.orderComplete",
+// notification:"data.notified",
+// venue:"data.venue",
+// deliveryTime:"data.Time",
+// menu:"data.Menu",
+// pax:"data.Pax",
+// deliveryDate:"data.DateOnly"
