@@ -74,7 +74,7 @@ class LandingPageBase extends Component {
                 venue: doc.data().venue,
                 pax: doc.data().Pax,
                 status: doc.data().Status,
-                time: doc.data().Time,
+                time: doc.data().apmTime,
               }]
             }))
 
@@ -95,7 +95,7 @@ class LandingPageBase extends Component {
                 venue: doc.data().venue,
                 pax: doc.data().Pax,
                 status: doc.data().Status,
-                time: doc.data().Time,
+                time: doc.data().apmTime,
               }]
             }))
         });
