@@ -531,12 +531,16 @@ class OrderFormBase extends Component {
 							
 							<Grid item xs={12} >
 							{/* Remarks */}
-							{this.createTextField(
-								"remarks",
-								this.state.remarks,
-								"Remarks:",
-								"Remarks"
-							)}
+							<TextField
+								margin="densed"
+								fullWidth
+								name="remarks"
+								value={this.state.remarks}
+								label="Remarks:"
+								onChange={this.onChange}
+								type="text"
+								placeholder="Remarks"
+							/>
 							</Grid>
 							
 							<Grid item xs={12} >
