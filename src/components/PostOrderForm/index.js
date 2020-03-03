@@ -94,7 +94,7 @@ class PostOrderFormBase extends Component {
 				
 					<p><Divider variant="il" /></p>
 			
-					<Typography variant="h6" >Menu</Typography>
+					<Typography variant="h6" >Dishes ordered</Typography>
 					
 					{this.renderMenu()}
 
