@@ -21,11 +21,6 @@ const NavigationAuth = () => (
 		<Link to={ROUTES.LANDING}>
 			<img src={logo} alt="logo" />
 		</Link>
-		{/* <li className="nav-link">
-			<Link className="navigation-link" to={ROUTES.LANDING}>
-				Home
-			</Link>
-		</li> */}
 		<li className="nav-link">
 			<Link className="navigation-link" to={ROUTES.SEARCH_ORDER}>
 				Search Order
@@ -36,45 +31,16 @@ const NavigationAuth = () => (
 				Heater IoT
 			</Link>
 		</li>
-		{/* <li className="nav-link">
-			<Link className="navigation-link" to={ROUTES.DELIVERY_SELECTION}>
-				Delivery Selection
-			</Link>
-		</li> */}
-		{/* <li className="nav-link">
-<Link className="navigation-link" to={ROUTES.DISPLAY_ORDERS}>Display Orders</Link>
-</li> */}
 		<li className="nav-link">
 			<Link className="navigation-link" to={ROUTES.ORDER_FORM}>
 				Create New Order
 			</Link>
 		</li>
-		{/* <li className="nav-link">
-			<Link className="navigation-link" to={ROUTES.NEW_INGREDIENT_BASIC}>
-				Tag New Ingredients
-			</Link>
-		</li> */}
 		<li className="nav-link">
 			<Link className="navigation-link" to={ROUTES.ITEM_MANAGEMENT}>
 				Item Management
 			</Link>
 		</li>
-		{/* <li className="nav-link">
-			<Link className="navigation-link" to={ROUTES.DISPLAY_INGREDIENT}>
-				Check Ingredients
-			</Link>
-		</li> */}
-		{/* <li className="nav-link">
-			<Link
-				className="navigation-link"
-				to={ROUTES.DISH_TO_INGREDIENT_FORM}
-			>
-				Recipe Creation
-			</Link>
-		</li> */}
-		{/* <li className="nav-link">
-<Link className="navigation-link" to={ROUTES.COOKING_SELECTION}>Cooking Tag Form</Link>
-</li> */}
 		<li className="button-link">
 			<SignOutButton />
 		</li>
@@ -83,11 +49,14 @@ const NavigationAuth = () => (
 
 const NavigationNonAuth = () => (
 	<ul className="nav-links">
-		<li className="nav-link">
+		<Link to={ROUTES.LANDING}>
+			<img src={logo} alt="logo" />
+		</Link>
+		{/* <li className="nav-link">
 			<Link className="navigation-link" to={ROUTES.LANDING}>
 				Landing
 			</Link>
-		</li>
+		</li> */}
 		<li className="nav-link">
 			<Link className="navigation-link" to={ROUTES.SIGN_IN}>
 				Sign In
