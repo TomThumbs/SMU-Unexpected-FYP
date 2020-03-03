@@ -167,6 +167,7 @@ class NewComplexIngredientForm extends Component {
 		return (
 		
 				<Container component="main" maxWidth="xs">
+					<Typography variant="h4"  gutterBottom>Tag Complex Ingredient</Typography>
 					<Paper>
 						{this.createTextField(
 							"foodId",
