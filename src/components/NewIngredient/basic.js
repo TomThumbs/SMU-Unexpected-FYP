@@ -61,13 +61,13 @@ class NewBasicIngredientForm extends Component {
 	}
 
 	componentDidMount() {
-		let queryString = window.location.search;
-		let urlParams = new URLSearchParams(queryString);
-		let urlId = urlParams.get("id");
-		// console.log(urlId)
-		this.setState({
-			foodId: urlId
-		});
+		// let queryString = window.location.search;
+		// let urlParams = new URLSearchParams(queryString);
+		// let urlId = urlParams.get("id");
+		// // console.log(urlId)
+		// this.setState({
+		// 	foodId: urlId
+		// });
 		if (this.state.storageDate.length === 0) {
 			let temp_date = new Date();
 			let dd = String(temp_date.getDate()).padStart(2, "0");
