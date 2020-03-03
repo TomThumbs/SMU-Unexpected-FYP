@@ -20,6 +20,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import * as ROUTES from "../../constants/routes";
 import Grid from "@material-ui/core/Grid";
+import { Paper } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
 	paper: {
@@ -163,9 +164,9 @@ class NewComplexIngredientForm extends Component {
 			this.state.storageDate === this.state.expiryDate ||
 			this.state.foodName.length === 0;
 		return (
-			<div className="body">
+		
 				<Container component="main" maxWidth="xs">
-					<div className={this.classes.paper}>
+					<Paper>
 						{this.createTextField(
 							"foodId",
 							this.state.foodId,
@@ -281,9 +282,9 @@ class NewComplexIngredientForm extends Component {
 								Submit
 							</Button>
 						</form>
-					</div>
+					</Paper>
 				</Container>
-			</div>
+		
 		);
 	}
 }
