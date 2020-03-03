@@ -200,19 +200,29 @@ class OrderFormBase extends Component {
 		);
 		let strSubmitDate = String(submitDate);
 
-		strSubmitDate = strSubmitDate.split("GMT")[0];
+    let strMonth = Number(new Date().getMonth()) + 1;
 
-		let finalmenu = [];
-
-		this.state.selectedmenu.forEach(item => {
-			let dishname = item.dish + " checkbox";
-			if (dishname in this.state) {
-				if (this.state[dishname] === true) {
-					finalmenu.push(item.dish);
-				}
-			}
-		});
-
+    // let uniqueMenu = Array.from(new Set(this.state.finalmenu))
+    // console.log(this.state.finalmenu, "ppppppppppppppp", Array.from(new Set(this.state.finalmenu)))
+    this.props.firebase.fs.collection("Catering_orders").add({
+      Customer: "",
+      Status: "Order Received",
+      Date: submitDate,
+      DateOnly: strDate,
+      // DeliveryCheck: false,
+      Menu: Array.from(new Set(this.state.finalmenu)),
+      Pax: Number(this.state.pax),
+      Time: strtime,
+      // TruckImgUrl: '',
+      venue: this.state.venue,
+      orderID: this.state.orderID,
+      sop: false,
+      HeatersUsed: heatersUsed,
+      StatusDates: [this.state.commencement],
+      Created_On: this.state.commencement
+  
+    });
+    
 		let heatersUsed = {};
 
 		finalmenu.forEach(dish => {
