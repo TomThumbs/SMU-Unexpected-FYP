@@ -6,8 +6,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
-// import Paper from "@material-ui/core/Paper";
+import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
+import Divider from "@material-ui/core/Divider";
 
 import * as ROUTES from "../../constants/routes";
 import { Link as RouterLink } from 'react-router-dom';
@@ -73,6 +74,8 @@ class OrderReceivedBase extends Component {
 				querySnapshot.forEach(doc => {
 					let data = doc.data();
 					this.setState({
+						createdOn: data.Created_On,
+						createdBy:"Kelvin",
 						dateOnly: data.DateOnly,
 						time: data.Time,
 						venue: data.venue,
@@ -90,7 +93,7 @@ class OrderReceivedBase extends Component {
 	renderMenu() {
 		let list = [];
 		this.state.menu.forEach((item, id) => {
-			list.push(<Typography key={id}>{item}</Typography>);
+			list.push(<li key={id}>{item}</li>);
 		});
 		return list;
 	}
@@ -107,30 +110,79 @@ class OrderReceivedBase extends Component {
 		);
 	}
 
+	griditem(title,info){
+		return (
+			<Grid container> 
+				<Grid item xs={5}>{title}</Grid>
+				<Grid item xs={7}><b>{info}</b></Grid>
+			</Grid>
+		)
+	}
+
 	render() {
 		return (
-			<div className="body">
-				<Container className={this.classes.root} component="main" maxWidth="md">
-					{this.renderBackButton()}
+			<Container className={this.classes.root} component="main" maxWidth="md">
+				<Typography gutterBottom variant="h4">Order Details</Typography>
+				<Paper>
+					<Typography variant="h6" gutterBottom>Order #{this.state.orderID}</Typography>
+					<Typography variant="body1">
+					<Grid container>
+						<Grid item xs={6}>
+							{this.griditem("Created On:",this.state.createdOn)}
+							{this.griditem("Created By:",this.state.createdBy)}
+							
+							<br></br>
 
-						<Grid container spacing={3}>
-							<Grid item xs={6}>
-								<Typography>Deliver to:</Typography>
-								<Typography> {this.state.venue}</Typography>
-								<Typography>{this.state.dateOnly}</Typography>
-								<Typography> {this.state.time}</Typography>
-							</Grid>
+							{this.griditem("Customer Name:",this.state.custName)}
+							{this.griditem("Customer HP No.:",this.state.custHp)}
+							
+							<br></br>
 
-							<Grid item xs={6}>
-								<Typography>
-									Menu: ({this.state.pax} pax)
-								</Typography>
-								{this.renderMenu()}
-							</Grid>
+							{this.griditem("Delivery Venue:",this.state.venue)}
+							{this.griditem("Delivery Date:",this.state.deliveryDate)}
+							{this.griditem("Delivery Time:",this.state.deliveryTime)}
+							{this.griditem("No. of Pax:",this.state.pax)}
 						</Grid>
 
-				</Container>
-			</div>
+							
+						<Divider orientation="vertical" flexItem />
+						
+						<Grid item xs={1} ></Grid>
+							
+
+						<Grid item xs={4} >
+							<b>Menu:</b>
+							{this.renderMenu()}
+						</Grid>
+					</Grid>
+
+					<br></br>
+					<Grid container spacing={1}>
+						<Grid item xs={12}>
+							<Button
+								variant="outlined"
+								fullWidth
+								component={RouterLink} to={{
+								pathname: ROUTES.ORDER_TIMELINE,
+								search: "?id=" + this.props.location.orderID
+							}}>Back to Timeline
+							</Button>
+						</Grid>
+						<Grid item xs={12}>
+							<Button
+								variant="outlined"
+								color="primary"
+								fullWidth
+								component={RouterLink} 
+								to={ROUTES.LANDING}
+								>Home
+							</Button>
+						</Grid>
+					</Grid>
+					</Typography>
+				</Paper>
+			</Container>
+	
 		);
 	}
 }
