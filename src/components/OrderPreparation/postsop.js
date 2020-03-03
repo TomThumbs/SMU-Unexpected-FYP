@@ -33,7 +33,7 @@ class OrderPreparationPostSopBase extends Component {
 			<Container component="main" maxWidth="sm">
 				<Typography gutterBottom variant="h4">Kitchen SOP Declaration</Typography>
 				<Paper>
-					<Typography variant="h6">Kitchen SOP Declaration for Order #{this.props.location.orderID} Successful.</Typography>
+					<Typography variant="h6">Kitchen SOP Agreement for Order #{this.props.location.orderID}</Typography>
 					<Typography variant="h6">Order Commence: {this.props.location.preparationCommencement}</Typography>
 					<Typography variant="body1">Head Chef: {this.props.location.headchef}</Typography>
 					<Typography variant="body1">Assistant A: {this.props.location.assistantA}</Typography>
@@ -45,25 +45,25 @@ class OrderPreparationPostSopBase extends Component {
 					<Grid container xs={12}>
 						<Grid container xs={6}>
 							<FormControlLabel
-								control={<Checkbox checked="true" name="hands"  value="remember" color="primary" />}
+								control={<Checkbox checked="true" disabled name="hands"  value="remember" color="primary" />}
 								label="Hands washed?"
 							/>
 						</Grid>
 						<Grid item xs>
 							<FormControlLabel
-								control={<Checkbox checked="true" name="workspace" value="remember" color="primary" />}
+								control={<Checkbox checked="true" disabled  name="workspace" value="remember" color="primary" />}
 								label="Workspace clean?"
 							/>
 						</Grid>
 						<Grid item xs={6}>
 							<FormControlLabel
-								control={<Checkbox checked="true" name="workspace" value="remember" color="primary" />}
+								control={<Checkbox checked="true" disabled name="workspace" value="remember" color="primary" />}
 								label="Clean workspace?"
 							/>
 						</Grid>
 						<Grid item xs>
 							<FormControlLabel
-								control={<Checkbox checked="true" name="workspace" value="remember" color="primary" />}
+								control={<Checkbox checked="true" disabled name="workspace" value="remember" color="primary" />}
 								label="Clean kitchen tools?"
 							/>
 						</Grid>

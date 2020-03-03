@@ -21,7 +21,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Container from '@material-ui/core/Container';
-
+import * as ROUTES from "../../constants/routes";
 import { withAuthorization } from '../Session'
 
 const useStyles = makeStyles(theme => ({
@@ -182,9 +182,44 @@ class DishToIngredientFormBase extends Component {
   handleClose = () => {
     this.setState({
       open: false,
+      menu:'',
+      menu_List:[],
+      chosen_menu:'',
+      ingredientOne:'',
+      ingredientTwo:'',
+      ingredientThree:'',
+      ingredientFour:'',
+      ingredientFive:'',
+      ingredientSix:'',
+      ingredientSeven:'',
+      ingredientEight:'',
+      ingredientNine:'',
+      ingredientTen:'',
+      ingredientEleven:'',
+      ingredientTwelve:'',
+      ingredientThirteen:'',
+      ingredientFourteen:'',
+      ingredientFifteen:'',
+      ingredientSixteen:'',
+      ingredientSeventeen:'',
+      ingredientEighteen:'',
+      ingredientNineteen:'',
+      ingredientTwenty:'',
+      availableIngredients: [],
+      newIngredientName:'',
+      newDishName:''
     })
     window.location.reload(true);
   };
+
+	handleHome = () => {
+		this.setState({
+			open: false
+		});
+		this.props.history.push({
+			pathname: ROUTES.LANDING
+		});
+	};
 
   createTextField = (fooditem) =>{
     return(
@@ -215,7 +250,7 @@ class DishToIngredientFormBase extends Component {
       <React.Fragment>
       <Grid container spacing={3}>
       <Grid item xs={12}>
-        <Typography variant="h5" gutterBottom>Digital Menu Recipe</Typography>
+        <Typography variant="h5" gutterBottom>Recipe Creation</Typography>
 
         <TextField
           required
@@ -229,7 +264,7 @@ class DishToIngredientFormBase extends Component {
           placeholder="Dish name:"
         />
 
-        <TextField
+        {/* <TextField
           required
           margin="normal"
           fullWidth
@@ -239,7 +274,7 @@ class DishToIngredientFormBase extends Component {
           onChange={this.onChange}
           type="text"
           placeholder="New Ingredient:"
-        />
+        /> */}
 
         <FormControl style={{minWidth:395}}>
           <InputLabel>Select Dish Type:</InputLabel>
@@ -300,12 +335,15 @@ class DishToIngredientFormBase extends Component {
         <DialogTitle id="alert-dialog-title">{"Submission Notification"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-          Ingredient(s) have been stored.
+          Recipe has been created.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={this.handleClose} color="primary" autoFocus>
-            Noted
+            Create another recipe
+          </Button>
+          <Button onClick={this.handleHome} color="primary" autoFocus>
+            Home
           </Button>
         </DialogActions>
       </Dialog>

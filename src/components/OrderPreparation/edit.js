@@ -261,7 +261,7 @@ class OrderPreparationEditBase extends Component {
 		if (ingredients !== undefined) {
 			ingredients.forEach((ingt, id) => {
 				let dishIngt = dish + " " + ingt; // E.g. Sweet and Sour Fish Fish
-
+ 
 				menu.push(
 					<div key={id}>
 						<FormControlLabel
@@ -283,7 +283,7 @@ class OrderPreparationEditBase extends Component {
 		
 					<Grid container style={{paddingBottom: 18}}>
 						<Grid item xs={12}>
-							<Typography variant="h6">{dish}</Typography>
+							<Typography variant="h6">Dish Name: {dish}</Typography>
 						</Grid>
 						
 						<Grid item xs={12}>
@@ -294,7 +294,7 @@ class OrderPreparationEditBase extends Component {
 						<TextareaAutosize
 							aria-label="minimum height"
 							rowsMin={3}
-							placeholder="scan barcodes here"
+							placeholder="Ingredient ID"
 							value={this.state[dish + " barcodes"]}
 							onChange={this.onItemTextChange(dish)}/>
 						</Grid>
@@ -327,7 +327,7 @@ class OrderPreparationEditBase extends Component {
 		return (
 			<Container component="main" maxWidth="xs" className={this.classes.root}>
 			
-			<Typography gutterBottom variant="h4">Order Preparation Edit</Typography>
+			<Typography gutterBottom variant="h4">Tagging of Ingredients to Dish for Order #{this.state.orderID}</Typography>
 				<Paper className={this.classes.paper}>
 					
 

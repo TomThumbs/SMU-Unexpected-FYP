@@ -153,7 +153,7 @@ class DisplayOrderTimelineBase extends Component {
 								}
 							}}
 						>
-							Edit
+							Tag ingredients to dish
 						</Link>
 					) : null}
 					{isSop ? (

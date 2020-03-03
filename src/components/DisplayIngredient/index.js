@@ -72,10 +72,10 @@ class DisplayIngredientBase extends Component {
 
 			div.setAttribute("data-id", "id" + this.state.searchId);
 			// div.textContent = this.state.searchId;
-			id.textContent = "Barcode: " + this.state.searchId;
+			id.textContent = "Ingredient ID: " + this.state.searchId;
 			name.textContent = "Ingredient Name: " +this.state[this.state.searchId].ingredientName;
-			storagedate.textContent = "Storage Date: " + this.state[this.state.searchId].dateOfStorage;
-			expirydate.textContent = "Expiry Date: "+this.state[this.state.searchId].dateOfExpiry;
+			storagedate.textContent = "Date of Storage: " + this.state[this.state.searchId].dateOfStorage;
+			expirydate.textContent = "Date of Expiry: "+this.state[this.state.searchId].dateOfExpiry;
 
 			div.appendChild(id);
 			div.appendChild(name);

@@ -152,7 +152,7 @@ class OrderReceivedBase extends Component {
 							
 
 						<Grid item xs={4} >
-							<b>Menu:</b>
+							<b>Dishes ordered:</b>
 							{this.renderMenu()}
 						</Grid>
 					</Grid>
