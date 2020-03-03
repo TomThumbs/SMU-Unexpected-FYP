@@ -165,7 +165,7 @@ class OrderReceivedBase extends Component {
 								fullWidth
 								component={RouterLink} to={{
 								pathname: ROUTES.ORDER_TIMELINE,
-								search: "?id=" + this.props.location.orderID
+								search: "?id=" + this.state.orderID
 							}}>Back to Timeline
 							</Button>
 						</Grid>
