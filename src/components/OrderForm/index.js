@@ -211,6 +211,7 @@ class OrderFormBase extends Component {
 			StatusDates: [this.state.commencement],
 			Created_On: this.state.commencement,
 			Remarks: this.state.remarks,
+			apmTime: apmHour+ ":" + strmin + " " + apmTime
 		});
 
 		let notCreated = true;

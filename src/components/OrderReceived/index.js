@@ -141,7 +141,7 @@ class OrderReceivedBase extends Component {
 
 							{this.griditem("Delivery Venue:",this.state.venue)}
 							{this.griditem("Delivery Date:",this.state.deliveryDate)}
-							{this.griditem("Delivery Time:",this.state.deliveryTime)}
+							{this.griditem("Delivery Time:",this.state.deliveryTime)} //change this
 							{this.griditem("No. of Pax:",this.state.pax)}
 						</Grid>
 
