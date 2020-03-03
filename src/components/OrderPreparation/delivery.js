@@ -4,7 +4,7 @@ import "../../App.css";
 import { withRouter } from "react-router-dom";
 import { withFirebase } from "../Firebase";
 import FileUploader from "react-firebase-file-uploader";
-
+import { Link as RouterLink } from 'react-router-dom';
 
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
@@ -16,6 +16,7 @@ import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
 import { makeStyles } from "@material-ui/core/styles";
 import Divider from "@material-ui/core/Divider";
+import Paper from "@material-ui/core/Paper";
 
 import { withAuthorization } from "../Session";
 import * as ROUTES from "../../constants/routes";
@@ -122,7 +123,7 @@ class OrderDeliveryBase extends Component {
 					pax: doc.data().Pax,
 					name: doc.data().Customer.id,
 					oID: doc.data().orderID,
-					StatusDates: doc.data().StatusDates.concat(this.state.commencement)
+					// StatusDates: doc.data().StatusDates.concat(this.state.commencement)
 				});
 				this.props.firebase.fs
 					.collection("Customers")
@@ -230,157 +231,169 @@ class OrderDeliveryBase extends Component {
 			);
 		} else {
 			return (
-				<h4>
-					<font color="#e91e63">
-						Please check all 4 checkboxes and upload a picture of
-						the truck.
-					</font>
-				</h4>
+				<Typography variant="subtitle2" color="secondary">
+						Please check all 4 checkboxes and upload a picture of the truck.
+				</Typography>
 			);
 		}
 	}
+
+	griditem(title,info){
+		return (
+			<Grid container> 
+				<Grid item xs={6}>{title}</Grid>
+				<Grid item xs={6}><b>{info}</b></Grid>
+			</Grid>
+		)
+	}
+
 
 	render() {
 		// console.log(typeof this.state.menu)
 		return (
 			<Container component="main" maxWidth="sm">
-				<div className="body">
-					{/* <h1>Customer {this.state.cID}</h1> */}
-					<h1>Order #{this.state.oID}</h1>
+				<Typography variant="h4">Delivery Form</Typography>
+				<Paper>
 					<React.Fragment>
-						<Typography variant="h5" gutterBottom>
-							Event Details
-						</Typography>
+					
+						<Typography variant="h6" gutterBottom>Order #{this.state.oID}</Typography>
+						
+						<Typography variant="body1">
+							{this.griditem("Venue:",this.state.venue)}
+							{this.griditem("Pax:",this.state.pax)}
+							{this.griditem("Customer Name:",this.state.custName)}
+							{this.griditem("Customer HP No.:",this.state.custHp)}
+							
+							
+							<TextField
+							variant="outlined"
+							margin="normal"
+							id="standard-number"
+							required
+							fullWidth
+							name="driver"
+							value={this.state.driver}
+							label="Enter Driver Name"
+							type="text"
+							onChange={this.onChange}
+							/>
 
-						<Grid container alignItems="center">
-							<Grid item xs>
-								Venue:
-							</Grid>
-							<Grid item>
-								<b>{this.state.venue}</b>
-							</Grid>
-						</Grid>
+							<Typography variant="h6" gutterBottom>
+								Checklist
+							</Typography>
+							
+							<Grid container xs={12}>
+								<Grid item xs={6}>
+									<FormControlLabel
+										control={
+											<Checkbox
+												checked={this.state.cleanReady}
+												onChange={this.handleChange("cleanReady")}
+												color="secondary"
+												name="cleanReady"
+												value="cleanReady"
+											/>
+										}
+										// <Checkbox checked={state.checkedA} onChange={handleChange('checkedA')} value="checkedA" />
+										label="Food securely packed?"
+									/>
+								</Grid>
 
-						<Grid container alignItems="center">
-							<Grid item xs>
-								Pax:
-							</Grid>
-							<Grid item>
-								<b>{this.state.pax}</b>
-							</Grid>
-						</Grid>
-
-						<Grid container alignItems="center">
-							<Grid item xs>
-								Customer Name:
-							</Grid>
-							<Grid item>
-								<b>{this.state.name}</b>
-							</Grid>
-						</Grid>
-
-						<Grid container alignItems="center">
-							<Grid item xs>
-								Customer HP:
-							</Grid>
-							<Grid item>
-								<b>{this.state.contact}</b>{" "}
-							</Grid>
-						</Grid>
-
-						<br />
-						<Divider variant="li" />
-						<br />
-
-						<TextField
-						margin="normal"
-						id="standard-number"
-						required
-						fullWidth
-						name="driver"
-						value={this.state.driver}
-						label="Enter Driver Name"
-						type="text"
-						onChange={this.onChange}
-						/>
-
-						<Typography variant="h6" gutterBottom>
-							Checklist
-						</Typography>
-
-						<FormControlLabel
-							control={
-								<Checkbox
-									checked={this.state.cleanReady}
-									onChange={this.handleChange("cleanReady")}
-									color="secondary"
-									name="cleanReady"
-									value="cleanReady"
+								<Grid item xs>			
+									<FormControlLabel
+										control={
+											<Checkbox
+												checked={this.state.allItems}
+												onChange={this.handleChange("allItems")}
+												color="secondary"
+												name="allItems"
+												value="allItems"
+											/>
+										}
+										label="Vehicle Clean?"
+									/>
+								</Grid>
+								
+								<Grid item xs={6}>		
+								<FormControlLabel
+									control={
+										<Checkbox
+											checked={this.state.foodWrap}
+											onChange={this.handleChange("foodWrap")}
+											color="secondary"
+											name="foodWrap"
+											value="foodWrap"
+										/>
+									}
+									label="No strong odors?"
 								/>
-							}
-							// <Checkbox checked={state.checkedA} onChange={handleChange('checkedA')} value="checkedA" />
-							label="Food securely packed?"
-						/>
-
-						<FormControlLabel
-							control={
-								<Checkbox
-									checked={this.state.allItems}
-									onChange={this.handleChange("allItems")}
-									color="secondary"
-									name="allItems"
-									value="allItems"
+								</Grid>
+								
+								
+								<Grid item xs>	
+								<FormControlLabel
+									control={
+										<Checkbox
+											checked={this.state.decor}
+											onChange={this.handleChange("decor")}
+											color="secondary"
+											name="foodWrap"
+											value="foodWrap"
+										/>
+									}
+									label="Buffet decor loaded?"
 								/>
-							}
-							label="Vehicle Clean?"
-						/>
+								</Grid>
+							
+							</Grid>
+							<p><Divider variant="li" /></p>
+							
+							
+							<Typography variant="h6" gutterBottom>Attach Image</Typography>
 
-						<FormControlLabel
-							control={
-								<Checkbox
-									checked={this.state.foodWrap}
-									onChange={this.handleChange("foodWrap")}
-									color="secondary"
-									name="foodWrap"
-									value="foodWrap"
-								/>
-							}
-							label="No strong odors?"
-						/>
-
-						<FormControlLabel
-							control={
-								<Checkbox
-									checked={this.state.decor}
-									onChange={this.handleChange("decor")}
-									color="secondary"
-									name="foodWrap"
-									value="foodWrap"
-								/>
-							}
-							label="Buffet decor loaded?"
-						/>
-						<br />
-						<br />
-						<Divider variant="li" />
-
-						<h4>
-							Attach Image
-						</h4>
+							</Typography>
 					</React.Fragment>
 
-
-					<FileUploader
-						accept="image/*"
-						name="image"
-						storageRef={this.props.firebase.stg.ref("truckHistory")}
-						onUploadStart={this.handleUploadStart}
-						onUploadSuccess={this.handleUploadSuccess}
-						onProgress={this.handleProgress}
-					/>
-					<br></br>
-					<div>{this.renderSubmit()}</div>
-				</div>
+					<Grid container spacing={1}>	
+						<Grid item xs={12}>			
+							<FileUploader
+								accept="image/*"
+								name="image"
+								storageRef={this.props.firebase.stg.ref("truckHistory")}
+								onUploadStart={this.handleUploadStart}
+								onUploadSuccess={this.handleUploadSuccess}
+								onProgress={this.handleProgress}
+							/>
+					</Grid>
+					
+					
+					
+						<Grid item xs={12}>
+							{this.renderSubmit()}
+						</Grid>
+						
+						<Grid item xs={12}>
+							<Button
+								variant="outlined"
+								fullWidth
+								component={RouterLink} to={{
+								pathname: ROUTES.ORDER_TIMELINE,
+								search: "?id=" + this.state.orderID
+							}}>Back to Timeline
+							</Button>
+						</Grid>
+						<Grid item xs={12}>
+							<Button
+								variant="outlined"
+								color="primary"
+								fullWidth
+								component={RouterLink} 
+								to={ROUTES.LANDING}
+								>Home
+							</Button>
+						</Grid>
+					</Grid>
+				</Paper>			
 			</Container>
 		);
 	}
