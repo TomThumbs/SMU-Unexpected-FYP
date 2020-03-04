@@ -64,7 +64,7 @@ const INITIAL_STATE = {
 	IoTHeaters: [{ ID: 0, status: null }],
 	dataIsLoaded: false,
 	commencement: new Date (),
-	StatusDates: ""
+	StatusDates: "",
 };
 
 class OrderServiceBase extends Component {
@@ -178,6 +178,7 @@ class OrderServiceBase extends Component {
 
 		this.state.menu.forEach(dish => {
 			let heater = this.state[dish + " heater"];
+			
 			heatersUsed = { ...heatersUsed, [dish]: heater };
 
 			let heaterID = this.state.IoTHeaters[Number(heater)].docID;
