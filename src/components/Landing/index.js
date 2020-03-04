@@ -150,7 +150,7 @@ class LandingPageBase extends Component {
           </TableHead>
           <TableBody>
           {eventlist.map(row => (
-              <TableRow key={row.date}>
+              <TableRow key={row.orderID}>
                 <TableCell component="th" scope="row">{row.date}</TableCell>
                 <TableCell align="right">{row.time}</TableCell>
                 <TableCell align="right">{row.orderID}</TableCell>
