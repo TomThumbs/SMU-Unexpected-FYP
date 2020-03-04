@@ -34,9 +34,9 @@ class DisplayIngredientBase extends Component {
 			.then(querySnapshot => {
 				querySnapshot.forEach(doc => {
 					let data = doc.data();
-					// console.log(data);
+					// console.log(data.barcode); 	 	
 					this.setState({
-						[data.ingredientId]: {
+						[data.barcode]: {
 							ingredientName: data.name,
 							dateOfStorage: data.Date_of_Storage,
 							dateOfExpiry: data.Date_of_expiry,
