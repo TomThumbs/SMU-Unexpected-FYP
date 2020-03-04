@@ -170,7 +170,7 @@ class DisplayOrderTimelineBase extends Component {
 								}
 							}}
 						>
-							SOP
+							Kitchen Declaration
 						</Link>
 					) : null}
 					{makeDelivery ? (
@@ -227,7 +227,7 @@ class DisplayOrderTimelineBase extends Component {
 							Read
 						</Link>
 					) : (
-						<p>Not done yet</p>
+						<p>Pending</p>
 					)}
 					<span className="circle" />
 				</div>
