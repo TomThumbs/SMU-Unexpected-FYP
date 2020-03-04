@@ -143,7 +143,7 @@ class OrderFormBase extends Component {
 		let strhour = String(this.state.hour);
 		let strmonth = Number(this.state.date.getMonth()) + 1;
 		let strmin = "";
-		if (this.state.minute.length === 1) {
+		if (String(this.state.minute).length === 1) {
 			strmin = "0" + String(this.state.minute);
 		} else {
 			strmin = String(this.state.minute);
@@ -289,7 +289,12 @@ class OrderFormBase extends Component {
 			pax: nPax,
 			Menu: finalmenu,
 			remarks: this.state.remarks,
-			time: apmHour+ ":" + strmin + " " + apmTime
+			time: apmHour+ ":" + strmin + " " + apmTime,
+			custcompany: this.state.custcompany,
+			custemail: this.state.custemail,
+			custcontact: this.state.custcontact,
+			custname: this.state.custname
+
 		});
 	};
 
@@ -339,7 +344,7 @@ class OrderFormBase extends Component {
 			hour: time.getHours(),
 			minute: time.getMinutes()
 		});
-		console.log(time, time.getHours(), time.getMinutes())
+		// console.log(time, time.getHours(), minutest)
 	};
 	createTextField = (name, temp, label, placeholder) => {
 		return (
