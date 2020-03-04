@@ -139,7 +139,7 @@ class FinalOverviewBase extends Component {
 			<Typography variant="h4" gutterBottom>Order Overview</Typography>
 			<Paper>
 
-					<Typography variant="h6" gutterBottom>Order Number:{this.state.orderID}</Typography>
+					<Typography variant="h6" gutterBottom>Order Number: {this.state.orderID}</Typography>
 					<Typography variant="body1">
 
 						{this.griditem("Created On:",this.state.createdOn)}

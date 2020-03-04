@@ -195,7 +195,7 @@ class OrderCompletionBase extends Component {
 				<Container component="main" maxWidth="xs" className={this.classes.root}>
 					<Typography gutterBottom variant="h4">Order Completion</Typography>
 					<Paper className={this.classes.paper}>
-					<Typography variant="h6">Confirm completion for Order #{this.state.orderID}.</Typography>
+					<Typography variant="h6">Order Number: {this.state.orderID}.</Typography>
 						
 						<FormControlLabel
 							control={
@@ -205,7 +205,7 @@ class OrderCompletionBase extends Component {
 								value="true"
 								color="primary"
 							/>}
-							label="The order has been successfully completed!"
+							label="The order has been collected back"
 						/>
 						
 							

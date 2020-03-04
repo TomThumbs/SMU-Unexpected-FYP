@@ -33,7 +33,8 @@ class OrderPreparationPostSopBase extends Component {
 			<Container component="main" maxWidth="sm">
 				<Typography gutterBottom variant="h4">Kitchen Declaration</Typography>
 				<Paper>
-					<Typography variant="h6">Kitchen Declaration Agreement for Order Number: {this.props.location.orderID}</Typography>
+					<Typography variant="h6">Submission Successful</Typography>
+					<Typography variant="h6">Order Number: {this.props.location.orderID}</Typography>
 					<Typography variant="h6">Preparation commenced at: {this.props.location.preparationCommencement}</Typography>
 					<Typography variant="body1">Head Chef: {this.props.location.headchef}</Typography>
 					<Typography variant="body1">Assistant A: {this.props.location.assistantA}</Typography>
