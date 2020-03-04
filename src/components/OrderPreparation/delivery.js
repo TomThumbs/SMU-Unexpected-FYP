@@ -125,11 +125,13 @@ class OrderDeliveryBase extends Component {
 					oID: doc.data().orderID,
 					// StatusDates: doc.data().StatusDates.concat(this.state.commencement)
 				});
+				
 				this.props.firebase.fs
 					.collection("Customers")
 					.doc(doc.data().Customer.id)
 					.get()
 					.then(docu => {
+						console.log(docu.data())
 						this.setState({
 							contact: docu.data().HP,
 							name: docu.data().Name,
@@ -232,7 +234,7 @@ class OrderDeliveryBase extends Component {
 		} else {
 			return (
 				<Typography variant="subtitle2" color="secondary">
-						Please check all 4 checkboxes and upload a picture of the truck.
+						Please ensure that you have adhered to and completed the checklist requirements. Please also upload a picture of the state of the vehicle after the food has been loaded.
 				</Typography>
 			);
 		}
@@ -256,13 +258,13 @@ class OrderDeliveryBase extends Component {
 				<Paper>
 					<React.Fragment>
 					
-						<Typography variant="h6" gutterBottom>Order #{this.state.oID}</Typography>
+						<Typography variant="h6" gutterBottom>Order Number: {this.state.oID}</Typography>
 						
 						<Typography variant="body1">
 							{this.griditem("Venue:",this.state.venue)}
 							{this.griditem("Pax:",this.state.pax)}
-							{this.griditem("Customer Name:",this.state.custName)}
-							{this.griditem("Customer HP No.:",this.state.custHp)}
+							{this.griditem("Customer Name:",this.state.name)}
+							{this.griditem("Customer HP No.:",this.state.contact)}
 							
 							
 							<TextField
