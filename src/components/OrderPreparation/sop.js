@@ -170,7 +170,7 @@ class OrderPreparationSopBase extends Component {
 		} else {
 			return (
 				<Typography variant="subtitle2" color="secondary">
-						Please check all 4 checkboxes and upload a picture of the state of the kitchen.
+						Please ensure that you have adhered to and completed the checklist requirements. Please also upload a picture of the state of the kitchen.
 				</Typography>
 			);
 		}
@@ -231,10 +231,10 @@ class OrderPreparationSopBase extends Component {
 				<Container component="main" maxWidth="xs" >
 
 			
-				<Typography gutterBottom variant="h4">Order Preparation SOP</Typography>
+				<Typography gutterBottom variant="h4">Order Preparation Kitchen Declaration</Typography>
 				<Paper className={this.classes.paper}>
 					
-					<Typography variant="h6" gutterBottom>Order #{this.state.orderID}</Typography>
+					<Typography variant="h6" gutterBottom>Order Number: {this.state.orderID}</Typography>
 
 					{/* ---------- FORM ---------- */}
 					

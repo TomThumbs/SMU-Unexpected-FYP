@@ -412,8 +412,8 @@ class OrderFormBase extends Component {
 							fullWidth
 							name="orderID"
 							value={this.state.orderID}
-							label="Order ID"
-							placeholder="Order ID"
+							label="Order Number"
+							placeholder="Order Number"
 							autoFocus
 							InputProps={{
 								readOnly: true

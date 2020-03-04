@@ -248,7 +248,7 @@ class OrderPreparationBase extends Component {
 							Preparation
 							</Typography>
 						<Typography variant="h4" align="center" gutterBottom>
-							Order ID <br></br>#{this.state.orderID}
+							Order Number: {this.state.orderID}
 						</Typography>
 						<Typography variant="h6" align="center" gutterBottom>
 							Ingredient Breakdown

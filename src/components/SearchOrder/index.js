@@ -74,10 +74,10 @@ class SearchOrderBase extends Component {
 						fullWidth
 						name="searchId"
 						value={this.state.searchId}
-						label="Search Order ID"
+						label="Search Order Number:"
 						onChange={this.onChange}
 						type="string"
-						placeholder="Order ID"
+						placeholder="Order Number:"
 					/>
 					<Button
 						disabled={isInvalid}

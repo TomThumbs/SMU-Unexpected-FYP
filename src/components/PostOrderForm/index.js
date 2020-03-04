@@ -68,7 +68,7 @@ class PostOrderFormBase extends Component {
 				</Typography>
 					<br></br>
 				<Paper>
-					{this.griditem("Order ID:", this.props.location.orderID)}
+					{this.griditem("Order Number:", this.props.location.orderID)}
 					{this.griditem("Customer Company:", this.props.location.custcompany)}
 					{this.griditem("Customer Email:", this.props.location.custemail)}
 					{this.griditem("Customer Contact:", this.props.location.custcontact)}

@@ -251,7 +251,7 @@ class DisplayOrderTimelineBase extends Component {
 		return (
 		
 			<Container component="main" maxWidth="md">
-				<Typography variant="h2" align="center">Order #{this.state.orderID}</Typography>
+				<Typography variant="h2" align="center">Order Number: {this.state.orderID}</Typography>
 				{dataIsLoaded && this.timeline()}
 			</Container>
 		

@@ -125,7 +125,7 @@ class OrderReceivedBase extends Component {
 			<Container className={this.classes.root} component="main" maxWidth="md">
 				<Typography gutterBottom variant="h4">Order Details</Typography>
 				<Paper>
-					<Typography variant="h6" gutterBottom>Order #{this.state.orderID}</Typography>
+					<Typography variant="h6" gutterBottom>Order Number: {this.state.orderID}</Typography>
 					<Typography variant="body1">
 					<Grid container>
 						<Grid item xs={6}>
@@ -141,7 +141,7 @@ class OrderReceivedBase extends Component {
 
 							{this.griditem("Delivery Venue:",this.state.venue)}
 							{this.griditem("Delivery Date:",this.state.deliveryDate)}
-							{this.griditem("Delivery Time:",this.state.deliveryTime)} //change this
+							{this.griditem("Delivery Time:",this.state.deliveryTime)} 
 							{this.griditem("No. of Pax:",this.state.pax)}
 						</Grid>
 
