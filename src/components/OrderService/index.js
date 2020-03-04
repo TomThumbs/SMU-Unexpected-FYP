@@ -264,8 +264,9 @@ class OrderServiceBase extends Component {
 	}
 
 	render() {
+
 		const dataIsLoaded = this.state.dataIsLoaded === true;
-		// console.log(this.state);
+		console.log(this.state);
 		return (
 			<Container component="main" maxWidth="sm">
 				{/* <Typography variant="h2">Order #{this.state.orderID}</Typography> */}
