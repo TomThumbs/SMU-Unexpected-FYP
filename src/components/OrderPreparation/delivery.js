@@ -58,7 +58,7 @@ const INITIAL_STATE = {
 	driver:"",
 	oID:"",
 	commencement: new Date(),
-	StatusDates:""
+	StatusDates:[]
 };
 
 class OrderDeliveryBase extends Component {
@@ -123,7 +123,7 @@ class OrderDeliveryBase extends Component {
 					pax: doc.data().Pax,
 					name: doc.data().Customer.id,
 					oID: doc.data().orderID,
-					// StatusDates: doc.data().StatusDates.concat(this.state.commencement)
+					StatusDates: doc.data().StatusDates.concat(this.state.commencement)
 				});
 				
 				this.props.firebase.fs
