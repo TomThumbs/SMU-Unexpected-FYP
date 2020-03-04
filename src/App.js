@@ -27,8 +27,9 @@ import SearchOrder from './components/SearchOrder'
 import DisplayOrderTimeline from './components/DisplayOrderTimeline'
 import OrderReceived from './components/OrderReceived'
 
-import { OrderPreparation, OrderPreparationEdit, OrderPreparationSop, OrderCompletion, OrderDelivery, FinalOverview, PostDeliveryForm, OrderPreparationPostSop } from './components/OrderPreparation'
+import { OrderPreparation, OrderPreparationEdit, OrderPreparationSop, OrderDelivery, PostDeliveryForm, OrderPreparationPostSop } from './components/OrderPreparation'
 import OrderService from './components/OrderService'
+import { OrderCompletion, FinalOverview } from './components/OrderComplete'
 
 import DishToIngredientForm from './components/DishToIngredientForm'
 import { withAuthentication } from './components/Session';
