@@ -77,12 +77,23 @@ class OrderReceivedBase extends Component {
 						createdOn: data.Created_On,
 						createdBy:"Kelvin",
 						dateOnly: data.DateOnly,
-						time: data.Time,
+						time: data.apmTime,
 						venue: data.venue,
 						pax: Number(data.Pax),
 						status: data.Status,
 						remarks: data.Status,
 						menu: Array.from(new Set(data.Menu))
+					});
+					this.props.firebase.fs
+					.collection("Customers")
+					.doc(data.Customer.id)
+					.get()
+					.then(docu => {
+						console.log(docu.data())
+						this.setState({
+							custName:docu.data().Name,
+							custHp:docu.data().HP,
+						});
 					});
 				});
 			})
@@ -140,8 +151,8 @@ class OrderReceivedBase extends Component {
 							<br></br>
 
 							{this.griditem("Delivery Venue:",this.state.venue)}
-							{this.griditem("Delivery Date:",this.state.deliveryDate)}
-							{this.griditem("Delivery Time:",this.state.deliveryTime)} 
+							{this.griditem("Delivery Date:",this.state.dateOnly)}
+							{this.griditem("Delivery Time:",this.state.time)} 
 							{this.griditem("No. of Pax:",this.state.pax)}
 						</Grid>
 

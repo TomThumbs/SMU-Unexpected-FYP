@@ -102,9 +102,10 @@ class FinalOverviewBase extends Component {
 					.doc(data.Customer.id)
 					.get()
 					.then(docu => {
+						console.log(docu.data())
 						this.setState({
-							custName:data.Name,
-							custHp:data.HP,
+							custName:docu.data().Name,
+							custHp:docu.data().HP,
 						});
 					});
 			});
@@ -138,7 +139,7 @@ class FinalOverviewBase extends Component {
 			<Typography variant="h4" gutterBottom>Order Overview</Typography>
 			<Paper>
 
-					<Typography variant="h6" gutterBottom>Order #{this.state.orderID}</Typography>
+					<Typography variant="h6" gutterBottom>Order Number:{this.state.orderID}</Typography>
 					<Typography variant="body1">
 
 						{this.griditem("Created On:",this.state.createdOn)}

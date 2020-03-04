@@ -327,7 +327,7 @@ class OrderPreparationEditBase extends Component {
 		return (
 			<Container component="main" maxWidth="xs" className={this.classes.root}>
 			
-			<Typography gutterBottom variant="h4">Tagging of Ingredients to Dish for Order Number: {this.state.orderID}</Typography>
+			<Typography gutterBottom variant="h4">Tagging of Ingredients to Dish <br></br> Order Number: {this.state.orderID}</Typography>
 				<Paper className={this.classes.paper}>
 					
 
