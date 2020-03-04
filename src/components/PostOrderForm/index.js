@@ -28,7 +28,7 @@ class PostOrderFormBase extends Component {
 	renderRemarks() {
 		if (this.props.location.remarks.length !== 0) {
 			return (
-				this.griditem("Remarks",this.props.location.remarks)
+				this.griditem("Remarks:",this.props.location.remarks)
 			);
 		}
 	}
@@ -53,7 +53,7 @@ class PostOrderFormBase extends Component {
 	render() {
 		console.log(this.props.location.Menu);
 		return (
-			<Container component="main" maxWidth="xs">
+			<Container component="main" maxWidth="sm">
 				
 					{/* <Typography component="h4" variant="h4">Order Summary</Typography>
                 <Typography component="h5" variant="h7">Order No.</Typography>
