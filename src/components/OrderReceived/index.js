@@ -13,30 +13,30 @@ import Divider from "@material-ui/core/Divider";
 import * as ROUTES from "../../constants/routes";
 import { Link as RouterLink } from 'react-router-dom';
 
-const useStyles = makeStyles(theme => ({
-	root: {
-		flexGrow: 1
-	},
-	paper: {
-		marginTop: theme.spacing(8),
-		display: "flex",
-		flexDirection: "column",
-		maxWidth: 400,
-		textAlign: "center"
-		// margin: `${theme.spacing(1)}px auto`,
-		// padding: theme.spacing(2),
-	},
-	form: {
-		width: "100%", // Fix IE 11 issue.
-		marginTop: theme.spacing(1)
-	},
-	submit: {
-		margin: theme.spacing(3, 0, 2)
-	},
-	text: {
-		textAlign: "center"
-	}
-}));
+// const useStyles = makeStyles(theme => ({
+// 	root: {
+// 		flexGrow: 1
+// 	},
+// 	paper: {
+// 		marginTop: theme.spacing(8),
+// 		display: "flex",
+// 		flexDirection: "column",
+// 		maxWidth: 400,
+// 		textAlign: "center"
+// 		// margin: `${theme.spacing(1)}px auto`,
+// 		// padding: theme.spacing(2),
+// 	},
+// 	form: {
+// 		width: "100%", // Fix IE 11 issue.
+// 		marginTop: theme.spacing(1)
+// 	},
+// 	submit: {
+// 		margin: theme.spacing(3, 0, 2)
+// 	},
+// 	text: {
+// 		textAlign: "center"
+// 	}
+// }));
 
 const INITIAL_STATE = {
 	orderID: "",
@@ -46,14 +46,15 @@ const INITIAL_STATE = {
 	venue: "",
 	pax: "",
 	status: "",
-	menu: []
+	menu: [],
+	remarks: "",
 };
 
 class OrderReceivedBase extends Component {
 	constructor(props) {
 		super(props);
 		this.state = { ...INITIAL_STATE };
-		this.classes = { useStyles };
+		// this.classes = { useStyles };
 	}
 
 	componentDidMount() {
@@ -81,7 +82,7 @@ class OrderReceivedBase extends Component {
 						venue: data.venue,
 						pax: Number(data.Pax),
 						status: data.Status,
-						remarks: data.Status,
+						remarks: data.Remarks,
 						menu: Array.from(new Set(data.Menu))
 					});
 					this.props.firebase.fs
@@ -131,9 +132,17 @@ class OrderReceivedBase extends Component {
 		)
 	}
 
+	renderRemarks() {
+		if (this.state.remarks.length !== 0) {
+			return (
+				this.griditem("Remarks:",this.state.remarks)
+			);
+		}
+	}
+
 	render() {
 		return (
-			<Container className={this.classes.root} component="main" maxWidth="md">
+			<Container component="main" maxWidth="md">
 				<Typography gutterBottom variant="h4">Order Details</Typography>
 				<Paper>
 					<Typography variant="h6" gutterBottom>Order Number: {this.state.orderID}</Typography>
@@ -154,6 +163,10 @@ class OrderReceivedBase extends Component {
 							{this.griditem("Delivery Date:",this.state.dateOnly)}
 							{this.griditem("Delivery Time:",this.state.time)} 
 							{this.griditem("No. of Pax:",this.state.pax)}
+
+							<br></br>
+
+							{this.renderRemarks()}
 						</Grid>
 
 							
