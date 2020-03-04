@@ -12,7 +12,6 @@ import Button from "@material-ui/core/Button";
 // import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
-import { sizing } from '@material-ui/system';
 
 
 import Dialog from "@material-ui/core/Dialog";
@@ -25,31 +24,13 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import * as ROUTES from "../../constants/routes";
 import { compose } from "recompose";
 
+
+
 const useStyles = makeStyles(theme => ({
-	root: {
-		flexGrow: 1
+	summary: {
+		backgroundColor: "#d4d4d4"
 	},
-	paper: {
-		marginTop: theme.spacing(8),
-		display: "flex",
-		flexDirection: "column",
-		// maxWidth: 400,
-		textAlign: "center",
-		// margin: `${theme.spacing(1)}px auto`,
-		height: 240,
-		width: 400,
-		padding: theme.spacing(2)
-	},
-	form: {
-		width: "100%", // Fix IE 11 issue.
-		marginTop: theme.spacing(1)
-	},
-	submit: {
-		margin: theme.spacing(3, 0, 2)
-	},
-	text: {
-		textAlign: "center"
-	}
+
 }));
 
 const INITIAL_STATE = {
@@ -61,7 +42,7 @@ const INITIAL_STATE = {
 	pax: "",
 	status: "",
 	menu: [],
-	IoTHeaters: [{ ID: 0, status: null }],
+	IoTHeaters: [{ ID: "", status: null }],
 	dataIsLoaded: false,
 	commencement: new Date (),
 	StatusDates: "",
@@ -77,6 +58,7 @@ class OrderServiceBase extends Component {
 			orderID: props.location.state.orderID
 		};
 		this.classes = { useStyles };
+		
 	}
 
 	componentDidMount() {
@@ -103,7 +85,7 @@ class OrderServiceBase extends Component {
 
 		this.state.menu.forEach(dish => {
 			this.setState({
-				[dish + " heater"]: "0"
+				[dish + "heater"]: ""
 			});
 		});
 
@@ -209,7 +191,7 @@ class OrderServiceBase extends Component {
 
 	onChange = dish => event => {
 		this.setState({
-			[dish + " heater"]: event.target.value
+			[dish + "heater"]: event.target.value
 		});
 	};
 
@@ -217,29 +199,35 @@ class OrderServiceBase extends Component {
 		let heaters = [];
 		this.state.menu.forEach((dish, index) => {
 			heaters.push(
-				<Grid item xs={6} key={index}>
+				<Grid item xs={4} key={index} spacing={1}>
 					
 					<Paper variant="outlined">
-						<Grid container spacing={2} >
-							<Grid item minHeight="500">{dish}</Grid>
+						
+						<div className="item-height-dish">
+							<Grid item xs={12} >{dish}</Grid>
+						</div>
 
-							<Grid item xs={12}> 
-								<TextField 
-									fullWidth
-									id="standard-select"
-									select
-									label="Select Heater"
-									value={this.state[dish + " heater"]}
-									onChange={this.onChange(dish)}
-									//helperText="Please select the heater"
-								>
-									{this.state.IoTHeaters.map(option => (
-										<MenuItem key={option.ID} value={option.ID}>
-											Heater {option.ID}
-										</MenuItem>
-									))}
-								</TextField>
-							</Grid>
+						<Grid item xs={12}> 
+							<TextField 
+								fullWidth
+								id="standard-select"
+								select
+								label="Select Heater"
+								value={this.state[dish + " heater"]}
+								onChange={this.onChange(dish)}
+								//helperText="Please select the heater"
+							>
+								{/* <MenuItem value="">
+										Select Heater
+								</MenuItem> */}
+
+								{this.state.IoTHeaters.map(option => (
+									<MenuItem key={option.ID} value={option.ID}>
+										Heater {option.ID}
+									</MenuItem>
+								))
+								}
+							</TextField>
 						</Grid>
 					</Paper>
 				</Grid>
