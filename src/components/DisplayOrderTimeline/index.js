@@ -56,15 +56,20 @@ const INITIAL_STATE = {
 class DisplayOrderTimelineBase extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { ...INITIAL_STATE };
+		this.state = {
+			...INITIAL_STATE,
+			orderID: this.props.location.state.orderID
+		};
 		this.classes = { useStyles };
 	}
 
 	componentDidMount() {
+		console.log(this.state.orderID);
+
 		let queryString = window.location.search;
 		let urlParams = new URLSearchParams(queryString);
 		let urlId = Number(urlParams.get("id"));
-		console.log(urlId);
+		// console.log(urlId);
 		this.setState({
 			orderID: urlId
 		});
@@ -258,12 +263,14 @@ class DisplayOrderTimelineBase extends Component {
 	}
 
 	render() {
-		const dataIsLoaded = this.state.dataIsLoaded === true;
+		const dataIsLoaded = this.state.dataIsLoaded;
 
 		return (
 			<Container component="main" maxWidth="md">
-				<Typography variant="h2" align="center">Order Number: {this.state.orderID}</Typography>
-				{dataIsLoaded && this.timeline()}
+				<Typography variant="h2" align="center">
+					Order Number: {this.state.orderID}
+				</Typography>
+				{this.timeline()}
 			</Container>
 		);
 	}

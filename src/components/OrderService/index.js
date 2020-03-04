@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { withFirebase } from "../Firebase";
 import { withRouter } from "react-router-dom";
 import { withAuthorization } from "../Session";
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
@@ -12,7 +12,6 @@ import Button from "@material-ui/core/Button";
 // import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
-
 
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -44,8 +43,10 @@ const INITIAL_STATE = {
 	menu: [],
 	IoTHeaters: [{ ID: "", status: null }],
 	dataIsLoaded: false,
-	commencement: new Date (),
+	commencement: new Date(),
 	StatusDates: "",
+	heaterCheck: [],
+	open: false
 };
 
 class OrderServiceBase extends Component {
@@ -93,21 +94,24 @@ class OrderServiceBase extends Component {
 			dataIsLoaded: true
 		});
 
-		let day = this.state.commencement.getDate()
-		let month = Number(this.state.commencement.getMonth())+1
-		let year = this.state.commencement.getFullYear()
-		let hour = this.state.commencement.getHours()
-		let minute = String(this.state.commencement.getMinutes())
+		let day = this.state.commencement.getDate();
+		let month = Number(this.state.commencement.getMonth()) + 1;
+		let year = this.state.commencement.getFullYear();
+		let hour = this.state.commencement.getHours();
+		let minute = String(this.state.commencement.getMinutes());
 		if (month.length === 1) {
-			month = "0" + month
-			}
+			month = "0" + month;
+		}
 		if (hour.length === 1) {
-			hour = "0" + hour
-			}
+			hour = "0" + hour;
+		}
 		if (minute.length === 1) {
-			 minute = "0" + minute
-			}
-		this.setState({commencement: day + "/" + month + "/" + year + " " + hour + ":" + minute})
+			minute = "0" + minute;
+		}
+		this.setState({
+			commencement:
+				day + "/" + month + "/" + year + " " + hour + ":" + minute
+		});
 
 		this.props.firebase.fs
 			.collection("Catering_orders")
@@ -115,7 +119,9 @@ class OrderServiceBase extends Component {
 			.get()
 			.then(doc => {
 				this.setState({
-					StatusDates: doc.data().StatusDates.concat(this.state.commencement)
+					StatusDates: doc
+						.data()
+						.StatusDates.concat(this.state.commencement)
 				});
 			});
 	}
@@ -138,29 +144,30 @@ class OrderServiceBase extends Component {
 			}
 		});
 	};
+
 	onSubmit = event => {
 		event.preventDefault();
 
 		this.props.firebase.fs
-		.collection("Catering_orders")
-		.doc(String(this.state.docID))
-		.update({
-			Status: "Event in Progress",
-			StatusDates: this.state.StatusDates,
-			orderComplete: this.state.commencement
-		})
-		.then(function() {
-			console.log("Document successfully written!");
-		})
-		.catch(function(error) {
-			console.error("Error writing document: ", error);
-		});
+			.collection("Catering_orders")
+			.doc(String(this.state.docID))
+			.update({
+				Status: "Event in Progress",
+				StatusDates: this.state.StatusDates,
+				orderComplete: this.state.commencement
+			})
+			.then(function() {
+				console.log("Document successfully written!");
+			})
+			.catch(function(error) {
+				console.error("Error writing document: ", error);
+			});
 
 		let heatersUsed = {};
 
 		this.state.menu.forEach(dish => {
 			let heater = this.state[dish + " heater"];
-			
+
 			heatersUsed = { ...heatersUsed, [dish]: heater };
 
 			let heaterID = this.state.IoTHeaters[Number(heater)].docID;
@@ -193,6 +200,7 @@ class OrderServiceBase extends Component {
 		this.setState({
 			[dish + "heater"]: event.target.value
 		});
+		console.log(this.state);
 	};
 
 	renderHeaters() {
@@ -241,7 +249,8 @@ class OrderServiceBase extends Component {
 			<Button
 				variant="outlined"
 				fullWidth
-				component={RouterLink} to={{
+				component={RouterLink}
+				to={{
 					pathname: ROUTES.ORDER_TIMELINE,
 					search: "?id=" + this.state.orderID
 				}}
@@ -251,47 +260,83 @@ class OrderServiceBase extends Component {
 		);
 	}
 
+	renderDialogHeaters() {
+		let heaters = [];
+		this.state.menu.forEach(dish => {
+			let heaterAssigned = this.state[dish + " heater"];
+			heaters.push(
+				<Typography key={dish}>
+					{dish} : Heater {heaterAssigned}
+				</Typography>
+			);
+		});
+		return heaters;
+	}
+
 	render() {
+		let counter = 0;
+		let used = [];
+		this.state.heaterCheck.forEach(item => {
+			if (
+				this.state[item] !== "0" &&
+				this.state[item] !== 0 &&
+				used.includes(this.state[item]) === false
+			) {
+				counter += 1;
+				used.push(this.state[item]);
+			}
+		});
+
+		let heaterCheck = counter === this.state.heaterCheck.length;
+
+		// console.log(heaterCheck)
+
 		const dataIsLoaded = this.state.dataIsLoaded === true;
 		// console.log(this.state);
 		return (
 			<Container component="main" maxWidth="sm">
 				{/* <Typography variant="h2">Order #{this.state.orderID}</Typography> */}
-				<Typography variant="h4" gutterBottom>Tag Heater to Dish</Typography>
-				
-				<Paper>
+				<Typography variant="h4" gutterBottom>
+					Tag Heater to Dish
+				</Typography>
 
+				<Paper>
 					<Grid container justify="center" spacing={3}>
 						{dataIsLoaded && this.renderHeaters()}
 					</Grid>
 
 					<Dialog
-							open={this.state.open}
-							onClose={this.handleClose}
-							aria-labelledby="alert-dialog-title"
-							aria-describedby="alert-dialog-description"
-						>
-							<DialogTitle id="alert-dialog-title">
-								{"Submission Notification"}
-							</DialogTitle>
-							<DialogContent dividers>
-								<DialogContentText id="alert-dialog-description">
-									The Raspberry Pi have been tagged.
-								</DialogContentText>
-							</DialogContent>
-							<DialogActions>
-								<Button onClick={this.handleClose} color="primary" autoFocus>
-									Back to Timeline
-								</Button>
-							</DialogActions>
-						</Dialog>
+						open={this.state.open}
+						onClose={this.handleClose}
+						aria-labelledby="alert-dialog-title"
+						aria-describedby="alert-dialog-description"
+					>
+						<DialogTitle id="alert-dialog-title">
+							{"Submission Notification"}
+						</DialogTitle>
+						<DialogContent dividers>
+							<DialogContentText id="alert-dialog-description">
+								The Raspberry Pi have been tagged.
+								{this.renderDialogHeaters()}
+							</DialogContentText>
+						</DialogContent>
+						<DialogActions>
+							<Button
+								onClick={this.handleClose}
+								color="primary"
+								autoFocus
+							>
+								Back to Timeline
+							</Button>
+						</DialogActions>
+					</Dialog>
 
 					<br></br>
-					<Grid container spacing={1}>	
-					
+					<Grid container spacing={1}>
 						<Grid item xs={12}>
 							<form onSubmit={this.onSubmit}>
 								<Button
+									disabled={!heaterCheck}
 									type="submit"
 									fullWidth
 									variant="contained"
@@ -301,15 +346,21 @@ class OrderServiceBase extends Component {
 								</Button>
 							</form>
 						</Grid>
-						
+
 						<Grid item xs={12}>
 							<Button
 								variant="outlined"
 								fullWidth
-								component={RouterLink} to={{
-								pathname: ROUTES.ORDER_TIMELINE,
-								search: "?id=" + this.state.orderID
-							}}>Back to Timeline
+								component={RouterLink}
+								to={{
+									pathname: ROUTES.ORDER_TIMELINE,
+									search: "?id=" + this.state.orderID,
+									state: {
+										orderID: this.state.orderID
+									}
+								}}
+							>
+								Back to Timeline
 							</Button>
 						</Grid>
 						<Grid item xs={12}>
@@ -317,18 +368,15 @@ class OrderServiceBase extends Component {
 								variant="outlined"
 								color="primary"
 								fullWidth
-								component={RouterLink} 
+								component={RouterLink}
 								to={ROUTES.LANDING}
-								>Home
+							>
+								Home
 							</Button>
 						</Grid>
 					</Grid>
-
-				
-
-					</Paper>
-				</Container>
-
+				</Paper>
+			</Container>
 		);
 	}
 }
