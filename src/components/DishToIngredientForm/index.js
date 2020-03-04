@@ -335,7 +335,7 @@ class DishToIngredientFormBase extends Component {
         <DialogTitle id="alert-dialog-title">{"Submission Notification"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-          Recipe has been created.
+          {this.state.newDishName} recipe has been created.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
