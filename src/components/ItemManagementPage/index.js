@@ -12,72 +12,44 @@ import { Link as RouterLink } from "react-router-dom";
 // import { makeStyles } from '@material-ui/core/styles';
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
-
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
-// import Divider from '@material-ui/core/Divider';
+import Divider from '@material-ui/core/Divider';
+import Paper from "@material-ui/core/Paper";
+import Box from '@material-ui/core/Box';
 
 import checkingredients from "./checkingredients.png";
-import tagnew from "./tagnew.png";
-// import tagtoorder from "./tagtoorder.png";
 import recipecreation from "./recipecreation.png";
+import simple from "./simpleing.png";
+import complex from "./complexing.png";
+import remove from "./removeing.png";
 
 class IngredientManagementBase extends Component {
 	render() {
 		return (
 			
-			<Container component="main" maxWidth="md">
-				<Typography component="h4" variant="h4">
+			<Container component="main" maxWidth="lg">
+				<Typography variant="h3" align="center" gutterBottom>
 					Ingredient Management
 				</Typography>
+				
 				<br></br>
+				<br></br>
+	
+				
+				<Grid container spacing={3}>
+					<Grid container item xs={1}></Grid>
 
-				{/* <Button href={ROUTES.ORDER_FORM}><img class="image" src={tagnew} alt="logo"/></Button> */}
-
-					<Grid container spacing={8}>
-						<Grid container item xs={4}>
-							<Button component={RouterLink} to={ROUTES.NEW_INGREDIENT_BASIC}>
-								<Grid container justify="center" spacing={2}>
-									
-									<Grid item xs={12}>
-										<img class="image" src={tagnew} alt="logo" />
-									</Grid>
-									<Grid item xs={12} align="center">
-										<Typography component="h6" variant="h6">
-											Tag New Simple Ingredient
-										</Typography>
-									</Grid>
-								</Grid>
-							</Button>
-					</Grid>
-
-					<Grid container item xs={4}>
-							<Button component={RouterLink} to={ROUTES.NEW_INGREDIENT_COMPLEX}>
-								<Grid container justify="center" spacing={2}>
-									
-									<Grid item xs={12}>
-										<img class="image" src={tagnew} alt="logo" />
-									</Grid>
-									<Grid item xs={12} align="center">
-										<Typography component="h6" variant="h6">
-											Tag New Complex Ingredient
-										</Typography>
-									</Grid>
-								</Grid>
-							</Button>
-					</Grid>
-
-					<Grid container item xs={4}>
+					<Grid container item xs={2}>
 						<Button
 							component={RouterLink}
 							to={ROUTES.DISH_TO_INGREDIENT_FORM}>
-							<Grid container justify="center" spacing={2}>
+							<Grid container justify="center" spacing={1}>
+								<Box height="100px"></Box>
 								<Grid item xs={12}>
-									<img
-										class="image"
+									<img class="image"
 										src={recipecreation}
-										alt="recipecreation"
-									/>
+										alt="recipecreation"/>
 								</Grid>
 								<Grid item xs={12} align="center">
 									<Typography component="h6" variant="h6">
@@ -88,15 +60,50 @@ class IngredientManagementBase extends Component {
 						</Button>
 					</Grid>
 
-					<Grid container item xs={4}>
-						<Button component={RouterLink} to={ROUTES.DISPLAY_INGREDIENT}>
-							<Grid container justify="center" spacing={2}>
+					<Divider orientation="vertical" flexItem />
+		
+					<Grid container item xs={2}>
+						<Button component={RouterLink} to={ROUTES.NEW_INGREDIENT_BASIC}>
+							<Grid container justify="center" spacing={1}>
+								
 								<Grid item xs={12}>
-									<img
-										class="image"
+									<img class="image" src={simple} alt="simple-ingredient" />
+								</Grid>
+								<Grid item xs={12} align="center">
+									<Typography component="h6" variant="h6">
+										Tag New Simple Ingredient
+									</Typography>
+								</Grid>
+							</Grid>
+						</Button>
+					</Grid>
+
+					<Grid container item xs={2}>
+						<Button component={RouterLink} to={ROUTES.NEW_INGREDIENT_COMPLEX}>
+							<Grid container justify="center" spacing={1}>
+								<Grid item xs={12}>
+									<img class="image" 
+									src={complex} 
+									alt="complex-ingredient" />
+								</Grid>
+								<Grid item xs={12} align="center">
+									<Typography component="h6" variant="h6">
+										Tag New Complex Ingredient
+									</Typography>
+								</Grid>
+							</Grid>
+						</Button>
+					</Grid>
+
+					<Divider orientation="vertical" flexItem />
+
+					<Grid container item xs={2}>
+						<Button component={RouterLink} to={ROUTES.DISPLAY_INGREDIENT}>
+							<Grid container justify="center" spacing={1}>
+								<Grid item xs={12}>
+									<img class="image"
 										src={checkingredients}
-										alt="checkingredients"
-									/>
+										alt="checkingredients"/>
 								</Grid>
 								<Grid item xs={12} align="center">
 									<Typography component="h6" variant="h6">
@@ -106,8 +113,66 @@ class IngredientManagementBase extends Component {
 							</Grid>
 						</Button>
 					</Grid>
+
+
+					{/* to change the route link  */}
+					<Grid container item xs={2}>
+						<Button component={RouterLink} to={ROUTES.LANDING}>
+							<Grid container justify="center" spacing={1}>
+								<Grid item xs={12}>
+									<img class="image" 
+									src={remove} 
+									alt="remove-ingredient" />
+								</Grid>
+								<Grid item xs={12} align="center">
+									<Typography component="h6" variant="h6">
+										Remove Ingredient 
+									</Typography>
+								</Grid>
+							</Grid>
+						</Button>
+					</Grid>
+
 				</Grid>
+
+				<br></br>
+				<br></br>
+				<br></br>
+				<br></br>
+
+
+			
+					{/* <Box 
+						display="flex" 
+						flexDirection="row"
+						p={1} 
+						m={1} 
+						bgcolor="background.paper"
+						justifyContent="center">
+
+						<Box p={1} bgcolor="grey.300" flexDirection="column" >
+							
+								<Box p={1} m={1} bgcolor="white" css={{ height: 50 }}>
+									<img class="image" 
+									src={remove} 
+									alt="remove-ingredient" />
+								</Box>
+								<Box p={1} m={1} bgcolor="white">2</Box>
+						
+						</Box>
+						<Box p={1} bgcolor="grey.300">
+						Item 1
+						</Box>
+						<Box p={1} bgcolor="grey.300">
+						Item 1
+						</Box>
+					</Box> */}
+					
+			
+			
 			</Container>
+
+			
 			
 		);
 	}
