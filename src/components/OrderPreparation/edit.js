@@ -225,24 +225,19 @@ class OrderPreparationEditBase extends Component {
 	onItemTextChange = dish => event => {
 		let tempValue = event.target.value.trim();
 		this.setState({
-			// [dish + " barcodes"]: event.target.value
 			[dish + " barcodes"]: tempValue
 		});
 		let barcodes = event.target.value.split(",");
 
 		const ingredients = this.state[dish];
-		// console.log(ingredients);
 
 		ingredients.forEach(ingt => {
 			let dishIngt = dish + " " + ingt;
-			// console.log(dishIngt);
 
 			this.setState({
 				[dishIngt]: false
 			});
 		});
-
-		// console.log(this.state);
 
 		barcodes.forEach(barcode => {
 			barcode = barcode.trim();
@@ -256,6 +251,15 @@ class OrderPreparationEditBase extends Component {
 		console.log(this.state);
 	};
 
+	// Remove items if finished
+	onItemTextRemove = dish => event => {
+		let tempValue = event.target.value.trim();
+		this.setState({
+			[dish + " remove"]: tempValue
+		});
+	};
+
+	// Checks to ensure that item is checked
 	validator(dishIngt) {
 		return this.state[dishIngt] === true;
 	}
@@ -294,25 +298,37 @@ class OrderPreparationEditBase extends Component {
 				<div key={id}>
 					<Grid container style={{ paddingBottom: 18 }}>
 						<Grid item xs={12}>
-							<Typography variant="subtitle2" color="textSecondary">
+							<Typography
+								variant="subtitle2"
+								color="textSecondary"
+							>
 								Dish Name:
 							</Typography>
-							<Typography variant="h6">
-								{dish}
-							</Typography>
+							<Typography variant="h6">{dish}</Typography>
 						</Grid>
 
 						<Grid item xs={12}>
 							{this.renderMenuItem(dish)}
 						</Grid>
 
-						<Grid item xs={12}>
+						<Grid item xs={6}>
+							<Typography>Ingredient IDs</Typography>
 							<TextareaAutosize
 								aria-label="minimum height"
 								rowsMin={3}
 								placeholder="Ingredient ID"
 								value={this.state[dish + " barcodes"]}
 								onChange={this.onItemTextChange(dish)}
+							/>
+						</Grid>
+						<Grid item xs={6}>
+							<Typography>Finished Ingredients</Typography>
+							<TextareaAutosize
+								aria-label="minimum height"
+								rowsMin={3}
+								placeholder="Things to be removed"
+								value={this.state[dish + " remove"]}
+								onChange={this.onItemTextRemove(dish)}
 							/>
 						</Grid>
 					</Grid>
@@ -360,11 +376,12 @@ class OrderPreparationEditBase extends Component {
 					Tag Ingredients to Dish
 				</Typography>
 				<Paper className={this.classes.paper}>
-					<Typography variant="h6" gutterBottom color="primary">Order Number: {this.state.orderID}</Typography>
+					<Typography variant="h6" gutterBottom color="primary">
+						Order Number: {this.state.orderID}
+					</Typography>
 					{this.renderMenu()}
 
 					<form onSubmit={this.onSubmit}>
-
 						<Grid container spacing={1}>
 							<Grid item xs={12}>
 								<Button
