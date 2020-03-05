@@ -364,6 +364,7 @@ class OrderPreparationEditBase extends Component {
 					{this.renderMenu()}
 
 					<form onSubmit={this.onSubmit}>
+						{this.renderMenu()} 
 
 						<Grid container spacing={1}>
 							<Grid item xs={12}>
