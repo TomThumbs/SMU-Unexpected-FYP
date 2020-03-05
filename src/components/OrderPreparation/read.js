@@ -86,16 +86,56 @@ class OrderPreparationBase extends Component {
 						assistantA: data.assistantA,
 						assistantB: data.assistantB,
 						kitchenImageURL: data.kitchenImageURL,
-						commence: data.preparationCommencement
+						commence: data.preparationCommencement,
+						statusDate: data.StatusDates[1]
 					});
+					// console.log(data.IngredientsUsed)
+					//this stores ingredient IDs
 					for (var key in data.IngredientsUsed){
+
+						let splitIngredients = []
+						splitIngredients = data.IngredientsUsed[key].split(",")
+						// console.log(splitIngredients)
+						let ingreDetails = []
+						
+						let dos = ""
+						let doe = ""
+						let ingrename = ""
+						//this finds the ingredients details of each ingredient ID
+						splitIngredients.forEach((element) => { 
+							// console.log("ingre", element)
+							this.props.firebase.fs
+							.collection("Ingredients")
+							.doc(element)
+							.get()
+							.then(query => {
+								// console.log("thisdata", query.data())
+								// query.forEach(doc => {
+									let dos = query.data().Date_of_Storage,
+									doe = query.data().Date_of_expiry,
+									ingrename = query.data().name
+								// })
+								ingreDetails.push([query.data().name, element, query.data().Date_of_Storage, query.data().Date_of_expiry])
+							})
+							
+							// console.log(ingreDetails)
+						})
+						// console.log(data.IngredientsUsed[key])
 						this.setState({
 							...this.state,
 							menuIngreDict: {
 								...this.state.menuIngreDict,
-								[key]: data.IngredientsUsed[key]
+								[key]: ingreDetails
+							// 	[key]: [
+							// 		[spaghetti, 789, dos, doe],
+							// 		[spaghetti, 789, dos, doe],
+							// ]
+								// [key]: data.IngredientsUsed[key]
 							}
 						})
+
+
+
 						this.setState(
 							{ menu: [...this.state.menu, key] }
 						)
@@ -125,15 +165,38 @@ class OrderPreparationBase extends Component {
 		});
 	};
 
-	renderMenuItem(item, value) {
+	renderMenuItem(item, valuee) {
+		// console.log(value)
+
+//@james got bug here
+
 		let menu = [];
 		if (item !== undefined) {
-				menu.push(
-					<tr>
-						<td >{item}</td>
-						<td >{value}</td>
-					</tr>
-				);
+			console.log("~~~~", Object.values(valuee))
+
+
+			valuee.forEach((v)=> {
+				console.log("============", v[0])
+					menu.push(
+						<tr>
+							<td>{v[0]}</td>
+							<td>{v[1]}</td>
+							<td>{v[2]}</td>
+							<td>{v[3]}</td>
+						</tr>
+					)
+				})
+			
+				// menu.push(
+				// 	<tr>
+				// 		{/* ) */}
+				// {/* menu.push( */}
+				// 		<td >{item}</td>
+				// 		<td >{value}</td>
+				// 	</tr>
+
+				// );
+				// console.log(menu)
 			;
 		}
 		return menu;
@@ -142,51 +205,8 @@ class OrderPreparationBase extends Component {
 	// ---------- Dish Selection ----------
 	renderMenu() {
 		let list = [];
-		this.state.menu.forEach((item, id) => {
-			if (item === this.state.chosenMenu) {
-				list.push(
-					<div key={id}>
-						<Paper className={this.classes.paper}>
-							<Typography variant="h5">
-								<Link name={item} onClick={this.onChange}>
-									{item}
-								</Link>
-							</Typography>
-						</Paper>
-					</div>
-				);
-			} else {
-				list.push(
-					<div key={id}>
-						<Paper className={this.classes.paper}>
-							<Typography variant="h6" underline="none">
-								{" "}
-								{/*Problem: I cant remove the underline. Think ans is here: https://material-ui.com/api/link/ */}
-								<Link name={item} onClick={this.onChange}>
-									{item}
-								</Link>
-							</Typography>
-						</Paper>
-					</div>
-				);
-			}
-		});
-
-			for (var key in this.state.menuIngreDict){
-				if (key === this.state.chosenMenu) {
-					list.push(
-						<table>
-							<tr>
-								<th>Item</th>
-								<th>Item ID</th>
-							</tr>
-							{this.renderMenuItem(key, this.state.menuIngreDict[key])}
-						</table>
-					);
-				}
-			};
-
-		if (this.state.chosenMenu.length === 0) {
+		let altlist = [];
+		// if (this.state.chosenMenu.length === 0) {
 			list.push(
 				<div>
 				<Paper className={this.classes.paper}>
@@ -220,7 +240,71 @@ class OrderPreparationBase extends Component {
 				</Paper>
 			</div>
 			)
-		}
+		// }
+		console.log(this.state)
+		this.state.menu.forEach((item, id) => {
+			
+			// if (item === this.state.chosenMenu) {
+				for (var key in this.state.menuIngreDict){
+					// console.log(key,item)
+					if (key === item) {
+						altlist.push(
+							<table>
+								<tr>
+									<th>Item</th>
+									<th>Item ID</th>
+								</tr>
+								{this.renderMenuItem(key, this.state.menuIngreDict[key])}
+								
+							</table>
+						);
+					}
+				};
+				// console.log("===========")
+				list.push(
+					<div key={id}>
+						<Paper className={this.classes.paper}>
+							<Typography variant="h5">
+								{item}
+								{/* <Link name={item} onClick={this.onChange}>
+									{item}
+								</Link> */}
+							</Typography>
+						</Paper>
+					</div>
+					// push altlist here
+				);
+				list.push(altlist)
+				altlist = []
+			// } else {
+			// 	list.push(
+			// 		<div key={id}>
+			// 			<Paper className={this.classes.paper}>
+			// 				<Typography variant="h6" underline="none">
+			// 					{" "}
+			// 					<Link name={item} onClick={this.onChange}>
+			// 						{item}
+			// 					</Link>
+			// 				</Typography>
+			// 			</Paper>
+			// 		</div>
+			// 	);
+			// }
+		});
+
+			// for (var key in this.state.menuIngreDict){
+			// 	// if (key === this.state.chosenMenu) {
+			// 		list.push(
+			// 			<table>
+			// 				<tr>
+			// 					<th>Item</th>
+			// 					<th>Item ID</th>
+			// 				</tr>
+			// 				{this.renderMenuItem(key, this.state.menuIngreDict[key])}
+			// 			</table>
+			// 		);
+			// 	// }
+			// };
 
 		return list;
 	}
