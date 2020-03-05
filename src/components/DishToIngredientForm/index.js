@@ -145,6 +145,7 @@ class DishToIngredientFormBase extends Component {
 
   handleChange= name => event =>  {
     let dictIndex = event.target.id.split("-")[4]
+    console.log(name.fooditem) //here
     // console.log(Object.values(this.state.availableIngredients)[dictIndex].ingredient)
     this.setState({...this.props, [name.fooditem]: Object.values(this.state.availableIngredients)[dictIndex].ingredient});
   }

@@ -7,6 +7,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import DateFnsUtils from "@date-io/date-fns";
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import {
 	MuiPickersUtilsProvider,
 	KeyboardDatePicker
@@ -50,6 +51,7 @@ const INITIAL_STATE = {
 	open: false,
 	foodId: "",
 	month: "",
+	availableIngredients: [],
 	// priFoodId: ""
 };
 
@@ -79,6 +81,14 @@ class NewBasicIngredientForm extends Component {
 				storageDate: string
 			});
 		}
+		this.props.firebase.fs.collection('Ingredients').get().then(snapshot=> {
+			snapshot.forEach(doc => {
+			  
+			  this.setState((prevstate) => ({
+				availableIngredients: [...prevstate.availableIngredients, {ingredient: doc.data().name}]
+			  }));
+			})
+		  })
 	}
 
 	onSubmit = event => {
@@ -115,6 +125,8 @@ class NewBasicIngredientForm extends Component {
 			foodName: "",
 			// priFoodId: ""
 		});
+		window.location.reload(false);
+
 	};
 
 	handleHome = () => {
@@ -141,6 +153,13 @@ class NewBasicIngredientForm extends Component {
 		});
 		// console.log(this.state.date)
 	};
+
+	handleFillChange= name => event =>  {
+		let dictIndex = event.target.id.split("-")[4]
+		// console.log(this.state.foodName)
+		// console.log(Object.values(this.state.availableIngredients)[dictIndex].ingredient)
+		this.setState({...this.props, [name]: Object.values(this.state.availableIngredients)[dictIndex].ingredient});
+	  }
 
 	createTextField = (name, temp, label, placeholder) => {
 		// const read = readonly === "true"
@@ -177,12 +196,26 @@ class NewBasicIngredientForm extends Component {
 						)}
 
 						{/* Food Name */}
-						{this.createTextField(
+						{/* {this.createTextField(
 							"foodName",
 							this.state.foodName,
 							"Food Name",
 							"Food Name"
+						)} */}
+
+						<Autocomplete
+						id="combo-box-demo"
+						options={this.state.availableIngredients}
+						getOptionLabel={option => option.ingredient}
+						fullWidth
+						onChange={this.handleFillChange("foodName")}  
+						renderInput={params => (
+							<TextField {...params} 
+							label="Ingredient:" 
+							variant="outlined" 
+							fullWidth />
 						)}
+						/>
 
 						{/* <TextField
 							variant="outlined"
