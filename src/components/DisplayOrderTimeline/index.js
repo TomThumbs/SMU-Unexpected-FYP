@@ -106,7 +106,11 @@ class DisplayOrderTimelineBase extends Component {
 		// console.log(this.state);
 		const isDone =
 			this.state.statusList.indexOf(itemIndex) <=
-			this.state.statusList.indexOf(status);
+			this.state.statusList.indexOf(status) && itemIndex !== "Event in Progress";
+
+		const isDoneService =
+			this.state.statusList.indexOf(itemIndex) <=
+			this.state.statusList.indexOf(status) && itemIndex === 'Event in Progress';
 
 		// Check if current item is preparation
 		// const isRec = itemIndex === "Order Received";
@@ -239,8 +243,39 @@ class DisplayOrderTimelineBase extends Component {
 							Read
 						</Link>
 					) : (
-						<p>Pending</p>
+						isDoneService ? (
+							<Link
+								component={RouterLink}
+								to={{
+									pathname: routepath,
+									search: "?id=" + this.state.orderID,
+									state: {
+										docID: this.state.docID,
+										menu: this.state.menu,
+										orderID: this.state.orderID
+									}
+								}}
+							>
+								Adjust Temperature
+							</Link>
+						) : <p>Pending</p>
 					)}
+					{/* {isDoneService ? (
+						<Link
+							component={RouterLink}
+							to={{
+								pathname: routepath,
+								search: "?id=" + this.state.orderID,
+								state: {
+									docID: this.state.docID,
+									menu: this.state.menu,
+									orderID: this.state.orderID
+								}
+							}}
+						>
+							Adjust Temperature
+						</Link>
+					) : null} */}
 					<span className="circle" />
 				</div>
 			</div>
@@ -262,7 +297,9 @@ class DisplayOrderTimelineBase extends Component {
 
 		return (
 			<Container component="main" maxWidth="md">
-				<Typography variant="h2" align="center">Order Number: {this.state.orderID}</Typography>
+				<Typography variant="h2" align="center">
+					Order Number: {this.state.orderID}
+				</Typography>
 				{dataIsLoaded && this.timeline()}
 			</Container>
 		);
