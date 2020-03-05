@@ -143,14 +143,20 @@ class NewBasicIngredientForm extends Component {
 	};
 
 	handleDateChange = event => {
-		let tempMonth = (Number(event.getMonth()) + 1).toString();
-		if (tempMonth.length === 1) {
-			tempMonth = "0" + tempMonth;
+
+
+		if (event) {
+			let tempMonth = (Number(event.getMonth()) + 1).toString();
+			if (tempMonth.length === 1) {
+				tempMonth = "0" + tempMonth;
+			}
+			this.setState({
+				expiryDate: event,
+				month: tempMonth
+			});
+		} else {
+
 		}
-		this.setState({
-			expiryDate: event,
-			month: tempMonth
-		});
 		// console.log(this.state.date)
 	};
 
