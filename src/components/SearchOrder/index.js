@@ -12,8 +12,12 @@ import Container from "@material-ui/core/Container";
 import Button from "@material-ui/core/Button";
 import * as ROUTES from "../../constants/routes";
 
+import Typography from "@material-ui/core/Typography";
+import Paper from "@material-ui/core/Paper";
+
 const INITIAL_STATE = {
-	searchId: ""
+	searchId: "",
+	errorMsg: ""
 };
 
 const useStyles = makeStyles(theme => ({
@@ -44,15 +48,34 @@ class SearchOrderBase extends Component {
 	componentDidMount() {}
 
 	onSubmit = event => {
-		console.log(this.state);
+		event.preventDefault();
+		console.log(this.state.searchId);
 		// const serch =
-		this.props.history.push({
-			pathname: ROUTES.ORDER_TIMELINE,
-			search: "?id=" + this.state.searchId,
-			state: {
-				orderID: this.state.searchId
+		// 
+		this.props.firebase.fs
+		.collection("Catering_orders")
+		.where("orderID", "==", Number(this.state.searchId))
+		.get()
+		.then(snap => {
+			snap.forEach(doc => {
+			// let data = doc.data();
+			console.log(doc,"asdasds")
+			if (doc.exists) {
+				this.props.history.push({
+					pathname: ROUTES.ORDER_TIMELINE,
+					search: "?id=" + this.state.searchId,
+					state: {
+						orderID: this.state.searchId
+					}
+				});		
+			} else {
+				this.setState({
+					errorMsg: "Order does not exist."
+				})
 			}
-		});
+			})
+		})
+// console.log(this.state.errorMsg)
 	};
 
 	onChange = event => {
@@ -90,6 +113,15 @@ class SearchOrderBase extends Component {
 						Search
 					</Button>
 				</form>
+				<div>
+				<Paper className={this.classes.paper}>
+
+				<Typography variant="h6" align="center" gutterBottom>
+					{this.state.errorMsg}
+				</Typography>
+				
+				</Paper>
+				</div>
 			</Container>
 		
 		);
