@@ -55,7 +55,8 @@ const INITIAL_STATE = {
 	kitchenImageURL: "",
 	commence: "",
 	searchId: "",
-	ingredients: {}
+	ingredients: {},
+	dataIsLoaded: false
 };
 
 class OrderPreparationBase extends Component {
@@ -63,7 +64,15 @@ class OrderPreparationBase extends Component {
 		super(props);
 		this.state = {
 			...INITIAL_STATE,
-			orderID: props.location.state.orderID
+			orderID: props.location.state.orderID,
+			headchef: props.location.state.headchef,
+			assistantA: props.location.state.assistantA,
+			assistantB: props.location.state.assistantB,
+			kitchenImageURL: props.location.state.kitchenImageURL,
+			commence: props.location.state.preparationCommencement,
+			statusDates: props.location.state.StatusDates,
+			menu: props.location.state.menu,
+			ingredientsUsed: props.location.state.ingredientsUsed
 		}; //props.location.state.orderID
 		this.classes = { useStyles };
 	}
@@ -76,6 +85,10 @@ class OrderPreparationBase extends Component {
 		this.setState({
 			orderID: urlId
 		});
+
+		if (this.state.statusDates !== undefined) {
+			this.setState({ statusDate: this.state.statusDates[1] });
+		}
 
 		// ---------- RETRIEVE INGREDIENTS ----------
 		console.log("Retreving Menu Ingredients");
@@ -102,32 +115,41 @@ class OrderPreparationBase extends Component {
 						}
 					}));
 				});
+				this.setState({ dataIsLoaded: true });
 			})
 			.catch(function(error) {
 				console.log("Error getting documents: ", error);
 			});
 
 		// ---------- RETRIEVE CATERING ORDER ----------
-		this.props.firebase.fs
-			.collection("Catering_orders")
-			.where("orderID", "==", urlId)
-			.get()
-			.then(querySnapshot => {
-				querySnapshot.forEach(doc => {
-					let data = doc.data();
-					this.setState({
-						orderID: data.orderID,
-						headchef: data.headchef,
-						assistantA: data.assistantA,
-						assistantB: data.assistantB,
-						kitchenImageURL: data.kitchenImageURL,
-						commence: data.preparationCommencement,
-						statusDate: data.StatusDates[1],
-						menu: data.Menu,
-						ingredientsUsed: data.IngredientsUsed
+		if (
+			this.state.orderID === undefined ||
+			this.state.headchef === undefined ||
+			this.state.assistantA === undefined ||
+			this.state.assistantB === undefined
+		) {
+			console.log("Retreving Catering Order");
+			this.props.firebase.fs
+				.collection("Catering_orders")
+				.where("orderID", "==", urlId)
+				.get()
+				.then(querySnapshot => {
+					querySnapshot.forEach(doc => {
+						let data = doc.data();
+						this.setState({
+							orderID: data.orderID,
+							headchef: data.headchef,
+							assistantA: data.assistantA,
+							assistantB: data.assistantB,
+							kitchenImageURL: data.kitchenImageURL,
+							commence: data.preparationCommencement,
+							statusDate: data.StatusDates[1],
+							menu: data.Menu,
+							ingredientsUsed: data.IngredientsUsed
+						});
 					});
 				});
-			});
+		}
 	}
 
 	onChange = event => {
@@ -154,22 +176,22 @@ class OrderPreparationBase extends Component {
 		let ingts = [];
 
 		ingts.push(
-			<Grid item xs={3} key='Ingredient ID'>
+			<Grid item xs={3} key="Ingredient ID">
 				Ingredient ID
 			</Grid>
 		);
 		ingts.push(
-			<Grid item xs={3} key='Ingredient Name'>
+			<Grid item xs={3} key="Ingredient Name">
 				Ingredient Name
 			</Grid>
 		);
 		ingts.push(
-			<Grid item xs={3} key='Storage Date'>
+			<Grid item xs={3} key="Storage Date">
 				Storage Date
 			</Grid>
 		);
 		ingts.push(
-			<Grid item xs={3} key='Expiry Date'>
+			<Grid item xs={3} key="Expiry Date">
 				Expiry Date
 			</Grid>
 		);
@@ -188,12 +210,12 @@ class OrderPreparationBase extends Component {
 				</Grid>
 			);
 			ingts.push(
-				<Grid item xs={3} key={barcode + ' storage'}>
+				<Grid item xs={3} key={barcode + " storage"}>
 					{this.state.ingredients[barcode][1]}
 				</Grid>
 			);
 			ingts.push(
-				<Grid item xs={3} key={barcode + 'expiry'}>
+				<Grid item xs={3} key={barcode + "expiry"}>
 					{this.state.ingredients[barcode][2]}
 				</Grid>
 			);
@@ -204,7 +226,6 @@ class OrderPreparationBase extends Component {
 
 	// ---------- Dish Selection ----------
 	renderMenu() {
-		// console.log(this.state);
 		let menu = [];
 
 		this.state.menu.forEach(dish => {
@@ -235,13 +256,10 @@ class OrderPreparationBase extends Component {
 	}
 
 	render() {
-		// console.log(this.state);
+		const dataIsLoaded = this.state.dataIsLoaded === true;
+
 		return (
-			<Container
-				component="main"
-				maxWidth="xs"
-				className={this.classes.root}
-			>
+			<Container component="main" maxWidth="xs" className={this.classes.root}>
 				{this.renderBackButton()}
 				<Paper className={this.classes.paper}>
 					<Typography variant="h3" align="center" gutterBottom>
@@ -282,7 +300,7 @@ class OrderPreparationBase extends Component {
 							</Button>
 						</form>
 					</Paper>
-					{this.renderMenu()}
+					{dataIsLoaded && this.renderMenu()}
 				</Paper>
 			</Container>
 		);

@@ -4,7 +4,6 @@ import { withRouter } from "react-router-dom";
 import { Link as RouterLink } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core/styles";
-// import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
@@ -15,11 +14,8 @@ import TextField from "@material-ui/core/TextField";
 import FileUploader from "react-firebase-file-uploader";
 import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
-// import Link from "@material-ui/core/Link";
 
 import { withAuthorization } from "../Session";
-
-// import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 
 import * as ROUTES from "../../constants/routes";
 

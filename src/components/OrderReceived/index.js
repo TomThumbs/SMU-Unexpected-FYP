@@ -40,7 +40,6 @@ import { Link as RouterLink } from 'react-router-dom';
 
 const INITIAL_STATE = {
 	orderID: "",
-	// statusList: ['Order Received', 'Preparation', 'Delivery', 'Service', 'Order Complete'],
 	dateOnly: "",
 	time: "",
 	venue: "",
@@ -125,7 +124,7 @@ class OrderReceivedBase extends Component {
 
 	griditem(title,info){
 		return (
-			<Grid container> 
+			<Grid container>
 				<Grid item xs={5}>{title}</Grid>
 				<Grid item xs={7}><b>{info}</b></Grid>
 			</Grid>
@@ -151,17 +150,17 @@ class OrderReceivedBase extends Component {
 						<Grid item xs={6}>
 							{this.griditem("Created On:",this.state.createdOn)}
 							{this.griditem("Created By:",this.state.createdBy)}
-							
+
 							<br></br>
 
 							{this.griditem("Customer Name:",this.state.custName)}
 							{this.griditem("Customer HP No.:",this.state.custHp)}
-							
+
 							<br></br>
 
 							{this.griditem("Delivery Venue:",this.state.venue)}
 							{this.griditem("Delivery Date:",this.state.dateOnly)}
-							{this.griditem("Delivery Time:",this.state.time)} 
+							{this.griditem("Delivery Time:",this.state.time)}
 							{this.griditem("No. of Pax:",this.state.pax)}
 
 							<br></br>
@@ -169,11 +168,11 @@ class OrderReceivedBase extends Component {
 							{this.renderRemarks()}
 						</Grid>
 
-							
+
 						<Divider orientation="vertical" flexItem />
-						
+
 						<Grid item xs={1} ></Grid>
-							
+
 
 						<Grid item xs={4} >
 							<b>Dishes ordered:</b>
@@ -198,7 +197,7 @@ class OrderReceivedBase extends Component {
 								variant="outlined"
 								color="primary"
 								fullWidth
-								component={RouterLink} 
+								component={RouterLink}
 								to={ROUTES.LANDING}
 								>Home
 							</Button>
@@ -207,7 +206,7 @@ class OrderReceivedBase extends Component {
 					</Typography>
 				</Paper>
 			</Container>
-	
+
 		);
 	}
 }
