@@ -77,7 +77,7 @@ class DisplayOrderTimelineBase extends Component {
 			.then(querySnapshot => {
 				// console.log(urlId);
 				querySnapshot.forEach(doc => {
-					console.log(doc.data());
+					// console.log(doc.data());
 					this.setState({
 						docID: doc.id,
 						status: doc.data().Status,
@@ -103,7 +103,7 @@ class DisplayOrderTimelineBase extends Component {
 	}
 
 	timelineItem(key, itemIndex, status) {
-		console.log(this.state);
+		// console.log(this.state);
 		const isDone =
 			this.state.statusList.indexOf(itemIndex) <=
 			this.state.statusList.indexOf(status);
@@ -232,7 +232,7 @@ class DisplayOrderTimelineBase extends Component {
 								state: {
 									docID: this.state.docID,
 									menu: this.state.menu,
-									orderID: this.state.orderID
+									orderID: this.state.orderID,
 								}
 							}}
 						>
