@@ -5,7 +5,7 @@ import "../../App.css";
 import { withRouter } from "react-router-dom";
 import { withFirebase } from "../Firebase";
 import { withAuthorization } from "../Session";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink } from 'react-router-dom';
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 
@@ -22,85 +22,50 @@ class PostDeliveryFormBase extends Component {
 	render() {
 		console.log(this.props.location);
 		return (
+			
 			<Container component="main" maxWidth="sm">
-				<Typography gutterBottom variant="h4">
-					Delivery Declaration
-				</Typography>
+				
+				<Typography gutterBottom variant="h4">Delivery Declaration</Typography>
 				<Paper>
-					<Typography variant="h6">Submission Successful</Typography>
-					<Typography variant="h6">
-						Order Number: {this.props.location.orderID}
-					</Typography>
-					<Typography variant="body1">
-						Name of Delivery Driver: {this.props.location.driver}
-					</Typography>
+					<Typography variant="h6"><font color="#2e7d32">Submission Successful</font></Typography>
+					<Typography variant="h6">Order Number: {this.props.location.orderID}</Typography>
+					<Typography variant="body1">Name of Delivery Driver: {this.props.location.driver}</Typography>
 
-					<p>
-						<Divider variant="li" />
-					</p>
-
+					<p><Divider variant="li" /></p>
+					
 					<Grid container xs={12}>
+						
 						<Grid item xs={6}>
 							<FormControlLabel
-								control={
-									<Checkbox
-										checked="true"
-										disabled
-										color="primary"
-										name="cleanReady"
-										value="cleanReady"
-									/>
-								}
+								control={<Checkbox checked="true" disabled color="primary" name="cleanReady" value="cleanReady"/>}
 								label="Food securely packed?"
 							/>
 						</Grid>
 
-						<Grid item xs>
+						<Grid item xs>	
 							<FormControlLabel
-								control={
-									<Checkbox
-										checked="true"
-										disabled
-										color="primary"
-										name="allItems"
-										value="allItems"
-									/>
-								}
+								control={<Checkbox checked="true" disabled color="primary" name="allItems" value="allItems"/>}
 								label="Vehicle Clean?"
-							/>
+							/>		
 						</Grid>
-
-						<Grid item xs={6}>
+						
+						<Grid item xs={6}>	
 							<FormControlLabel
-								control={
-									<Checkbox
-										checked="true"
-										disabled
-										color="primary"
-										name="foodWrap"
-										value="foodWrap"
-									/>
-								}
+								control={<Checkbox checked="true" disabled color="primary" name="foodWrap" value="foodWrap"/>}
 								label="No strong odors?"
-							/>
+							/>	
 						</Grid>
-
-						<Grid item xs>
-							<FormControlLabel
-								control={
-									<Checkbox
-										checked="true"
-										disabled
-										color="primary"
-										name="foodWrap"
-										value="foodWrap"
-									/>
-								}
+						
+						
+						<Grid item xs>	
+						 	<FormControlLabel
+								control={<Checkbox checked="true" disabled color="primary" name="foodWrap" value="foodWrap"/>}
 								label="Buffet decor loaded?"
 							/>
 						</Grid>
-					</Grid>
-
+					</Grid>	
+									
+					
 					<br></br>
 					<Grid container spacing={3}>
 						<Grid item xs spacing={3}>
@@ -117,16 +82,10 @@ class PostDeliveryFormBase extends Component {
 							<Button
 								variant="outlined"
 								fullWidth
-								component={RouterLink}
-								to={{
-									pathname: ROUTES.ORDER_TIMELINE,
-									search: "?id=" + this.props.location.orderID,
-									state:{
-										orderID: this.props.location.orderID
-									}
-								}}
-							>
-								Back to Timeline
+								component={RouterLink} to={{
+								pathname: ROUTES.ORDER_TIMELINE,
+								search: "?id=" + this.props.location.orderID
+							}}>Back to Timeline
 							</Button>
 						</Grid>
 						<Grid item xs={12}>
@@ -134,15 +93,15 @@ class PostDeliveryFormBase extends Component {
 								variant="outlined"
 								color="primary"
 								fullWidth
-								component={RouterLink}
+								component={RouterLink} 
 								to={ROUTES.LANDING}
-							>
-								Home
+								>Home
 							</Button>
 						</Grid>
 					</Grid>
 				</Paper>
 			</Container>
+			
 		);
 	}
 }

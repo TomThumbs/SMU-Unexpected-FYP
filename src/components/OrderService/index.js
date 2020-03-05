@@ -15,6 +15,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import { sizing } from '@material-ui/system';
 
 
+
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 // import Typography from "@material-ui/core/Typography";
@@ -25,31 +26,13 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import * as ROUTES from "../../constants/routes";
 import { compose } from "recompose";
 
+
+
 const useStyles = makeStyles(theme => ({
-	root: {
-		flexGrow: 1
+	summary: {
+		backgroundColor: "#d4d4d4"
 	},
-	paper: {
-		marginTop: theme.spacing(8),
-		display: "flex",
-		flexDirection: "column",
-		// maxWidth: 400,
-		textAlign: "center",
-		// margin: `${theme.spacing(1)}px auto`,
-		height: 240,
-		width: 400,
-		padding: theme.spacing(2)
-	},
-	form: {
-		width: "100%", // Fix IE 11 issue.
-		marginTop: theme.spacing(1)
-	},
-	submit: {
-		margin: theme.spacing(3, 0, 2)
-	},
-	text: {
-		textAlign: "center"
-	}
+
 }));
 
 const INITIAL_STATE = {
@@ -61,7 +44,7 @@ const INITIAL_STATE = {
 	pax: "",
 	status: "",
 	menu: [],
-	IoTHeaters: [{ ID: 0, status: null }],
+	IoTHeaters: [{ ID: "", status: null }],
 	dataIsLoaded: false,
 	commencement: new Date (),
 	StatusDates: "",
@@ -77,6 +60,7 @@ class OrderServiceBase extends Component {
 			orderID: props.location.state.orderID
 		};
 		this.classes = { useStyles };
+		
 	}
 
 	componentDidMount() {
@@ -209,7 +193,7 @@ class OrderServiceBase extends Component {
 
 	onChange = dish => event => {
 		this.setState({
-			[dish + " heater"]: event.target.value
+			[dish + "heater"]: event.target.value
 		});
 	};
 
@@ -264,7 +248,6 @@ class OrderServiceBase extends Component {
 	}
 
 	render() {
-
 		const dataIsLoaded = this.state.dataIsLoaded === true;
 		console.log(this.state);
 		return (

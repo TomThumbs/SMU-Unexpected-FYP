@@ -59,9 +59,8 @@ const INITIAL_STATE = {
 	venue: "",
 	pax: "",
 	status: "",
-	menu: [],
+	menu: []
 	// menuIngredients:[]
-	dishIngredientsCheck: []
 };
 
 class OrderPreparationEditBase extends Component {
@@ -127,9 +126,6 @@ class OrderPreparationEditBase extends Component {
 							this.setState({
 								[dishIngt]: false
 							});
-							this.setState(prevState => ({
-								dishIngredientsCheck: [...prevState.dishIngredientsCheck, dishIngt]
-							}))
 						});
 					}
 				});
@@ -327,17 +323,7 @@ class OrderPreparationEditBase extends Component {
 	}
 
 	render() {
-		let counter = 0
-		this.state.dishIngredientsCheck.forEach(item => {
-			if(this.state[item] === true){
-				counter += 1
-			}
-		})
-
-		let completed = counter === this.state.dishIngredientsCheck.length
-
-		console.log(completed)
-
+		// console.log(this.state)
 		return (
 			<Container component="main" maxWidth="xs" className={this.classes.root}>
 			
@@ -352,7 +338,6 @@ class OrderPreparationEditBase extends Component {
 					<Grid container spacing={1}>
 						<Grid item xs={12}>
 							<Button
-								disabled={!completed}
 								type="submit"
 								fullWidth
 								variant="contained"

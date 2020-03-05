@@ -248,6 +248,19 @@ ul {
 	z-index: 100;
 }
 
+/* ----------ORDER SERVICE ---------- */
+
+.item-height-dish {
+  min-height: 42px
+}
+
+/* ---------- ITEM MGMT---------- */
+
+.button-img-height {
+  min-height: 300px
+}
+
+/* ---------- ROOT  ---------- */
 .MuiPaper-root {
 	transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
 	background-color: #fff;
@@ -257,6 +270,9 @@ ul {
 .MuiContainer-root {
 	padding-top: 5%;
 	padding-bottom: 2%;
-	font-family: "Roboto";
 	flex-grow: 1;
+}
+
+.MuiPaper-outlined {
+  padding: 10px
 }
