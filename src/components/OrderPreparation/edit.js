@@ -361,8 +361,9 @@ class OrderPreparationEditBase extends Component {
 				</Typography>
 				<Paper className={this.classes.paper}>
 					<Typography variant="h6" gutterBottom color="primary">Order Number: {this.state.orderID}</Typography>
+					{this.renderMenu()}
+
 					<form onSubmit={this.onSubmit}>
-						{this.renderMenu()}
 
 						<Grid container spacing={1}>
 							<Grid item xs={12}>

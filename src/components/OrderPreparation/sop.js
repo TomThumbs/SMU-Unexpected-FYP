@@ -13,7 +13,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import FileUploader from "react-firebase-file-uploader";
-import Grid from '@material-ui/core/Grid';
+import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
 // import Link from "@material-ui/core/Link";
 
@@ -170,14 +170,13 @@ class OrderPreparationSopBase extends Component {
 		} else {
 			return (
 				<Typography variant="subtitle2" color="secondary">
-						Please ensure that you have adhered to and completed the checklist requirements. Please also upload a picture of the state of the kitchen.
+					Please ensure that you have adhered to and completed the
+					checklist requirements. Please also upload a picture of the
+					state of the kitchen.
 				</Typography>
 			);
 		}
 	}
-
-	
-
 
 	onSubmit = event => {
 		this.props.firebase.fs
@@ -222,137 +221,141 @@ class OrderPreparationSopBase extends Component {
 	};
 
 	render() {
-		let isInvalid =
-			this.state.hands === false ||
-			this.state.workspace === false ||
-			this.state.imageURL.length === 0;
-		
-			return (
-				<Container component="main" maxWidth="xs" >
+		// let isInvalid =
+		// 	this.state.hands === false ||
+		// 	this.state.workspace === false ||
+		// 	this.state.imageURL.length === 0;
 
-			
-				<Typography gutterBottom variant="h4">Order Preparation Kitchen Declaration</Typography>
+		return (
+			<Container component="main" maxWidth="xs">
+				<Typography gutterBottom variant="h4">
+					Order Preparation Kitchen Declaration
+				</Typography>
 				<Paper className={this.classes.paper}>
-					
-					<Typography variant="h6" gutterBottom>Order Number: {this.state.orderID}</Typography>
+					<Typography variant="h6" gutterBottom>
+						Order Number: {this.state.orderID}
+					</Typography>
 
 					{/* ---------- FORM ---------- */}
-					
+
 					<form onSubmit={this.onSubmit}>
-					<React.Fragment>
-					<Grid container spacing={2}>
-						<Grid item xs={12}>
-							<TextField
-								variant="outlined"
-								required
-								fullWidth
-								name="headchef"
-								value={this.state.headchef}
-								label="Head Chef"
-								onChange={this.onChange}
-								type="text"
-								placeholder="Head Chef"
-								autoFocus
-							/>
-						</Grid>
-						<Grid item xs={12}>
-							<TextField
-								variant="outlined"
-								
-								required
-								fullWidth
-								name="assistantA"
-								value={this.state.assistantA}
-								label="Assistant A"
-								onChange={this.onChange}
-								type="text"
-								placeholder="Assistant A"
-								autoFocus
-							/>
-						</Grid>
-						<Grid item xs={12}>
-							<TextField
-								variant="outlined"
-								required
-								fullWidth
-								name="assistantB"
-								value={this.state.assistantB}
-								label="Assistant B"
-								onChange={this.onChange}
-								type="text"
-								placeholder="Assistant B"
-								autoFocus
-							/>
-						</Grid>
-						
-						<Grid item xs={12}>
-							<Typography variant="h6" gutterBottom>Checklist</Typography>
-						</Grid>
-					
-					</Grid>
+						<React.Fragment>
+							<Grid container spacing={2}>
+								<Grid item xs={12}>
+									<TextField
+										variant="outlined"
+										required
+										fullWidth
+										name="headchef"
+										value={this.state.headchef}
+										label="Head Chef"
+										onChange={this.onChange}
+										type="text"
+										placeholder="Head Chef"
+										autoFocus
+									/>
+								</Grid>
+								<Grid item xs={12}>
+									<TextField
+										variant="outlined"
+										required
+										fullWidth
+										name="assistantA"
+										value={this.state.assistantA}
+										label="Assistant A"
+										onChange={this.onChange}
+										type="text"
+										placeholder="Assistant A"
+										autoFocus
+									/>
+								</Grid>
+								<Grid item xs={12}>
+									<TextField
+										variant="outlined"
+										required
+										fullWidth
+										name="assistantB"
+										value={this.state.assistantB}
+										label="Assistant B"
+										onChange={this.onChange}
+										type="text"
+										placeholder="Assistant B"
+										autoFocus
+									/>
+								</Grid>
 
-					<Grid container xs={12}>
-						<Grid item xs={12}>
-							<FormControlLabel
-								control={
-									<Checkbox
-										name="hands"
-										onChange={this.onBoxChange}
-										value="remember"
-										color="primary"
-									/>
-								}
-								label="Washed hands?"
-							/>
-						</Grid>
-						
-						<Grid item xs={12}>
-							<FormControlLabel
-								control={
-									<Checkbox
-										name="workspace"
-										onChange={this.onBoxChange}
-										value="remember"
-										color="primary"
-										
-									/>
-								}
-								label="Use of Mask and gloves?"
-							/>
-						</Grid>
+								<Grid item xs={12}>
+									<Typography variant="h6" gutterBottom>
+										Checklist
+									</Typography>
+								</Grid>
+							</Grid>
 
-						<Grid item xs={12}>
-							<FormControlLabel
-								control={
-									<Checkbox
-										name="workspace"
-										onChange={this.onBoxChange}
-										value="remember"
-										color="primary"
+							<Grid container xs={12}>
+								<Grid item xs={12}>
+									<FormControlLabel
+										control={
+											<Checkbox
+												name="hands"
+												onChange={this.onBoxChange}
+												value="remember"
+												color="primary"
+											/>
+										}
+										label="Washed hands?"
 									/>
-								}
-								label="Clean workspace?"
-							/>
-						</Grid>
-						<Grid item xs={12}>
-							<FormControlLabel
-								control={
-									<Checkbox
-										name="workspace"
-										onChange={this.onBoxChange}
-										value="remember"
-										color="primary"
+								</Grid>
+
+								<Grid item xs={12}>
+									<FormControlLabel
+										control={
+											<Checkbox
+												name="workspace"
+												onChange={this.onBoxChange}
+												value="remember"
+												color="primary"
+											/>
+										}
+										label="Use of Mask and gloves?"
 									/>
-								}
-								label="Clean kitchen tools?"
-							/>
-						</Grid>
-					</Grid>
-						<p><Divider variant="li" /></p>
-						
-						<Typography variant="h6" gutterBottom>Attach Image of Kitchen</Typography>
+								</Grid>
+
+								<Grid item xs={12}>
+									<FormControlLabel
+										control={
+											<Checkbox
+												name="workspace"
+												onChange={this.onBoxChange}
+												value="remember"
+												color="primary"
+											/>
+										}
+										label="Clean workspace?"
+									/>
+								</Grid>
+								<Grid item xs={12}>
+									<FormControlLabel
+										control={
+											<Checkbox
+												name="workspace"
+												onChange={this.onBoxChange}
+												value="remember"
+												color="primary"
+											/>
+										}
+										label="Clean kitchen tools?"
+									/>
+								</Grid>
+							</Grid>
+							<p>
+								<Divider variant="li" />
+							</p>
+
+							<Typography variant="h6" gutterBottom>
+								Attach Image of Kitchen
+							</Typography>
 						</React.Fragment>
-						<Grid container spacing={1}>	
+						<Grid container spacing={1}>
 							<Grid item xs={12}>
 								<FileUploader
 									accept="image/*"
@@ -369,32 +372,43 @@ class OrderPreparationSopBase extends Component {
 							</Grid>
 
 							<Grid item xs={12}>
-							<Button
-								variant="outlined"
-								fullWidth
-								component={RouterLink} to={{
-								pathname: ROUTES.ORDER_TIMELINE,
-								search: "?id=" + this.state.orderID
-							}}>Back to Timeline
-							</Button>
+								<Button
+									variant="outlined"
+									fullWidth
+									component={RouterLink}
+									to={{
+										pathname: ROUTES.ORDER_TIMELINE,
+										search: "?id=" + this.state.orderID
+									}}
+								>
+									Back to Timeline
+								</Button>
+							</Grid>
+							<Grid item xs={12}>
+								<Button
+									variant="outlined"
+									color="primary"
+									fullWidth
+									component={RouterLink}
+									to={ROUTES.LANDING}
+								>
+									Home
+								</Button>
+							</Grid>
 						</Grid>
-						<Grid item xs={12}>
-							<Button
-								variant="outlined"
-								color="primary"
-								fullWidth
-								component={RouterLink} 
-								to={ROUTES.LANDING}
-								>Home
-							</Button>
-						</Grid>
-
-								
-						</Grid>
+						{/* <Button
+							disabled={isInvalid}
+							type="submit"
+							fullWidth
+							variant="contained"
+							color="primary"
+							className={this.classes.submit}
+						>
+							Submit
+						</Button> */}
 					</form>
 				</Paper>
 			</Container>
-	
 		);
 	}
 }
@@ -403,15 +417,3 @@ const OrderPreparationSop = withRouter(withFirebase(OrderPreparationSopBase));
 const condition = authUser => !!authUser;
 
 export default withAuthorization(condition)(OrderPreparationSop);
-
-
-{/* <Button
-	disabled={isInvalid}
-	type="submit"
-	fullWidth
-	variant="contained"
-	color="primary"
-	className={this.classes.submit}
->
-	Submit
-</Button> */}

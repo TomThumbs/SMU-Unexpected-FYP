@@ -43,6 +43,7 @@ import CookingSelection from './components/CookingSelection';
 import CookingForm from './components/CookingForm'
 
 import SmartHeaterDisplay from './views/smartHeater'
+import IoTHeater from './components/IoTHeater'
 
 // function App() {
 const App = () => (
@@ -62,7 +63,7 @@ const App = () => (
         <Route path={ROUTES.HOME} component={HomePage} />
 
         {/* ---------- SMART HEATING ---------- */}
-        <Route path={ROUTES.SMART_HEATING} component={SmartHeaterDisplay} />
+        <Route path={ROUTES.SMART_HEATING} component={IoTHeater} />
 
         {/* ---------- ITEM MANAGEMENT PAGE ---------- */}
         <Route path={ROUTES.ITEM_MANAGEMENT} component={ItemManagementPage} />
@@ -88,12 +89,12 @@ const App = () => (
         <Route path={ROUTES.ORDER_PREPARATION} component={OrderPreparation}/>
         <Route path={ROUTES.ORDER_PREPARATION_EDIT} component={OrderPreparationEdit}/>
         <Route path={ROUTES.ORDER_PREPARATION_SOP} component={OrderPreparationSop}/>
+        <Route path={ROUTES.ORDER_PREPARATION_POST_SOP} component={OrderPreparationPostSop}/>
         <Route path={ROUTES.ORDER_SERVICE_EDIT} component={OrderService}/>
         <Route path={ROUTES.ORDER_SERVICE} component={OrderServiceRead}/>
         <Route path={ROUTES.ORDER_COMPLETE} component={OrderCompletion}/>
 
 
-        <Route path={ROUTES.ORDER_PREPARATION_POST_SOP} component={OrderPreparationPostSop}/>
 
 
         <Route path={ROUTES.FINAL_OVERVIEW} component={FinalOverview}/>

@@ -26,11 +26,11 @@ const NavigationAuth = () => (
 				Search Order
 			</Link>
 		</li>
-		<li className="nav-link">
+		{/* <li className="nav-link">
 			<Link className="navigation-link" to={ROUTES.SMART_HEATING}>
 				Heater IoT
 			</Link>
-		</li>
+		</li> */}
 		<li className="nav-link">
 			<Link className="navigation-link" to={ROUTES.ORDER_FORM}>
 				Create New Order
