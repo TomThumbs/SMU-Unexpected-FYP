@@ -37,7 +37,7 @@ import { OrderDelivery, PostDeliveryForm } from './components/OrderDelivery'
 import { OrderService, OrderServiceRead } from './components/OrderService'
 import { OrderCompletion, FinalOverview } from './components/OrderComplete'
 
-import DishToIngredientForm from './components/DishToIngredientForm'
+import DishToIngredientForm from './components/DigitalRecipie'
 import { withAuthentication } from './components/Session';
 import CookingSelection from './components/CookingSelection';
 import CookingForm from './components/CookingForm'
