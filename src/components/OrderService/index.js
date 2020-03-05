@@ -15,7 +15,6 @@ import MenuItem from "@material-ui/core/MenuItem";
 import { sizing } from '@material-ui/system';
 
 
-
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 // import Typography from "@material-ui/core/Typography";
@@ -248,6 +247,7 @@ class OrderServiceBase extends Component {
 	}
 
 	render() {
+
 		const dataIsLoaded = this.state.dataIsLoaded === true;
 		console.log(this.state);
 		return (
