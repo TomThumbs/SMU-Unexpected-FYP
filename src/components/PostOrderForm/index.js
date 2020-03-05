@@ -68,11 +68,15 @@ class PostOrderFormBase extends Component {
 				</Typography>
 					<br></br>
 				<Paper>
-					{this.griditem("Order Number:", this.props.location.orderID)}
-					{this.griditem("Customer Company:", this.props.location.custcompany)}
-					{this.griditem("Customer Email:", this.props.location.custemail)}
-					{this.griditem("Customer Contact:", this.props.location.custcontact)}
+					<Typography variant="h6" gutterBottom color="primary">Order Number: {this.props.location.orderID}</Typography>
+					{/* {this.griditem("Order Number:", this.props.location.orderID)} */}
 					{this.griditem("Customer Name:", this.props.location.custname)}
+					{this.griditem("Customer Contact:", this.props.location.custcontact)}
+					{this.griditem("Customer Email:", this.props.location.custemail)}
+					{this.griditem("Customer Company:", this.props.location.custcompany)}
+					
+					
+					<br></br>
 					{this.griditem(
 						"Date:",
 						this.props.location.date.split(" ")[2] +
@@ -84,6 +88,7 @@ class PostOrderFormBase extends Component {
 					{this.griditem("Time:", this.props.location.time)}
 					{this.griditem("Venue:", this.props.location.venue)}
 					{this.griditem("Pax:", this.props.location.pax)}
+					<br></br>
 					{this.griditem("Payment Method:", this.props.location.payment)}
 					<br></br>
 					{this.renderRemarks()}

@@ -294,8 +294,11 @@ class OrderPreparationEditBase extends Component {
 				<div key={id}>
 					<Grid container style={{ paddingBottom: 18 }}>
 						<Grid item xs={12}>
+							<Typography variant="subtitle2" color="textSecondary">
+								Dish Name:
+							</Typography>
 							<Typography variant="h6">
-								Dish Name: {dish}
+								{dish}
 							</Typography>
 						</Grid>
 
@@ -354,10 +357,10 @@ class OrderPreparationEditBase extends Component {
 				className={this.classes.root}
 			>
 				<Typography gutterBottom variant="h4">
-					Tagging of Ingredients to Dish <br></br> Order Number:{" "}
-					{this.state.orderID}
+					Tag Ingredients to Dish
 				</Typography>
 				<Paper className={this.classes.paper}>
+					<Typography variant="h6" gutterBottom color="primary">Order Number: {this.state.orderID}</Typography>
 					<form onSubmit={this.onSubmit}>
 						{this.renderMenu()}
 

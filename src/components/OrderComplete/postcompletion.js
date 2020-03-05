@@ -106,8 +106,8 @@ class FinalOverviewBase extends Component {
 					.get()
 					.then(docu => {
 						this.setState({
-							custName: data.Name,
-							custHp: data.HP
+							custName: docu.data().Name,
+							custHp: docu.data().HP
 						});
 					});
 				console.log(this.state);
@@ -161,7 +161,7 @@ class FinalOverviewBase extends Component {
 
 			ingredientsID.forEach(ingtID => {
 				let ingtname = this.state[ingtID]
-				listofmenu.push(<Typography>{ingtname}: {ingtID}</Typography>)
+				listofmenu.push(<Typography variant="subtitle2" color="textSecondary"> &emsp; &emsp; {ingtname}: {ingtID}</Typography>)
 			});
 			listofmenu.push(<br/>);
 		}
@@ -223,9 +223,7 @@ class FinalOverviewBase extends Component {
 					Order Overview
 				</Typography>
 				<Paper>
-					<Typography variant="h6" gutterBottom>
-						Order #{this.state.orderID}
-					</Typography>
+					<Typography variant="h6" gutterBottom color="primary">Order Number: {this.state.orderID}</Typography>
 					<Typography variant="body1">
 						{this.griditem("Created On:", this.state.createdOn)}
 						{this.griditem("Created By:", this.state.createdBy)}
@@ -258,7 +256,7 @@ class FinalOverviewBase extends Component {
 						{/* {this.griditem("Menu:", dataIsLoaded && this.renderMenu())} */}
 						<Grid container>
 							<Grid item xs={5}>
-								Menu
+								Menu:
 							</Grid>
 							<Grid item xs={7} >
 								<div id="menu"></div>

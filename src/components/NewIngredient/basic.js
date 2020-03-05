@@ -167,7 +167,7 @@ class NewBasicIngredientForm extends Component {
 			this.state.foodName.length === 0;
 		return (
 				<Container component="main" maxWidth="xs">
-					<Typography variant="h4"  gutterBottom>Tag Simple Ingredient</Typography>
+					<Typography variant="h4"  gutterBottom>Tag Raw Ingredient</Typography>
 					<Paper>
 						{this.createTextField(
 							"foodId",

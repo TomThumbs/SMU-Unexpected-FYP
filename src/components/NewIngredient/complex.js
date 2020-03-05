@@ -168,8 +168,11 @@ class NewComplexIngredientForm extends Component {
 		return (
 		
 				<Container component="main" maxWidth="xs">
-					<Typography variant="h4"  gutterBottom>Tag Complex Ingredient</Typography>
+					<Typography variant="h4"  gutterBottom>Tag Prepared Ingredient</Typography>
 					<Paper>
+
+						<Typography variant="body2"  color="secondary" gutterBottom>Prepared Ingredient may or may not contain more than one ingredient.</Typography>
+
 						{this.createTextField(
 							"foodId",
 							this.state.foodId,
@@ -191,7 +194,7 @@ class NewComplexIngredientForm extends Component {
 							fullWidth
 							name="priFoodId"
 							value={this.state.priFoodId}
-							label="This is a complex ingredient and contains other ingredients"
+							label="Other Ingredients Included:"
 							onChange={this.onChange}
 							type="text"
 							placeholder="Barcodes of other ingredients"
