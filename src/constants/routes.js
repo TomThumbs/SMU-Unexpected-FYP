@@ -42,6 +42,7 @@ export const ORDER_PREPARATION_POST_SOP = '/order-preparation-post-sop'
 export const FINAL_OVERVIEW = '/final-overview'
 export const ORDER_DELIVERY = '/order-delivery'
 export const ORDER_SERVICE = '/order-service'
+export const ORDER_SERVICE_EDIT = '/order-service-edit'
 export const ORDER_COMPLETE = '/order-complete'
 
 export const DISH_TO_INGREDIENT_FORM = '/digital-recipe'

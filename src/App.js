@@ -7,7 +7,7 @@ import {
 import * as ROUTES from './constants/routes';
 import './App.css';
 
-// BASIC
+// ---------- BASIC ---------- 
 import Navigation from './components/Navigation'
 import LandingPage from './components/Landing'
 import SignUpPage from './components/SignUp'
@@ -16,25 +16,25 @@ import HomePage from './components/Home'
 // import DeliveryForm from './components/DeliveryForm'
 // import PostDeliveryForm from './components/PostDeliveryForm'
 
-// ORDER FORM
+// ---------- ORDER FORM ---------- 
 import OrderForm from './components/OrderForm'
 import PostOrderForm from './components/PostOrderForm'
 // import DeliverySelection from './components/DeliverySelection'
 
-// ITEM MANAGEMENT
+// ---------- ITEM MANAGEMENT ---------- 
 import ItemManagementPage from './components/ItemManagementPage'
 import { NewBasicIngredient, NewComplexIngredient } from './components/NewIngredient'
 import DisplayIngredient from './components/DisplayIngredient'
 
 import DisplayOrders from './components/DisplayOrders'
 
-// SERARCH FOR ORDER TIMELINE
+// ---------- SERARCH FOR ORDER TIMELINE---------- 
 import SearchOrder from './components/SearchOrder'
 import DisplayOrderTimeline from './components/DisplayOrderTimeline'
 import OrderReceived from './components/OrderReceived'
 import { OrderPreparation, OrderPreparationEdit, OrderPreparationSop, OrderPreparationPostSop } from './components/OrderPreparation'
 import { OrderDelivery, PostDeliveryForm } from './components/OrderDelivery'
-import OrderService from './components/OrderService'
+import { OrderService, OrderServiceRead } from './components/OrderService'
 import { OrderCompletion, FinalOverview } from './components/OrderComplete'
 
 import DishToIngredientForm from './components/DishToIngredientForm'
@@ -88,7 +88,8 @@ const App = () => (
         <Route path={ROUTES.ORDER_PREPARATION} component={OrderPreparation}/>
         <Route path={ROUTES.ORDER_PREPARATION_EDIT} component={OrderPreparationEdit}/>
         <Route path={ROUTES.ORDER_PREPARATION_SOP} component={OrderPreparationSop}/>
-        <Route path={ROUTES.ORDER_SERVICE} component={OrderService}/>
+        <Route path={ROUTES.ORDER_SERVICE_EDIT} component={OrderService}/>
+        <Route path={ROUTES.ORDER_SERVICE} component={OrderServiceRead}/>
         <Route path={ROUTES.ORDER_COMPLETE} component={OrderCompletion}/>
 
 
