@@ -7,6 +7,7 @@ import {
 import * as ROUTES from './constants/routes';
 import './App.css';
 
+// BASIC
 import Navigation from './components/Navigation'
 import LandingPage from './components/Landing'
 import SignUpPage from './components/SignUp'
@@ -14,20 +15,25 @@ import SignInPage from './components/SignIn'
 import HomePage from './components/Home'
 // import DeliveryForm from './components/DeliveryForm'
 // import PostDeliveryForm from './components/PostDeliveryForm'
+
+// ORDER FORM
 import OrderForm from './components/OrderForm'
 import PostOrderForm from './components/PostOrderForm'
 // import DeliverySelection from './components/DeliverySelection'
+
+// ITEM MANAGEMENT
 import ItemManagementPage from './components/ItemManagementPage'
 import { NewBasicIngredient, NewComplexIngredient } from './components/NewIngredient'
 import DisplayIngredient from './components/DisplayIngredient'
 
 import DisplayOrders from './components/DisplayOrders'
 
+// SERARCH FOR ORDER TIMELINE
 import SearchOrder from './components/SearchOrder'
 import DisplayOrderTimeline from './components/DisplayOrderTimeline'
 import OrderReceived from './components/OrderReceived'
-
-import { OrderPreparation, OrderPreparationEdit, OrderPreparationSop, OrderDelivery, PostDeliveryForm, OrderPreparationPostSop } from './components/OrderPreparation'
+import { OrderPreparation, OrderPreparationEdit, OrderPreparationSop, OrderPreparationPostSop } from './components/OrderPreparation'
+import { OrderDelivery, PostDeliveryForm } from './components/OrderDelivery'
 import OrderService from './components/OrderService'
 import { OrderCompletion, FinalOverview } from './components/OrderComplete'
 
