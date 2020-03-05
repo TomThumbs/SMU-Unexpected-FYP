@@ -149,36 +149,57 @@ class FinalOverviewBase extends Component {
 	// };
 
 	renderMenu = () => {
-		let menu = document.querySelector('#menu')
-		let listofmenu = document.createElement("ul");
-		// console.log(this.state.menu.length);
-		// let i = 0;
-		// for (i = 0; i < this.state.menu.length; i++) {
-		// 	let dish = this.state.menu[i];
-		// 	listofmenu.push(<li> {dish}</li>);
-		// }
+		let listofmenu = [];
+		let ingredientsID = ''
+		let i = 0;
+		for (i = 0; i < this.state.menu.length; i++) {
+			let dish = this.state.menu[i];
+			listofmenu.push(<li> {dish}</li>);
 
-		this.state.menu.forEach(dish => {
-			let li = document.createElement("li");
-
-			let dishname = document.createElement("p");
-			dishname.textContent = dish;
-
-			li.appendChild(dishname);
-
-			let ingredientsID = this.state.ingredientsUsed[dish];
+			ingredientsID = this.state.ingredientsUsed[dish];
 			ingredientsID = ingredientsID.split(",");
-			ingredientsID.forEach(ingtID => {
-				let p = document.createElement("p");
-				p.textContent =
-					this.state[ingtID] + ": " + ingtID;
-				li.appendChild(p);
-			});
 
-			listofmenu.appendChild(li);
-		});
-		menu.appendChild(listofmenu);
+			ingredientsID.forEach(ingtID => {
+				let ingtname = this.state[ingtID]
+				listofmenu.push(<Typography>{ingtname}: {ingtID}</Typography>)
+			});
+			listofmenu.push(<br/>);
+		}
+		return listofmenu;
 	};
+
+
+	// renderMenu = () => {
+	// 	let menu = document.querySelector('#menu')
+	// 	let listofmenu = document.createElement("ul");
+	// 	// console.log(this.state.menu.length);
+	// 	// let i = 0;
+	// 	// for (i = 0; i < this.state.menu.length; i++) {
+	// 	// 	let dish = this.state.menu[i];
+	// 	// 	listofmenu.push(<li> {dish}</li>);
+	// 	// }
+
+	// 	this.state.menu.forEach(dish => {
+	// 		let li = document.createElement("li");
+
+	// 		let dishname = document.createElement("p");
+	// 		dishname.textContent = dish;
+
+	// 		li.appendChild(dishname);
+
+	// 		let ingredientsID = this.state.ingredientsUsed[dish];
+	// 		ingredientsID = ingredientsID.split(",");
+	// 		ingredientsID.forEach(ingtID => {
+	// 			let p = document.createElement("p");
+	// 			p.textContent =
+	// 				this.state[ingtID] + ": " + ingtID;
+	// 			li.appendChild(p);
+	// 		});
+
+	// 		listofmenu.appendChild(li);
+	// 	});
+	// 	menu.appendChild(listofmenu);
+	// };
 
 	griditem(title, info) {
 		return (

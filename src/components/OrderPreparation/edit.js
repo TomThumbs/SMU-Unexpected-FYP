@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { withFirebase } from "../Firebase";
 import { withRouter } from "react-router-dom";
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from "react-router-dom";
 
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 // import Grid from "@material-ui/core/Grid";
@@ -18,7 +18,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import Grid from '@material-ui/core/Grid';
+import Grid from "@material-ui/core/Grid";
 
 import * as ROUTES from "../../constants/routes";
 import { withAuthorization } from "../Session";
@@ -59,8 +59,9 @@ const INITIAL_STATE = {
 	venue: "",
 	pax: "",
 	status: "",
-	menu: []
+	menu: [],
 	// menuIngredients:[]
+	dishIngredientsCheck: []
 };
 
 class OrderPreparationEditBase extends Component {
@@ -126,6 +127,12 @@ class OrderPreparationEditBase extends Component {
 							this.setState({
 								[dishIngt]: false
 							});
+							this.setState(prevState => ({
+								dishIngredientsCheck: [
+									...prevState.dishIngredientsCheck,
+									dishIngt
+								]
+							}));
 						});
 					}
 				});
@@ -261,11 +268,16 @@ class OrderPreparationEditBase extends Component {
 		if (ingredients !== undefined) {
 			ingredients.forEach((ingt, id) => {
 				let dishIngt = dish + " " + ingt; // E.g. Sweet and Sour Fish Fish
- 
+
 				menu.push(
 					<div key={id}>
 						<FormControlLabel
-							control={<Checkbox disabled checked={this.validator(dishIngt)} />}
+							control={
+								<Checkbox
+									disabled
+									checked={this.validator(dishIngt)}
+								/>
+							}
 							label={ingt}
 						/>
 					</div>
@@ -280,27 +292,27 @@ class OrderPreparationEditBase extends Component {
 		this.state.menu.forEach((dish, id) => {
 			list.push(
 				<div key={id}>
-		
-					<Grid container style={{paddingBottom: 18}}>
+					<Grid container style={{ paddingBottom: 18 }}>
 						<Grid item xs={12}>
-							<Typography variant="h6">Dish Name: {dish}</Typography>
+							<Typography variant="h6">
+								Dish Name: {dish}
+							</Typography>
 						</Grid>
-						
+
 						<Grid item xs={12}>
 							{this.renderMenuItem(dish)}
 						</Grid>
-						
+
 						<Grid item xs={12}>
-						<TextareaAutosize
-							aria-label="minimum height"
-							rowsMin={3}
-							placeholder="Ingredient ID"
-							value={this.state[dish + " barcodes"]}
-							onChange={this.onItemTextChange(dish)}/>
+							<TextareaAutosize
+								aria-label="minimum height"
+								rowsMin={3}
+								placeholder="Ingredient ID"
+								value={this.state[dish + " barcodes"]}
+								onChange={this.onItemTextChange(dish)}
+							/>
 						</Grid>
 					</Grid>
-					
-			
 				</div>
 			);
 		});
@@ -312,7 +324,8 @@ class OrderPreparationEditBase extends Component {
 			<Button
 				variant="outlined"
 				fullWidth
-				component={RouterLink} to={{
+				component={RouterLink}
+				to={{
 					pathname: ROUTES.ORDER_TIMELINE,
 					search: "?id=" + this.state.orderID
 				}}
@@ -323,55 +336,72 @@ class OrderPreparationEditBase extends Component {
 	}
 
 	render() {
-		// console.log(this.state)
-		return (
-			<Container component="main" maxWidth="xs" className={this.classes.root}>
-			
-			<Typography gutterBottom variant="h4">Tagging of Ingredients to Dish <br></br> Order Number: {this.state.orderID}</Typography>
-				<Paper className={this.classes.paper}>
-					
+		let counter = 0;
+		this.state.dishIngredientsCheck.forEach(item => {
+			if (this.state[item] === true) {
+				counter += 1;
+			}
+		});
 
+		let completed = counter === this.state.dishIngredientsCheck.length;
+
+		console.log(completed);
+
+		return (
+			<Container
+				component="main"
+				maxWidth="xs"
+				className={this.classes.root}
+			>
+				<Typography gutterBottom variant="h4">
+					Tagging of Ingredients to Dish <br></br> Order Number:{" "}
+					{this.state.orderID}
+				</Typography>
+				<Paper className={this.classes.paper}>
 					<form onSubmit={this.onSubmit}>
 						{this.renderMenu()}
-					
-		
-					<Grid container spacing={1}>
-						<Grid item xs={12}>
-							<Button
-								type="submit"
-								fullWidth
-								variant="contained"
-								color="primary"
-								className={this.classes.submit}
-							>Submit
-							</Button>
+
+						<Grid container spacing={1}>
+							<Grid item xs={12}>
+								<Button
+									disabled={!completed}
+									type="submit"
+									fullWidth
+									variant="contained"
+									color="primary"
+									className={this.classes.submit}
+								>
+									Submit
+								</Button>
+							</Grid>
+
+							<Grid item xs={12}>
+								<Button
+									variant="outlined"
+									fullWidth
+									component={RouterLink}
+									to={{
+										pathname: ROUTES.ORDER_TIMELINE,
+										search: "?id=" + this.state.orderID
+									}}
+								>
+									Back to Timeline
+								</Button>
+							</Grid>
+							<Grid item xs={12}>
+								<Button
+									variant="outlined"
+									color="primary"
+									fullWidth
+									component={RouterLink}
+									to={ROUTES.LANDING}
+								>
+									Home
+								</Button>
+							</Grid>
 						</Grid>
-						
-						<Grid item xs={12}>
-							<Button
-								variant="outlined"
-								fullWidth
-								component={RouterLink} to={{
-								pathname: ROUTES.ORDER_TIMELINE,
-								search: "?id=" + this.state.orderID
-							}}>Back to Timeline
-							</Button>
-						</Grid>
-						<Grid item xs={12}>
-							<Button
-								variant="outlined"
-								color="primary"
-								fullWidth
-								component={RouterLink} 
-								to={ROUTES.LANDING}
-								>Home
-							</Button>
-						</Grid>
-					</Grid>
 					</form>
-					
-					
-					
+
 					<Dialog
 						open={this.state.open}
 						onClose={this.handleClose}
@@ -387,14 +417,17 @@ class OrderPreparationEditBase extends Component {
 							</DialogContentText>
 						</DialogContent>
 						<DialogActions>
-							<Button onClick={this.handleTimeline} color="primary" autoFocus>
+							<Button
+								onClick={this.handleTimeline}
+								color="primary"
+								autoFocus
+							>
 								Back to Timeline
 							</Button>
 						</DialogActions>
 					</Dialog>
 				</Paper>
 			</Container>
-		
 		);
 	}
 }
