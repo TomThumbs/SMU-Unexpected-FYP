@@ -53,7 +53,7 @@ class IngredientManagementBase extends Component {
 								</Grid>
 								<Grid item xs={12} align="center">
 									<Typography component="h6" variant="h6">
-										Create Recipe
+										Create<br></br>Recipe
 									</Typography>
 								</Grid>
 							</Grid>
@@ -71,7 +71,7 @@ class IngredientManagementBase extends Component {
 								</Grid>
 								<Grid item xs={12} align="center">
 									<Typography component="h6" variant="h6">
-										Tag New Simple Ingredient
+										Tag Raw Ingredient
 									</Typography>
 								</Grid>
 							</Grid>
@@ -88,7 +88,7 @@ class IngredientManagementBase extends Component {
 								</Grid>
 								<Grid item xs={12} align="center">
 									<Typography component="h6" variant="h6">
-										Tag New Complex Ingredient
+										Tag Prepared Ingredient
 									</Typography>
 								</Grid>
 							</Grid>

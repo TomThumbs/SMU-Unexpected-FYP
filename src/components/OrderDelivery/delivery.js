@@ -254,11 +254,11 @@ class OrderDeliveryBase extends Component {
 		// console.log(typeof this.state.menu)
 		return (
 			<Container component="main" maxWidth="xs">
-				<Typography variant="h4" gutterBottom>Delivery Form</Typography>
+				<Typography variant="h4" gutterBottom >Delivery Form</Typography>
 				<Paper>
 					<React.Fragment>
 					
-						<Typography variant="h6" gutterBottom>Order Number: {this.state.oID}</Typography>
+					<Typography variant="h6" gutterBottom color="primary">Order Number: {this.state.oID}</Typography>
 						
 						<Typography variant="body1">
 							{this.griditem("Venue:",this.state.venue)}

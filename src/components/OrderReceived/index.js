@@ -145,7 +145,7 @@ class OrderReceivedBase extends Component {
 			<Container component="main" maxWidth="md">
 				<Typography gutterBottom variant="h4">Order Details</Typography>
 				<Paper>
-					<Typography variant="h6" gutterBottom>Order Number: {this.state.orderID}</Typography>
+					<Typography variant="h6" gutterBottom color="primary">Order Number: {this.state.orderID}</Typography>
 					<Typography variant="body1">
 					<Grid container>
 						<Grid item xs={6}>

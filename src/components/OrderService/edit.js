@@ -60,7 +60,7 @@ const INITIAL_STATE = {
 	pax: "",
 	status: "",
 	menu: [],
-	IoTHeaters: [{ ID: 0, status: null }],
+	IoTHeaters: [{ ID: "", status: null }],
 	dataIsLoaded: false,
 	commencement: new Date(),
 	StatusDates: "",
@@ -108,7 +108,7 @@ class OrderServiceBase extends Component {
 			// });
 			let dishHeater = dish + " heater";
 			this.setState(prevState => ({
-				[dishHeater]: "0",
+				[dishHeater]: "",
 				heaterCheck: [...prevState.heaterCheck, dishHeater]
 			}));
 		});
@@ -230,13 +230,13 @@ class OrderServiceBase extends Component {
 		let heaters = [];
 		this.state.menu.forEach((dish, index) => {
 			heaters.push(
-				<Grid item xs={6} key={index}>
+				<Grid item xs={4} key={index}>
 					<Paper variant="outlined">
-						<Grid container spacing={2}>
-							<Grid item minHeight="500">
-								{dish}
-							</Grid>
-
+						
+						<div className="item-height-dish">
+							<Grid item xs={12} >{dish}</Grid>
+						</div>
+						
 							<Grid item xs={12}>
 								<TextField
 									fullWidth
@@ -257,7 +257,7 @@ class OrderServiceBase extends Component {
 									))}
 								</TextField>
 							</Grid>
-						</Grid>
+						
 					</Paper>
 				</Grid>
 			);
@@ -322,7 +322,8 @@ class OrderServiceBase extends Component {
 				</Typography>
 
 				<Paper>
-					<Grid container justify="center" spacing={3}>
+					<Typography variant="h6" gutterBottom color="primary">Order Number: {this.state.orderID}</Typography>
+					<Grid container justify="center" spacing={2}>
 						{dataIsLoaded && this.renderHeaters()}
 					</Grid>
 
