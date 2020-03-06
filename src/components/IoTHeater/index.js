@@ -13,6 +13,10 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Typography from "@material-ui/core/Typography";
 
+import Grid from "@material-ui/core/Grid";
+import { Link as RouterLink } from 'react-router-dom';
+import * as ROUTES from "../../constants/routes";
+
 import CanvasJSReact from "../../assets/canvasjs.react";
 
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
@@ -177,6 +181,7 @@ class IoTHeaterBase extends Component {
 		};
 
 		return (
+			
 			<div align="center" className={this.classes.root}>
 				{/* <Paper className={this.classes.paper}>        */}
 				<Typography variant="h4">Order: #{this.state.orderID}</Typography>
@@ -248,8 +253,28 @@ class IoTHeaterBase extends Component {
 					options={options}
 					onRef={ref => (this.chart = ref)}
 				/>
-				{/*You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods*/}
-				{/* </Paper>   */}
+				<Grid container spacing={1}>
+						<Grid item xs={12}>
+							<Button
+								variant="outlined"
+								fullWidth
+								component={RouterLink} to={{
+								pathname: ROUTES.ORDER_TIMELINE,
+								search: "?id=" + this.state.orderID
+							}}>Back to Timeline
+							</Button>
+						</Grid>
+						<Grid item xs={12}>
+							<Button
+								variant="outlined"
+								color="primary"
+								fullWidth
+								component={RouterLink} 
+								to={ROUTES.LANDING}
+								>Home
+							</Button>
+						</Grid>
+					</Grid>
 			</div>
 		);
 	}

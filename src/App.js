@@ -42,7 +42,7 @@ import { withAuthentication } from './components/Session';
 import CookingSelection from './components/CookingSelection';
 import CookingForm from './components/CookingForm'
 
-import SmartHeaterDisplay from './views/smartHeater'
+// import SmartHeaterDisplay from './views/smartHeater'
 import IoTHeater from './components/IoTHeater'
 
 // function App() {

@@ -8,6 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
+import Grid from "@material-ui/core/Grid";
 // import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 
 import * as ROUTES from "../../constants/routes";
@@ -51,15 +52,28 @@ const INITIAL_STATE = {
 	headchef: "",
 	assistantA: "",
 	assistantB: "",
-	kitchenImageURL:"",
-	commence:"",
-	searchId:""
+	kitchenImageURL: "",
+	commence: "",
+	searchId: "",
+	ingredients: {},
+	dataIsLoaded: false
 };
 
 class OrderPreparationBase extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { ...INITIAL_STATE, orderID: props.location.state.orderID }; //props.location.state.orderID
+		this.state = {
+			...INITIAL_STATE,
+			orderID: props.location.state.orderID,
+			headchef: props.location.state.headchef,
+			assistantA: props.location.state.assistantA,
+			assistantB: props.location.state.assistantB,
+			kitchenImageURL: props.location.state.kitchenImageURL,
+			commence: props.location.state.preparationCommencement,
+			statusDates: props.location.state.StatusDates,
+			menu: props.location.state.menu,
+			ingredientsUsed: props.location.state.ingredientsUsed
+		}; //props.location.state.orderID
 		this.classes = { useStyles };
 	}
 
@@ -72,37 +86,70 @@ class OrderPreparationBase extends Component {
 			orderID: urlId
 		});
 
-		// ---------- RETRIEVE CATERING ORDER ----------
+		if (this.state.statusDates !== undefined) {
+			this.setState({ statusDate: this.state.statusDates[1] });
+		}
+
+		// ---------- RETRIEVE INGREDIENTS ----------
+		console.log("Retreving Menu Ingredients");
 		this.props.firebase.fs
-			.collection("Catering_orders")
-			.where("orderID", "==", urlId)
+			.collection("Ingredients")
 			.get()
 			.then(querySnapshot => {
 				querySnapshot.forEach(doc => {
 					let data = doc.data();
-					this.setState({
-						orderID: data.orderID,
-						headchef: data.headchef,
-						assistantA: data.assistantA,
-						assistantB: data.assistantB,
-						kitchenImageURL: data.kitchenImageURL,
-						commence: data.preparationCommencement
-					});
-					for (var key in data.IngredientsUsed){
-						this.setState({
-							...this.state,
-							menuIngreDict: {
-								...this.state.menuIngreDict,
-								[key]: data.IngredientsUsed[key]
-							}
-						})
-						this.setState(
-							{ menu: [...this.state.menu, key] }
-						)
-
-					}
+					let ingtname = data.name;
+					// ingtname = ingtname.toLowerCase();
+					// this.setState({
+					// 	// [data.name.toLowerCase()]: Number(data.barcode),
+					// 	[Number(data.barcode)]: ingtname
+					// });
+					this.setState(prevState => ({
+						ingredients: {
+							...prevState.ingredients,
+							[Number(data.barcode)]: [
+								ingtname,
+								data.Date_of_Storage,
+								data.Date_of_expiry
+							]
+						}
+					}));
 				});
+				this.setState({ dataIsLoaded: true });
 			})
+			.catch(function(error) {
+				console.log("Error getting documents: ", error);
+			});
+
+		// ---------- RETRIEVE CATERING ORDER ----------
+		if (
+			this.state.orderID === undefined ||
+			this.state.headchef === undefined ||
+			this.state.assistantA === undefined ||
+			this.state.assistantB === undefined
+		) {
+			console.log("Retreving Catering Order");
+			this.props.firebase.fs
+				.collection("Catering_orders")
+				.where("orderID", "==", urlId)
+				.get()
+				.then(querySnapshot => {
+					querySnapshot.forEach(doc => {
+						let data = doc.data();
+						this.setState({
+							orderID: data.orderID,
+							headchef: data.headchef,
+							assistantA: data.assistantA,
+							assistantB: data.assistantB,
+							kitchenImageURL: data.kitchenImageURL,
+							commence: data.preparationCommencement,
+							statusDate: data.StatusDates[1],
+							menu: data.Menu,
+							ingredientsUsed: data.IngredientsUsed
+						});
+					});
+				});
+		}
 	}
 
 	onChange = event => {
@@ -113,8 +160,8 @@ class OrderPreparationBase extends Component {
 	};
 
 	onSubmit = event => {
-			this.props.history.push({
-			pathname: './order-preparation-post-sop',
+		this.props.history.push({
+			pathname: "./order-preparation-post-sop",
 			search: "?id=" + this.state.orderID,
 			orderID: this.state.orderID,
 			headchef: this.state.headchef,
@@ -125,104 +172,74 @@ class OrderPreparationBase extends Component {
 		});
 	};
 
-	renderMenuItem(item, value) {
-		let menu = [];
-		if (item !== undefined) {
-				menu.push(
-					<tr>
-						<td >{item}</td>
-						<td >{value}</td>
-					</tr>
-				);
-			;
-		}
-		return menu;
+	renderMenuItem(dish) {
+		let ingts = [];
+
+		ingts.push(
+			<Grid item xs={3} key="Ingredient ID">
+				Ingredient ID
+			</Grid>
+		);
+		ingts.push(
+			<Grid item xs={3} key="Ingredient Name">
+				Ingredient Name
+			</Grid>
+		);
+		ingts.push(
+			<Grid item xs={3} key="Storage Date">
+				Storage Date
+			</Grid>
+		);
+		ingts.push(
+			<Grid item xs={3} key="Expiry Date">
+				Expiry Date
+			</Grid>
+		);
+
+		let ingredients = this.state.ingredientsUsed[dish].split(",");
+
+		ingredients.forEach(barcode => {
+			ingts.push(
+				<Grid item xs={3} key={barcode}>
+					{barcode}
+				</Grid>
+			);
+			ingts.push(
+				<Grid item xs={3} key={barcode + " name"}>
+					{this.state.ingredients[barcode][0]}
+				</Grid>
+			);
+			ingts.push(
+				<Grid item xs={3} key={barcode + " storage"}>
+					{this.state.ingredients[barcode][1]}
+				</Grid>
+			);
+			ingts.push(
+				<Grid item xs={3} key={barcode + "expiry"}>
+					{this.state.ingredients[barcode][2]}
+				</Grid>
+			);
+		});
+
+		return ingts;
 	}
 
 	// ---------- Dish Selection ----------
 	renderMenu() {
-		let list = [];
-		this.state.menu.forEach((item, id) => {
-			if (item === this.state.chosenMenu) {
-				list.push(
-					<div key={id}>
-						<Paper className={this.classes.paper}>
-							<Typography variant="h5">
-								<Link name={item} onClick={this.onChange}>
-									{item}
-								</Link>
-							</Typography>
-						</Paper>
-					</div>
-				);
-			} else {
-				list.push(
-					<div key={id}>
-						<Paper className={this.classes.paper}>
-							<Typography variant="h6" underline="none">
-								{" "}
-								{/*Problem: I cant remove the underline. Think ans is here: https://material-ui.com/api/link/ */}
-								<Link name={item} onClick={this.onChange}>
-									{item}
-								</Link>
-							</Typography>
-						</Paper>
-					</div>
-				);
-			}
+		let menu = [];
+
+		this.state.menu.forEach(dish => {
+			menu.push(
+				<div key={dish}>
+					<Typography variant="h4" key={dish}>
+						{dish}
+					</Typography>
+					<Grid container>{this.renderMenuItem(dish)}</Grid>
+				</div>
+			);
 		});
 
-			for (var key in this.state.menuIngreDict){
-				if (key === this.state.chosenMenu) {
-					list.push(
-						<table>
-							<tr>
-								<th>Item</th>
-								<th>Item ID</th>
-							</tr>
-							{this.renderMenuItem(key, this.state.menuIngreDict[key])}
-						</table>
-					);
-				}
-			};
-
-		if (this.state.chosenMenu.length === 0) {
-			list.push(
-				<div>
-				<Paper className={this.classes.paper}>
-				<Typography variant="h6" align="center" gutterBottom>
-					Preparation Details
-				</Typography>
-				<Typography variant="h6" align="center" gutterBottom>
-					Head Chef: {this.state.headchef}
-				</Typography>
-				<Typography variant="h6" align="center" gutterBottom>
-					Assistant A: {this.state.assistantA}
-				</Typography>
-				<Typography variant="h6" align="center" gutterBottom>
-					Assistant B: {this.state.assistantB}
-				</Typography>
-				<br></br>
-				<Typography variant="h6" align="center" gutterBottom>
-					Order Commence: {this.state.commence}
-				</Typography>
-				<form onSubmit={this.onSubmit}>
-				<Button
-					type="submit"
-					fullWidth
-					variant="contained"
-					color="primary"
-					className={this.classes.submit}
-				>
-					Declaration
-				</Button>
-				</form>
-				</Paper>
-			</div>
-			)
-		}
-
-		return list;
+		return menu;
 	}
 
 	renderBackButton() {
@@ -239,24 +256,53 @@ class OrderPreparationBase extends Component {
 	}
 
 	render() {
-		// console.log(this.state);
+		const dataIsLoaded = this.state.dataIsLoaded === true;
+
 		return (
-				<Container component="main" maxWidth="xs" className={this.classes.root}>
-					{this.renderBackButton()}
+			<Container component="main" maxWidth="xs" className={this.classes.root}>
+				{this.renderBackButton()}
+				<Paper className={this.classes.paper}>
+					<Typography variant="h3" align="center" gutterBottom>
+						Preparation
+					</Typography>
+					<Typography variant="h4" align="center" gutterBottom>
+						Order Number: {this.state.orderID}
+					</Typography>
+					<Typography variant="h6" align="center" gutterBottom>
+						Ingredient Breakdown
+					</Typography>
 					<Paper className={this.classes.paper}>
-						<Typography variant="h3" align="center" gutterBottom>
-							Preparation
-							</Typography>
-						<Typography variant="h4" align="center" gutterBottom>
-							Order Number: {this.state.orderID}
+						<Typography variant="h6" align="center" gutterBottom>
+							Preparation Details
 						</Typography>
 						<Typography variant="h6" align="center" gutterBottom>
-							Ingredient Breakdown
+							Head Chef: {this.state.headchef}
 						</Typography>
-						{this.renderMenu()}
+						<Typography variant="h6" align="center" gutterBottom>
+							Assistant A: {this.state.assistantA}
+						</Typography>
+						<Typography variant="h6" align="center" gutterBottom>
+							Assistant B: {this.state.assistantB}
+						</Typography>
+						<br></br>
+						<Typography variant="h6" align="center" gutterBottom>
+							Order Commence: {this.state.commence}
+						</Typography>
+						<form onSubmit={this.onSubmit}>
+							<Button
+								type="submit"
+								fullWidth
+								variant="contained"
+								color="primary"
+								className={this.classes.submit}
+							>
+								Declaration
+							</Button>
+						</form>
 					</Paper>
-				</Container>
-		
+					{dataIsLoaded && this.renderMenu()}
+				</Paper>
+			</Container>
 		);
 	}
 }

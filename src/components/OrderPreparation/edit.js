@@ -4,7 +4,6 @@ import { withRouter } from "react-router-dom";
 import { Link as RouterLink } from "react-router-dom";
 
 import { makeStyles, createStyles } from "@material-ui/core/styles";
-// import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
@@ -14,7 +13,6 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
-// import Typography from "@material-ui/core/Typography";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
@@ -53,21 +51,24 @@ const INITIAL_STATE = {
 	open: false,
 	docID: "",
 	orderID: "",
-	// statusList: ['Order Received', 'Preparation', 'Delivery', 'Service', 'Order Complete'],
-	dateOnly: "",
-	time: "",
-	venue: "",
-	pax: "",
-	status: "",
+	// time: "",
+	// venue: "",
+	// pax: "",
+	// status: "",
 	menu: [],
-	// menuIngredients:[]
+	ingredientsUsed: "",
 	dishIngredientsCheck: []
 };
 
 class OrderPreparationEditBase extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { ...INITIAL_STATE, docID: props.location.state.docID };
+		this.state = {
+			...INITIAL_STATE,
+			docID: props.location.state.docID,
+			menu: props.location.state.menu,
+			ingredientsUsed: props.location.state.ingredientsUsed
+		};
 		this.classes = { useStyles };
 	}
 
@@ -79,36 +80,50 @@ class OrderPreparationEditBase extends Component {
 			orderID: urlId
 		});
 
+		console.log(this.state);
+
 		// ---------- RETRIEVE CATERING ORDER ----------
-		console.log("Retreving Catering Order");
-		this.props.firebase.fs
-			.collection("Catering_orders")
-			.where("orderID", "==", urlId)
-			.get()
-			.then(querySnapshot => {
-				querySnapshot.forEach(doc => {
-					let data = doc.data();
-					this.setState({
-						docID: doc.id,
-						dateOnly: data.DateOnly,
-						time: data.Time,
-						venue: data.venue,
-						pax: Number(data.Pax),
-						status: data.Status,
-						menu: Array.from(new Set(data.Menu))
-					});
-					if (data.IngredientsUsed !== null) {
-						Object.keys(data.IngredientsUsed).forEach(dish => {
-							this.setState({
-								[dish + " barcodes"]: data.IngredientsUsed[dish]
-							});
+		if (
+			this.state.docID === "" ||
+			this.state.menu === [] ||
+			this.state.ingredientsUsed === undefined
+		) {
+			console.log("Retreving Catering Order");
+			this.props.firebase.fs
+				.collection("Catering_orders")
+				.where("orderID", "==", urlId)
+				.get()
+				.then(querySnapshot => {
+					querySnapshot.forEach(doc => {
+						let data = doc.data();
+						this.setState({
+							docID: doc.id,
+							// dateOnly: data.DateOnly,
+							// time: data.Time,
+							// venue: data.venue,
+							// pax: Number(data.Pax),
+							// status: data.Status,
+							menu: Array.from(new Set(data.Menu))
 						});
-					}
+						if (data.IngredientsUsed !== null) {
+							Object.keys(data.IngredientsUsed).forEach(dish => {
+								this.setState({
+									[dish + " barcodes"]: data.IngredientsUsed[dish]
+								});
+							});
+						}
+					});
+				})
+				.catch(function(error) {
+					console.log("Error getting documents: ", error);
 				});
-			})
-			.catch(function(error) {
-				console.log("Error getting documents: ", error);
+		} else {
+			Object.keys(this.state.ingredientsUsed).forEach(dish => {
+				this.setState({
+					[dish + " barcodes"]: this.state.ingredientsUsed[dish]
+				});
 			});
+		}
 
 		// ---------- RETRIEVE MENU INGREDIENTS ----------
 		console.log("Retreving Menu Ingredients");
@@ -150,22 +165,35 @@ class OrderPreparationEditBase extends Component {
 				querySnapshot.forEach(doc => {
 					let data = doc.data();
 					let ingtname = data.name;
-					// ingtname = ingtname.toLowerCase();
 					this.setState({
-						// [data.name.toLowerCase()]: Number(data.barcode),
 						[Number(data.barcode)]: ingtname
+					});
+				});
+
+				this.state.menu.forEach(dish => {
+					let barcodes = this.state[dish + " barcodes"].split(",");
+
+					barcodes.forEach(barcode => {
+						barcode = barcode.trim();
+						if (barcode in this.state) {
+							this.setState({
+								[dish + " " + this.state[barcode]]: true
+							});
+						}
 					});
 				});
 			})
 			.catch(function(error) {
 				console.log("Error getting documents: ", error);
 			});
+
+			console.log(this.state);
+
 	}
 
 	onSubmit = event => {
 		event.preventDefault();
 
-		console.log(this.state.docID);
 		this.props.firebase.fs
 			.collection("Catering_orders")
 			.doc(this.state.docID)
@@ -186,7 +214,6 @@ class OrderPreparationEditBase extends Component {
 			ingredientsUsed = { ...ingredientsUsed, [dish]: ingredients };
 		});
 
-		console.log(ingredientsUsed);
 		this.props.firebase.fs
 			.collection("Catering_orders")
 			.doc(this.state.docID)
@@ -247,8 +274,6 @@ class OrderPreparationEditBase extends Component {
 				});
 			}
 		});
-
-		console.log(this.state);
 	};
 
 	// Remove items if finished
@@ -276,12 +301,7 @@ class OrderPreparationEditBase extends Component {
 				menu.push(
 					<div key={id}>
 						<FormControlLabel
-							control={
-								<Checkbox
-									disabled
-									checked={this.validator(dishIngt)}
-								/>
-							}
+							control={<Checkbox disabled checked={this.validator(dishIngt)} />}
 							label={ingt}
 						/>
 					</div>
@@ -298,10 +318,7 @@ class OrderPreparationEditBase extends Component {
 				<div key={id}>
 					<Grid container style={{ paddingBottom: 18 }}>
 						<Grid item xs={12}>
-							<Typography
-								variant="subtitle2"
-								color="textSecondary"
-							>
+							<Typography variant="subtitle2" color="textSecondary">
 								Dish Name:
 							</Typography>
 							<Typography variant="h6">{dish}</Typography>
@@ -364,14 +381,8 @@ class OrderPreparationEditBase extends Component {
 
 		let completed = counter === this.state.dishIngredientsCheck.length;
 
-		console.log(completed);
-
 		return (
-			<Container
-				component="main"
-				maxWidth="xs"
-				className={this.classes.root}
-			>
+			<Container component="main" maxWidth="xs" className={this.classes.root}>
 				<Typography gutterBottom variant="h4">
 					Tag Ingredients to Dish
 				</Typography>
@@ -440,11 +451,7 @@ class OrderPreparationEditBase extends Component {
 							</DialogContentText>
 						</DialogContent>
 						<DialogActions>
-							<Button
-								onClick={this.handleTimeline}
-								color="primary"
-								autoFocus
-							>
+							<Button onClick={this.handleTimeline} color="primary" autoFocus>
 								Back to Timeline
 							</Button>
 						</DialogActions>

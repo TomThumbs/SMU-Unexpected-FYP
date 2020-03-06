@@ -77,18 +77,25 @@ class DisplayOrderTimelineBase extends Component {
 			.then(querySnapshot => {
 				// console.log(urlId);
 				querySnapshot.forEach(doc => {
+					let data = doc.data();
 					// console.log(doc.data());
 					this.setState({
 						docID: doc.id,
 						status: doc.data().Status,
 						menu: Array.from(new Set(doc.data().Menu)),
+						ingredientsUsed: doc.data().IngredientsUsed,
 						sopStatus: doc.data().sop,
 						statusDates: doc.data().StatusDates,
 						dataIsLoaded: true,
 						prepStatus:
 							doc.data().Status === "Delivery" ||
 							doc.data().Status === "Event in Progress" ||
-							doc.data().Status === "Order Completed"
+							doc.data().Status === "Order Completed",
+						headchef: data.headchef,
+						assistantA: data.assistantA,
+						assistantB: data.assistantB,
+						kitchenImageURL: data.kitchenImageURL,
+						preparationCommence: data.preparationCommencement
 					});
 				});
 			})
@@ -106,18 +113,22 @@ class DisplayOrderTimelineBase extends Component {
 		// console.log(this.state);
 		const isDone =
 			this.state.statusList.indexOf(itemIndex) <=
-			this.state.statusList.indexOf(status);
+				this.state.statusList.indexOf(status) &&
+			itemIndex !== "Event in Progress";
+
+		const isDoneService =
+			this.state.statusList.indexOf(itemIndex) <=
+				this.state.statusList.indexOf(status) &&
+			itemIndex === "Event in Progress";
 
 		// Check if current item is preparation
 		// const isRec = itemIndex === "Order Received";
 		const isPrep =
 			itemIndex === "Preparation" && this.state.prepStatus === false;
-		const isSop =
-			itemIndex === "Preparation" && this.state.sopStatus === false;
+		const isSop = itemIndex === "Preparation" && this.state.sopStatus === false;
 
 		// Check if current item is to be delivered
-		const makeDelivery =
-			itemIndex === "Delivery" && status === "Preparation";
+		const makeDelivery = itemIndex === "Delivery" && status === "Preparation";
 
 		// Check if order is delivered and to be set up
 		const setUpService =
@@ -158,7 +169,10 @@ class DisplayOrderTimelineBase extends Component {
 								pathname: ROUTES.ORDER_PREPARATION_EDIT,
 								search: "?id=" + this.state.orderID,
 								state: {
-									docID: this.state.docID
+									docID: this.state.docID,
+									orderID: this.state.orderID,
+									menu: this.state.menu,
+									ingredientsUsed: this.state.ingredientsUsed
 								}
 							}}
 						>
@@ -172,7 +186,8 @@ class DisplayOrderTimelineBase extends Component {
 								pathname: ROUTES.ORDER_PREPARATION_SOP,
 								search: "?id=" + this.state.orderID,
 								state: {
-									docID: this.state.docID
+									docID: this.state.docID,
+									orderID: this.state.orderID
 								}
 							}}
 						>
@@ -186,7 +201,8 @@ class DisplayOrderTimelineBase extends Component {
 								pathname: ROUTES.ORDER_DELIVERY,
 								search: "?id=" + this.state.orderID,
 								state: {
-									docID: this.state.docID
+									docID: this.state.docID,
+									orderID: this.state.orderID
 								}
 							}}
 						>
@@ -216,7 +232,8 @@ class DisplayOrderTimelineBase extends Component {
 								pathname: ROUTES.ORDER_COMPLETE,
 								search: "?id=" + this.state.orderID,
 								state: {
-									docID: this.state.docID
+									docID: this.state.docID,
+									orderID: this.state.orderID
 								}
 							}}
 						>
@@ -233,14 +250,52 @@ class DisplayOrderTimelineBase extends Component {
 									docID: this.state.docID,
 									menu: this.state.menu,
 									orderID: this.state.orderID,
+									headchef: this.state.headchef,
+									assistantA: this.state.assistantA,
+									assistantB: this.state.assistantB,
+									kitchenImageURL: this.state.kitchenImageURL,
+									preparationCommence: this.state.preparationCommencement,
+									statusDates: this.state.statusDates,
+									ingredientsUsed: this.state.ingredientsUsed
 								}
 							}}
 						>
 							Read
 						</Link>
+					) : isDoneService ? (
+						<Link
+							component={RouterLink}
+							to={{
+								pathname: routepath,
+								search: "?id=" + this.state.orderID,
+								state: {
+									docID: this.state.docID,
+									menu: this.state.menu,
+									orderID: this.state.orderID
+								}
+							}}
+						>
+							Adjust Temperature
+						</Link>
 					) : (
 						<p>Pending</p>
 					)}
+					{/* {isDoneService ? (
+						<Link
+							component={RouterLink}
+							to={{
+								pathname: routepath,
+								search: "?id=" + this.state.orderID,
+								state: {
+									docID: this.state.docID,
+									menu: this.state.menu,
+									orderID: this.state.orderID
+								}
+							}}
+						>
+							Adjust Temperature
+						</Link>
+					) : null} */}
 					<span className="circle" />
 				</div>
 			</div>
@@ -262,7 +317,9 @@ class DisplayOrderTimelineBase extends Component {
 
 		return (
 			<Container component="main" maxWidth="md">
-				<Typography variant="h2" align="center">Order Number: {this.state.orderID}</Typography>
+				<Typography variant="h2" align="center">
+					Order Number: {this.state.orderID}
+				</Typography>
 				{dataIsLoaded && this.timeline()}
 			</Container>
 		);
