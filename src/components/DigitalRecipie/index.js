@@ -62,7 +62,8 @@ const INITIAL_STATE = {
 	availableIngredients: [],
 	newIngredientName: "",
 	newDishName: "",
-	dataIsLoaded: false
+	dataIsLoaded: false,
+	ingredients: [ ]
 };
 
 class DishToIngredientFormBase extends Component {
@@ -108,6 +109,26 @@ class DishToIngredientFormBase extends Component {
 			});
 	}
 
+	addIngredient(){
+		this.setState({ingredients: [...this.state.ingredients, ""]})
+		// console.log(this.state)
+	  }
+	
+	  handleIngreChange(e, index){
+		//   console.log(e.target.data-option-index)
+		let yolo = e.target.id.split("-")[4];
+		this.state.ingredients[index] = Object.values(this.state.availableIngredients)[
+			yolo
+		].ingredient
+		this.setState({ingredients: this.state.ingredients})
+	  }
+	
+	  handleRemove(index){
+		this.state.ingredients.splice(index,1)
+		console.log(this.state.ingredients, "$$$$");
+		this.setState({ingredients: this.state.ingredients})
+	  }
+
 	handleMenuChange = event => {
 		this.setState({
 			chosen_menu: event.target.value
@@ -116,92 +137,97 @@ class DishToIngredientFormBase extends Component {
 
 	onSubmit = event => {
 		event.preventDefault();
-
-		if (this.state.newIngredientName.length === 0) {
-			if (this.state.ingredientOne.length !== 0) {
-				this.dishIngredients.push(this.state.ingredientOne);
-			}
-			if (this.state.ingredientTwo.length !== 0) {
-				this.dishIngredients.push(this.state.ingredientTwo);
-			}
-			if (this.state.ingredientThree.length !== 0) {
-				this.dishIngredients.push(this.state.ingredientThree);
-			}
-			if (this.state.ingredientFour.length !== 0) {
-				this.dishIngredients.push(this.state.ingredientFour);
-			}
-			if (this.state.ingredientFive.length !== 0) {
-				this.dishIngredients.push(this.state.ingredientFive);
-			}
-			if (this.state.ingredientSix.length !== 0) {
-				this.dishIngredients.push(this.state.ingredientSix);
-			}
-			if (this.state.ingredientSeven.length !== 0) {
-				this.dishIngredients.push(this.state.ingredientSeven);
-			}
-			if (this.state.ingredientEight.length !== 0) {
-				this.dishIngredients.push(this.state.ingredientEight);
-			}
-			if (this.state.ingredientNine.length !== 0) {
-				this.dishIngredients.push(this.state.ingredientNine);
-			}
-			if (this.state.ingredientTen.length !== 0) {
-				this.dishIngredients.push(this.state.ingredientTen);
-			}
-			if (this.state.ingredientEleven.length !== 0) {
-				this.dishIngredients.push(this.state.ingredientEleven);
-			}
-			if (this.state.ingredientTwelve.length !== 0) {
-				this.dishIngredients.push(this.state.ingredientTwelve);
-			}
-			if (this.state.ingredientThirteen.length !== 0) {
-				this.dishIngredients.push(this.state.ingredientThirteen);
-			}
-			if (this.state.ingredientFourteen.length !== 0) {
-				this.dishIngredients.push(this.state.ingredientFourteen);
-			}
-			if (this.state.ingredientFifteen.length !== 0) {
-				this.dishIngredients.push(this.state.ingredientFifteen);
-			}
-			if (this.state.ingredientSixteen.length !== 0) {
-				this.dishIngredients.push(this.state.ingredientSixteen);
-			}
-			if (this.state.ingredientSeventeen.length !== 0) {
-				this.dishIngredients.push(this.state.ingredientSeventeen);
-			}
-			if (this.state.ingredientEighteen.length !== 0) {
-				this.dishIngredients.push(this.state.ingredientEighteen);
-			}
-			if (this.state.ingredientNineteen.length !== 0) {
-				this.dishIngredients.push(this.state.ingredientNineteen);
-			}
-			if (this.state.ingredientTwenty.length !== 0) {
-				this.dishIngredients.push(this.state.ingredientTwenty);
-			}
+		console.log(this.state)
+		// if (this.state.newIngredientName.length === 0) {
+		// 	if (this.state.ingredientOne.length !== 0) {
+		// 		this.dishIngredients.push(this.state.ingredientOne);
+		// 	}
+		// 	if (this.state.ingredientTwo.length !== 0) {
+		// 		this.dishIngredients.push(this.state.ingredientTwo);
+		// 	}
+		// 	if (this.state.ingredientThree.length !== 0) {
+		// 		this.dishIngredients.push(this.state.ingredientThree);
+		// 	}
+		// 	if (this.state.ingredientFour.length !== 0) {
+		// 		this.dishIngredients.push(this.state.ingredientFour);
+		// 	}
+		// 	if (this.state.ingredientFive.length !== 0) {
+		// 		this.dishIngredients.push(this.state.ingredientFive);
+		// 	}
+		// 	if (this.state.ingredientSix.length !== 0) {
+		// 		this.dishIngredients.push(this.state.ingredientSix);
+		// 	}
+		// 	if (this.state.ingredientSeven.length !== 0) {
+		// 		this.dishIngredients.push(this.state.ingredientSeven);
+		// 	}
+		// 	if (this.state.ingredientEight.length !== 0) {
+		// 		this.dishIngredients.push(this.state.ingredientEight);
+		// 	}
+		// 	if (this.state.ingredientNine.length !== 0) {
+		// 		this.dishIngredients.push(this.state.ingredientNine);
+		// 	}
+		// 	if (this.state.ingredientTen.length !== 0) {
+		// 		this.dishIngredients.push(this.state.ingredientTen);
+		// 	}
+		// 	if (this.state.ingredientEleven.length !== 0) {
+		// 		this.dishIngredients.push(this.state.ingredientEleven);
+		// 	}
+		// 	if (this.state.ingredientTwelve.length !== 0) {
+		// 		this.dishIngredients.push(this.state.ingredientTwelve);
+		// 	}
+		// 	if (this.state.ingredientThirteen.length !== 0) {
+		// 		this.dishIngredients.push(this.state.ingredientThirteen);
+		// 	}
+		// 	if (this.state.ingredientFourteen.length !== 0) {
+		// 		this.dishIngredients.push(this.state.ingredientFourteen);
+		// 	}
+		// 	if (this.state.ingredientFifteen.length !== 0) {
+		// 		this.dishIngredients.push(this.state.ingredientFifteen);
+		// 	}
+		// 	if (this.state.ingredientSixteen.length !== 0) {
+		// 		this.dishIngredients.push(this.state.ingredientSixteen);
+		// 	}
+		// 	if (this.state.ingredientSeventeen.length !== 0) {
+		// 		this.dishIngredients.push(this.state.ingredientSeventeen);
+		// 	}
+		// 	if (this.state.ingredientEighteen.length !== 0) {
+		// 		this.dishIngredients.push(this.state.ingredientEighteen);
+		// 	}
+		// 	if (this.state.ingredientNineteen.length !== 0) {
+		// 		this.dishIngredients.push(this.state.ingredientNineteen);
+		// 	}
+		// 	if (this.state.ingredientTwenty.length !== 0) {
+		// 		this.dishIngredients.push(this.state.ingredientTwenty);
+		// 	}
 
 			this.props.firebase.fs
 				.collection("Menu")
 				.doc(this.state.newDishName)
 				.set({
-					Ingredients: this.dishIngredients,
+					Ingredients: this.state.ingredients,
 					Type: this.state.chosen_menu,
 					name: this.state.newDishName
 				});
-		} else {
-			this.props.firebase.fs
-				.collection("Ingredients")
-				.doc(this.state.newIngredientName)
-				.set({
-					// Properties:''
-					name: this.state.newIngredientName
-				});
-		}
+		// } else {
+		// 	this.props.firebase.fs
+		// 		.collection("Ingredients")
+		// 		.doc(this.state.newIngredientName)
+		// 		.set({
+		// 			// Properties:''
+		// 			name: this.state.newIngredientName
+		// 		});
+		// }
 		this.handleClickOpen();
 	};
 
 	handleChange = name => event => {
 		let dictIndex = event.target.id.split("-")[4];
 		// console.log(Object.values(this.state.availableIngredients)[dictIndex].ingredient)
+		// this.state.ingredients[index] = Object.values(this.state.availableIngredients)[
+		// 	dictIndex
+		// ].ingredient
+		// this.setState({ingredients: this.state.ingredients})
+
 		this.setState({
 			...this.props,
 			[name.fooditem]: Object.values(this.state.availableIngredients)[
@@ -282,7 +308,7 @@ class DishToIngredientFormBase extends Component {
 			ingredientTwenty: "",
 			availableIngredients: [],
 			newIngredientName: "",
-			newDishName: ""
+			newDishName: "",
 		});
 		window.location.reload(true);
 	};
@@ -317,8 +343,8 @@ class DishToIngredientFormBase extends Component {
 	};
 
 	render() {
-		console.log(this.state);
-		// const isLoaded = this.state.dataIsLoaded === true;
+		// console.log(this.state);
+		const isLoaded = this.state.dataIsLoaded === true;
 		return (
 			<Container component="main" maxWidth="xs">
 				<React.Fragment>
@@ -376,7 +402,39 @@ class DishToIngredientFormBase extends Component {
 								Ingredients
 							</Typography>
 
-							{this.createTextField("ingredientOne")}
+							{
+					  this.state.ingredients.map((ingredient,index)=>{
+						  return (
+							  <div key={index}>
+								<Autocomplete
+									id="combo-box-demo"
+									options={this.state.availableIngredients}
+									getOptionLabel={option => option.ingredient}
+									fullWidth
+									onChange={(e)=>this.handleIngreChange(e, index)}
+									renderInput={params => (
+										<TextField
+											{...params}
+											label="Ingredient:"
+											variant="outlined"
+											fullWidth
+										/>
+									)}
+								/>
+								<button onClick={(e)=>this.handleRemove(index)}>Remove</button>
+							  </div>
+						  )
+					  })
+				  }
+	
+				  <hr />
+	
+				  <button onClick={(e)=>this.addIngredient(e)}>Add ingredient</button>
+	
+
+
+
+							{/* {this.createTextField("ingredientOne")}
 							{this.createTextField("ingredientTwo")}
 							{this.createTextField("ingredientThree")}
 							{this.createTextField("ingredientFour")}
@@ -387,7 +445,7 @@ class DishToIngredientFormBase extends Component {
 							{this.createTextField("ingredientNine")}
 							{this.createTextField("ingredientTen")}
 							{this.createTextField("ingredientEleven")}
-							{this.createTextField("ingredientTwelve")}
+							{this.createTextField("ingredientTwelve")} */}
 						</Grid>
 					</Grid>
 				</React.Fragment>
