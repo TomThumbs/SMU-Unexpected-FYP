@@ -27,8 +27,8 @@ import {
 const INITIAL_STATE = {
 	orderID: 0,
 	orderiddoc: "",
-	date: "",
-	starttime: "",
+	date: null,
+	starttime: null,
 	endtime: "",
 	venue: "",
 	pax: 30,
@@ -393,8 +393,8 @@ class OrderFormBase extends Component {
 	};
 	render() {
 		let isInvalid = 
-			this.state.date.length !== 0 &&
-			this.state.starttime.length !== 0 &&
+			this.state.date !== null &&
+			this.state.starttime !== null &&
 			this.state.venue.length !== 0 &&
 			this.state.pax.length >= 30 &&
 			this.state.custname.length !== 0 &&
@@ -427,8 +427,9 @@ class OrderFormBase extends Component {
 							<Grid item xs={6} >
 								<KeyboardDatePicker
 									variant="inline"
-									InputLabelProps={{ shrink: true }}
+									// InputLabelProps={{ shrink: true }}
 									fullWidth
+									required
 									margin="densed"
 									label="Date:"
 									format="dd/MM/yyyy"
@@ -444,10 +445,10 @@ class OrderFormBase extends Component {
 							</Grid>
 							<Grid item xs={6}>
 								<KeyboardTimePicker
-									InputLabelProps={{ shrink: true }}
-						
+									// InputLabelProps={{ shrink: true }}
 									id="time-picker"
 									fullWidth
+									required
 									margin="densed"
 									label="Time:"
 									value={this.state.starttime}

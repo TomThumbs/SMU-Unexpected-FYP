@@ -47,7 +47,7 @@ const INITIAL_STATE = {
 	temp_tag: "",
 	foodName: "",
 	storageDate: "",
-	expiryDate: "",
+	expiryDate: null,
 	open: false,
 	foodId: "",
 	month: "",
@@ -254,7 +254,7 @@ class NewBasicIngredientForm extends Component {
 						<MuiPickersUtilsProvider utils={DateFnsUtils}>
 							<KeyboardDatePicker
 									minDate={this.today}
-									InputLabelProps={{ shrink: true }}
+									// InputLabelProps={{ shrink: true }}
 									variant="inline"
 									fullWidth
 									margin="normal"
