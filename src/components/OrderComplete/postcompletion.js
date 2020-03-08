@@ -156,14 +156,14 @@ class FinalOverviewBase extends Component {
 			let dish = this.state.menu[i];
 			listofmenu.push(<li> {dish}</li>);
 
-			ingredientsID = this.state.ingredientsUsed[dish];
-			ingredientsID = ingredientsID.split(",");
+			// ingredientsID = this.state.ingredientsUsed[dish];
+			// ingredientsID = ingredientsID.split(",");
 
-			ingredientsID.forEach(ingtID => {
-				let ingtname = this.state[ingtID]
-				listofmenu.push(<Typography variant="subtitle2" color="textSecondary"> &emsp; &emsp; {ingtname}: {ingtID}</Typography>)
-			});
-			listofmenu.push(<br/>);
+			// ingredientsID.forEach(ingtID => {
+			// 	let ingtname = this.state[ingtID]
+			// 	listofmenu.push(<Typography variant="subtitle2" color="textSecondary"> &emsp; &emsp; {ingtname}: {ingtID}</Typography>)
+			// });
+			// listofmenu.push(<br/>);
 		}
 		return listofmenu;
 	};
