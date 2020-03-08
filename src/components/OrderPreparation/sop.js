@@ -225,7 +225,7 @@ class OrderPreparationSopBase extends Component {
 		return (
 			<Container component="main" maxWidth="xs">
 				<Typography gutterBottom variant="h4">
-					Order Preparation Kitchen Declaration
+					Kitchen Declaration
 				</Typography>
 				<Paper className={this.classes.paper}>
 					<Typography variant="h6" gutterBottom>
