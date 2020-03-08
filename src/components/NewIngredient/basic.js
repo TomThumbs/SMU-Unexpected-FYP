@@ -108,6 +108,22 @@ class NewBasicIngredientForm extends Component {
 				Primary_Ingredients: "",
 				Date_of_Storage: this.state.storageDate
 			});
+
+			this.props.firebase.fs
+			.collection("IngredientsInventory")
+			.doc(this.state.foodId)
+			.set({
+				barcode: this.state.foodId,
+				Date_of_expiry:
+					String(this.state.expiryDate).split(" ")[2] +
+					"-" +
+					this.state.month +
+					"-" +
+					String(this.state.expiryDate).split(" ")[3],
+				name: this.state.foodName,
+				Primary_Ingredients: "",
+				Date_of_Storage: this.state.storageDate
+			});
 		this.handleClickOpen();
 	};
 

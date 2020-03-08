@@ -107,6 +107,22 @@ class NewComplexIngredientForm extends Component {
 				Primary_Ingredients: this.state.priFoodId,
 				Date_of_Storage: this.state.storageDate
 			});
+
+			this.props.firebase.fs
+			.collection("IngredientsInventory")
+			.doc(this.state.foodId)
+			.set({
+				barcode: this.state.foodId,
+				Date_of_expiry:
+					String(this.state.expiryDate).split(" ")[2] +
+					"-" +
+					this.state.month +
+					"-" +
+					String(this.state.expiryDate).split(" ")[3],
+				name: this.state.foodName,
+				Primary_Ingredients: "",
+				Date_of_Storage: this.state.storageDate
+			});
 		this.handleClickOpen();
 	};
 
@@ -194,7 +210,7 @@ class NewComplexIngredientForm extends Component {
 					<Typography variant="h4"  gutterBottom>Tag Prepared Ingredient</Typography>
 					<Paper>
 
-						<Typography variant="body2"  color="secondary" gutterBottom>Prepared Ingredient may or may not contain more than one ingredient.</Typography>
+						<Typography variant="body2"  color="secondary" gutterBottom>Prepared Ingredient must contain more than one raw ingredient.</Typography>
 
 						{this.createTextField(
 							"foodId",
