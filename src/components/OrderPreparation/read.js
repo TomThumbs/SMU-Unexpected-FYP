@@ -93,7 +93,7 @@ class OrderPreparationBase extends Component {
 		// ---------- RETRIEVE INGREDIENTS ----------
 		console.log("Retreving Menu Ingredients");
 		this.props.firebase.fs
-			.collection("Ingredients")
+			.collection("IngredientsInventory")
 			.get()
 			.then(querySnapshot => {
 				querySnapshot.forEach(doc => {
@@ -260,7 +260,7 @@ class OrderPreparationBase extends Component {
 
 		return (
 			<Container component="main" maxWidth="xs" className={this.classes.root}>
-				{this.renderBackButton()}
+				{/* {this.renderBackButton()} */}
 				<Paper className={this.classes.paper}>
 					<Typography variant="h3" align="center" gutterBottom>
 						Preparation
@@ -268,9 +268,7 @@ class OrderPreparationBase extends Component {
 					<Typography variant="h4" align="center" gutterBottom>
 						Order Number: {this.state.orderID}
 					</Typography>
-					<Typography variant="h6" align="center" gutterBottom>
-						Ingredient Breakdown
-					</Typography>
+
 					<Paper className={this.classes.paper}>
 						<Typography variant="h6" align="center" gutterBottom>
 							Preparation Details
@@ -285,9 +283,9 @@ class OrderPreparationBase extends Component {
 							Assistant B: {this.state.assistantB}
 						</Typography>
 						<br></br>
-						<Typography variant="h6" align="center" gutterBottom>
+						{/* <Typography variant="h6" align="center" gutterBottom>
 							Order Commence: {this.state.commence}
-						</Typography>
+						</Typography> */}
 						<form onSubmit={this.onSubmit}>
 							<Button
 								type="submit"
@@ -296,10 +294,13 @@ class OrderPreparationBase extends Component {
 								color="primary"
 								className={this.classes.submit}
 							>
-								Declaration
+								View Kitchen Declaration
 							</Button>
 						</form>
 					</Paper>
+					<Typography variant="h6" align="center" gutterBottom>
+						Ingredient Breakdown
+					</Typography>
 					{dataIsLoaded && this.renderMenu()}
 				</Paper>
 			</Container>
