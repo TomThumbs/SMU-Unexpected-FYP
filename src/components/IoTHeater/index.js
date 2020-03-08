@@ -57,7 +57,8 @@ class IoTHeaterBase extends Component {
 			...INITIAL_STATE,
 			heaterID: props.location.state.heaterID,
 			orderID: props.location.state.orderID,
-			dish: props.location.state.dish
+			dish: props.location.state.dish,
+			menu: props.location.state.menu
 		};
 		this.classes = { useStyles };
 
@@ -80,6 +81,7 @@ class IoTHeaterBase extends Component {
 	}
 
 	componentDidMount() {
+		// console.log(this.props.location)
 		this.props.firebase.fs
 			.collection("device_settings")
 			.where("ID", "==", String(this.state.heaterID))
@@ -228,16 +230,39 @@ class IoTHeaterBase extends Component {
 						<DialogContent dividers>
 							<DialogContentText id="alert-dialog-description">
 								Temperature has been changed to{" "}
-								{this.state.minTemp}
+								{this.state.minTemp}°C
 							</DialogContentText>
 						</DialogContent>
 						<DialogActions>
-							<Button
-								onClick={this.handleClose}
-								color="primary"
-								autoFocus
+						<Button
+								variant="outlined"
+								fullWidth
+								component={RouterLink}
+								to={{
+									pathname: ROUTES.ORDER_SERVICE,
+									search: "?id=" + this.state.orderID,
+									state: {
+										orderID: this.props.location.state.orderID,
+										docID: this.props.location.state.docID,
+										menu: this.props.location.state.menu
+									}
+								}}
 							>
-								Confirm
+								Back to Heater Overview
+							</Button>
+						<Button
+								variant="outlined"
+								fullWidth
+								component={RouterLink}
+								to={{
+									pathname: ROUTES.ORDER_TIMELINE,
+									search: "?id=" + this.state.orderID,
+									state: {
+										orderID: this.props.location.state.orderID,
+									}
+								}}
+							>
+								Back to Timeline
 							</Button>
 						</DialogActions>
 					</Dialog>
