@@ -16,7 +16,6 @@ import Container from "@material-ui/core/Container";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
-// import Typography from "@material-ui/core/Typography";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
@@ -74,7 +73,7 @@ class NewComplexIngredientForm extends Component {
 			let dd = String(temp_date.getDate()).padStart(2, "0");
 			let mm = String(temp_date.getMonth() + 1).padStart(2, "0");
 			let yyyy = temp_date.getFullYear();
-			let string = dd + "-" + mm + "-" + yyyy;
+			let string = dd + "/" + mm + "/" + yyyy;
 
 			this.setState({
 				storageDate: string
@@ -221,6 +220,7 @@ class NewComplexIngredientForm extends Component {
 								<TextField {...params} 
 								label="Ingredient:" 
 								variant="outlined" 
+								margin="normal"
 								fullWidth />
 							)}
 						/>
@@ -323,10 +323,13 @@ class NewComplexIngredientForm extends Component {
 							</Button>
 						</Grid> */}
 
+						<div><br></br></div>
+
 						<form onSubmit={this.onSubmit}>
 							<Button
 								disabled={isInvalid}
 								type="submit"
+								margin="normal"
 								fullWidth
 								variant="contained"
 								color="primary"
