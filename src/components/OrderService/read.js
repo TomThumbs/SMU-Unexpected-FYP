@@ -7,44 +7,17 @@ import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
-import Link from "@material-ui/core/Link";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
-// import TextareaAutosize from "@material-ui/core/TextareaAutosize";
-// import TextField from "@material-ui/core/TextField";
-// import MenuItem from "@material-ui/core/MenuItem";
-// import { sizing } from "@material-ui/system";
-
 
 import * as ROUTES from "../../constants/routes";
 import { compose } from "recompose";
 
-const useStyles = makeStyles(theme => ({
-	root: {
-		flexGrow: 1
-	},
-	paper: {
-		marginTop: theme.spacing(8),
-		display: "flex",
-		flexDirection: "column",
-		// maxWidth: 400,
-		textAlign: "center",
-		// margin: `${theme.spacing(1)}px auto`,
-		height: 240,
-		width: 400,
-		padding: theme.spacing(2)
-	},
-	form: {
-		width: "100%", // Fix IE 11 issue.
-		marginTop: theme.spacing(1)
-	},
-	submit: {
-		margin: theme.spacing(3, 0, 2)
-	},
-	text: {
-		textAlign: "center"
-	}
-}));
+// const useStyles = makeStyles(theme => ({
+// 	root: {
+// 		flexGrow: 1
+// 	  },
+// }));
 
 const INITIAL_STATE = {
 	docID: "",
@@ -62,7 +35,7 @@ class OrderServiceReadBase extends Component {
 			docID: props.location.state.docID,
 			menu: props.location.state.menu
 		};
-		this.classes = { useStyles };
+		// this.classes = { useStyles };
 	}
 
 	componentDidMount() {
@@ -196,6 +169,8 @@ class OrderServiceReadBase extends Component {
 							</Button>
 						</Grid>
 					</Grid>
+
+					
 				</Paper>
 			</Container>
 		);

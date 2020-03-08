@@ -225,10 +225,10 @@ class OrderPreparationSopBase extends Component {
 		return (
 			<Container component="main" maxWidth="xs">
 				<Typography gutterBottom variant="h4">
-					Order Preparation Kitchen Declaration
+					Kitchen Declaration
 				</Typography>
 				<Paper className={this.classes.paper}>
-					<Typography variant="h6" gutterBottom>
+					<Typography variant="h6" gutterBottom color="primary">
 						Order Number: {this.state.orderID}
 					</Typography>
 
@@ -248,7 +248,7 @@ class OrderPreparationSopBase extends Component {
 										onChange={this.onChange}
 										type="text"
 										placeholder="Head Chef"
-										autoFocus
+										 
 									/>
 								</Grid>
 								<Grid item xs={12}>
@@ -262,7 +262,7 @@ class OrderPreparationSopBase extends Component {
 										onChange={this.onChange}
 										type="text"
 										placeholder="Assistant A"
-										autoFocus
+										 
 									/>
 								</Grid>
 								<Grid item xs={12}>
@@ -276,7 +276,7 @@ class OrderPreparationSopBase extends Component {
 										onChange={this.onChange}
 										type="text"
 										placeholder="Assistant B"
-										autoFocus
+										 
 									/>
 								</Grid>
 
