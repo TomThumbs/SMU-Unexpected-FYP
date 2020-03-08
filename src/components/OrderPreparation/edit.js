@@ -109,7 +109,7 @@ class OrderPreparationEditBase extends Component {
 			this.state.menu === [] ||
 			this.state.ingredientsUsed === undefined
 		) {
-			console.log("Retreving Catering Order");
+			console.log("Retrieving Catering Order");
 			this.props.firebase.fs
 				.collection("Catering_orders")
 				.where("orderID", "==", urlId)
@@ -147,7 +147,7 @@ class OrderPreparationEditBase extends Component {
 		}
 
 		// ---------- RETRIEVE MENU INGREDIENTS ----------
-		console.log("Retreving Menu Ingredients");
+		console.log("Retrieving Menu Ingredients");
 		this.props.firebase.fs
 			.collection("Menu")
 			.get()
@@ -178,9 +178,9 @@ class OrderPreparationEditBase extends Component {
 			});
 
 		// ---------- RETRIEVE INGREDIENTS ----------
-		console.log("Retreving Menu Ingredients");
+		console.log("Retrieving Menu Ingredients");
 		this.props.firebase.fs
-			.collection("Ingredients")
+			.collection("IngredientsInventory")
 			.get()
 			.then(querySnapshot => {
 				querySnapshot.forEach(doc => {
@@ -215,7 +215,7 @@ class OrderPreparationEditBase extends Component {
 	onSubmit = event => {
 		event.preventDefault();
 		Object.values(this.state.toDelete).map((item, key) =>
-		this.props.firebase.fs.collection("Ingredients")
+		this.props.firebase.fs.collection("IngredientsInventory")
 		.where("barcode", "==", item)
 		.get()
 		.then(snap => {
@@ -234,7 +234,7 @@ class OrderPreparationEditBase extends Component {
 		)
 
 		Object.values(this.state.toDelete).map((item, key) =>
-		this.props.firebase.fs.collection("Ingredients")
+		this.props.firebase.fs.collection("IngredientsInventory")
 		.where("barcode", "==", item)
 		.get()
 		.then(snap => {
@@ -389,7 +389,7 @@ class OrderPreparationEditBase extends Component {
 							<TextareaAutosize
 								aria-label="minimum height"
 								rowsMin={3}
-								placeholder="Ingredient ID"
+								placeholder="Scan Barcode ID of the ingredients that you are using for this dish"
 								value={this.state[dish + " barcodes"]}
 								onChange={this.onItemTextChange(dish)}
 							/>
@@ -399,7 +399,7 @@ class OrderPreparationEditBase extends Component {
 							<TextareaAutosize
 								aria-label="minimum height"
 								rowsMin={3}
-								placeholder="Things to be removed"
+								placeholder="Scan Barcode ID of the ingredient if it has been fully utilised for this dish"
 								value={this.state[dish + " remove"]}
 								onChange={this.onItemTextRemove(dish)}
 							/>
