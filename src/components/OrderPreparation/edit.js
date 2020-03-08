@@ -54,10 +54,12 @@ const INITIAL_STATE = {
 	// time: "",
 	// venue: "",
 	// pax: "",
-	// status: "",
+	toDelete: {},
 	menu: [],
 	ingredientsUsed: "",
-	dishIngredientsCheck: []
+	dishIngredientsCheck: [],
+	commencement: new Date(),
+
 };
 
 class OrderPreparationEditBase extends Component {
@@ -80,7 +82,26 @@ class OrderPreparationEditBase extends Component {
 			orderID: urlId
 		});
 
-		console.log(this.state);
+		// console.log(this.state);
+
+		let day = String(this.state.commencement.getDate());
+		let month = Number(this.state.commencement.getMonth()) + 1;
+		let year = String(this.state.commencement.getFullYear());
+		let hour = String(this.state.commencement.getHours());
+		let minute = String(this.state.commencement.getMinutes());
+		if (month.length === 1) {
+			month = "0" + month;
+		}
+		if (hour.length === 1) {
+			hour = "0" + hour;
+		}
+		if (minute.length === 1) {
+			minute = "0" + minute;
+		}
+		this.setState({
+			commencement:
+				day + "/" + month + "/" + year + " " + hour + ":" + minute
+		});
 
 		// ---------- RETRIEVE CATERING ORDER ----------
 		if (
@@ -193,6 +214,39 @@ class OrderPreparationEditBase extends Component {
 
 	onSubmit = event => {
 		event.preventDefault();
+		Object.values(this.state.toDelete).map((item, key) =>
+		this.props.firebase.fs.collection("Ingredients")
+		.where("barcode", "==", item)
+		.get()
+		.then(snap => {
+			snap.forEach(doc => {
+				this.props.firebase.fs.collection("IngredientsArchive").add({
+					Date_of_Storage: doc.data().Date_of_Storage,
+					Date_of_expiry: doc.data().Date_of_expiry,
+					Primary_Ingredients: doc.data().Primary_Ingredients,
+					barcode: doc.data().barcode,
+					name: doc.data().name,
+					reason: "Consumed in Preparation",
+					Date_of_removal: this.state.commencement
+				})
+			})
+		})
+		)
+
+		Object.values(this.state.toDelete).map((item, key) =>
+		this.props.firebase.fs.collection("Ingredients")
+		.where("barcode", "==", item)
+		.get()
+		.then(snap => {
+			snap.forEach(doc => {
+				this.props.firebase.fs.collection("Ingredients")
+				.doc(doc.id)
+				.delete()
+			})
+
+		})
+
+		)
 
 		this.props.firebase.fs
 			.collection("Catering_orders")
@@ -279,9 +333,11 @@ class OrderPreparationEditBase extends Component {
 	// Remove items if finished
 	onItemTextRemove = dish => event => {
 		let tempValue = event.target.value.trim();
-		this.setState({
-			[dish + " remove"]: tempValue
-		});
+		Object.assign(this.state.toDelete, {[dish]: tempValue});
+
+		// this.setState({
+		// 	[dish + " remove"]: tempValue
+		// });
 	};
 
 	// Checks to ensure that item is checked
