@@ -105,7 +105,7 @@ class NewBasicIngredientForm extends Component {
 					"-" +
 					String(this.state.expiryDate).split(" ")[3],
 				name: this.state.foodName,
-				// Primary_Ingredients: this.state.priFoodId,
+				Primary_Ingredients: "",
 				Date_of_Storage: this.state.storageDate
 			});
 		this.handleClickOpen();
