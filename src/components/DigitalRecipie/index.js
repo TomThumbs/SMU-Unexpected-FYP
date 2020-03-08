@@ -23,6 +23,10 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Container from "@material-ui/core/Container";
 import * as ROUTES from "../../constants/routes";
 import { withAuthorization } from "../Session";
+import IconButton from '@material-ui/core/IconButton';
+import Paper from "@material-ui/core/Paper";
+
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 
 const useStyles = makeStyles(theme => ({
 	formControl: {
@@ -39,26 +43,26 @@ const INITIAL_STATE = {
 	menu: "",
 	menu_List: [],
 	chosen_menu: "",
-	ingredientOne: "",
-	ingredientTwo: "",
-	ingredientThree: "",
-	ingredientFour: "",
-	ingredientFive: "",
-	ingredientSix: "",
-	ingredientSeven: "",
-	ingredientEight: "",
-	ingredientNine: "",
-	ingredientTen: "",
-	ingredientEleven: "",
-	ingredientTwelve: "",
-	ingredientThirteen: "",
-	ingredientFourteen: "",
-	ingredientFifteen: "",
-	ingredientSixteen: "",
-	ingredientSeventeen: "",
-	ingredientEighteen: "",
-	ingredientNineteen: "",
-	ingredientTwenty: "",
+	// ingredientOne: "",
+	// ingredientTwo: "",
+	// ingredientThree: "",
+	// ingredientFour: "",
+	// ingredientFive: "",
+	// ingredientSix: "",
+	// ingredientSeven: "",
+	// ingredientEight: "",
+	// ingredientNine: "",
+	// ingredientTen: "",
+	// ingredientEleven: "",
+	// ingredientTwelve: "",
+	// ingredientThirteen: "",
+	// ingredientFourteen: "",
+	// ingredientFifteen: "",
+	// ingredientSixteen: "",
+	// ingredientSeventeen: "",
+	// ingredientEighteen: "",
+	// ingredientNineteen: "",
+	// ingredientTwenty: "",
 	availableIngredients: [],
 	newIngredientName: "",
 	newDishName: "",
@@ -242,18 +246,15 @@ class DishToIngredientFormBase extends Component {
 			this.state.newIngredientName.length === 0
 		) {
 			return (
-				<Typography align="center">
-					<h4>
-						<font color="#e91e63">
-							Please enter a dish or ingredient.
-						</font>
-					</h4>
+				
+				<Typography variant="subtitle2" color="secondary">
+					Please enter a dish or ingredient.
 				</Typography>
 			);
 		} else {
 			return (
 				<form onSubmit={this.onSubmit}>
-					<br></br>
+					
 					<Button
 						fullWidth
 						type="submit"
@@ -286,26 +287,26 @@ class DishToIngredientFormBase extends Component {
 			menu: "",
 			menu_List: [],
 			chosen_menu: "",
-			ingredientOne: "",
-			ingredientTwo: "",
-			ingredientThree: "",
-			ingredientFour: "",
-			ingredientFive: "",
-			ingredientSix: "",
-			ingredientSeven: "",
-			ingredientEight: "",
-			ingredientNine: "",
-			ingredientTen: "",
-			ingredientEleven: "",
-			ingredientTwelve: "",
-			ingredientThirteen: "",
-			ingredientFourteen: "",
-			ingredientFifteen: "",
-			ingredientSixteen: "",
-			ingredientSeventeen: "",
-			ingredientEighteen: "",
-			ingredientNineteen: "",
-			ingredientTwenty: "",
+			// ingredientOne: "",
+			// ingredientTwo: "",
+			// ingredientThree: "",
+			// ingredientFour: "",
+			// ingredientFive: "",
+			// ingredientSix: "",
+			// ingredientSeven: "",
+			// ingredientEight: "",
+			// ingredientNine: "",
+			// ingredientTen: "",
+			// ingredientEleven: "",
+			// ingredientTwelve: "",
+			// ingredientThirteen: "",
+			// ingredientFourteen: "",
+			// ingredientFifteen: "",
+			// ingredientSixteen: "",
+			// ingredientSeventeen: "",
+			// ingredientEighteen: "",
+			// ingredientNineteen: "",
+			// ingredientTwenty: "",
 			availableIngredients: [],
 			newIngredientName: "",
 			newDishName: "",
@@ -347,13 +348,13 @@ class DishToIngredientFormBase extends Component {
 		const isLoaded = this.state.dataIsLoaded === true;
 		return (
 			<Container component="main" maxWidth="xs">
-				<React.Fragment>
-					<Grid container spacing={3}>
-						<Grid item xs={12}>
-							<Typography variant="h5" gutterBottom>
-								Recipe Creation
-							</Typography>
-
+				
+					
+				<Typography variant="h4" gutterBottom>Recipe Creation</Typography>
+					<Paper>
+						<React.Fragment>
+							
+								
 							<TextField
 								required
 								margin="normal"
@@ -365,75 +366,106 @@ class DishToIngredientFormBase extends Component {
 								type="text"
 								placeholder="Dish name:"
 							/>
-
-							{/* <TextField
-          required
-          margin="normal"
-          fullWidth
-          name="newIngredientName"
-          value={this.state.newIngredientName}
-          label="New Ingredient:"
-          onChange={this.onChange}
-          type="text"
-          placeholder="New Ingredient:"
-        /> */}
-
-							<FormControl style={{ minWidth: 395 }}>
-								<InputLabel>Select Dish Type:</InputLabel>
-								<Select
-									value={this.state.chosen_menu}
-									onChange={this.handleMenuChange}
-								>
-									{this.state.menu_List.map(
-										(event, index) => (
-											<MenuItem value={event}>
-												{event}
-											</MenuItem>
-										)
-									)}
-								</Select>
-							</FormControl>
-						</Grid>
-
-						<br></br>
-
-						<Grid item xs={12}>
-							<Typography variant="h7" gutterBottom>
-								Ingredients
-							</Typography>
-
-							{
-					  this.state.ingredients.map((ingredient,index)=>{
-						  return (
-							  <div key={index}>
-								<Autocomplete
-									id="combo-box-demo"
-									options={this.state.availableIngredients}
-									getOptionLabel={option => option.ingredient}
-									fullWidth
-									onChange={(e)=>this.handleIngreChange(e, index)}
-									renderInput={params => (
-										<TextField
-											{...params}
-											label="Ingredient:"
-											variant="outlined"
+							
+										{/* <TextField
+											required
+											margin="normal"
 											fullWidth
+											name="newIngredientName"
+											value={this.state.newIngredientName}
+											label="New Ingredient:"
+											onChange={this.onChange}
+											type="text"
+											placeholder="New Ingredient:"
+											/> */}
+
+							<TextField
+								select
+								label="Select Dish Type:"
+								required
+								fullWidth
+								value={this.state.chosen_menu}
+								onChange={this.handleMenuChange}
+								margin="normal"
+								>
+								{this.state.menu_List.map(
+											(event, index) => (
+												<MenuItem value={event}>
+													{event}
+												</MenuItem>
+											)
+										)}
+							</TextField>
+							
+			
+						<div><br></br></div>
+						<Typography variant="h5" gutterBottom>
+							Ingredients
+						</Typography>
+
+						
+							
+
+						{this.state.ingredients.map((ingredient,index)=>{
+							return (
+								
+								
+
+								<Grid container spacing={1} className="full-size" key={index}>
+
+									<Grid item xs={10}>
+									
+										<Autocomplete
+											id="combo-box-demo"
+											options={this.state.availableIngredients}
+											getOptionLabel={option => option.ingredient}
+											fullWidth
+											required
+											onChange={(e)=>this.handleIngreChange(e, index)}
+											renderInput={params => (
+												<TextField
+													{...params}
+													label="Ingredient:"
+													variant="outlined"x
+													fullWidth
+													required
+													
+												/>
+											)}
 										/>
-									)}
-								/>
-								<button onClick={(e)=>this.handleRemove(index)}>Remove</button>
-							  </div>
-						  )
-					  })
-				  }
-	
-				  <hr />
-	
-				  <button onClick={(e)=>this.addIngredient(e)}>Add ingredient</button>
-	
 
+									</Grid>
+									<Grid item xs>
 
+									<IconButton 
+										aria-label="remove" 
+										
+										onClick={(e)=>this.handleRemove(index)}>
+										<HighlightOffIcon fontSize="medium" />
+									</IconButton>
 
+									<div><br></br></div>
+									
+									
+										{/* <Button 
+										onClick={(e)=>this.handleRemove(index)}
+										size="large"
+										>
+											<HighlightOffIcon />
+										</Button> */}
+									</Grid>
+									
+								</Grid>
+							
+						
+								)
+							})
+						}
+					
+	
+				  {/* <hr /> */}
+	
+					 
 							{/* {this.createTextField("ingredientOne")}
 							{this.createTextField("ingredientTwo")}
 							{this.createTextField("ingredientThree")}
@@ -446,11 +478,30 @@ class DishToIngredientFormBase extends Component {
 							{this.createTextField("ingredientTen")}
 							{this.createTextField("ingredientEleven")}
 							{this.createTextField("ingredientTwelve")} */}
-						</Grid>
-					</Grid>
+						
+					
 				</React.Fragment>
 
-				{this.renderSubmit()}
+				<Grid container spacing={1}>
+					<Grid item xs={12}>
+
+						<Button
+							fullWidth 	
+							variant="outlined"
+							
+							onClick={(e)=>this.addIngredient(e)}>
+							Add ingredient
+						</Button>
+					</Grid>
+
+						
+
+						<Grid item xs={12}>
+							{this.renderSubmit()}
+						</Grid>
+
+						
+					</Grid>
 
 				<Dialog
 					open={this.state.open}
@@ -483,6 +534,7 @@ class DishToIngredientFormBase extends Component {
 						</Button>
 					</DialogActions>
 				</Dialog>
+				</Paper>
 			</Container>
 		);
 	}
