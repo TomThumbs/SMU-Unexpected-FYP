@@ -19,10 +19,10 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Container from "@material-ui/core/Container";
 import * as ROUTES from "../../constants/routes";
 import { withAuthorization } from "../Session";
-import IconButton from '@material-ui/core/IconButton';
+import IconButton from "@material-ui/core/IconButton";
 import Paper from "@material-ui/core/Paper";
 
-import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 
 const useStyles = makeStyles(theme => ({
 	formControl: {
@@ -63,7 +63,7 @@ const INITIAL_STATE = {
 	newIngredientName: "",
 	newDishName: "",
 	dataIsLoaded: false,
-	ingredients: [ ]
+	ingredients: []
 };
 
 class DishToIngredientFormBase extends Component {
@@ -109,25 +109,31 @@ class DishToIngredientFormBase extends Component {
 			});
 	}
 
-	addIngredient(){
-		this.setState({ingredients: [...this.state.ingredients, ""]})
+	addIngredient() {
+		this.setState({ ingredients: [...this.state.ingredients, ""] });
 		// console.log(this.state)
-	  }
-	
-	  handleIngreChange(e, index){
+	}
+
+	handleIngreChange(e, index) {
 		//   console.log(e.target.data-option-index)
 		let yolo = e.target.id.split("-")[4];
-		this.state.ingredients[index] = Object.values(this.state.availableIngredients)[
-			yolo
-		].ingredient
-		this.setState({ingredients: this.state.ingredients})
-	  }
-	
-	  handleRemove(index){
-		this.state.ingredients.splice(index,1)
+		let temp = Object.values(
+			this.state.availableIngredients
+		)[yolo].ingredient
+		this.setState({
+			[this.state.ingredients[index]]: temp
+		})
+		// this.state.ingredients[index] = Object.values(
+		// 	this.state.availableIngredients
+		// )[yolo].ingredient;
+		this.setState({ ingredients: this.state.ingredients });
+	}
+
+	handleRemove(index) {
+		this.state.ingredients.splice(index, 1);
 		console.log(this.state.ingredients, "$$$$");
-		this.setState({ingredients: this.state.ingredients})
-	  }
+		this.setState({ ingredients: this.state.ingredients });
+	}
 
 	handleMenuChange = event => {
 		this.setState({
@@ -137,7 +143,7 @@ class DishToIngredientFormBase extends Component {
 
 	onSubmit = event => {
 		event.preventDefault();
-		console.log(this.state)
+		console.log(this.state);
 		// if (this.state.newIngredientName.length === 0) {
 		// 	if (this.state.ingredientOne.length !== 0) {
 		// 		this.dishIngredients.push(this.state.ingredientOne);
@@ -200,14 +206,14 @@ class DishToIngredientFormBase extends Component {
 		// 		this.dishIngredients.push(this.state.ingredientTwenty);
 		// 	}
 
-			this.props.firebase.fs
-				.collection("Menu")
-				.doc(this.state.newDishName)
-				.set({
-					Ingredients: this.state.ingredients,
-					Type: this.state.chosen_menu,
-					name: this.state.newDishName
-				});
+		this.props.firebase.fs
+			.collection("Menu")
+			.doc(this.state.newDishName)
+			.set({
+				Ingredients: this.state.ingredients,
+				Type: this.state.chosen_menu,
+				name: this.state.newDishName
+			});
 		// } else {
 		// 	this.props.firebase.fs
 		// 		.collection("Ingredients")
@@ -242,7 +248,6 @@ class DishToIngredientFormBase extends Component {
 			this.state.newIngredientName.length === 0
 		) {
 			return (
-				
 				<Typography variant="subtitle2" color="secondary">
 					Please enter a dish or ingredient.
 				</Typography>
@@ -250,7 +255,6 @@ class DishToIngredientFormBase extends Component {
 		} else {
 			return (
 				<form onSubmit={this.onSubmit}>
-					
 					<Button
 						fullWidth
 						type="submit"
@@ -305,7 +309,7 @@ class DishToIngredientFormBase extends Component {
 			// ingredientTwenty: "",
 			availableIngredients: [],
 			newIngredientName: "",
-			newDishName: "",
+			newDishName: ""
 		});
 		window.location.reload(true);
 	};
@@ -341,29 +345,27 @@ class DishToIngredientFormBase extends Component {
 
 	render() {
 		// console.log(this.state);
-		const isLoaded = this.state.dataIsLoaded === true;
+		// const isLoaded = this.state.dataIsLoaded === true;
 		return (
 			<Container component="main" maxWidth="xs">
-				
-					
-				<Typography variant="h4" gutterBottom>Recipe Creation</Typography>
-					<Paper>
-						<React.Fragment>
-							
-								
-							<TextField
-								required
-								margin="normal"
-								fullWidth
-								name="newDishName"
-								value={this.state.newDishName}
-								label="Dish name:"
-								onChange={this.onChange}
-								type="text"
-								placeholder="Dish name:"
-							/>
-							
-										{/* <TextField
+				<Typography variant="h4" gutterBottom>
+					Recipe Creation
+				</Typography>
+				<Paper>
+					<React.Fragment>
+						<TextField
+							required
+							margin="normal"
+							fullWidth
+							name="newDishName"
+							value={this.state.newDishName}
+							label="Dish name:"
+							onChange={this.onChange}
+							type="text"
+							placeholder="Dish name:"
+						/>
+
+						{/* <TextField
 											required
 											margin="normal"
 											fullWidth
@@ -375,74 +377,75 @@ class DishToIngredientFormBase extends Component {
 											placeholder="New Ingredient:"
 											/> */}
 
-							<TextField
-								select
-								label="Select Dish Type:"
-								required
-								fullWidth
-								value={this.state.chosen_menu}
-								onChange={this.handleMenuChange}
-								margin="normal"
-								>
-								{this.state.menu_List.map(
-											(event, index) => (
-												<MenuItem value={event}>
-													{event}
-												</MenuItem>
-											)
-										)}
-							</TextField>
-							
-			
-						<div><br></br></div>
+						<TextField
+							select
+							label="Select Dish Type:"
+							required
+							fullWidth
+							value={this.state.chosen_menu}
+							onChange={this.handleMenuChange}
+							margin="normal"
+						>
+							{this.state.menu_List.map((event, index) => (
+								<MenuItem value={event}>{event}</MenuItem>
+							))}
+						</TextField>
+
+						<div>
+							<br></br>
+						</div>
 						<Typography variant="h5" gutterBottom>
 							Ingredients
 						</Typography>
 
-						
-							
-
-						{this.state.ingredients.map((ingredient,index)=>{
+						{this.state.ingredients.map((ingredient, index) => {
 							return (
-								
-								
-
-								<Grid container spacing={1} className="full-size" key={index}>
-
+								<Grid
+									container
+									spacing={1}
+									className="full-size"
+									key={index}
+								>
 									<Grid item xs={10}>
-									
 										<Autocomplete
 											id="combo-box-demo"
-											options={this.state.availableIngredients}
-											getOptionLabel={option => option.ingredient}
+											options={
+												this.state.availableIngredients
+											}
+											getOptionLabel={option =>
+												option.ingredient
+											}
 											fullWidth
 											required
-											onChange={(e)=>this.handleIngreChange(e, index)}
+											onChange={e =>
+												this.handleIngreChange(e, index)
+											}
 											renderInput={params => (
 												<TextField
 													{...params}
 													label="Ingredient:"
-													variant="outlined"x
+													variant="outlined"
+													x
 													fullWidth
 													required
-													
 												/>
 											)}
 										/>
-
 									</Grid>
 									<Grid item xs>
+										<IconButton
+											aria-label="remove"
+											onClick={e =>
+												this.handleRemove(index)
+											}
+										>
+											<HighlightOffIcon fontSize="medium" />
+										</IconButton>
 
-									<IconButton 
-										aria-label="remove" 
-										
-										onClick={(e)=>this.handleRemove(index)}>
-										<HighlightOffIcon fontSize="medium" />
-									</IconButton>
+										<div>
+											<br></br>
+										</div>
 
-									<div><br></br></div>
-									
-									
 										{/* <Button 
 										onClick={(e)=>this.handleRemove(index)}
 										size="large"
@@ -450,19 +453,13 @@ class DishToIngredientFormBase extends Component {
 											<HighlightOffIcon />
 										</Button> */}
 									</Grid>
-									
 								</Grid>
-							
-						
-								)
-							})
-						}
-					
-	
-				  {/* <hr /> */}
-	
-					 
-							{/* {this.createTextField("ingredientOne")}
+							);
+						})}
+
+						{/* <hr /> */}
+
+						{/* {this.createTextField("ingredientOne")}
 							{this.createTextField("ingredientTwo")}
 							{this.createTextField("ingredientThree")}
 							{this.createTextField("ingredientFour")}
@@ -474,62 +471,56 @@ class DishToIngredientFormBase extends Component {
 							{this.createTextField("ingredientTen")}
 							{this.createTextField("ingredientEleven")}
 							{this.createTextField("ingredientTwelve")} */}
-						
-					
-				</React.Fragment>
+					</React.Fragment>
 
-				<Grid container spacing={1}>
-					<Grid item xs={12}>
-
-						<Button
-							fullWidth 	
-							variant="outlined"
-							
-							onClick={(e)=>this.addIngredient(e)}>
-							Add ingredient
-						</Button>
-					</Grid>
-
-						
+					<Grid container spacing={1}>
+						<Grid item xs={12}>
+							<Button
+								fullWidth
+								variant="outlined"
+								onClick={e => this.addIngredient(e)}
+							>
+								Add ingredient
+							</Button>
+						</Grid>
 
 						<Grid item xs={12}>
 							{this.renderSubmit()}
 						</Grid>
-
-						
 					</Grid>
 
-				<Dialog
-					open={this.state.open}
-					onClose={this.handleClose}
-					aria-labelledby="alert-dialog-title"
-					aria-describedby="alert-dialog-description"
-				>
-					<DialogTitle id="alert-dialog-title">
-						{"Submission Notification"}
-					</DialogTitle>
-					<DialogContent>
-						<DialogContentText id="alert-dialog-description">
-							{this.state.newDishName} recipe has been created.
-						</DialogContentText>
-					</DialogContent>
-					<DialogActions>
-						<Button
-							onClick={this.handleClose}
-							color="primary"
-							autoFocus
-						>
-							Create another recipe
-						</Button>
-						<Button
-							onClick={this.handleHome}
-							color="primary"
-							autoFocus
-						>
-							Home
-						</Button>
-					</DialogActions>
-				</Dialog>
+					<Dialog
+						open={this.state.open}
+						onClose={this.handleClose}
+						aria-labelledby="alert-dialog-title"
+						aria-describedby="alert-dialog-description"
+					>
+						<DialogTitle id="alert-dialog-title">
+							{"Submission Notification"}
+						</DialogTitle>
+						<DialogContent>
+							<DialogContentText id="alert-dialog-description">
+								{this.state.newDishName} recipe has been
+								created.
+							</DialogContentText>
+						</DialogContent>
+						<DialogActions>
+							<Button
+								onClick={this.handleClose}
+								color="primary"
+								autoFocus
+							>
+								Create another recipe
+							</Button>
+							<Button
+								onClick={this.handleHome}
+								color="primary"
+								autoFocus
+							>
+								Home
+							</Button>
+						</DialogActions>
+					</Dialog>
 				</Paper>
 			</Container>
 		);

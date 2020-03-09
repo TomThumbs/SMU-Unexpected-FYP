@@ -7,7 +7,7 @@ import { makeStyles } from "@material-ui/core/styles";
 // import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
-import Link from "@material-ui/core/Link";
+// import Link from "@material-ui/core/Link";
 // import Paper from "@material-ui/core/Paper";
 // import Button from "@material-ui/core/Button";
 // import TextareaAutosize from "@material-ui/core/TextareaAutosize";
@@ -141,7 +141,7 @@ class OrderServiceReadBase extends Component {
 	renderMenu() {
 		let result = [];
 		this.state.menu.forEach((dish, idx) => {
-			{this.renderTemps(this.state.heatersUsed[dish], dish)}
+			this.renderTemps(this.state.heatersUsed[dish], dish)
 			// console.log("the state temp", this.state.temps)
 		
 			result.push(

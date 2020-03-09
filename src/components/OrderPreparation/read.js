@@ -7,7 +7,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
-import Paper from "@material-ui/core/Paper";
+// import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -412,16 +412,3 @@ const OrderPreparation = withRouter(withFirebase(OrderPreparationBase));
 const condition = authUser => !!authUser;
 
 export default withAuthorization(condition)(OrderPreparation);
-
-
-{/* <form onSubmit={this.onSubmit}>
-	<Button
-		type="submit"
-		fullWidth
-		variant="contained"
-		color="primary"
-		className={this.classes.submit}
-	>
-		Declaration
-	</Button>
-</form> */}
