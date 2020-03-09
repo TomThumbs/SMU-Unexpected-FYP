@@ -81,7 +81,7 @@ class IoTHeaterBase extends Component {
 	}
 
 	componentDidMount() {
-		// console.log(this.props.location)
+		console.log(this.props.location)
 		this.props.firebase.fs
 			.collection("device_settings")
 			.where("ID", "==", String(this.state.heaterID))

@@ -79,7 +79,7 @@ class OrderServiceReadBase extends Component {
 	}
 
 	componentDidMount() {
-		// console.log(this.props.location.state)
+		console.log(this.props.location.state)
 		this.props.firebase.fs
 			.collection("Catering_orders")
 			.doc(this.state.docID)
@@ -93,7 +93,7 @@ class OrderServiceReadBase extends Component {
 	}
 
 	renderTemps(dish, dishname) {
-		console.log("dish", dish)
+		// console.log("dish", dish)
 					if (dish) {
 						// console.log("enters")
 					// console.log("COUNT",counter)
@@ -109,7 +109,7 @@ class OrderServiceReadBase extends Component {
 								let counta = this.state.counter+1
 								this.setState({counter: counta})
 								if (change.data().name === "temperature sensor") {
-									console.log(change.data().minimum)
+									// console.log(change.data().minimum)
 									//set to dict
 									Object.assign(this.state.thresholds, {[dishname]: change.data().minimum});
 									this.setState({
@@ -172,7 +172,9 @@ class OrderServiceReadBase extends Component {
 								state: {
 									heaterID: this.state.heatersUsed[dish],
 									orderID: this.state.orderID,
-									dish: dish
+									dish: dish,
+									docID: this.props.location.state.docID,
+									menu: this.props.location.state.menu
 								}
 							}}
 							key={idx}
@@ -185,46 +187,13 @@ class OrderServiceReadBase extends Component {
 					</Paper>
 				</Grid>
 			)
-
-
-
-			// result.push(<Typography key={dish}>{dish}</Typography>);
-			// result.push(
-			// 	<Typography key={dish + " heater"}>Heater: {this.state.heatersUsed[dish]}</Typography>
-			// );
-			// result.push(
-			// 	<Typography key={dish + " currentTemp"}>Current Temperature: {this.state.temps[dish]}</Typography>
-			// );
-			// result.push(
-			// 	<Typography key={dish + " Threshold"}>Threshold: {this.state.thresholds[dish]}</Typography>
-			// );
-
-			// result.push(
-			// 	<Link
-			// 		component={RouterLink}
-			// 		to={{
-			// 			pathname: ROUTES.SMART_HEATING,
-			// 			search: "?id=" + this.state.heatersUsed[dish],
-			// 			state: {
-			// 				heaterID: this.state.heatersUsed[dish],
-			// 				orderID: this.state.orderID,
-			// 				docID: this.state.docID,
-			// 				dish: dish,
-			// 				menu: this.state.menu
-			// 			}
-			// 		}}
-			// 		key={idx}
-			// 	>
-			// 		View >>
-			// 	</Link>
-			// );
 		});
 
 		return result;
 	}
 
 	render() {
-		console.log(this.state);
+		// console.log(this.state);
 		return (
 			<Container component="main" maxWidth="sm">
 				<Typography gutterBottom variant="h4">Adjust Heater Temperature</Typography>
