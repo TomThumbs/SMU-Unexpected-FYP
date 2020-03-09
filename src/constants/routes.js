@@ -20,6 +20,9 @@ export const NEW_INGREDIENT_BASIC = '/new-ingredient-basic';
 export const NEW_INGREDIENT_COMPLEX = '/new-ingredient-complex';
 export const DISPLAY_INGREDIENT = '/display-ingredient';
 
+// ---------- DELETE INGREDIENT ----------
+export const DELETE_INGREDIENT = '/delete-ingredient';
+
 // ---------- ADD NEW ORDER ----------
 export const ORDER_FORM = '/order-form';
 export const POST_ORDER_FORM = '/post-order-form';

@@ -117,7 +117,7 @@ class IngredientManagementBase extends Component {
 
 					{/* to change the route link  */}
 					<Grid container item xs={2}>
-						<Button component={RouterLink} to={ROUTES.LANDING}>
+						<Button component={RouterLink} to={ROUTES.DELETE_INGREDIENT}>
 							<Grid container justify="center" spacing={1}>
 								<Grid item xs={12}>
 									<img class="image" 

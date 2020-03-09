@@ -25,7 +25,7 @@ import PostOrderForm from './components/PostOrderForm'
 import ItemManagementPage from './components/ItemManagementPage'
 import { NewBasicIngredient, NewComplexIngredient } from './components/NewIngredient'
 import DisplayIngredient from './components/DisplayIngredient'
-
+import DeleteIngredientForm from './components/deleteIngredient'
 import DisplayOrders from './components/DisplayOrders'
 
 // ---------- SERARCH FOR ORDER TIMELINE---------- 
@@ -72,6 +72,9 @@ const App = () => (
         <Route path={ROUTES.NEW_INGREDIENT_BASIC} component={NewBasicIngredient} />
         <Route path={ROUTES.NEW_INGREDIENT_COMPLEX} component={NewComplexIngredient} />
         <Route path={ROUTES.DISPLAY_INGREDIENT} component={DisplayIngredient} />
+
+        {/* ---------- DELETE INGREDIENT ---------- */}
+        <Route path={ROUTES.DELETE_INGREDIENT} component={DeleteIngredientForm} />  
 
         {/* ---------- ADD NEW ORDER ---------- */}
         <Route path={ROUTES.ORDER_FORM} component={OrderForm} />
