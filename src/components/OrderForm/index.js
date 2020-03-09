@@ -335,15 +335,16 @@ class OrderFormBase extends Component {
 			this.setState({
 				date: event
 			});
-		} else {
 		}
 	};
 	handleTimeChange = time => {
-		this.setState({
-			starttime: time,
-			hour: time.getHours(),
-			minute: time.getMinutes()
-		});
+		if (time) {
+			this.setState({
+				starttime: time,
+				hour: time.getHours(),
+				minute: time.getMinutes()
+			});
+		}
 		// console.log(time, time.getHours(), minutest)
 	};
 	createTextField = (name, temp, label, placeholder) => {

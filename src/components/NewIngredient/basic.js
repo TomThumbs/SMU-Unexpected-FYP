@@ -52,6 +52,7 @@ const INITIAL_STATE = {
 	foodId: "",
 	month: "",
 	availableIngredients: [],
+	prevFood:""
 	// priFoodId: ""
 };
 
@@ -81,12 +82,15 @@ class NewBasicIngredientForm extends Component {
 				storageDate: string
 			});
 		}
-		this.props.firebase.fs.collection('Ingredients').get().then(snapshot=> {
+		this.props.firebase.fs.collection('IngredientsInventory').get().then(snapshot=> {
 			snapshot.forEach(doc => {
-			  
-			  this.setState((prevstate) => ({
-				availableIngredients: [...prevstate.availableIngredients, {ingredient: doc.data().name}]
-			  }));
+				// entry of last ingredient name is not the same as this ingredient, let it append.
+				if (this.state.prevFood.length === 0 || this.state.prevFood != doc.data().name) {
+						this.setState((prevstate) => ({
+						availableIngredients: [...prevstate.availableIngredients, {ingredient: doc.data().name}]
+						}));
+						this.setState({prevFood:doc.data().name})
+				} 
 			})
 		  })
 	}
@@ -159,8 +163,6 @@ class NewBasicIngredientForm extends Component {
 	};
 
 	handleDateChange = event => {
-
-
 		if (event) {
 			let tempMonth = (Number(event.getMonth()) + 1).toString();
 			if (tempMonth.length === 1) {
@@ -203,11 +205,15 @@ class NewBasicIngredientForm extends Component {
 	today = new Date();
 
 	render() {
+		
+		// console.log(this.state.availableIngredients)
 		const isInvalid =
 			this.state.storageDate === this.state.expiryDate ||
 			this.state.foodName.length === 0;
 		return (
+			
 				<Container component="main" maxWidth="xs">
+					{/* {this.uniqueMenu()} */}
 					<Typography variant="h4"  gutterBottom>Tag Raw Ingredient</Typography>
 					<Paper>
 						{this.createTextField(
