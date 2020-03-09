@@ -368,8 +368,11 @@ class OrderPreparationEditBase extends Component {
 	}
 
 	renderMenu() {
+		// console.log(this.state)
 		let list = [];
 		this.state.menu.forEach((dish, id) => {
+			console.log(dish)
+			console.log(id)
 			list.push(
 				<div key={id}>
 					<Grid container style={{ paddingBottom: 18 }}>
@@ -449,7 +452,7 @@ class OrderPreparationEditBase extends Component {
 					{this.renderMenu()}
 
 					<form onSubmit={this.onSubmit}>
-						{this.renderMenu()} 
+						{/* {this.renderMenu()}  */}
 
 						<Grid container spacing={1}>
 							<Grid item xs={12}>
