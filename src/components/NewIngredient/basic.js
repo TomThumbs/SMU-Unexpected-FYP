@@ -75,7 +75,7 @@ class NewBasicIngredientForm extends Component {
 			let dd = String(temp_date.getDate()).padStart(2, "0");
 			let mm = String(temp_date.getMonth() + 1).padStart(2, "0");
 			let yyyy = temp_date.getFullYear();
-			let string = dd + "-" + mm + "-" + yyyy;
+			let string = dd + "/" + mm + "/" + yyyy;
 
 			this.setState({
 				storageDate: string
@@ -235,6 +235,7 @@ class NewBasicIngredientForm extends Component {
 							<TextField {...params} 
 							label="Ingredient:" 
 							variant="outlined" 
+							margin="normal"
 							fullWidth />
 						)}
 						/>
@@ -271,7 +272,6 @@ class NewBasicIngredientForm extends Component {
 							<KeyboardDatePicker
 									minDate={this.today}
 									// InputLabelProps={{ shrink: true }}
-									variant="inline"
 									fullWidth
 									margin="normal"
 									inputVariant="outlined"
@@ -345,8 +345,12 @@ class NewBasicIngredientForm extends Component {
 								search: "?id=" + this.state.orderID
 							}}>Complex Ingredient
 							</Button>
+							
 						</Grid> */}
 
+						<div><br></br></div>
+
+						
 						<form onSubmit={this.onSubmit}>
 							<Button
 								disabled={isInvalid}
@@ -359,6 +363,7 @@ class NewBasicIngredientForm extends Component {
 								Submit
 							</Button>
 						</form>
+					
 					</Paper>
 				</Container>
 		

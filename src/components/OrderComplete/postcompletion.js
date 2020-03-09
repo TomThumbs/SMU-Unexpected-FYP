@@ -137,20 +137,9 @@ class FinalOverviewBase extends Component {
 			});
 	}
 
-	// renderMenu = () => {
-	// 	let listofmenu = [];
-	// 	// console.log(this.state.menu.length)
-	// 	let i = 0;
-	// 	for (i = 0; i < this.state.menu.length; i++) {
-	// 		let dish = this.state.menu[i];
-	// 		listofmenu.push(<li> {dish}</li>);
-	// 	}
-	// 	return listofmenu[0];
-	// };
-
 	renderMenu = () => {
 		let listofmenu = [];
-		let ingredientsID = ''
+		// console.log(this.state.menu.length)
 		let i = 0;
 		for (i = 0; i < this.state.menu.length; i++) {
 			let dish = this.state.menu[i];
@@ -165,8 +154,28 @@ class FinalOverviewBase extends Component {
 			// });
 			// listofmenu.push(<br/>);
 		}
-		return listofmenu;
+		return listofmenu[0];
 	};
+
+	// renderMenu = () => {
+	// 	let listofmenu = [];
+	// 	let ingredientsID = ''
+	// 	let i = 0;
+	// 	for (i = 0; i < this.state.menu.length; i++) {
+	// 		let dish = this.state.menu[i];
+	// 		listofmenu.push(<li> {dish}</li>);
+
+	// 		ingredientsID = this.state.ingredientsUsed[dish];
+	// 		ingredientsID = ingredientsID.split(",");
+
+	// 		ingredientsID.forEach(ingtID => {
+	// 			let ingtname = this.state[ingtID]
+	// 			listofmenu.push(<Typography variant="subtitle2" color="textSecondary"> &emsp; &emsp; {ingtname}: {ingtID}</Typography>)
+	// 		});
+	// 		listofmenu.push(<br/>);
+	// 	}
+	// 	return listofmenu;
+	// };
 
 
 	// renderMenu = () => {

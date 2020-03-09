@@ -255,18 +255,25 @@ ul {
   min-height: 45px
 }
 
+/* ---------- CREATE ORDER ---------- */
+
+.full-size {
+	width: 100%
+  }
+
+
 /* ---------- ROOT  ---------- */
 .MuiPaper-root {
-	transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-	background-color: #fff;
+	/* transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+	background-color: #fff; */
 	padding: 15px;
 }
 
 .MuiContainer-root {
 	padding-top: 2%;
 	padding-bottom: 2%;
-  flex-grow: 1;
-  font-family: 'Roboto', sans-serif;
+	flex-grow: 1;
+	font-family: 'Roboto', sans-serif;
 }
 
 .MuiPaper-outlined {

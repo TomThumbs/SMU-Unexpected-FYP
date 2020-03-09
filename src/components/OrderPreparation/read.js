@@ -1,43 +1,57 @@
 import React, { Component } from "react";
 import { withFirebase } from "../Firebase";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 
+import { withStyles } from '@material-ui/core/styles';
 import { makeStyles } from "@material-ui/core/styles";
-// import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
-// import TextareaAutosize from "@material-ui/core/TextareaAutosize";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import Divider from "@material-ui/core/Divider";
+
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import * as ROUTES from "../../constants/routes";
 
 import { withAuthorization } from "../Session";
 
-const useStyles = makeStyles(theme => ({
+const StyledExpansionPanel = withStyles(() => ({
+	disabled: {
+		opacity: 1
+	},
+	
 	root: {
-		flexGrow: 1
+		padding:0,
 	},
-	paper: {
-		marginTop: theme.spacing(8),
-		display: "flex",
-		flexDirection: "column",
-		maxWidth: 400,
-		textAlign: "center"
-		// margin: `${theme.spacing(1)}px auto`,
-		// padding: theme.spacing(2),
-	},
-	form: {
-		width: "100%", // Fix IE 11 issue.
-		marginTop: theme.spacing(1)
-	},
-	submit: {
-		margin: theme.spacing(3, 0, 2)
-	},
-	text: {
-		textAlign: "center"
-	}
+
+	expanded: {
+		padding: 0,
+		margin: 0,
+  }
+}))(ExpansionPanel);
+
+const useStyles = makeStyles(theme => ({	
+	// submit: {
+	// 	margin: theme.spacing(3, 0, 2)
+	// },
+
+	root: {
+		padding: '100px',
+	  },
+
+	heading: {
+		fontSize: theme.typography.pxToRem(15),
+		fontWeight: theme.typography.fontWeightRegular,
+	  },
+
 }));
 
 const INITIAL_STATE = {
@@ -59,6 +73,7 @@ const INITIAL_STATE = {
 	dataIsLoaded: false
 };
 
+
 class OrderPreparationBase extends Component {
 	constructor(props) {
 		super(props);
@@ -75,7 +90,9 @@ class OrderPreparationBase extends Component {
 			ingredientsUsed: props.location.state.ingredientsUsed
 		}; //props.location.state.orderID
 		this.classes = { useStyles };
+		
 	}
+
 
 	componentDidMount() {
 		let queryString = window.location.search;
@@ -145,7 +162,8 @@ class OrderPreparationBase extends Component {
 							commence: data.preparationCommencement,
 							statusDate: data.StatusDates[1],
 							menu: data.Menu,
-							ingredientsUsed: data.IngredientsUsed
+							ingredientsUsed: data.IngredientsUsed,
+							
 						});
 					});
 				});
@@ -176,23 +194,23 @@ class OrderPreparationBase extends Component {
 		let ingts = [];
 
 		ingts.push(
-			<Grid item xs={3} key="Ingredient ID">
-				Ingredient ID
+			<Grid item xs={2} key="Ingredient ID">
+				<Typography gutterBottom><b>ID</b></Typography>
 			</Grid>
 		);
 		ingts.push(
-			<Grid item xs={3} key="Ingredient Name">
-				Ingredient Name
+			<Grid item xs={4} key="Ingredient Name" align="right">
+				<Typography gutterBottom><b>Name</b></Typography>
 			</Grid>
 		);
 		ingts.push(
-			<Grid item xs={3} key="Storage Date">
-				Storage Date
+			<Grid item xs={3} key="Storage Date" align="right">
+				<Typography gutterBottom><b>Storage Date</b></Typography>
 			</Grid>
 		);
 		ingts.push(
-			<Grid item xs={3} key="Expiry Date">
-				Expiry Date
+			<Grid item xs={3} key="Expiry Date" align="right">
+			<Typography gutterBottom><b>Expiry Date</b></Typography>
 			</Grid>
 		);
 
@@ -200,25 +218,26 @@ class OrderPreparationBase extends Component {
 
 		ingredients.forEach(barcode => {
 			ingts.push(
-				<Grid item xs={3} key={barcode}>
+				<Grid item xs={2} key={barcode}>
 					{barcode}
 				</Grid>
 			);
 			ingts.push(
-				<Grid item xs={3} key={barcode + " name"}>
+				<Grid item xs={4} key={barcode + " name"} align="right">
 					{this.state.ingredients[barcode][0]}
 				</Grid>
 			);
 			ingts.push(
-				<Grid item xs={3} key={barcode + " storage"}>
+				<Grid item xs={3} key={barcode + " storage"} align="right">
 					{this.state.ingredients[barcode][1]}
 				</Grid>
 			);
 			ingts.push(
-				<Grid item xs={3} key={barcode + "expiry"}>
+				<Grid item xs={3} key={barcode + "expiry"} align="right">
 					{this.state.ingredients[barcode][2]}
 				</Grid>
 			);
+			
 		});
 
 		return ingts;
@@ -230,79 +249,160 @@ class OrderPreparationBase extends Component {
 
 		this.state.menu.forEach(dish => {
 			menu.push(
-				<div key={dish}>
-					<Typography variant="h4" key={dish}>
-						{dish}
-					</Typography>
-					<Grid container>{this.renderMenuItem(dish)}</Grid>
-				</div>
+				<Grid container item>
+					<Grid item xs={12}><Typography variant="h6" key={dish}> {dish} </Typography></Grid>
+					<Grid item xs={12}><Typography variant="subtitle2" color="textSecondary" gutterBottom> List of Ingredients </Typography></Grid>
+					<Grid container item>{this.renderMenuItem(dish)}</Grid>
+				
+				</Grid>
+				
 			);
 		});
 
 		return menu;
 	}
 
-	renderBackButton() {
-		return (
-			<Link
-				to={{
-					pathname: ROUTES.ORDER_TIMELINE,
-					search: "?id=" + this.state.orderID //+ this.state.orderID
-				}}
-			>
-				<Button>Back</Button>
-			</Link>
-		);
-	}
-
 	render() {
 		const dataIsLoaded = this.state.dataIsLoaded === true;
 
 		return (
-			<Container component="main" maxWidth="xs" className={this.classes.root}>
-				{/* {this.renderBackButton()} */}
-				<Paper className={this.classes.paper}>
-					<Typography variant="h3" align="center" gutterBottom>
-						Preparation
-					</Typography>
-					<Typography variant="h4" align="center" gutterBottom>
-						Order Number: {this.state.orderID}
-					</Typography>
+			<Container component="main" maxWidth="sm" >
+				<Typography variant="h4" gutterBottom>Preparation Details</Typography>
+				
+				
+					<div className="root">
+							{/* KITCHEN DECLARATION */}
+						<StyledExpansionPanel>
+							<ExpansionPanelSummary 
 
-					<Paper className={this.classes.paper}>
-						<Typography variant="h6" align="center" gutterBottom>
-							Preparation Details
-						</Typography>
-						<Typography variant="h6" align="center" gutterBottom>
-							Head Chef: {this.state.headchef}
-						</Typography>
-						<Typography variant="h6" align="center" gutterBottom>
-							Assistant A: {this.state.assistantA}
-						</Typography>
-						<Typography variant="h6" align="center" gutterBottom>
-							Assistant B: {this.state.assistantB}
-						</Typography>
-						<br></br>
-						{/* <Typography variant="h6" align="center" gutterBottom>
-							Order Commence: {this.state.commence}
-						</Typography> */}
-						<form onSubmit={this.onSubmit}>
-							<Button
-								type="submit"
-								fullWidth
-								variant="contained"
-								color="primary"
-								className={this.classes.submit}
+							aria-controls="panel1a-content"
+							id="panel1a-header">
+							
+								<Typography variant="h6" color="primary">Order Number: {this.state.orderID}</Typography>
+							</ExpansionPanelSummary>
+						</StyledExpansionPanel>
+						
+						{/* INGREDIENTS */}
+						<StyledExpansionPanel>
+							<ExpansionPanelSummary
+							expandIcon={<ExpandMoreIcon />}
+							aria-controls="panel2a-content"
+							id="panel2a-header"
 							>
-								View Kitchen Declaration
-							</Button>
-						</form>
-					</Paper>
-					<Typography variant="h6" align="center" gutterBottom>
-						Ingredient Breakdown
-					</Typography>
-					{dataIsLoaded && this.renderMenu()}
-				</Paper>
+								<Typography variant="h5">Kitchen Declaration</Typography>
+							</ExpansionPanelSummary>
+							<ExpansionPanelDetails>
+							
+								
+								<Grid item xs={12}>
+									<Typography variant="h6"><font color="#2e7d32">Submission Successful</font></Typography>
+									<Typography variant="body1" >Preparation commenced at: {this.state.preparationCommencement}</Typography>
+									<Typography variant="body1" >Head Chef: {this.state.headchef}</Typography>
+									<Typography variant="body1" >Assistant A: {this.state.assistantA}</Typography>
+									<Typography variant="body1" >Assistant B: {this.state.assistantB}</Typography>
+
+									<p><Divider variant="li" /></p>
+
+									<Grid container xs={12}>
+										<Grid container xs={6}>
+											<FormControlLabel
+												control={<Checkbox checked="true" disabled name="hands"  value="remember" color="primary" />}
+												label="Hands washed?"
+											/>
+										</Grid>
+										<Grid item xs>
+											<FormControlLabel
+												control={<Checkbox checked="true" disabled  name="workspace" value="remember" color="primary" />}
+												label="Workspace clean?"
+											/>
+										</Grid>
+										<Grid item xs={6}>
+											<FormControlLabel
+												control={<Checkbox checked="true" disabled name="workspace" value="remember" color="primary" />}
+												label="Clean workspace?"
+											/>
+										</Grid>
+										<Grid item xs>
+											<FormControlLabel
+												control={<Checkbox checked="true" disabled name="workspace" value="remember" color="primary" />}
+												label="Clean kitchen tools?"
+											/>
+										</Grid>
+									</Grid>
+								
+
+								<br></br>
+						
+									<Grid item xs={12}>
+										<img
+											class="image"
+											src={this.state.kitchenImageURL}
+											alt="Delivery Van"
+										></img>
+									</Grid>
+								</Grid>
+								<br></br>
+							
+							</ExpansionPanelDetails>
+						</StyledExpansionPanel>
+
+						<StyledExpansionPanel>
+							<ExpansionPanelSummary
+							expandIcon={<ExpandMoreIcon />}
+							aria-controls="panel2a-content"
+							id="panel2a-header"
+							>
+								<Typography variant="h5">Ingredient List</Typography>
+							</ExpansionPanelSummary>
+							<ExpansionPanelDetails>
+
+								<Grid container xs={12} spacing={3}>
+							
+								{dataIsLoaded && this.renderMenu()}
+
+								</Grid>
+							
+							</ExpansionPanelDetails>
+						</StyledExpansionPanel>
+
+						<StyledExpansionPanel >
+							<ExpansionPanelSummary 
+							
+							aria-controls="panel3a-content"
+							id="panel3a-header"
+							>
+							<Grid container spacing={1}>
+								<Grid item xs={12}>
+									<Button
+										variant="outlined"
+										fullWidth
+										component={RouterLink}
+										to={{
+											pathname: ROUTES.ORDER_TIMELINE,
+											search: "?id=" + this.state.orderID
+										}}
+									>
+										Back to Timeline
+									</Button>
+								</Grid>
+								<Grid item xs={12}>
+									<Button
+										variant="outlined"
+										color="primary"
+										fullWidth
+										component={RouterLink}
+										to={ROUTES.LANDING}
+									>
+										Home
+									</Button>
+								</Grid>
+							</Grid>
+							</ExpansionPanelSummary>
+						</StyledExpansionPanel>
+					</div>
+						
+			
+					
 			</Container>
 		);
 	}
@@ -312,3 +412,16 @@ const OrderPreparation = withRouter(withFirebase(OrderPreparationBase));
 const condition = authUser => !!authUser;
 
 export default withAuthorization(condition)(OrderPreparation);
+
+
+{/* <form onSubmit={this.onSubmit}>
+	<Button
+		type="submit"
+		fullWidth
+		variant="contained"
+		color="primary"
+		className={this.classes.submit}
+	>
+		Declaration
+	</Button>
+</form> */}
