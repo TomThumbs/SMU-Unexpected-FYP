@@ -214,9 +214,24 @@ class OrderPreparationEditBase extends Component {
 
 	onSubmit = event => {
 		event.preventDefault();
-		Object.values(this.state.toDelete).map((item, key) =>
+		console.log(Object.keys(this.state.toDelete))
+		let x = Object.keys(this.state.toDelete)
+		let y = ""
+		let i = 0
+		for (let i = 0; i<Object.values(this.state.toDelete).length; i++) {
+			// this.state.toDelete
+		if (y.length === 0) {y = String(this.state.toDelete[x[i]]).split(",")}
+		else {y = y+","+String(this.state.toDelete[x[i]]).split(",")}
+		// console.log(String(this.state.toDelete[x[i]]).split(","))
+		
+		}
+		y=y.split(",")
+		// console.log(typeof y)
+		let j = 0
+		for (let j = 0; j<y.length; j++) {
+		console.log(Number(y[j]))
 		this.props.firebase.fs.collection("IngredientsInventory")
-		.where("barcode", "==", item)
+		.where("barcode", "==", y[j])
 		.get()
 		.then(snap => {
 			snap.forEach(doc => {
@@ -231,11 +246,12 @@ class OrderPreparationEditBase extends Component {
 				})
 			})
 		})
-		)
+	}
 
-		Object.values(this.state.toDelete).map((item, key) =>
+	let k = 0
+	for (let k = 0; k<y.length; k++) {
 		this.props.firebase.fs.collection("IngredientsInventory")
-		.where("barcode", "==", item)
+		.where("barcode", "==", y[k])
 		.get()
 		.then(snap => {
 			snap.forEach(doc => {
@@ -246,7 +262,7 @@ class OrderPreparationEditBase extends Component {
 
 		})
 
-		)
+	}
 
 		this.props.firebase.fs
 			.collection("Catering_orders")
@@ -334,7 +350,7 @@ class OrderPreparationEditBase extends Component {
 	onItemTextRemove = dish => event => {
 		let tempValue = event.target.value.trim();
 		Object.assign(this.state.toDelete, {[dish]: tempValue});
-
+		
 		// this.setState({
 		// 	[dish + " remove"]: tempValue
 		// });
