@@ -51,6 +51,7 @@ const INITIAL_STATE = {
 	month: "",
 	priFoodId: "",
 	availableIngredients: [],
+	prevFood:""
 };
 
 class NewComplexIngredientForm extends Component {
@@ -61,13 +62,6 @@ class NewComplexIngredientForm extends Component {
 	}
 
 	componentDidMount() {
-		// let queryString = window.location.search;
-		// let urlParams = new URLSearchParams(queryString);
-		// let urlId = urlParams.get("id");
-		// // console.log(urlId)
-		// this.setState({
-		// 	foodId: urlId
-		// });
 		if (this.state.storageDate.length === 0) {
 			let temp_date = new Date();
 			let dd = String(temp_date.getDate()).padStart(2, "0");
@@ -79,12 +73,15 @@ class NewComplexIngredientForm extends Component {
 				storageDate: string
 			});
 		}
-		this.props.firebase.fs.collection('Ingredients').get().then(snapshot=> {
+		this.props.firebase.fs.collection('IngredientsInventory').get().then(snapshot=> {
 			snapshot.forEach(doc => {
 			  
-			  this.setState((prevstate) => ({
-				availableIngredients: [...prevstate.availableIngredients, {ingredient: doc.data().name}]
-			  }));
+				if (this.state.prevFood.length === 0 || this.state.prevFood != doc.data().name) {
+					this.setState((prevstate) => ({
+					availableIngredients: [...prevstate.availableIngredients, {ingredient: doc.data().name}]
+					}));
+					this.setState({prevFood:doc.data().name})
+			} 
 			})
 		  })
 	}
