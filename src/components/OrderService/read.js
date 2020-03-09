@@ -4,26 +4,66 @@ import { withRouter } from "react-router-dom";
 import { withAuthorization } from "../Session";
 import { Link as RouterLink } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
+// import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
+import Link from "@material-ui/core/Link";
+// import Paper from "@material-ui/core/Paper";
+// import Button from "@material-ui/core/Button";
+// import TextareaAutosize from "@material-ui/core/TextareaAutosize";
+// import TextField from "@material-ui/core/TextField";
+// import MenuItem from "@material-ui/core/MenuItem";
+// import { sizing } from "@material-ui/system";
+
+// import Dialog from "@material-ui/core/Dialog";
+// import DialogActions from "@material-ui/core/DialogActions";
+// // import Typography from "@material-ui/core/Typography";
+// import DialogContent from "@material-ui/core/DialogContent";
+// import DialogContentText from "@material-ui/core/DialogContentText";
+// import DialogTitle from "@material-ui/core/DialogTitle";
+
+import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 
 import * as ROUTES from "../../constants/routes";
 import { compose } from "recompose";
 
-// const useStyles = makeStyles(theme => ({
-// 	root: {
-// 		flexGrow: 1
-// 	  },
-// }));
+const useStyles = makeStyles(theme => ({
+	root: {
+		flexGrow: 1
+	},
+	paper: {
+		marginTop: theme.spacing(8),
+		display: "flex",
+		flexDirection: "column",
+		// maxWidth: 400,
+		textAlign: "center",
+		// margin: `${theme.spacing(1)}px auto`,
+		height: 240,
+		width: 400,
+		padding: theme.spacing(2)
+	},
+	form: {
+		width: "100%", // Fix IE 11 issue.
+		marginTop: theme.spacing(1)
+	},
+	submit: {
+		margin: theme.spacing(3, 0, 2)
+	},
+	text: {
+		textAlign: "center"
+	}
+}));
 
 const INITIAL_STATE = {
 	docID: "",
 	orderID: "",
 	dataIsLoaded: false,
-	heatersUsed: {}
+	heatersUsed: {},
+	counter: 0,
+	temps:{},
+	thresholds:{}
 };
 
 class OrderServiceReadBase extends Component {
@@ -35,10 +75,11 @@ class OrderServiceReadBase extends Component {
 			docID: props.location.state.docID,
 			menu: props.location.state.menu
 		};
-		// this.classes = { useStyles };
+		this.classes = { useStyles };
 	}
 
 	componentDidMount() {
+		// console.log(this.props.location.state)
 		this.props.firebase.fs
 			.collection("Catering_orders")
 			.doc(this.state.docID)
@@ -51,47 +92,71 @@ class OrderServiceReadBase extends Component {
 			});
 	}
 
-	// renderMenu() {
-	// 	let result = [];
-	// 	this.state.menu.forEach((dish, idx) => {
-	// 		result.push(<Typography key={dish}>{dish}</Typography>);
-	// 		result.push(
-	// 			<Typography key={dish + " heater"}>Heater: {this.state.heatersUsed[dish]}</Typography>
-	// 		);
-	// 		result.push(
-	// 			<Link
-	// 				component={RouterLink}
-	// 				to={{
-	// 					pathname: ROUTES.SMART_HEATING,
-	// 					search: "?id=" + this.state.heatersUsed[dish],
-	// 					state: {
-	// 						heaterID: this.state.heatersUsed[dish],
-	// 						orderID: this.state.orderID,
-	// 						dish: dish
-	// 					}
-	// 				}}
-	// 				key={idx}
-	// 			>
-	// 				View >>
-	// 			</Link>
-	// 		);
-	// 	});
-
-	// 	return result;
-	// }
+	renderTemps(dish, dishname) {
+		console.log("dish", dish)
+					if (dish) {
+						// console.log("enters")
+					// console.log("COUNT",counter)
+				
+					this.props.firebase.fs
+					.collection("device_settings")
+					.where("ID", "==", dish)
+					.onSnapshot(changes => {
+						// let changes = snapshot.docChanges(); //if a new value is keyed in, update the value
+						changes.forEach(change => {
+							// console.log(change.data(), "temp enters")
+							if (this.state.counter <= Object.keys(this.state.heatersUsed).length) {
+								let counta = this.state.counter+1
+								this.setState({counter: counta})
+								if (change.data().name === "temperature sensor") {
+									console.log(change.data().minimum)
+									//set to dict
+									Object.assign(this.state.thresholds, {[dishname]: change.data().minimum});
+									this.setState({
+										minTemp: change.data().minimum, //pulls from MINIMUM
+										minTempDocID: change.id //the device settings doc id will change, so must update here for reference.
+									});
+								}
+								this.props.firebase.fs.collection("IoTSensorLogs")
+								.where("ID", "==", dish)
+								// .orderBy("timestamp", "desc")
+								.limit(1)
+								.onSnapshot(snapshot => {
+									let changes = snapshot.docChanges();
+							
+									changes.forEach(change => {
+										// console.log(changee.doc.data())
+										Object.assign(this.state.temps, {[dishname]: change.doc.data().temp});
+										this.setState({
+											temp:change.doc.data().temp,
+										})
+									});
+								});
+							}
+						});
+					});
+			}
+	}
 
 	renderMenu() {
 		let result = [];
 		this.state.menu.forEach((dish, idx) => {
+			{this.renderTemps(this.state.heatersUsed[dish], dish)}
+			// console.log("the state temp", this.state.temps)
+		
 			result.push(
-			
-				
-				<Grid item xs={4} key={dish}>
+			<Grid item xs={4} key={dish}>
 					<Paper variant="outlined">
 
 						<div className="item-height-dish">
 							<Grid item xs={12} >
 								{dish} 
+								<br></br>
+								Heater: {this.state.heatersUsed[dish]}
+								<br></br>
+								Current Temperature: {this.state.temps[dish]}
+								<br></br>
+								Threshold: {this.state.thresholds[dish]}
 							</Grid>
 						</div>
 					
@@ -119,7 +184,40 @@ class OrderServiceReadBase extends Component {
 				
 					</Paper>
 				</Grid>
-			);
+			)
+
+
+
+			// result.push(<Typography key={dish}>{dish}</Typography>);
+			// result.push(
+			// 	<Typography key={dish + " heater"}>Heater: {this.state.heatersUsed[dish]}</Typography>
+			// );
+			// result.push(
+			// 	<Typography key={dish + " currentTemp"}>Current Temperature: {this.state.temps[dish]}</Typography>
+			// );
+			// result.push(
+			// 	<Typography key={dish + " Threshold"}>Threshold: {this.state.thresholds[dish]}</Typography>
+			// );
+
+			// result.push(
+			// 	<Link
+			// 		component={RouterLink}
+			// 		to={{
+			// 			pathname: ROUTES.SMART_HEATING,
+			// 			search: "?id=" + this.state.heatersUsed[dish],
+			// 			state: {
+			// 				heaterID: this.state.heatersUsed[dish],
+			// 				orderID: this.state.orderID,
+			// 				docID: this.state.docID,
+			// 				dish: dish,
+			// 				menu: this.state.menu
+			// 			}
+			// 		}}
+			// 		key={idx}
+			// 	>
+			// 		View >>
+			// 	</Link>
+			// );
 		});
 
 		return result;
