@@ -7,7 +7,7 @@ import "date-fns";
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import DateFnsUtils from "@date-io/date-fns";
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import Autocomplete from "@material-ui/lab/Autocomplete";
 import {
 	MuiPickersUtilsProvider,
 	KeyboardDatePicker
@@ -24,7 +24,6 @@ import * as ROUTES from "../../constants/routes";
 // import Grid from "@material-ui/core/Grid";
 import { Paper } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
-
 
 const useStyles = makeStyles(theme => ({
 	paper: {
@@ -52,7 +51,7 @@ const INITIAL_STATE = {
 	foodId: "",
 	month: "",
 	availableIngredients: [],
-	prevFood:""
+	prevFood: ""
 	// priFoodId: ""
 };
 
@@ -82,17 +81,26 @@ class NewBasicIngredientForm extends Component {
 				storageDate: string
 			});
 		}
-		this.props.firebase.fs.collection('IngredientsInventory').get().then(snapshot=> {
-			snapshot.forEach(doc => {
-				// entry of last ingredient name is not the same as this ingredient, let it append.
-				if (this.state.prevFood.length === 0 || this.state.prevFood != doc.data().name) {
-						this.setState((prevstate) => ({
-						availableIngredients: [...prevstate.availableIngredients, {ingredient: doc.data().name}]
+		this.props.firebase.fs
+			.collection("IngredientsInventory")
+			.get()
+			.then(snapshot => {
+				snapshot.forEach(doc => {
+					// entry of last ingredient name is not the same as this ingredient, let it append.
+					if (
+						this.state.prevFood.length === 0 ||
+						this.state.prevFood !== doc.data().name
+					) {
+						this.setState(prevstate => ({
+							availableIngredients: [
+								...prevstate.availableIngredients,
+								{ ingredient: doc.data().name }
+							]
 						}));
-						this.setState({prevFood:doc.data().name})
-				} 
-			})
-		  })
+						this.setState({ prevFood: doc.data().name });
+					}
+				});
+			});
 	}
 
 	onSubmit = event => {
@@ -113,7 +121,7 @@ class NewBasicIngredientForm extends Component {
 				Date_of_Storage: this.state.storageDate
 			});
 
-			this.props.firebase.fs
+		this.props.firebase.fs
 			.collection("IngredientsInventory")
 			.doc(this.state.foodId)
 			.set({
@@ -142,11 +150,10 @@ class NewBasicIngredientForm extends Component {
 			open: false,
 			foodId: "",
 			expiryDate: "",
-			foodName: "",
+			foodName: ""
 			// priFoodId: ""
 		});
 		window.location.reload(false);
-
 	};
 
 	handleHome = () => {
@@ -173,17 +180,20 @@ class NewBasicIngredientForm extends Component {
 				month: tempMonth
 			});
 		} else {
-
 		}
 		// console.log(this.state.date)
 	};
 
-	handleFillChange= name => event =>  {
-		let dictIndex = event.target.id.split("-")[4]
+	handleFillChange = name => event => {
+		let dictIndex = event.target.id.split("-")[4];
 		// console.log(this.state.foodName)
 		// console.log(Object.values(this.state.availableIngredients)[dictIndex].ingredient)
-		this.setState({...this.props, [name]: Object.values(this.state.availableIngredients)[dictIndex].ingredient});
-	  }
+		this.setState({
+			...this.props,
+			[name]: Object.values(this.state.availableIngredients)[dictIndex]
+				.ingredient
+		});
+	};
 
 	createTextField = (name, temp, label, placeholder) => {
 		// const read = readonly === "true"
@@ -205,48 +215,50 @@ class NewBasicIngredientForm extends Component {
 	today = new Date();
 
 	render() {
-		
 		// console.log(this.state.availableIngredients)
 		const isInvalid =
 			this.state.storageDate === this.state.expiryDate ||
 			this.state.foodName.length === 0;
 		return (
-			
-				<Container component="main" maxWidth="xs">
-					{/* {this.uniqueMenu()} */}
-					<Typography variant="h4"  gutterBottom>Tag Raw Ingredient</Typography>
-					<Paper>
-						{this.createTextField(
-							"foodId",
-							this.state.foodId,
-							"Food ID",
-							"Food ID"
-						)}
+			<Container component="main" maxWidth="xs">
+				{/* {this.uniqueMenu()} */}
+				<Typography variant="h4" gutterBottom>
+					Tag Raw Ingredient
+				</Typography>
+				<Paper>
+					{this.createTextField(
+						"foodId",
+						this.state.foodId,
+						"Food ID",
+						"Food ID"
+					)}
 
-						{/* Food Name */}
-						{/* {this.createTextField(
+					{/* Food Name */}
+					{/* {this.createTextField(
 							"foodName",
 							this.state.foodName,
 							"Food Name",
 							"Food Name"
 						)} */}
 
-						<Autocomplete
+					<Autocomplete
 						id="combo-box-demo"
 						options={this.state.availableIngredients}
 						getOptionLabel={option => option.ingredient}
 						fullWidth
-						onChange={this.handleFillChange("foodName")}  
+						onChange={this.handleFillChange("foodName")}
 						renderInput={params => (
-							<TextField {...params} 
-							label="Ingredient:" 
-							variant="outlined" 
-							margin="normal"
-							fullWidth />
+							<TextField
+								{...params}
+								label="Ingredient:"
+								variant="outlined"
+								margin="normal"
+								fullWidth
+							/>
 						)}
-						/>
+					/>
 
-						{/* <TextField
+					{/* <TextField
 							variant="outlined"
 							margin="normal"
 							fullWidth
@@ -258,91 +270,87 @@ class NewBasicIngredientForm extends Component {
 							placeholder="Barcodes of other ingredients"
 						/> */}
 
-						{/* Storage Date */}
-						<TextField
-							variant="outlined"
-							margin="normal"
-							required
+					{/* Storage Date */}
+					<TextField
+						variant="outlined"
+						margin="normal"
+						required
+						fullWidth
+						name="storageDate"
+						value={this.state.storageDate}
+						label="Date of Storage"
+						onChange={this.onChange}
+						type="text"
+						placeholder="Date of Storage"
+						InputProps={{
+							readOnly: true
+						}}
+					/>
+					<MuiPickersUtilsProvider utils={DateFnsUtils}>
+						<KeyboardDatePicker
+							minDate={this.today}
+							// InputLabelProps={{ shrink: true }}
 							fullWidth
-							name="storageDate"
-							value={this.state.storageDate}
-							label="Date of Storage"
-							onChange={this.onChange}
-							type="text"
-							placeholder="Date of Storage"
-							InputProps={{
-								readOnly: true
+							margin="normal"
+							inputVariant="outlined"
+							label="Expiry Date:"
+							format="dd/MM/yyyy"
+							id="date-picker-inline"
+							value={this.state.expiryDate}
+							onChange={this.handleDateChange}
+							KeyboardButtonProps={{
+								"aria-label": "change date"
 							}}
 						/>
-						<MuiPickersUtilsProvider utils={DateFnsUtils}>
-							<KeyboardDatePicker
-									minDate={this.today}
-									// InputLabelProps={{ shrink: true }}
-									fullWidth
-									margin="normal"
-									inputVariant="outlined"
-									label="Expiry Date:"
-									format="dd/MM/yyyy"
-									id="date-picker-inline"
-									value={this.state.expiryDate}
-									onChange={this.handleDateChange}
-									KeyboardButtonProps={{
-										"aria-label": "change date"
-									}}
-								/>
-						</MuiPickersUtilsProvider>
+					</MuiPickersUtilsProvider>
 
-						<Dialog
-							open={this.state.open}
-							onClose={this.handleClose}
-							aria-labelledby="alert-dialog-title"
-							aria-describedby="alert-dialog-description"
-						>
-							<DialogTitle id="alert-dialog-title">
-								{"Submission Notification"}
-							</DialogTitle>
-							<DialogContent dividers>
-								<DialogContentText id="alert-dialog-description">
-									{this.state.foodName} has been tagged.
-									<br />
-									{/* Primary ingredients(if any):
+					<Dialog
+						open={this.state.open}
+						onClose={this.handleClose}
+						aria-labelledby="alert-dialog-title"
+						aria-describedby="alert-dialog-description"
+					>
+						<DialogTitle id="alert-dialog-title">
+							{"Submission Notification"}
+						</DialogTitle>
+						<DialogContent dividers>
+							<DialogContentText id="alert-dialog-description">
+								{this.state.foodName} has been tagged.
+								<br />
+								{/* Primary ingredients(if any):
 									{this.state.priFoodId}
 									<br /> */}
-									Food ID: {this.state.foodId}
-									<br />
-									Storage Date: {this.state.storageDate}
-									<br />
-									Expiry Date:{" "}
-									{String(this.state.expiryDate).split(
-										" "
-									)[2] +
-										"/" +
-										this.state.month +
-										"/" +
-										String(this.state.expiryDate).split(
-											" "
-										)[3]}
-								</DialogContentText>
-							</DialogContent>
-							<DialogActions>
-								<Button
-									onClick={this.handleClose}
-									color="primary"
-									autoFocus
-								>
-									Continue Tagging
-								</Button>
-								<Button
-									onClick={this.handleHome}
-									color="primary"
-									autoFocus
-								>
-									Home
-								</Button>
-							</DialogActions>
-						</Dialog>
+								Food ID: {this.state.foodId}
+								<br />
+								Storage Date: {this.state.storageDate}
+								<br />
+								Expiry Date:{" "}
+								{String(this.state.expiryDate).split(" ")[2] +
+									"/" +
+									this.state.month +
+									"/" +
+									String(this.state.expiryDate).split(" ")[3]}
+							</DialogContentText>
+						</DialogContent>
+						<DialogActions>
+							<Button
+								onClick={this.handleClose}
+								color="primary"
+								autoFocus
+							>
+								Continue Tagging
+							</Button>
+							<Button
+								onClick={this.handleHome}
+								color="primary"
+								autoFocus
+							>
+								Home
+							</Button>
+						</DialogActions>
+					</Dialog>
 
-						{/* <Grid item xs={12}>
+					{/* <Grid item xs={12}>
 							<Button
 								variant="outlined"
 								fullWidth
@@ -354,25 +362,24 @@ class NewBasicIngredientForm extends Component {
 							
 						</Grid> */}
 
-						<div><br></br></div>
+					<div>
+						<br></br>
+					</div>
 
-						
-						<form onSubmit={this.onSubmit}>
-							<Button
-								disabled={isInvalid}
-								type="submit"
-								fullWidth
-								variant="contained"
-								color="primary"
-								className={this.classes.submit}
-							>
-								Submit
-							</Button>
-						</form>
-					
-					</Paper>
-				</Container>
-		
+					<form onSubmit={this.onSubmit}>
+						<Button
+							disabled={isInvalid}
+							type="submit"
+							fullWidth
+							variant="contained"
+							color="primary"
+							className={this.classes.submit}
+						>
+							Submit
+						</Button>
+					</form>
+				</Paper>
+			</Container>
 		);
 	}
 }

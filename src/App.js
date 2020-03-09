@@ -93,16 +93,8 @@ const App = () => (
         <Route path={ROUTES.ORDER_SERVICE_EDIT} component={OrderService}/>
         <Route path={ROUTES.ORDER_SERVICE} component={OrderServiceRead}/>
         <Route path={ROUTES.ORDER_COMPLETE} component={OrderCompletion}/>
-
-
-
-
         <Route path={ROUTES.FINAL_OVERVIEW} component={FinalOverview}/>
         
-
-        
-
-
         <Route path={ROUTES.DISPLAY_ORDERS} component={DisplayOrders} />
         <Route path={ROUTES.DISH_TO_INGREDIENT_FORM} component={DishToIngredientForm}/>
         <Route path={ROUTES.COOKING_SELECTION} component={CookingSelection}/>

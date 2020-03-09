@@ -51,15 +51,11 @@ const INITIAL_STATE = {
 	open: false,
 	docID: "",
 	orderID: "",
-	// time: "",
-	// venue: "",
-	// pax: "",
 	toDelete: {},
 	menu: [],
 	ingredientsUsed: "",
 	dishIngredientsCheck: [],
-	commencement: new Date(),
-
+	commencement: new Date()
 };
 
 class OrderPreparationEditBase extends Component {
@@ -75,6 +71,7 @@ class OrderPreparationEditBase extends Component {
 	}
 
 	componentDidMount() {
+		// ---------- RETRIEVE ORDER ID FROM URL ----------
 		let queryString = window.location.search;
 		let urlParams = new URLSearchParams(queryString);
 		let urlId = Number(urlParams.get("id"));
@@ -82,8 +79,7 @@ class OrderPreparationEditBase extends Component {
 			orderID: urlId
 		});
 
-		// console.log(this.state);
-
+		// ---------- DISPLAY COMMEMCEMENT IN STRING FORMAT ----------
 		let day = String(this.state.commencement.getDate());
 		let month = Number(this.state.commencement.getMonth()) + 1;
 		let year = String(this.state.commencement.getFullYear());
@@ -119,17 +115,14 @@ class OrderPreparationEditBase extends Component {
 						let data = doc.data();
 						this.setState({
 							docID: doc.id,
-							// dateOnly: data.DateOnly,
-							// time: data.Time,
-							// venue: data.venue,
-							// pax: Number(data.Pax),
-							// status: data.Status,
 							menu: Array.from(new Set(data.Menu))
 						});
 						if (data.IngredientsUsed !== null) {
 							Object.keys(data.IngredientsUsed).forEach(dish => {
 								this.setState({
-									[dish + " barcodes"]: data.IngredientsUsed[dish]
+									[dish + " barcodes"]: data.IngredientsUsed[
+										dish
+									]
 								});
 							});
 						}
@@ -208,74 +201,65 @@ class OrderPreparationEditBase extends Component {
 				console.log("Error getting documents: ", error);
 			});
 
-			console.log(this.state);
-
+		console.log(this.state);
 	}
 
 	onSubmit = event => {
 		event.preventDefault();
-		console.log(Object.keys(this.state.toDelete))
-		let x = Object.keys(this.state.toDelete)
-		let y = ""
-		let i = 0
-		for (let i = 0; i<Object.values(this.state.toDelete).length; i++) {
-			// this.state.toDelete
-		if (y.length === 0) {y = String(this.state.toDelete[x[i]]).split(",")}
-		else {y = y+","+String(this.state.toDelete[x[i]]).split(",")}
-		// console.log(String(this.state.toDelete[x[i]]).split(","))
-		
+		// console.log(Object.keys(this.state.toDelete));
+		let x = Object.keys(this.state.toDelete);
+		let y = "";
+		// let i = 0
+		for (let i = 0; i < Object.values(this.state.toDelete).length; i++) {
+			if (y.length === 0) {
+				y = String(this.state.toDelete[x[i]]).split(",");
+			} else {
+				y = y + "," + String(this.state.toDelete[x[i]]).split(",");
+			}
+			// console.log(String(this.state.toDelete[x[i]]).split(","))
 		}
-		y=y.split(",")
+		y = y.split(",");
 		// console.log(typeof y)
-		let j = 0
-		for (let j = 0; j<y.length; j++) {
-		console.log(Number(y[j]))
-		this.props.firebase.fs.collection("IngredientsInventory")
-		.where("barcode", "==", y[j])
-		.get()
-		.then(snap => {
-			snap.forEach(doc => {
-				this.props.firebase.fs.collection("IngredientsArchive").add({
-					Date_of_Storage: doc.data().Date_of_Storage,
-					Date_of_expiry: doc.data().Date_of_expiry,
-					Primary_Ingredients: doc.data().Primary_Ingredients,
-					barcode: doc.data().barcode,
-					name: doc.data().name,
-					reason: "Consumed in Preparation",
-					Date_of_removal: this.state.commencement
-				})
-			})
-		})
-	}
+		// let j = 0
+		for (let j = 0; j < y.length; j++) {
+			console.log(Number(y[j]));
+			this.props.firebase.fs
+				.collection("IngredientsInventory")
+				.where("barcode", "==", y[j])
+				.get()
+				.then(snap => {
+					snap.forEach(doc => {
+						this.props.firebase.fs
+							.collection("IngredientsArchive")
+							.add({
+								Date_of_Storage: doc.data().Date_of_Storage,
+								Date_of_expiry: doc.data().Date_of_expiry,
+								Primary_Ingredients: doc.data()
+									.Primary_Ingredients,
+								barcode: doc.data().barcode,
+								name: doc.data().name,
+								reason: "Consumed in Preparation",
+								Date_of_removal: this.state.commencement
+							});
+					});
+				});
+		}
 
-	let k = 0
-	for (let k = 0; k<y.length; k++) {
-		this.props.firebase.fs.collection("IngredientsInventory")
-		.where("barcode", "==", y[k])
-		.get()
-		.then(snap => {
-			snap.forEach(doc => {
-				this.props.firebase.fs.collection("Ingredients")
-				.doc(doc.id)
-				.delete()
-			})
-
-		})
-
-	}
-
-		this.props.firebase.fs
-			.collection("Catering_orders")
-			.doc(this.state.docID)
-			.update({
-				Status: "Preparation"
-			})
-			.then(function() {
-				console.log("Document successfully written!");
-			})
-			.catch(function(error) {
-				console.error("Error writing document: ", error);
-			});
+		// let k = 0
+		for (let k = 0; k < y.length; k++) {
+			this.props.firebase.fs
+				.collection("IngredientsInventory")
+				.where("barcode", "==", y[k])
+				.get()
+				.then(snap => {
+					snap.forEach(doc => {
+						this.props.firebase.fs
+							.collection("Ingredients")
+							.doc(doc.id)
+							.delete();
+					});
+				});
+		}
 
 		let ingredientsUsed = {};
 
@@ -284,11 +268,27 @@ class OrderPreparationEditBase extends Component {
 			ingredientsUsed = { ...ingredientsUsed, [dish]: ingredients };
 		});
 
+		// ---------- UPDATE CATERING ORDER STATUS IN FIRESTORE ----------
+		// this.props.firebase.fs
+		// 	.collection("Catering_orders")
+		// 	.doc(this.state.docID)
+		// 	.update({
+		// 		Status: "Preparation"
+		// 	})
+		// 	.then(function() {
+		// 		console.log("Document successfully written!");
+		// 	})
+		// 	.catch(function(error) {
+		// 		console.error("Error writing document: ", error);
+		// 	});
+
+		// ---------- UPDATE CATERING ORDER INGREDIENTS USED IN FIRESTORE ----------
 		this.props.firebase.fs
 			.collection("Catering_orders")
 			.doc(this.state.docID)
 			.update({
-				IngredientsUsed: ingredientsUsed
+				IngredientsUsed: ingredientsUsed,
+				Status: "Preparation"
 			})
 			.then(function() {
 				console.log("Document successfully written!");
@@ -306,7 +306,7 @@ class OrderPreparationEditBase extends Component {
 		});
 	};
 
-	handleTimeline = () => {
+	onClickTimeline = () => {
 		this.setState({
 			open: false
 		});
@@ -349,8 +349,8 @@ class OrderPreparationEditBase extends Component {
 	// Remove items if finished
 	onItemTextRemove = dish => event => {
 		let tempValue = event.target.value.trim();
-		Object.assign(this.state.toDelete, {[dish]: tempValue});
-		
+		Object.assign(this.state.toDelete, { [dish]: tempValue });
+
 		// this.setState({
 		// 	[dish + " remove"]: tempValue
 		// });
@@ -373,7 +373,12 @@ class OrderPreparationEditBase extends Component {
 				menu.push(
 					<div key={id}>
 						<FormControlLabel
-							control={<Checkbox disabled checked={this.validator(dishIngt)} />}
+							control={
+								<Checkbox
+									disabled
+									checked={this.validator(dishIngt)}
+								/>
+							}
 							label={ingt}
 						/>
 					</div>
@@ -387,13 +392,16 @@ class OrderPreparationEditBase extends Component {
 		// console.log(this.state)
 		let list = [];
 		this.state.menu.forEach((dish, id) => {
-			console.log(dish)
-			console.log(id)
+			console.log(dish);
+			console.log(id);
 			list.push(
 				<div key={id}>
 					<Grid container style={{ paddingBottom: 18 }}>
 						<Grid item xs={12}>
-							<Typography variant="subtitle2" color="textSecondary">
+							<Typography
+								variant="subtitle2"
+								color="textSecondary"
+							>
 								Dish Name:
 							</Typography>
 							<Typography variant="h6">{dish}</Typography>
@@ -457,7 +465,11 @@ class OrderPreparationEditBase extends Component {
 		let completed = counter === this.state.dishIngredientsCheck.length;
 
 		return (
-			<Container component="main" maxWidth="xs" className={this.classes.root}>
+			<Container
+				component="main"
+				maxWidth="xs"
+				className={this.classes.root}
+			>
 				<Typography gutterBottom variant="h4">
 					Tag Ingredients to Dish
 				</Typography>
@@ -526,7 +538,11 @@ class OrderPreparationEditBase extends Component {
 							</DialogContentText>
 						</DialogContent>
 						<DialogActions>
-							<Button onClick={this.handleTimeline} color="primary" autoFocus>
+							<Button
+								onClick={this.onClickTimeline}
+								color="primary"
+								autoFocus
+							>
 								Back to Timeline
 							</Button>
 						</DialogActions>
