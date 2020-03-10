@@ -82,7 +82,8 @@ class NewBasicIngredientForm extends Component {
 			});
 		}
 		this.props.firebase.fs
-			.collection("IngredientsInventory")
+		.collection("IngredientsInventory")
+			.orderBy("name", "asc")
 			.get()
 			.then(snapshot => {
 				snapshot.forEach(doc => {
@@ -166,6 +167,8 @@ class NewBasicIngredientForm extends Component {
 	};
 
 	onChange = event => {
+
+
 		this.setState({ [event.target.name]: event.target.value });
 	};
 
@@ -185,14 +188,16 @@ class NewBasicIngredientForm extends Component {
 	};
 
 	handleFillChange = name => event => {
-		let dictIndex = event.target.id.split("-")[4];
-		// console.log(this.state.foodName)
-		// console.log(Object.values(this.state.availableIngredients)[dictIndex].ingredient)
-		this.setState({
-			...this.props,
-			[name]: Object.values(this.state.availableIngredients)[dictIndex]
-				.ingredient
-		});
+		if (event.target.id.length > 0) {
+			let dictIndex = event.target.id.split("-")[4];
+			// console.log(this.state.foodName)
+			// console.log(Object.values(this.state.availableIngredients)[dictIndex].ingredient)
+			this.setState({
+				...this.props,
+				[name]: Object.values(this.state.availableIngredients)[dictIndex]
+					.ingredient
+			});
+		}
 	};
 
 	createTextField = (name, temp, label, placeholder) => {
