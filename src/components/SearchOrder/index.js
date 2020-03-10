@@ -17,7 +17,7 @@ import Paper from "@material-ui/core/Paper";
 
 const INITIAL_STATE = {
 	searchId: "",
-	errorMsg: ""
+	errorMsg: "",
 };
 
 const useStyles = makeStyles(theme => ({
@@ -49,33 +49,38 @@ class SearchOrderBase extends Component {
 
 	onSubmit = event => {
 		event.preventDefault();
-		console.log(this.state.searchId);
+		// console.log(this.state.searchId);
 		// const serch =
 		// 
+		
 		this.props.firebase.fs
 		.collection("Catering_orders")
 		.where("orderID", "==", Number(this.state.searchId))
 		.get()
 		.then(snap => {
+			// console.log("asdasds")
 			snap.forEach(doc => {
 			// let data = doc.data();
-			console.log(doc,"asdasds")
-			if (doc.exists) {
+			
+			// if (doc.exists) {
+				
+				console.log("doc found")
 				this.props.history.push({
 					pathname: ROUTES.ORDER_TIMELINE,
 					search: "?id=" + this.state.searchId,
 					state: {
-						orderID: this.state.searchId
+						orderID: this.state.searchId,
+
 					}
 				});		
-			} else {
-				this.setState({
-					errorMsg: "Order does not exist."
-				})
-			}
 			})
 		})
-// console.log(this.state.errorMsg)
+		if (!this.state.found) {
+			// console.log("always")
+			this.setState({
+				errorMsg:<Paper className={this.classes.paper}><Typography variant="h6" align="center" gutterBottom>"Order does not exist."</Typography></Paper>
+			})
+		}
 	};
 
 	onChange = event => {
@@ -90,6 +95,7 @@ class SearchOrderBase extends Component {
 		return (
 		
 			<Container component="main" maxWidth="xs">
+
 				<form onSubmit={this.onSubmit}>
 					<TextField
 						variant="outlined"
@@ -113,15 +119,7 @@ class SearchOrderBase extends Component {
 						Search
 					</Button>
 				</form>
-				<div>
-				<Paper className={this.classes.paper}>
-
-				<Typography variant="h6" align="center" gutterBottom>
-					{this.state.errorMsg}
-				</Typography>
-				
-				</Paper>
-				</div>
+				{this.state.errorMsg}
 			</Container>
 		
 		);
