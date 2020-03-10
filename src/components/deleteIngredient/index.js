@@ -134,9 +134,9 @@ class DeleteIngredientForm extends Component {
 		if (event.target.value in this.state) {
 			let dash = this.state[event.target.value].dateOfStorage.replace("/","-")
 					this.setState({
-						dateOfStorage: dash.replace("/","-"),
-						dateOfExpiry: this.state[event.target.value].dateOfExpiry,
-						ingredientName: this.state[event.target.value].ingredientName,
+						dateOfStorage: this.createTextField("dos",dash.replace("/","-"),"Date of Storage","DD/MM/YYYY"),
+						dateOfExpiry: this.createTextField("dos",this.state[event.target.value].dateOfExpiry,"Date of Expiry","DD/MM/YYYY"),
+						ingredientName: this.createTextField("dos",this.state[event.target.value].ingredientName,"Ingredient Name","Ingredient Name")
 					})
 		} else {
 			this.setState({
@@ -206,7 +206,9 @@ class DeleteIngredientForm extends Component {
 
 		return (
 			<Container component="main" maxWidth="xs">
-
+					<Typography variant="h4" gutterBottom>
+						Remove Ingredient
+					</Typography>
 					<TextField
 						variant="outlined"
 						margin="normal"
@@ -218,10 +220,9 @@ class DeleteIngredientForm extends Component {
 						type="text"
 						placeholder="Scan barcode here"
 					/>
-					{this.createTextField("dos",this.state.dateOfStorage,"Date of Storage","DD/MM/YYYY")}
-					{this.createTextField("dos",this.state.dateOfExpiry,"Date of Expiry","DD/MM/YYYY")}
-					{this.createTextField("dos",this.state.ingredientName,"Ingredient Name","Ingredient Name")}
-
+					{this.state.dateOfStorage}
+					{this.state.dateOfExpiry}
+					{this.state.ingredientName}
 					<form onSubmit={this.onSubmit}>
 					<Button
 						disabled={isInvalid}
