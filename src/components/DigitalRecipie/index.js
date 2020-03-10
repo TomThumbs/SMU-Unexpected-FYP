@@ -6,10 +6,8 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
-
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import MenuItem from "@material-ui/core/MenuItem";
-
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -21,7 +19,6 @@ import * as ROUTES from "../../constants/routes";
 import { withAuthorization } from "../Session";
 import IconButton from "@material-ui/core/IconButton";
 import Paper from "@material-ui/core/Paper";
-
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 
 const useStyles = makeStyles(theme => ({
@@ -39,26 +36,6 @@ const INITIAL_STATE = {
 	menu: "",
 	menu_List: [],
 	chosen_menu: "",
-	// ingredientOne: "",
-	// ingredientTwo: "",
-	// ingredientThree: "",
-	// ingredientFour: "",
-	// ingredientFive: "",
-	// ingredientSix: "",
-	// ingredientSeven: "",
-	// ingredientEight: "",
-	// ingredientNine: "",
-	// ingredientTen: "",
-	// ingredientEleven: "",
-	// ingredientTwelve: "",
-	// ingredientThirteen: "",
-	// ingredientFourteen: "",
-	// ingredientFifteen: "",
-	// ingredientSixteen: "",
-	// ingredientSeventeen: "",
-	// ingredientEighteen: "",
-	// ingredientNineteen: "",
-	// ingredientTwenty: "",
 	availableIngredients: [],
 	newIngredientName: "",
 	newDishName: "",
@@ -116,17 +93,19 @@ class DishToIngredientFormBase extends Component {
 
 	handleIngreChange(e, index) {
 		//   console.log(e.target.data-option-index)
-		let yolo = e.target.id.split("-")[4];
-		let temp = Object.values(
-			this.state.availableIngredients
-		)[yolo].ingredient
-		this.setState({
-			[this.state.ingredients[index]]: temp
-		})
-		// this.state.ingredients[index] = Object.values(
-		// 	this.state.availableIngredients
-		// )[yolo].ingredient;
-		this.setState({ ingredients: this.state.ingredients });
+		if (e.target.id.length > 0) {
+			let yolo = e.target.id.split("-")[4];
+			let temp = Object.values(
+				this.state.availableIngredients
+			)[yolo].ingredient
+			this.setState({
+				[this.state.ingredients[index]]: temp
+			})
+			// this.state.ingredients[index] = Object.values(
+			// 	this.state.availableIngredients
+			// )[yolo].ingredient;
+			this.setState({ ingredients: this.state.ingredients });
+		}
 	}
 
 	handleRemove(index) {
@@ -144,67 +123,6 @@ class DishToIngredientFormBase extends Component {
 	onSubmit = event => {
 		event.preventDefault();
 		console.log(this.state);
-		// if (this.state.newIngredientName.length === 0) {
-		// 	if (this.state.ingredientOne.length !== 0) {
-		// 		this.dishIngredients.push(this.state.ingredientOne);
-		// 	}
-		// 	if (this.state.ingredientTwo.length !== 0) {
-		// 		this.dishIngredients.push(this.state.ingredientTwo);
-		// 	}
-		// 	if (this.state.ingredientThree.length !== 0) {
-		// 		this.dishIngredients.push(this.state.ingredientThree);
-		// 	}
-		// 	if (this.state.ingredientFour.length !== 0) {
-		// 		this.dishIngredients.push(this.state.ingredientFour);
-		// 	}
-		// 	if (this.state.ingredientFive.length !== 0) {
-		// 		this.dishIngredients.push(this.state.ingredientFive);
-		// 	}
-		// 	if (this.state.ingredientSix.length !== 0) {
-		// 		this.dishIngredients.push(this.state.ingredientSix);
-		// 	}
-		// 	if (this.state.ingredientSeven.length !== 0) {
-		// 		this.dishIngredients.push(this.state.ingredientSeven);
-		// 	}
-		// 	if (this.state.ingredientEight.length !== 0) {
-		// 		this.dishIngredients.push(this.state.ingredientEight);
-		// 	}
-		// 	if (this.state.ingredientNine.length !== 0) {
-		// 		this.dishIngredients.push(this.state.ingredientNine);
-		// 	}
-		// 	if (this.state.ingredientTen.length !== 0) {
-		// 		this.dishIngredients.push(this.state.ingredientTen);
-		// 	}
-		// 	if (this.state.ingredientEleven.length !== 0) {
-		// 		this.dishIngredients.push(this.state.ingredientEleven);
-		// 	}
-		// 	if (this.state.ingredientTwelve.length !== 0) {
-		// 		this.dishIngredients.push(this.state.ingredientTwelve);
-		// 	}
-		// 	if (this.state.ingredientThirteen.length !== 0) {
-		// 		this.dishIngredients.push(this.state.ingredientThirteen);
-		// 	}
-		// 	if (this.state.ingredientFourteen.length !== 0) {
-		// 		this.dishIngredients.push(this.state.ingredientFourteen);
-		// 	}
-		// 	if (this.state.ingredientFifteen.length !== 0) {
-		// 		this.dishIngredients.push(this.state.ingredientFifteen);
-		// 	}
-		// 	if (this.state.ingredientSixteen.length !== 0) {
-		// 		this.dishIngredients.push(this.state.ingredientSixteen);
-		// 	}
-		// 	if (this.state.ingredientSeventeen.length !== 0) {
-		// 		this.dishIngredients.push(this.state.ingredientSeventeen);
-		// 	}
-		// 	if (this.state.ingredientEighteen.length !== 0) {
-		// 		this.dishIngredients.push(this.state.ingredientEighteen);
-		// 	}
-		// 	if (this.state.ingredientNineteen.length !== 0) {
-		// 		this.dishIngredients.push(this.state.ingredientNineteen);
-		// 	}
-		// 	if (this.state.ingredientTwenty.length !== 0) {
-		// 		this.dishIngredients.push(this.state.ingredientTwenty);
-		// 	}
 
 		this.props.firebase.fs
 			.collection("Menu")
@@ -227,47 +145,24 @@ class DishToIngredientFormBase extends Component {
 	};
 
 	handleChange = name => event => {
-		let dictIndex = event.target.id.split("-")[4];
-		// console.log(Object.values(this.state.availableIngredients)[dictIndex].ingredient)
-		// this.state.ingredients[index] = Object.values(this.state.availableIngredients)[
-		// 	dictIndex
-		// ].ingredient
-		// this.setState({ingredients: this.state.ingredients})
+		if (event.target.id.length > 0) {
+			let dictIndex = event.target.id.split("-")[4];
+			// console.log(Object.values(this.state.availableIngredients)[dictIndex].ingredient)
+			// this.state.ingredients[index] = Object.values(this.state.availableIngredients)[
+			// 	dictIndex
+			// ].ingredient
+			// this.setState({ingredients: this.state.ingredients})
 
-		this.setState({
-			...this.props,
-			[name.fooditem]: Object.values(this.state.availableIngredients)[
-				dictIndex
-			].ingredient
-		});
+			this.setState({
+				...this.props,
+				[name.fooditem]: Object.values(this.state.availableIngredients)[
+					dictIndex
+				].ingredient
+			});
+		}
 	};
 
-	renderSubmit() {
-		if (
-			this.state.newDishName.length === 0 &&
-			this.state.newIngredientName.length === 0
-		) {
-			return (
-				<Typography variant="subtitle2" color="secondary">
-					Please enter a dish or ingredient.
-				</Typography>
-			);
-		} else {
-			return (
-				<form onSubmit={this.onSubmit}>
-					<Button
-						fullWidth
-						type="submit"
-						variant="contained"
-						color="primary"
-						className={this.classes.submit}
-					>
-						Submit
-					</Button>
-				</form>
-			);
-		}
-	}
+
 
 	onChange = event => {
 		this.setState({
@@ -287,26 +182,7 @@ class DishToIngredientFormBase extends Component {
 			menu: "",
 			menu_List: [],
 			chosen_menu: "",
-			// ingredientOne: "",
-			// ingredientTwo: "",
-			// ingredientThree: "",
-			// ingredientFour: "",
-			// ingredientFive: "",
-			// ingredientSix: "",
-			// ingredientSeven: "",
-			// ingredientEight: "",
-			// ingredientNine: "",
-			// ingredientTen: "",
-			// ingredientEleven: "",
-			// ingredientTwelve: "",
-			// ingredientThirteen: "",
-			// ingredientFourteen: "",
-			// ingredientFifteen: "",
-			// ingredientSixteen: "",
-			// ingredientSeventeen: "",
-			// ingredientEighteen: "",
-			// ingredientNineteen: "",
-			// ingredientTwenty: "",
+		
 			availableIngredients: [],
 			newIngredientName: "",
 			newDishName: ""
@@ -343,6 +219,34 @@ class DishToIngredientFormBase extends Component {
 		);
 	};
 
+	renderSubmit() {
+		if (
+			this.state.newDishName.length === 0 ||
+			this.state.chosen_menu.length === 0 ||
+			this.state.ingredients.length <   2
+		) {
+			return (
+				<Typography variant="subtitle2" color="secondary">
+					Please enter a dish or ingredient.
+				</Typography>
+			);
+		} else {
+			return (
+				<form onSubmit={this.onSubmit}>
+					<Button
+						fullWidth
+						type="submit"
+						variant="contained"
+						color="primary"
+						className={this.classes.submit}
+					>
+						Submit
+					</Button>
+				</form>
+			);
+		}
+	}
+	
 	render() {
 		// console.log(this.state);
 		// const isLoaded = this.state.dataIsLoaded === true;
@@ -459,18 +363,7 @@ class DishToIngredientFormBase extends Component {
 
 						{/* <hr /> */}
 
-						{/* {this.createTextField("ingredientOne")}
-							{this.createTextField("ingredientTwo")}
-							{this.createTextField("ingredientThree")}
-							{this.createTextField("ingredientFour")}
-							{this.createTextField("ingredientFive")}
-							{this.createTextField("ingredientSix")}
-							{this.createTextField("ingredientSeven")}
-							{this.createTextField("ingredientEight")}
-							{this.createTextField("ingredientNine")}
-							{this.createTextField("ingredientTen")}
-							{this.createTextField("ingredientEleven")}
-							{this.createTextField("ingredientTwelve")} */}
+		
 					</React.Fragment>
 
 					<Grid container spacing={1}>
