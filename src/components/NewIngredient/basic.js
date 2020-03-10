@@ -339,6 +339,8 @@ class NewBasicIngredientForm extends Component {
 						</DialogContent>
 						<DialogActions>
 							<Button
+								variant="outlined"
+								fullWidth
 								onClick={this.handleClose}
 								color="primary"
 								autoFocus
@@ -346,6 +348,8 @@ class NewBasicIngredientForm extends Component {
 								Continue Tagging
 							</Button>
 							<Button
+								variant="outlined"
+								fullWidth
 								onClick={this.handleHome}
 								color="primary"
 								autoFocus
