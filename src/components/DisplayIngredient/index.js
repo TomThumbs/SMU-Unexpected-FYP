@@ -11,7 +11,7 @@ import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 // import * as ROUTES from "../../constants/routes";
-
+import Typography from "@material-ui/core/Typography";
 const INITIAL_STATE = {
 	searchId: "",
 	prevId: "",
@@ -108,6 +108,9 @@ class DisplayIngredientBase extends Component {
 
 		return (
 			<Container component="main" maxWidth="xs">
+				<Typography variant="h4" gutterBottom>
+						Check Ingredient
+					</Typography>
 				<form onSubmit={this.onSubmit}>
 					<TextField
 						variant="outlined"
