@@ -143,7 +143,7 @@ class LandingPageBase extends Component {
 								<TableCell align="right">Time</TableCell>
 								<TableCell align="right">Order ID</TableCell>
 								<TableCell align="right">Venue</TableCell>
-								<TableCell align="right">Pax</TableCell>
+								{/* <TableCell align="right">Pax</TableCell> */}
 								<TableCell align="right">Status</TableCell>
 							</TableRow>
 						</TableHead>
@@ -156,7 +156,7 @@ class LandingPageBase extends Component {
 									<TableCell align="right">{row.time}</TableCell>
 									<TableCell align="right">{row.orderID}</TableCell>
 									<TableCell align="right">{row.venue}</TableCell>
-									<TableCell align="right">{row.pax}</TableCell>
+									{/* <TableCell align="right">{row.pax}</TableCell> */}
 									<TableCell align="right">
 										<Button
 											component={RouterLink}

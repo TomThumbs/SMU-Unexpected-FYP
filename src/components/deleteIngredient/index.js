@@ -209,32 +209,38 @@ class DeleteIngredientForm extends Component {
 					<Typography variant="h4" gutterBottom>
 						Remove Ingredient
 					</Typography>
-					<TextField
-						variant="outlined"
-						margin="normal"
-						fullWidth
-						name="searchId"
-						value={this.state.searchId}
-						label="Delete Ingredient"
-						onChange={this.onChange}
-						type="text"
-						placeholder="Scan barcode here"
-					/>
-					{this.state.dateOfStorage}
-					{this.state.dateOfExpiry}
-					{this.state.ingredientName}
-					<form onSubmit={this.onSubmit}>
-					<Button
-						disabled={isInvalid}
-						type="submit"
-						fullWidth
-						variant="contained"
-						color="primary"
-						classes={this.classes.submit}
-					>
-						Delete
-					</Button>
-				</form>
+					
+					<Paper>
+
+					
+						<TextField
+							variant="outlined"
+							margin="normal"
+							fullWidth
+							name="searchId"
+							value={this.state.searchId}
+							label="Delete Ingredient"
+							onChange={this.onChange}
+							type="text"
+							placeholder="Scan barcode here"
+						/>
+						{this.state.dateOfStorage}
+						{this.state.dateOfExpiry}
+						{this.state.ingredientName}
+						<form onSubmit={this.onSubmit}>
+						
+						<br></br>
+						<Button
+							disabled={isInvalid}
+							type="submit"
+							fullWidth
+							variant="contained"
+							color="primary"
+							classes={this.classes.submit}
+						>
+							Delete
+						</Button>
+					</form>
 				<Dialog
 							open={this.state.open}
 							onClose={this.handleClose}
@@ -266,6 +272,7 @@ class DeleteIngredientForm extends Component {
 								</Button>
 							</DialogActions>
 						</Dialog>
+				</Paper>
 			</Container>
 		);
 	}

@@ -133,10 +133,11 @@ class OrderReceivedBase extends Component {
 
 	renderRemarks() {
 		if (this.state.remarks.length !== 0) {
-			return (
-				this.griditem("Remarks:",this.state.remarks)
-			);
-		}
+			let result = []
+			result.push(<br />)
+			result.push(this.griditem("Remarks:",this.state.remarks))
+			return result 
+		} 
 	}
 
 	render() {
@@ -147,7 +148,7 @@ class OrderReceivedBase extends Component {
 					<Typography variant="h6" gutterBottom color="primary">Order Number: {this.state.orderID}</Typography>
 					<Typography variant="body1">
 					<Grid container>
-						<Grid item xs={6}>
+						<Grid item xs={7} className="side-border-right">
 							{this.griditem("Created On:",this.state.createdOn)}
 							{this.griditem("Created By:",this.state.createdBy)}
 
@@ -163,18 +164,18 @@ class OrderReceivedBase extends Component {
 							{this.griditem("Delivery Time:",this.state.time)}
 							{this.griditem("No. of Pax:",this.state.pax)}
 
-							<br></br>
-
 							{this.renderRemarks()}
+						
+						
 						</Grid>
 
 
 						<Divider orientation="vertical" flexItem />
 
-						<Grid item xs={1} ></Grid>
+						
 
 
-						<Grid item xs={4} >
+						<Grid item xs={4} className="side-border-left">
 							<b>Dishes ordered:</b>
 							{this.renderMenu()}
 						</Grid>

@@ -210,6 +210,17 @@ class FinalOverviewBase extends Component {
 	// 	menu.appendChild(listofmenu);
 	// };
 
+	renderRemarks() {
+		if (this.state.remarks.length !== 0) {
+			let result = []
+			result.push(<br />)
+			result.push(this.griditem("Remarks:",this.state.remarks))
+			return result 
+		} 
+		
+	}
+	
+	
 	griditem(title, info) {
 		return (
 			<Grid container>
@@ -259,6 +270,8 @@ class FinalOverviewBase extends Component {
 							this.state.deliveryTime
 						)}
 						{this.griditem("No. of Pax:", this.state.pax)}
+
+						{this.renderRemarks()}
 
 						<br></br>
 

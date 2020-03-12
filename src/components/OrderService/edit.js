@@ -234,29 +234,29 @@ class OrderServiceBase extends Component {
 					<Paper variant="outlined">
 						
 						<div className="item-height-dish">
-							<Grid item xs={12} >{dish}</Grid>
+							{dish}
 						</div>
 						
-							<Grid item xs={12}>
-								<TextField
-									fullWidth
-									id="standard-select"
-									select
-									label="Select Heater"
-									value={this.state[dish + " heater"]}
-									onChange={this.onChange(dish)}
-									//helperText="Please select the heater"
-								>
-									{this.state.IoTHeaters.map(option => (
-										<MenuItem
-											key={option.ID}
-											value={option.ID}
-										>
-											Heater {option.ID}
-										</MenuItem>
-									))}
-								</TextField>
-							</Grid>
+	
+							<TextField
+								fullWidth
+								id="standard-select"
+								select
+								label="Select Heater"
+								value={this.state[dish + " heater"]}
+								onChange={this.onChange(dish)}
+								//helperText="Please select the heater"
+							>
+								{this.state.IoTHeaters.map(option => (
+									<MenuItem
+										key={option.ID}
+										value={option.ID}
+									>
+										Heater {option.ID}
+									</MenuItem>
+								))}
+							</TextField>
+							
 						
 					</Paper>
 				</Grid>

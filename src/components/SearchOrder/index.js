@@ -78,7 +78,7 @@ class SearchOrderBase extends Component {
 		if (!this.state.found) {
 			// console.log("always")
 			this.setState({
-				errorMsg:<Paper className={this.classes.paper}><Typography variant="h6" align="center" gutterBottom>"Order does not exist."</Typography></Paper>
+				errorMsg:<Paper variant="outlined"><Typography variant="h7"><center>Order does not exist.</center></Typography></Paper>
 			})
 		}
 	};
@@ -119,6 +119,7 @@ class SearchOrderBase extends Component {
 						Search
 					</Button>
 				</form>
+				<br></br>
 				{this.state.errorMsg}
 			</Container>
 		

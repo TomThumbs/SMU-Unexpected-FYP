@@ -12,10 +12,12 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Typography from "@material-ui/core/Typography";
-
+import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import { Link as RouterLink } from 'react-router-dom';
+import Paper from "@material-ui/core/Paper";
 import * as ROUTES from "../../constants/routes";
+import Divider from '@material-ui/core/Divider';
 
 import CanvasJSReact from "../../assets/canvasjs.react";
 
@@ -183,15 +185,16 @@ class IoTHeaterBase extends Component {
 		};
 
 		return (
-			
-			<div align="center" className={this.classes.root}>
-				{/* <Paper className={this.classes.paper}>        */}
-				<Typography variant="h4">Order: #{this.state.orderID}</Typography>
-				<Typography variant="h4">Dish: {this.state.dish}</Typography>
-				<Typography variant="h4">Heater: #{this.state.heaterID}</Typography>
-				<p>Temperature Threshold: {this.state.minTemp}</p>
-				<p>Current Temperature: {this.state.current}</p>
-				<div style={{ alignSelf: "center" }}>
+			<Container component="main" maxWidth="md">
+				<Typography gutterBottom variant="h4">Heater Temperature Line Chart</Typography>
+				<Paper>
+				<Typography variant="h6" gutterBottom color="primary">Order Number: {this.state.orderID}</Typography>
+				<Typography variant="h5">Dish: {this.state.dish}</Typography>
+				<Typography variant="h5">Heater: #{this.state.heaterID}</Typography>
+				<Typography variant="body1">Temperature Threshold: {this.state.minTemp}</Typography>
+				<Typography variant="body1">Current Temperature: {this.state.current}</Typography>
+				
+				
 					<TextField
 						name="newMinTemp"
 						value={newMinTemp}
@@ -203,7 +206,7 @@ class IoTHeaterBase extends Component {
 						margin="dense"
 						align="left"
 					/>
-				</div>
+				
 
 				<form onSubmit={this.onSubmit}>
 					<Button
@@ -215,7 +218,7 @@ class IoTHeaterBase extends Component {
 						className={this.classes.submit}
 						margin="normal"
 					>
-						Submit
+						Set
 					</Button>
 
 					<Dialog
@@ -268,16 +271,17 @@ class IoTHeaterBase extends Component {
 					</Dialog>
 				</form>
 
-				<br></br>
-				<br></br>
-				<Typography variant="h4" align="center">
+				<p><Divider variant="li" /></p>
+				
+				{/* <Typography variant="h4" align="center">
 					Temperature Dynamic Line Chart
-				</Typography>
+				</Typography> */}
 				<br></br>
 				<CanvasJSChart
 					options={options}
 					onRef={ref => (this.chart = ref)}
 				/>
+				<br></br>
 				<Grid container spacing={1}>
 						<Grid item xs={12}>
 							<Button
@@ -300,7 +304,8 @@ class IoTHeaterBase extends Component {
 							</Button>
 						</Grid>
 					</Grid>
-			</div>
+				</Paper>
+			</Container>
 		);
 	}
 }

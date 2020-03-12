@@ -215,7 +215,7 @@ class OrderCompletionBase extends Component {
 								color="primary"
 							/>
 						}
-						label="The order has been successfully completed!"
+						label="The order has been completed."
 					/>
 
 					<Grid container spacing={1}>

@@ -24,17 +24,16 @@ import * as ROUTES from "../../constants/routes";
 import { withAuthorization } from "../Session";
 
 const StyledExpansionPanel = withStyles(() => ({
-	disabled: {
-		opacity: 1
-	},
 	
 	root: {
 		padding:0,
+		minHeight: 0
 	},
 
 	expanded: {
 		padding: 0,
 		margin: 0,
+		minHeight: 0,
   }
 }))(ExpansionPanel);
 
