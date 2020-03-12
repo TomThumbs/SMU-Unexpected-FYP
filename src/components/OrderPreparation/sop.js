@@ -76,7 +76,7 @@ class OrderPreparationSopBase extends Component {
 			// this.state.tools === true &&
 			// this.state.headchef.length !== 0 
 			// this.state.assistantA.length !== 0 &&
-			// this.state.assistantB.length !== 0 
+			this.state.assistantB.length !== 0 
 		) {
 			return (
 				<form onSubmit={this.onSubmit}>
