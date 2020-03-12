@@ -401,7 +401,8 @@ class OrderFormBase extends Component {
 			this.state.custname.length !== 0 &&
 			this.state.custcontact.length !== 0 &&
 			this.state.custemail.length !== 0 &&
-			this.state.custcompany.length !== 0;
+			this.state.custcompany.length !== 0 ||
+			this.state.chosen_payment.length === 0;
 		return (
 			<Container component="main" maxWidth="sm">
 				<Typography variant="h4"  gutterBottom>Order Form</Typography>

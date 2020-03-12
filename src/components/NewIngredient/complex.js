@@ -177,7 +177,7 @@ class NewComplexIngredientForm extends Component {
 	};
 
 	handleFillChange = name => event => {
-		if (event.target.id.length > 0) {
+		if (event.target.id.length > 22) {
 			let dictIndex = event.target.id.split("-")[4];
 			// console.log(this.state.foodName)
 			// console.log(Object.values(this.state.availableIngredients)[dictIndex].ingredient)
@@ -210,8 +210,10 @@ class NewComplexIngredientForm extends Component {
 
 	render() {
 		const isInvalid =
-			this.state.storageDate === this.state.expiryDate ||
-			this.state.foodName.length === 0;
+		this.state.foodId.length === 0 || 
+		this.state.expiryDate === null ||
+	    this.state.foodName.length === 0 || 
+	    this.state.priFoodId.length === 0;
 		return (
 			<Container component="main" maxWidth="xs">
 				<Typography variant="h4" gutterBottom>

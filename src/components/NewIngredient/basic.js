@@ -63,13 +63,6 @@ class NewBasicIngredientForm extends Component {
 	}
 
 	componentDidMount() {
-		// let queryString = window.location.search;
-		// let urlParams = new URLSearchParams(queryString);
-		// let urlId = urlParams.get("id");
-		// // console.log(urlId)
-		// this.setState({
-		// 	foodId: urlId
-		// });
 		if (this.state.storageDate.length === 0) {
 			let temp_date = new Date();
 			let dd = String(temp_date.getDate()).padStart(2, "0");
@@ -82,12 +75,11 @@ class NewBasicIngredientForm extends Component {
 			});
 		}
 		this.props.firebase.fs
-		.collection("IngredientsInventory")
+			.collection("IngredientsInventory")
 			.orderBy("name", "asc")
 			.get()
 			.then(snapshot => {
 				snapshot.forEach(doc => {
-					// entry of last ingredient name is not the same as this ingredient, let it append.
 					if (
 						this.state.prevFood.length === 0 ||
 						this.state.prevFood !== doc.data().name
@@ -188,9 +180,9 @@ class NewBasicIngredientForm extends Component {
 	};
 
 	handleFillChange = name => event => {
-		if (event.target.id.length > 0) {
+		if (event.target.id.length > 22) {
 			let dictIndex = event.target.id.split("-")[4];
-			// console.log(this.state.foodName)
+			console.log(event.target.id.length)
 			// console.log(Object.values(this.state.availableIngredients)[dictIndex].ingredient)
 			this.setState({
 				...this.props,
@@ -222,7 +214,8 @@ class NewBasicIngredientForm extends Component {
 	render() {
 		// console.log(this.state.availableIngredients)
 		const isInvalid =
-			this.state.storageDate === this.state.expiryDate ||
+			this.state.storageDate.length === 0 || 
+			this.state.expiryDate === null ||
 			this.state.foodName.length === 0;
 		return (
 			<Container component="main" maxWidth="xs">
