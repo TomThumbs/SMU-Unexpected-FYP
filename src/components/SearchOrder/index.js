@@ -52,7 +52,7 @@ class SearchOrderBase extends Component {
 		// console.log(this.state.searchId);
 		// const serch =
 		// 
-		
+		let found = false
 		this.props.firebase.fs
 		.collection("Catering_orders")
 		.where("orderID", "==", Number(this.state.searchId))
@@ -63,7 +63,7 @@ class SearchOrderBase extends Component {
 			// let data = doc.data();
 			
 			// if (doc.exists) {
-				
+				found = true
 				console.log("doc found")
 				this.props.history.push({
 					pathname: ROUTES.ORDER_TIMELINE,
@@ -74,13 +74,17 @@ class SearchOrderBase extends Component {
 					}
 				});		
 			})
-		})
-		if (!this.state.found) {
-			// console.log("always")
-			this.setState({
+			if (!found) {			
+				this.setState({
 				errorMsg:<Paper variant="outlined"><Typography variant="h7"><center>Order does not exist.</center></Typography></Paper>
-			})
-		}
+			})}
+		})
+		// if (!this.state.found) {
+		// 	// console.log("always")
+		// 	this.setState({
+		// 		errorMsg:<Paper variant="outlined"><Typography variant="h7"><center>Order does not exist.</center></Typography></Paper>
+		// 	})
+		// }
 	};
 
 	onChange = event => {
