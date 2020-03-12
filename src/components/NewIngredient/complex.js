@@ -20,7 +20,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import * as ROUTES from "../../constants/routes";
-// import Grid from "@material-ui/core/Grid";
+import Grid from "@material-ui/core/Grid";
 import { Paper } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 
@@ -333,20 +333,30 @@ class NewComplexIngredientForm extends Component {
 							</DialogContentText>
 						</DialogContent>
 						<DialogActions>
-							<Button
-								onClick={this.handleClose}
-								color="primary"
-								autoFocus
-							>
-								Continue Tagging
-							</Button>
-							<Button
-								onClick={this.handleHome}
-								color="primary"
-								autoFocus
-							>
-								Home
-							</Button>
+						<Grid container spacing={1}>
+								<Grid item xs={12}>
+									<Button
+										variant="outlined"
+										fullWidth
+										onClick={this.handleClose}
+										color="primary"
+										autoFocus
+									>
+										Continue Tagging
+									</Button>
+								</Grid>
+								<Grid item xs={12}>
+									<Button
+										variant="outlined"
+										fullWidth
+										onClick={this.handleHome}
+										color="primary"
+										autoFocus
+									>
+										Home
+									</Button>
+								</Grid>
+							</Grid>
 						</DialogActions>
 					</Dialog>
 

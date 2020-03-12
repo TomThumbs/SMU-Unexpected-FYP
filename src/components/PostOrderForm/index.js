@@ -26,7 +26,7 @@ import Divider from "@material-ui/core/Divider";
 class PostOrderFormBase extends Component {
 	
 	renderRemarks() {
-		if (this.state.remarks.length !== 0) {
+		if (this.props.location.remarks.length !== 0) {
 			let result = []
 			result.push(<br />)
 			result.push(this.griditem("Remarks:",this.state.remarks))

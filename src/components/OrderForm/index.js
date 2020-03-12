@@ -24,6 +24,7 @@ import {
 	KeyboardTimePicker,
 	KeyboardDatePicker
 } from "@material-ui/pickers";
+
 const INITIAL_STATE = {
 	orderID: 0,
 	orderiddoc: "",
@@ -513,7 +514,7 @@ class OrderFormBase extends Component {
 							</Grid>
 							<Grid item xs={6} >
 							<TextField
-								margin="densedl"
+								margin="densed"
 								id="standard-number"
 								fullWidth
 								name="pax"
@@ -521,9 +522,7 @@ class OrderFormBase extends Component {
 								label="Number of people"
 								type="number"
 								onChange={this.onChange}
-								InputLabelProps={{
-									shrink: true
-								}}
+								InputLabelProps={{shrink: true}}
 								inputProps={{ min: 30 }}
 							/>
 							</Grid>

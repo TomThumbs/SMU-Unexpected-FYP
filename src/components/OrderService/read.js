@@ -195,7 +195,6 @@ class OrderServiceReadBase extends Component {
 					<br></br>
 					<Grid container spacing={1}>
 							
-
 						<Grid item xs={12}>
 							<Button
 								variant="outlined"

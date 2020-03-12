@@ -11,6 +11,7 @@ import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
+import Paper from "@material-ui/core/Paper";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -55,7 +56,7 @@ class SignUpFormBase extends Component {
       .doCreateUserWithEmailAndPassword(email, passwordOne)
       .then(authUser => {
         this.setState({ ...INITIAL_STATE });
-        this.props.history.push(ROUTES.HOME);
+        this.props.history.push(ROUTES.LANDING);
       })
       .catch(error => {
         this.setState({ error });
@@ -86,19 +87,20 @@ class SignUpFormBase extends Component {
     return (
    
       <Container component="main" maxWidth="xs">
-        <div className={this.classes.paper}>
+         <Typography component="h1" variant="h4" gutterBottom>Sign Up</Typography>
+        <Paper>
         <Grid container spacing={12}>
           <Grid item xs >
-            <Typography component="h1" variant="h4">Sign Up</Typography>
+          
           </Grid>
         </Grid>
 
-        <br></br>
+     
           
           <form onSubmit={this.onSubmit}>
             <TextField
               variant="outlined"
-              margin="dense"
+              margin="normal"
               required
               fullWidth
               name="username"
@@ -110,7 +112,7 @@ class SignUpFormBase extends Component {
             />
             <TextField
               variant="outlined"
-              margin="dense"
+              margin="normal"
               required
               fullWidth
               name="email"
@@ -122,7 +124,7 @@ class SignUpFormBase extends Component {
             />
             <TextField
               variant="outlined"
-              margin="dense"
+              margin="normal"
               required
               fullWidth
               name="passwordOne"
@@ -134,7 +136,7 @@ class SignUpFormBase extends Component {
             />
             <TextField
               variant="outlined"
-              margin="dense"
+              margin="normal"
               required
               fullWidth
               name="passwordTwo"
@@ -157,7 +159,7 @@ class SignUpFormBase extends Component {
             {error && <p>{error.message}</p>}
 
           </form>
-        </div>
+        </Paper>
       </Container>
     );
   }

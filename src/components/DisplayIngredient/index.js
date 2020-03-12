@@ -135,8 +135,8 @@ class DisplayIngredientBase extends Component {
 						Search
 					</Button>
 				</form>
-				<br></br>
-				<Paper variant="outlined" align="center" id="Result"></Paper>
+				
+				<div id="Result"></div>
 			</Paper>
 			</Container>
 		);

@@ -189,87 +189,106 @@ class IoTHeaterBase extends Component {
 				<Typography gutterBottom variant="h4">Heater Temperature Line Chart</Typography>
 				<Paper>
 				<Typography variant="h6" gutterBottom color="primary">Order Number: {this.state.orderID}</Typography>
-				<Typography variant="h5">Dish: {this.state.dish}</Typography>
-				<Typography variant="h5">Heater: #{this.state.heaterID}</Typography>
-				<Typography variant="body1">Temperature Threshold: {this.state.minTemp}</Typography>
-				<Typography variant="body1">Current Temperature: {this.state.current}</Typography>
 				
 				
-					<TextField
-						name="newMinTemp"
-						value={newMinTemp}
-						onChange={this.onChange}
-						label="Set Threshold"
-						defaultValue="65"
-						type="Number"
-						variant="outlined"
-						margin="dense"
-						align="left"
-					/>
+				<Grid container> 
+					<Grid item xs={6}>
+						<Typography variant="subtitle2" color="textSecondary">Dish Name:</Typography>
+						<Typography variant="h5">{this.state.dish}</Typography>
+						<br></br>
+						<Typography variant="subtitle2" color="textSecondary">Heater:</Typography>
+						<Typography variant="h5">#{this.state.heaterID}</Typography>
+					</Grid>
+					
+					<Grid item xs={6}>
+						
+						<Typography variant="body1">Temperature Threshold: {this.state.minTemp}</Typography>
+						<Typography variant="body1">Current Temperature: {this.state.current}</Typography>
+
+						<br></br>
+					
+						<Grid container item xs={12} alignItems="center" spacing={3}>
+						
+							<Grid item xs={6} >
+								<TextField
+									name="newMinTemp"
+									value={newMinTemp}
+									onChange={this.onChange}
+									label="Set Threshold"
+									type="number"
+									variant="outlined"
+									margin="dense"
+									fullWidth
+									
+								/>
+							</Grid>
+
+							<form onSubmit={this.onSubmit}>
+							<Grid item  >
+					
+								<Button
+								style={{ alignSelf: "center" }}
+								// disabled={isInvalid}
+								type="submit"
+								variant="contained"
+								color="primary"
+								className={this.classes.submit}
+								size="large"
+								>
+								Set
+								</Button>
+							</Grid>
+
+						<Dialog
+							open={this.state.open}
+							onClose={this.handleClose}
+							aria-labelledby="alert-dialog-title"
+							aria-describedby="alert-dialog-description"
+						>
+							<DialogTitle id="alert-dialog-title">
+								{"Submission Notification"}
+							</DialogTitle>
+							<DialogContent dividers>
+								<DialogContentText id="alert-dialog-description">
+									Temperature has been changed to{" "}
+									{this.state.minTemp}°C
+								</DialogContentText>
+							</DialogContent>
+							<DialogActions>
+							
+							<Grid container spacing={1}>
+								<Grid item xs={12}>
+								<Button
+									variant="outlined"
+									fullWidth
+									component={RouterLink}
+									to={{
+										pathname: ROUTES.ORDER_SERVICE,
+										search: "?id=" + this.state.orderID,
+										state: {
+											orderID: this.props.location.state.orderID,
+											docID: this.props.location.state.docID,
+											menu: this.props.location.state.menu
+										}
+									}}
+								>
+									Back to Heater Overview
+								</Button>
+								</Grid> 
+								</Grid>
+							</DialogActions>
+						</Dialog>
+					</form>
+					
+					
+					</Grid>
+				</Grid>
+			</Grid>
+				
+				
 				
 
-				<form onSubmit={this.onSubmit}>
-					<Button
-						style={{ alignSelf: "center" }}
-						// disabled={isInvalid}
-						type="submit"
-						variant="contained"
-						color="primary"
-						className={this.classes.submit}
-						margin="normal"
-					>
-						Set
-					</Button>
-
-					<Dialog
-						open={this.state.open}
-						onClose={this.handleClose}
-						aria-labelledby="alert-dialog-title"
-						aria-describedby="alert-dialog-description"
-					>
-						<DialogTitle id="alert-dialog-title">
-							{"Submission Notification"}
-						</DialogTitle>
-						<DialogContent dividers>
-							<DialogContentText id="alert-dialog-description">
-								Temperature has been changed to{" "}
-								{this.state.minTemp}°C
-							</DialogContentText>
-						</DialogContent>
-						<DialogActions>
-						<Button
-								variant="outlined"
-								fullWidth
-								component={RouterLink}
-								to={{
-									pathname: ROUTES.ORDER_SERVICE,
-									search: "?id=" + this.state.orderID,
-									state: {
-										orderID: this.props.location.state.orderID,
-										docID: this.props.location.state.docID,
-										menu: this.props.location.state.menu
-									}
-								}}
-							>
-								Back to Heater Overview
-							</Button>
-						<Button
-								variant="outlined"
-								fullWidth
-								component={RouterLink}
-								to={{
-									pathname: ROUTES.ORDER_TIMELINE,
-									search: "?id=" + this.state.orderID,
-									state: {
-										orderID: this.props.location.state.orderID,
-									}
-								}}
-							>
-								Back to Timeline
-							</Button>
-						</DialogActions>
-					</Dialog>
-				</form>
+				
 
 				<p><Divider variant="li" /></p>
 				

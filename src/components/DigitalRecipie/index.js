@@ -329,7 +329,6 @@ class DishToIngredientFormBase extends Component {
 													{...params}
 													label="Ingredient:"
 													variant="outlined"
-													x
 													fullWidth
 													required
 												/>
