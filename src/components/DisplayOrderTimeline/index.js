@@ -109,6 +109,7 @@ class DisplayOrderTimelineBase extends Component {
 		// });
 	}
 
+	
 	timelineItem(key, itemIndex, status) {
 		// console.log(this.state);
 		const isDone =
@@ -160,7 +161,7 @@ class DisplayOrderTimelineBase extends Component {
 				<div className="timeline-item-content">
 					<span className="tag">{itemIndex}</span>
 
-					{date !== "" ? <span className="time">{date}</span> : null}
+					{date !== "" ? <span className="time" >{date}</span> : null}
 
 					{isPrep ? (
 						<Link
@@ -296,7 +297,7 @@ class DisplayOrderTimelineBase extends Component {
 							Adjust Temperature
 						</Link>
 					) : null} */}
-					<span className="circle" />
+					<span className="circle-solid" />
 				</div>
 			</div>
 		);

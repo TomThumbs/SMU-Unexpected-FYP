@@ -99,32 +99,35 @@ class SearchOrderBase extends Component {
 		return (
 		
 			<Container component="main" maxWidth="xs">
-
-				<form onSubmit={this.onSubmit}>
-					<TextField
-						variant="outlined"
-						margin="normal"
-						fullWidth
-						name="searchId"
-						value={this.state.searchId}
-						label="Search Order Number:"
-						onChange={this.onChange}
-						type="string"
-						placeholder="Order Number:"
-					/>
-					<Button
-						disabled={isInvalid}
-						type="submit"
-						fullWidth
-						variant="contained"
-						color="primary"
-						classes={this.classes.submit}
-					>
-						Search
-					</Button>
-				</form>
-				<br></br>
-				{this.state.errorMsg}
+			<Typography gutterBottom variant="h4">Search Order</Typography>
+				<Paper>
+				
+					<form onSubmit={this.onSubmit}>
+						<TextField
+							variant="outlined"
+							margin="normal"
+							fullWidth
+							name="searchId"
+							value={this.state.searchId}
+							label="Search Order Number:"
+							onChange={this.onChange}
+							type="string"
+							placeholder="Order Number:"
+						/>
+						<Button
+							disabled={isInvalid}
+							type="submit"
+							fullWidth
+							variant="contained"
+							color="primary"
+							classes={this.classes.submit}
+						>
+							Search
+						</Button>
+					</form>
+					
+					{this.state.errorMsg}
+				</Paper>
 			</Container>
 		
 		);

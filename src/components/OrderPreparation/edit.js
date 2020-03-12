@@ -416,7 +416,7 @@ class OrderPreparationEditBase extends Component {
 							<TextareaAutosize
 								aria-label="minimum height"
 								rowsMin={3}
-								placeholder="Scan Barcode ID of the ingredients that you are using for this dish"
+								placeholder="Scan Barcode ID of the ingredient(s) used for this dish."
 								value={this.state[dish + " barcodes"]}
 								onChange={this.onItemTextChange(dish)}
 							/>
@@ -426,7 +426,7 @@ class OrderPreparationEditBase extends Component {
 							<TextareaAutosize
 								aria-label="minimum height"
 								rowsMin={3}
-								placeholder="Scan Barcode ID of the ingredient if it has been fully utilised for this dish"
+								placeholder="Scan Barcode ID of ingredient(s) fully utilised for this dish."
 								value={this.state[dish + " remove"]}
 								onChange={this.onItemTextRemove(dish)}
 							/>

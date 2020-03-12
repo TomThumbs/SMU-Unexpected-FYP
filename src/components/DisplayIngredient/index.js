@@ -111,6 +111,7 @@ class DisplayIngredientBase extends Component {
 				<Typography variant="h4" gutterBottom>
 						Check Ingredient
 					</Typography>
+				<Paper>
 				<form onSubmit={this.onSubmit}>
 					<TextField
 						variant="outlined"
@@ -135,7 +136,8 @@ class DisplayIngredientBase extends Component {
 					</Button>
 				</form>
 				<br></br>
-				<Paper margin="10px" variant="outlined" align="center" padding="10px" id="Result"></Paper>
+				<Paper variant="outlined" align="center" id="Result"></Paper>
+			</Paper>
 			</Container>
 		);
 	}
