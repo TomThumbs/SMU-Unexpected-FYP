@@ -65,6 +65,7 @@ class NewBasicIngredientForm extends Component {
 	componentDidMount() {
 		if (this.state.storageDate.length === 0) {
 			let temp_date = new Date();
+
 			let dd = String(temp_date.getDate()).padStart(2, "0");
 			let mm = String(temp_date.getMonth() + 1).padStart(2, "0");
 			let yyyy = temp_date.getFullYear();
@@ -111,7 +112,8 @@ class NewBasicIngredientForm extends Component {
 					String(this.state.expiryDate).split(" ")[3],
 				name: this.state.foodName,
 				Primary_Ingredients: "",
-				Date_of_Storage: this.state.storageDate
+				Date_of_Storage: this.state.storageDate,
+				expiryTimestamp: this.state.expiryTimestamp
 			});
 
 		this.props.firebase.fs
@@ -127,7 +129,8 @@ class NewBasicIngredientForm extends Component {
 					String(this.state.expiryDate).split(" ")[3],
 				name: this.state.foodName,
 				Primary_Ingredients: "",
-				Date_of_Storage: this.state.storageDate
+				Date_of_Storage: this.state.storageDate,
+				expiryTimestamp: this.state.expiryTimestamp
 			});
 		this.handleClickOpen();
 	};
@@ -166,13 +169,15 @@ class NewBasicIngredientForm extends Component {
 
 	handleDateChange = event => {
 		if (event) {
+			// console.log(Math.round(event.getTime()/1000))
 			let tempMonth = (Number(event.getMonth()) + 1).toString();
 			if (tempMonth.length === 1) {
 				tempMonth = "0" + tempMonth;
 			}
 			this.setState({
 				expiryDate: event,
-				month: tempMonth
+				month: tempMonth,
+				expiryTimestamp: Math.round(event.getTime()/1000)
 			});
 		} else {
 		}
