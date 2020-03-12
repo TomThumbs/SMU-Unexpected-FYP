@@ -68,15 +68,16 @@ class OrderPreparationSopBase extends Component {
 	}
 
 	renderSubmit() {
+		console.log(this.state)
 		if (
-			// this.state.hands === true &&
-			// this.state.imageURL.length !== 0 &&
-			// this.state.workspace === true &&
-			// this.state.mask === true &&
-			// this.state.tools === true &&
-			// this.state.headchef.length !== 0 
-			// this.state.assistantA.length !== 0 &&
-			this.state.assistantB.length !== 0 
+			this.state.hands === true &&
+			this.state.imageURL.length !== 0 &&
+			this.state.workspace === true &&
+			this.state.mask === true &&
+			this.state.tools === true &&
+			this.state.headchef && 
+			this.state.assistantA &&
+			this.state.assistantB 
 		) {
 			return (
 				<form onSubmit={this.onSubmit}>
