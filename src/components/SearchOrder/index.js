@@ -52,7 +52,7 @@ class SearchOrderBase extends Component {
 		// console.log(this.state.searchId);
 		// const serch =
 		// 
-		
+		let found = false
 		this.props.firebase.fs
 		.collection("Catering_orders")
 		.where("orderID", "==", Number(this.state.searchId))
@@ -63,7 +63,7 @@ class SearchOrderBase extends Component {
 			// let data = doc.data();
 			
 			// if (doc.exists) {
-				
+				found = true
 				console.log("doc found")
 				this.props.history.push({
 					pathname: ROUTES.ORDER_TIMELINE,
@@ -74,13 +74,12 @@ class SearchOrderBase extends Component {
 					}
 				});		
 			})
-		})
-		if (!this.state.found) {
-			// console.log("always")
-			this.setState({
+			if (!found) {			
+				this.setState({
 				errorMsg:<Paper variant="outlined"><Typography variant="h7"><center>Order does not exist.</center></Typography></Paper>
-			})
-		}
+			})}
+		})
+
 	};
 
 	onChange = event => {
@@ -95,32 +94,35 @@ class SearchOrderBase extends Component {
 		return (
 		
 			<Container component="main" maxWidth="xs">
-
-				<form onSubmit={this.onSubmit}>
-					<TextField
-						variant="outlined"
-						margin="normal"
-						fullWidth
-						name="searchId"
-						value={this.state.searchId}
-						label="Search Order Number:"
-						onChange={this.onChange}
-						type="string"
-						placeholder="Order Number:"
-					/>
-					<Button
-						disabled={isInvalid}
-						type="submit"
-						fullWidth
-						variant="contained"
-						color="primary"
-						classes={this.classes.submit}
-					>
-						Search
-					</Button>
-				</form>
-				<br></br>
-				{this.state.errorMsg}
+			<Typography gutterBottom variant="h4">Search Order</Typography>
+				<Paper>
+				
+					<form onSubmit={this.onSubmit}>
+						<TextField
+							variant="outlined"
+							margin="normal"
+							fullWidth
+							name="searchId"
+							value={this.state.searchId}
+							label="Search Order Number:"
+							onChange={this.onChange}
+							type="string"
+							placeholder="Order Number:"
+						/>
+						<Button
+							disabled={isInvalid}
+							type="submit"
+							fullWidth
+							variant="contained"
+							color="primary"
+							classes={this.classes.submit}
+						>
+							Search
+						</Button>
+					</form>
+					
+					{this.state.errorMsg}
+				</Paper>
 			</Container>
 		
 		);
