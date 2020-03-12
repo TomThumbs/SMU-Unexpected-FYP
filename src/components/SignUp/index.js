@@ -74,13 +74,15 @@ class SignUpFormBase extends Component {
       passwordOne,
       passwordTwo,
       error,
+      verify
     } = this.state;
 
     const isInvalid =
     passwordOne !== passwordTwo ||
     passwordOne === '' ||
     email === '' ||
-    username === '';
+    username === '' || 
+    verify !== '55555';
 
 
     return (
@@ -143,6 +145,18 @@ class SignUpFormBase extends Component {
               type="password"
               placeholder="Confirm Password"
               label="Confirm Password"
+            />
+             <TextField
+              variant="outlined"
+              margin="dense"
+              required
+              fullWidth
+              name="verify"
+              value={this.state.verify}
+              onChange={this.onChange}
+              type="text"
+              placeholder="Verification Code"
+              label="Verification Code"
             />
             <br></br>
             <br></br>
