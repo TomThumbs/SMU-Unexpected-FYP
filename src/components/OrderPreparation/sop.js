@@ -55,7 +55,9 @@ const INITIAL_STATE = {
 	StatusDates: [],
 	headchef: "",
 	assistantA: "",
-	assistantB: ""
+	assistantB: "",
+	mask: false,
+	tools: false
 };
 
 class OrderPreparationSopBase extends Component {
@@ -63,6 +65,42 @@ class OrderPreparationSopBase extends Component {
 		super(props);
 		this.state = { ...INITIAL_STATE, docID: props.location.state.docID };
 		this.classes = { useStyles };
+	}
+
+	renderSubmit() {
+		console.log(this.state)
+		if (
+			this.state.hands === true &&
+			this.state.imageURL.length !== 0 &&
+			this.state.workspace === true &&
+			this.state.mask === true &&
+			this.state.tools === true &&
+			this.state.headchef && 
+			this.state.assistantA &&
+			this.state.assistantB 
+		) {
+			return (
+				<form onSubmit={this.onSubmit}>
+					<Button
+						type="submit"
+						fullWidth
+						variant="contained"
+						color="primary"
+						className={this.classes.submit}
+					>
+						Submit
+					</Button>
+				</form>
+			);
+		} else {
+			return (
+				<Typography variant="subtitle2" color="secondary">
+					Please ensure that you have adhered to and completed the
+					checklist requirements. Please also upload a picture of the
+					state of the kitchen.
+				</Typography>
+			);
+		}
 	}
 
 	componentDidMount() {
@@ -144,36 +182,6 @@ class OrderPreparationSopBase extends Component {
 		);
 	}
 
-	renderSubmit() {
-		if (
-			this.state.hands === true &&
-			this.state.imageURL.length !== 0 &&
-			this.state.workspace !== 0
-		) {
-			return (
-				<form onSubmit={this.onSubmit}>
-					<Button
-						type="submit"
-						fullWidth
-						variant="contained"
-						color="primary"
-						className={this.classes.submit}
-					>
-						Submit
-					</Button>
-				</form>
-			);
-		} else {
-			return (
-				<Typography variant="subtitle2" color="secondary">
-					Please ensure that you have adhered to and completed the
-					checklist requirements. Please also upload a picture of the
-					state of the kitchen.
-				</Typography>
-			);
-		}
-	}
-
 	onSubmit = event => {
 		this.props.firebase.fs
 			.collection("Catering_orders")
@@ -205,6 +213,7 @@ class OrderPreparationSopBase extends Component {
 	};
 
 	onBoxChange = event => {
+		console.log(event.target.name)
 		this.setState({
 			[event.target.name]: true
 		});
@@ -306,7 +315,7 @@ class OrderPreparationSopBase extends Component {
 									<FormControlLabel
 										control={
 											<Checkbox
-												name="workspace"
+												name="mask"
 												onChange={this.onBoxChange}
 												value="remember"
 												color="primary"
@@ -333,7 +342,7 @@ class OrderPreparationSopBase extends Component {
 									<FormControlLabel
 										control={
 											<Checkbox
-												name="workspace"
+												name="tools"
 												onChange={this.onBoxChange}
 												value="remember"
 												color="primary"

@@ -77,11 +77,7 @@ class OrderServiceReadBase extends Component {
 	}
 
 	renderTemps(dish, dishname) {
-		// console.log("dish", dish)
 					if (dish) {
-						// console.log("enters")
-					// console.log("COUNT",counter)
-				
 					this.props.firebase.fs
 					.collection("device_settings")
 					.where("ID", "==", dish)
@@ -102,18 +98,22 @@ class OrderServiceReadBase extends Component {
 									});
 								}
 								this.props.firebase.fs.collection("IoTSensorLogs")
-								.where("ID", "==", dish)
-								// .orderBy("timestamp", "desc")
-								.limit(1)
+								// .where("ID", "==", dish)
+								.orderBy("timestamp", "desc")
+								// .limit(1)
 								.onSnapshot(snapshot => {
 									let changes = snapshot.docChanges();
-							
+									let counte = 0
 									changes.forEach(change => {
 										// console.log(changee.doc.data())
-										Object.assign(this.state.temps, {[dishname]: change.doc.data().temp});
-										this.setState({
-											temp:change.doc.data().temp,
-										})
+										if (change.doc.data().ID == dish && counte == 0) {
+											counte = 1
+											Object.assign(this.state.temps, {[dishname]: change.doc.data().temp});
+											this.setState({
+												temp:change.doc.data().temp,
+											})
+										}
+
 									});
 								});
 							}
