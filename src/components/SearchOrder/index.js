@@ -76,7 +76,7 @@ class SearchOrderBase extends Component {
 			})
 			if (!found) {			
 				this.setState({
-				errorMsg:<Paper variant="outlined"><Typography variant="h7"><center>Order does not exist.</center></Typography></Paper>
+				errorMsg:<p><Typography variant="h7"><center>Order does not exist.</center></Typography></p>
 			})}
 		})
 
