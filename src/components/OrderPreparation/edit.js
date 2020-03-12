@@ -543,13 +543,17 @@ class OrderPreparationEditBase extends Component {
 							</DialogContentText>
 						</DialogContent>
 						<DialogActions>
-							<Button
-								onClick={this.onClickTimeline}
-								color="primary"
-								autoFocus
-							>
-								Back to Timeline
-							</Button>
+							<Grid container spacing={1}>
+								<Grid item xs={12}>
+									<Button
+										onClick={this.onClickTimeline}
+										color="primary"
+										autoFocus
+									>
+										Back to Timeline
+									</Button>
+								</Grid>
+							</Grid>
 						</DialogActions>
 					</Dialog>
 				</Paper>

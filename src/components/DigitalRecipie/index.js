@@ -397,20 +397,27 @@ class DishToIngredientFormBase extends Component {
 							</DialogContentText>
 						</DialogContent>
 						<DialogActions>
-							<Button
-								onClick={this.handleClose}
-								color="primary"
-								autoFocus
-							>
-								Create another recipe
-							</Button>
-							<Button
-								onClick={this.handleHome}
-								color="primary"
-								autoFocus
-							>
-								Home
-							</Button>
+							<Grid container spacing={3}>
+								<Grid item xs={12}>
+									<Button
+										onClick={this.handleClose}
+										color="primary"
+										autoFocus
+									>
+										Create another recipe
+									</Button>
+								</Grid>
+								<Grid item xs={12}>
+									<Button
+										onClick={this.handleHome}
+										color="primary"
+										autoFocus
+									>
+										Home
+									</Button>
+								</Grid>
+							</Grid>
+						
 						</DialogActions>
 					</Dialog>
 				</Paper>

@@ -37,8 +37,8 @@ class IngredientManagementBase extends Component {
 				<br></br>
 	
 				
-				<Grid container spacing={3}>
-					<Grid container item xs={1}></Grid>
+				<Grid container spacing={3} justify="center">
+					
 
 					<Grid container item xs={2}>
 						<Button
@@ -60,7 +60,7 @@ class IngredientManagementBase extends Component {
 						</Button>
 					</Grid>
 
-					<Divider orientation="vertical" flexItem />
+					{/* <Divider orientation="vertical" flexItem /> */}
 		
 					<Grid container item xs={2}>
 						<Button component={RouterLink} to={ROUTES.NEW_INGREDIENT_BASIC}>
@@ -95,7 +95,7 @@ class IngredientManagementBase extends Component {
 						</Button>
 					</Grid>
 
-					<Divider orientation="vertical" flexItem />
+					{/* <Divider orientation="vertical" flexItem /> */}
 
 					<Grid container item xs={2}>
 						<Button component={RouterLink} to={ROUTES.DISPLAY_INGREDIENT}>

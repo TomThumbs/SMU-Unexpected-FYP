@@ -21,7 +21,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import * as ROUTES from "../../constants/routes";
-// import Grid from "@material-ui/core/Grid";
+import Grid from "@material-ui/core/Grid";
 import { Paper } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 
@@ -221,9 +221,13 @@ class NewIngredientForm extends Component {
 			<Container component="main" maxWidth="xs">
 				{/* {this.uniqueMenu()} */}
 				<Typography variant="h4" gutterBottom>
-					Add brand new Ingredient
+					Add New Ingredient
 				</Typography>
 				<Paper>
+					<Typography variant="body2" color="secondary" gutterBottom>
+						Please ensure that ingredient has not been in the database before. 
+					</Typography>
+
 					{this.createTextField(
 						"foodId",
 						this.state.foodId,
@@ -331,24 +335,31 @@ class NewIngredientForm extends Component {
 							</DialogContentText>
 						</DialogContent>
 						<DialogActions>
-							<Button
-								variant="outlined"
-								fullWidth
-								onClick={this.handleClose}
-								color="primary"
-								autoFocus
-							>
-								Continue Tagging
-							</Button>
-							<Button
-								variant="outlined"
-								fullWidth
-								onClick={this.handleHome}
-								color="primary"
-								autoFocus
-							>
-								Home
-							</Button>
+							<Grid container spacing={3}>
+								<Grid item xs={12}>
+									<Button
+										variant="outlined"
+										fullWidth
+										onClick={this.handleClose}
+										color="primary"
+										autoFocus
+									>
+										Continue Tagging
+									</Button>
+								</Grid>
+									
+								<Grid item xs={12}>
+									<Button
+										variant="outlined"
+										fullWidth
+										onClick={this.handleHome}
+										color="primary"
+										autoFocus
+									>
+										Home
+									</Button>
+								</Grid>	
+							</Grid>
 						</DialogActions>
 					</Dialog>
 
