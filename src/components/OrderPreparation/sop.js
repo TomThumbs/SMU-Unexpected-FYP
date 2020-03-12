@@ -192,7 +192,8 @@ class OrderPreparationSopBase extends Component {
 				assistantA: this.state.assistantA,
 				assistantB: this.state.assistantB,
 				kitchenImageURL: this.state.imageURL,
-				StatusDates: this.state.StatusDates
+				StatusDates: this.state.StatusDates,
+				preparationCommencement: this.state.commencement
 			})
 			.then(function() {
 				console.log("Document successfully written!");
