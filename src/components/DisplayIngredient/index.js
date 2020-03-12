@@ -29,7 +29,7 @@ class DisplayIngredientBase extends Component {
 
 	componentDidMount() {
 		this.props.firebase.fs
-			.collection("Ingredients")
+			.collection("IngredientsInventory")
 			.get()
 			.then(querySnapshot => {
 				querySnapshot.forEach(doc => {

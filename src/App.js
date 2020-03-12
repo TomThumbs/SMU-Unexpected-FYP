@@ -23,7 +23,7 @@ import PostOrderForm from './components/PostOrderForm'
 
 // ---------- ITEM MANAGEMENT ---------- 
 import ItemManagementPage from './components/ItemManagementPage'
-import { NewBasicIngredient, NewComplexIngredient } from './components/NewIngredient'
+import { NewIngredient, NewBasicIngredient, NewComplexIngredient } from './components/NewIngredient'
 import DisplayIngredient from './components/DisplayIngredient'
 import DeleteIngredientForm from './components/deleteIngredient'
 import DisplayOrders from './components/DisplayOrders'
@@ -71,6 +71,7 @@ const App = () => (
         {/* ---------- ADD A NEW INGREDIENT ---------- */}
         <Route path={ROUTES.NEW_INGREDIENT_BASIC} component={NewBasicIngredient} />
         <Route path={ROUTES.NEW_INGREDIENT_COMPLEX} component={NewComplexIngredient} />
+        <Route path={ROUTES.NEW_INGREDIENT} component={NewIngredient} />
         <Route path={ROUTES.DISPLAY_INGREDIENT} component={DisplayIngredient} />
 
         {/* ---------- DELETE INGREDIENT ---------- */}

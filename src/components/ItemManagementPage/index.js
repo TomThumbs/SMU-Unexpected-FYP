@@ -114,6 +114,22 @@ class IngredientManagementBase extends Component {
 						</Button>
 					</Grid>
 
+					<Grid container item xs={2}>
+						<Button component={RouterLink} to={ROUTES.NEW_INGREDIENT}>
+							<Grid container justify="center" spacing={1}>
+								<Grid item xs={12}>
+									<img class="image"
+										src={checkingredients}
+										alt="checkingredients"/>
+								</Grid>
+								<Grid item xs={12} align="center">
+									<Typography component="h6" variant="h6">
+										Add brand new Ingredient
+									</Typography>
+								</Grid>
+							</Grid>
+						</Button>
+					</Grid>
 
 					{/* to change the route link  */}
 					<Grid container item xs={2}>

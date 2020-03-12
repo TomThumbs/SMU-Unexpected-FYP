@@ -8,16 +8,9 @@ import { withAuthorization } from "../Session";
 import * as ROUTES from "../../constants/routes";
 import { Link as RouterLink } from 'react-router-dom';
 
-// import { makeStyles } from '@material-ui/core/styles';
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
 
-// import Table from '@material-ui/core/Table';
-// import TableBody from '@material-ui/core/TableBody';
-// import TableCell from '@material-ui/core/TableCell';
-// import TableContainer from '@material-ui/core/TableContainer';
-// import TableHead from '@material-ui/core/TableHead';
-// import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
@@ -29,7 +22,7 @@ class PostOrderFormBase extends Component {
 		if (this.props.location.remarks.length !== 0) {
 			let result = []
 			result.push(<br />)
-			result.push(this.griditem("Remarks:",this.state.remarks))
+			result.push(this.griditem("Remarks:",this.props.location.remarks))
 			return result 
 		} 
 	}

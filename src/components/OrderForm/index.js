@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "../../App.css";
 import { withRouter } from "react-router-dom";
 import { withFirebase } from "../Firebase";
-import Paper from '@material-ui/core/Paper';
+import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -13,10 +13,10 @@ import Container from "@material-ui/core/Container";
 import Checkbox from "@material-ui/core/Checkbox";
 import Divider from "@material-ui/core/Divider";
 import { withAuthorization } from "../Session";
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
 import "date-fns";
 import DateFnsUtils from "@date-io/date-fns";
 import {
@@ -46,7 +46,7 @@ const INITIAL_STATE = {
 	remarks: "",
 	commencement: new Date(),
 	payment: ["Cash on delivery", "Payment Made in Full"],
-	chosen_payment:"",
+	chosen_payment: "",
 	f: false
 };
 const useStyles = makeStyles(theme => ({
@@ -77,7 +77,7 @@ class OrderFormBase extends Component {
 		let minute = String(this.state.commencement.getMinutes());
 		if (month.length === 1) {
 			month = "0" + month;
-		} 
+		}
 
 		if (hour.length === 1) {
 			hour = "0" + hour;
@@ -139,8 +139,8 @@ class OrderFormBase extends Component {
 
 	onSubmit = event => {
 		event.preventDefault();
-		let apmTime = "AM"
-		let apmHour = String(this.state.hour)
+		let apmTime = "AM";
+		let apmHour = String(this.state.hour);
 		let strhour = String(this.state.hour);
 		let strmonth = Number(this.state.date.getMonth()) + 1;
 		let strmin = "";
@@ -152,17 +152,17 @@ class OrderFormBase extends Component {
 		let strtime = "";
 		if (strhour.length === 1) {
 			strtime = "0" + String(this.state.hour) + strmin;
-			apmHour = "0" + String(this.state.hour)
+			apmHour = "0" + String(this.state.hour);
 		} else {
 			strtime = String(this.state.hour) + strmin;
 		}
 
 		if (Number(strhour) > 12) {
-			apmTime = "PM"
+			apmTime = "PM";
 		}
 
-		if (Number(strhour)> 12) {
-			apmHour = (Number(strhour) - 12)
+		if (Number(strhour) > 12) {
+			apmHour = Number(strhour) - 12;
 		}
 
 		let strDate =
@@ -212,7 +212,7 @@ class OrderFormBase extends Component {
 			StatusDates: [this.state.commencement],
 			Created_On: this.state.commencement,
 			Remarks: this.state.remarks,
-			apmTime: apmHour+ ":" + strmin + " " + apmTime
+			apmTime: apmHour + ":" + strmin + " " + apmTime
 		});
 
 		let notCreated = true;
@@ -290,12 +290,11 @@ class OrderFormBase extends Component {
 			pax: nPax,
 			Menu: finalmenu,
 			remarks: this.state.remarks,
-			time: apmHour+ ":" + strmin + " " + apmTime,
+			time: apmHour + ":" + strmin + " " + apmTime,
 			custcompany: this.state.custcompany,
 			custemail: this.state.custemail,
 			custcontact: this.state.custcontact,
 			custname: this.state.custname
-
 		});
 	};
 
@@ -307,9 +306,9 @@ class OrderFormBase extends Component {
 
 	handleMenuChange = event => {
 		this.setState({
-		  chosen_payment: event.target.value
-		})
-	  }
+			chosen_payment: event.target.value
+		});
+	};
 	onMenuChange = event => {
 		// const dishname = event.target.value;
 		// if(this.state.finalmenu.includes(dishname) === false){
@@ -331,7 +330,6 @@ class OrderFormBase extends Component {
 		// console.log(event.target.name + ": " + event.target.value)
 	};
 	handleDateChange = event => {
-
 		if (event) {
 			this.setState({
 				date: event
@@ -370,7 +368,11 @@ class OrderFormBase extends Component {
 		this.state.selectedmenu.forEach(item => {
 			if (dishtype.includes(item.type) === false) {
 				dishtype.push(item.type);
-				listofmenu.push(<p margin-block-end="2em" key={item.type}><b>{item.type}</b></p>);
+				listofmenu.push(
+					<p margin-block-end="2em" key={item.type}>
+						<b>{item.type}</b>
+					</p>
+				);
 			}
 
 			listofmenu.push(
@@ -394,19 +396,80 @@ class OrderFormBase extends Component {
 		return listofmenu;
 	};
 	render() {
-		let isInvalid = 
-			this.state.date !== null &&
-			this.state.starttime !== null &&
-			this.state.venue.length !== 0 &&
-			this.state.pax.length >= 30 &&
-			this.state.custname.length !== 0 &&
-			this.state.custcontact.length !== 0 &&
-			this.state.custemail.length !== 0 &&
-			this.state.custcompany.length !== 0 ||
-			this.state.chosen_payment.length === 0;
+		let finalmenu = [];
+		this.state.selectedmenu.forEach(item => {
+			let dishname = item.dish + " checkbox";
+			if (dishname in this.state) {
+				if (this.state[dishname] === true) {
+					finalmenu.push(item.dish);
+				}
+			}
+		});
+
+		// let isInvalid =
+		// 	this.state.date !== null &&
+		// 	this.state.starttime !== null &&
+		// 	this.state.venue.length !== 0 &&
+		// 	this.state.pax.length >= 30 &&
+		// 	this.state.custname.length !== 0 &&
+		// 	this.state.custcontact.length !== 0 &&
+		// 	this.state.custemail.length !== 0 &&
+		// 	this.state.custcompany.length !== 0 &&
+		// 	this.state.chosen_payment.length === 0 &&
+		// 	finalmenu === [];
+
+		let isInvalid =
+			(this.state.date === null ||
+				this.state.starttime === null ||
+				this.state.venue.length === 0 ||
+				this.state.custname.length === 0 ||
+				this.state.custcontact.length === 0 ||
+				this.state.custemail.length === 0 ||
+				this.state.custcompany.length === 0 ||
+				this.state.chosen_payment.length === 0 ||
+				finalmenu.length === 0) &&
+			this.state.pax >= 30;
+
+		// console.log("-----Test-----");
+		// console.log("Date: " + this.state.date);
+		// console.log(this.state.date === null);
+		// console.log("Time: " + this.state.starttime);
+		// console.log(this.state.starttime === null);
+		// console.log("Venue: " + this.state.venue);
+		// console.log(this.state.venue.length === 0);
+		// console.log("Name: " + this.state.custname);
+		// console.log(this.state.custname.length === 0);
+		// console.log("Contact: " + this.state.custcontact);
+		// console.log(this.state.custcontact.length === 0);
+		// console.log("Email: " + this.state.custemail);
+		// console.log(this.state.custemail.length === 0);
+		// console.log("Company: " + this.state.custcompany);
+		// console.log(this.state.custcompany.length === 0);
+		// console.log("Payment: " + this.state.chosen_payment);
+		// console.log(this.state.chosen_payment.length === 0);
+		// console.log("Final Menu: " + finalmenu);
+		// console.log(finalmenu.length === 0);
+
+		console.log("Checker: ")
+		console.log(this.state.date === null ||
+			this.state.starttime === null ||
+			this.state.venue.length === 0 ||
+			this.state.custname.length === 0 ||
+			this.state.custcontact.length === 0 ||
+			this.state.custemail.length === 0 ||
+			this.state.custcompany.length === 0 ||
+			this.state.chosen_payment.length === 0 ||
+			finalmenu !== [])
+
+		console.log("Pax: " + this.state.pax);
+		console.log(this.state.pax >= 30);
+		console.log("Invalid: " + isInvalid);
+
 		return (
 			<Container component="main" maxWidth="sm">
-				<Typography variant="h4"  gutterBottom>Order Form</Typography>
+				<Typography variant="h4" gutterBottom>
+					Order Form
+				</Typography>
 				<Paper>
 					<form onSubmit={this.onSubmit}>
 						<TextField
@@ -426,45 +489,44 @@ class OrderFormBase extends Component {
 							<br></br>
 						</div>
 						<Grid container spacing={3}>
-						<MuiPickersUtilsProvider utils={DateFnsUtils} >
-							<Grid item xs={6} >
-								<KeyboardDatePicker
-									variant="inline"
-									// InputLabelProps={{ shrink: true }}
-									fullWidth
-									required
-									margin="densed"
-									label="Date:"
-									format="dd/MM/yyyy"
-									minDate={this.today}
-									id="date-picker-inline"
-									value={this.state.date}
-									onChange={this.handleDateChange}
-									allowKeyboardControl={this.state.f}
-									KeyboardButtonProps={{
-										"aria-label": "change date"
-									}}
-								/>
-							</Grid>
-							<Grid item xs={6}>
-								<KeyboardTimePicker
-									// InputLabelProps={{ shrink: true }}
-									id="time-picker"
-									fullWidth
-									required
-									margin="densed"
-									label="Time:"
-									value={this.state.starttime}
-									onChange={this.handleTimeChange}
-									KeyboardButtonProps={{
-										"aria-label": "change time"
-									}}
-								/>
-							</Grid>
+							<MuiPickersUtilsProvider utils={DateFnsUtils}>
+								<Grid item xs={6}>
+									<KeyboardDatePicker
+										variant="inline"
+										// InputLabelProps={{ shrink: true }}
+										fullWidth
+										required
+										margin="densed"
+										label="Date:"
+										format="dd/MM/yyyy"
+										minDate={this.today}
+										id="date-picker-inline"
+										value={this.state.date}
+										onChange={this.handleDateChange}
+										allowKeyboardControl={this.state.f}
+										KeyboardButtonProps={{
+											"aria-label": "change date"
+										}}
+									/>
+								</Grid>
+								<Grid item xs={6}>
+									<KeyboardTimePicker
+										// InputLabelProps={{ shrink: true }}
+										id="time-picker"
+										fullWidth
+										required
+										margin="densed"
+										label="Time:"
+										value={this.state.starttime}
+										onChange={this.handleTimeChange}
+										KeyboardButtonProps={{
+											"aria-label": "change time"
+										}}
+									/>
+								</Grid>
 							</MuiPickersUtilsProvider>
-						
-						
-							<Grid item xs={6} >
+
+							<Grid item xs={6}>
 								{/* Customer Name */}
 								{this.createTextField(
 									"custname",
@@ -473,7 +535,7 @@ class OrderFormBase extends Component {
 									"Customer Name"
 								)}
 							</Grid>
-							<Grid item xs={6} >
+							<Grid item xs={6}>
 								{/* Customer Company */}
 								{this.createTextField(
 									"custcompany",
@@ -482,8 +544,8 @@ class OrderFormBase extends Component {
 									"Customer Company"
 								)}
 							</Grid>
-							
-							<Grid item xs={6} >
+
+							<Grid item xs={6}>
 								{/* Customer Email */}
 								{this.createTextField(
 									"custemail",
@@ -492,8 +554,8 @@ class OrderFormBase extends Component {
 									"Customer Email"
 								)}
 							</Grid>
-							
-							<Grid item xs={6} >
+
+							<Grid item xs={6}>
 								{/* Customer HP */}
 								{this.createTextField(
 									"custcontact",
@@ -502,8 +564,8 @@ class OrderFormBase extends Component {
 									"Customer Phone Number"
 								)}
 							</Grid>
-							
-							<Grid item xs={6} >
+
+							<Grid item xs={6}>
 								{/* Postal Code */}
 								{this.createTextField(
 									"venue",
@@ -526,60 +588,65 @@ class OrderFormBase extends Component {
 								inputProps={{ min: 30 }}
 							/>
 							</Grid>
-							<Grid item xs={6} >
-							<FormControl style={{minWidth:250}}>
-							<InputLabel>Payment Mode:</InputLabel>
-							<Select
-						
-								value={this.state.chosen_payment}
-								onChange={this.handleMenuChange}
-								
-							>
-							{this.state.payment.map((event, index) =>
-								<MenuItem value={event}>{event}</MenuItem>
-							)}
-							</Select>
-							</FormControl>
-							{/* here */}
+							<Grid item xs={6}>
+								<FormControl style={{ minWidth: 250 }}>
+									<InputLabel>Payment Mode:</InputLabel>
+									<Select
+										value={this.state.chosen_payment}
+										onChange={this.handleMenuChange}
+									>
+										{this.state.payment.map(
+											(event, index) => (
+												<MenuItem value={event}>
+													{event}
+												</MenuItem>
+											)
+										)}
+									</Select>
+								</FormControl>
+								{/* here */}
 							</Grid>
-							<p><Divider variant="il" /></p>
-							<Grid item xs={12} >
-							<Typography component="h5" variant="h5">Menu</Typography>
+							<p>
+								<Divider variant="il" />
+							</p>
+							<Grid item xs={12}>
+								<Typography component="h5" variant="h5">
+									Menu
+								</Typography>
 
-							{/* Display Menu */}
-							{this.renderMenu()}
+								{/* Display Menu */}
+								{this.renderMenu()}
 							</Grid>
-							
-							<Grid item xs={12} >
-							{/* Remarks */}
-							<TextField
-								margin="densed"
-								fullWidth
-								name="remarks"
-								value={this.state.remarks}
-								label="Remarks:"
-								onChange={this.onChange}
-								type="text"
-								placeholder="Remarks"
-							/>
+
+							<Grid item xs={12}>
+								{/* Remarks */}
+								<TextField
+									margin="densed"
+									fullWidth
+									name="remarks"
+									value={this.state.remarks}
+									label="Remarks:"
+									onChange={this.onChange}
+									type="text"
+									placeholder="Remarks"
+								/>
 							</Grid>
-							
-							<Grid item xs={12} >
-							<Button
-								disabled={isInvalid}
-								type="submit"
-								fullWidth
-								variant="contained"
-								color="primary"
-								className={this.classes.submit}
-							>
-								Submit
-							</Button>
+
+							<Grid item xs={12}>
+								<Button
+									disabled={isInvalid}
+									type="submit"
+									fullWidth
+									variant="contained"
+									color="primary"
+									className={this.classes.submit}
+								>
+									Submit
+								</Button>
 							</Grid>
 						</Grid>
 					</form>
 				</Paper>
-			
 			</Container>
 		);
 	}

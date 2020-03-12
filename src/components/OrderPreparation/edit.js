@@ -171,9 +171,14 @@ class OrderPreparationEditBase extends Component {
 			});
 
 		// ---------- RETRIEVE INGREDIENTS ----------
+		let todayTimestamp = new Date();
+		todayTimestamp.setDate(todayTimestamp.getDate()-1);
+		todayTimestamp = Math.round(todayTimestamp.getTime()/1000)
+		// Get ingrediens which have not expired
 		console.log("Retrieving Menu Ingredients");
 		this.props.firebase.fs
 			.collection("IngredientsInventory")
+			.where("expiryTimestamp", ">=", todayTimestamp)
 			.get()
 			.then(querySnapshot => {
 				querySnapshot.forEach(doc => {

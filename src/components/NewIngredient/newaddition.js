@@ -21,7 +21,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import * as ROUTES from "../../constants/routes";
-import Grid from "@material-ui/core/Grid";
+// import Grid from "@material-ui/core/Grid";
 import { Paper } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 
@@ -55,7 +55,7 @@ const INITIAL_STATE = {
 	// priFoodId: ""
 };
 
-class NewBasicIngredientForm extends Component {
+class NewIngredientForm extends Component {
 	constructor(props) {
 		super(props);
 		this.state = { ...INITIAL_STATE };
@@ -65,7 +65,6 @@ class NewBasicIngredientForm extends Component {
 	componentDidMount() {
 		if (this.state.storageDate.length === 0) {
 			let temp_date = new Date();
-
 			let dd = String(temp_date.getDate()).padStart(2, "0");
 			let mm = String(temp_date.getMonth() + 1).padStart(2, "0");
 			let yyyy = temp_date.getFullYear();
@@ -112,8 +111,7 @@ class NewBasicIngredientForm extends Component {
 					String(this.state.expiryDate).split(" ")[3],
 				name: this.state.foodName,
 				Primary_Ingredients: "",
-				Date_of_Storage: this.state.storageDate,
-				expiryTimestamp: this.state.expiryTimestamp
+				Date_of_Storage: this.state.storageDate
 			});
 
 		this.props.firebase.fs
@@ -129,8 +127,7 @@ class NewBasicIngredientForm extends Component {
 					String(this.state.expiryDate).split(" ")[3],
 				name: this.state.foodName,
 				Primary_Ingredients: "",
-				Date_of_Storage: this.state.storageDate,
-				expiryTimestamp: this.state.expiryTimestamp
+				Date_of_Storage: this.state.storageDate
 			});
 		this.handleClickOpen();
 	};
@@ -169,15 +166,13 @@ class NewBasicIngredientForm extends Component {
 
 	handleDateChange = event => {
 		if (event) {
-			// console.log(Math.round(event.getTime()/1000))
 			let tempMonth = (Number(event.getMonth()) + 1).toString();
 			if (tempMonth.length === 1) {
 				tempMonth = "0" + tempMonth;
 			}
 			this.setState({
 				expiryDate: event,
-				month: tempMonth,
-				expiryTimestamp: Math.round(event.getTime()/1000)
+				month: tempMonth
 			});
 		} else {
 		}
@@ -226,7 +221,7 @@ class NewBasicIngredientForm extends Component {
 			<Container component="main" maxWidth="xs">
 				{/* {this.uniqueMenu()} */}
 				<Typography variant="h4" gutterBottom>
-					Tag Raw Ingredient
+					Add brand new Ingredient
 				</Typography>
 				<Paper>
 					{this.createTextField(
@@ -237,14 +232,14 @@ class NewBasicIngredientForm extends Component {
 					)}
 
 					{/* Food Name */}
-					{/* {this.createTextField(
+					{this.createTextField(
 							"foodName",
 							this.state.foodName,
 							"Food Name",
 							"Food Name"
-						)} */}
+						)}
 
-					<Autocomplete
+					{/* <Autocomplete
 						id="combo-box-demo"
 						options={this.state.availableIngredients}
 						getOptionLabel={option => option.ingredient}
@@ -259,7 +254,7 @@ class NewBasicIngredientForm extends Component {
 								fullWidth
 							/>
 						)}
-					/>
+					/> */}
 
 					{/* <TextField
 							variant="outlined"
@@ -336,31 +331,24 @@ class NewBasicIngredientForm extends Component {
 							</DialogContentText>
 						</DialogContent>
 						<DialogActions>
-							
-							<Grid container spacing={1}>
-								<Grid item xs={12}>
-									<Button
-										variant="outlined"
-										fullWidth
-										onClick={this.handleClose}
-										color="primary"
-										autoFocus
-									>
-										Continue Tagging
-									</Button>
-								</Grid>
-								<Grid item xs={12}>
-									<Button
-										variant="outlined"
-										fullWidth
-										onClick={this.handleHome}
-										color="primary"
-										autoFocus
-									>
-										Home
-									</Button>
-								</Grid>
-							</Grid>
+							<Button
+								variant="outlined"
+								fullWidth
+								onClick={this.handleClose}
+								color="primary"
+								autoFocus
+							>
+								Continue Tagging
+							</Button>
+							<Button
+								variant="outlined"
+								fullWidth
+								onClick={this.handleHome}
+								color="primary"
+								autoFocus
+							>
+								Home
+							</Button>
 						</DialogActions>
 					</Dialog>
 
@@ -400,7 +388,7 @@ class NewBasicIngredientForm extends Component {
 
 // NEW_INGREDIENT_COMPLEX
 
-const NewBasicIngredient = withRouter(withFirebase(NewBasicIngredientForm));
+const NewIngredient = withRouter(withFirebase(NewIngredientForm));
 const condition = authUser => !!authUser;
 
-export default withAuthorization(condition)(NewBasicIngredient);
+export default withAuthorization(condition)(NewIngredient);
