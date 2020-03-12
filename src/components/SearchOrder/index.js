@@ -79,12 +79,7 @@ class SearchOrderBase extends Component {
 				errorMsg:<Paper variant="outlined"><Typography variant="h7"><center>Order does not exist.</center></Typography></Paper>
 			})}
 		})
-		// if (!this.state.found) {
-		// 	// console.log("always")
-		// 	this.setState({
-		// 		errorMsg:<Paper variant="outlined"><Typography variant="h7"><center>Order does not exist.</center></Typography></Paper>
-		// 	})
-		// }
+
 	};
 
 	onChange = event => {
