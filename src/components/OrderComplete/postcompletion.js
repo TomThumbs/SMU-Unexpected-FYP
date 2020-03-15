@@ -98,7 +98,8 @@ class FinalOverviewBase extends Component {
 					menu: data.Menu,
 					ingredientsUsed: data.IngredientsUsed,
 					pax: data.Pax,
-					deliveryDate: data.DateOnly
+					deliveryDate: data.DateOnly,
+					remarks: data.Remarks,
 				});
 				this.props.firebase.fs
 					.collection("Customers")
@@ -210,16 +211,6 @@ class FinalOverviewBase extends Component {
 	// 	menu.appendChild(listofmenu);
 	// };
 
-	renderRemarks() {
-		if (this.state.remarks.length !== 0) {
-			let result = []
-			result.push(<br />)
-			result.push(this.griditem("Remarks:",this.state.remarks))
-			return result 
-		} 
-		
-	}
-	
 	
 	griditem(title, info) {
 		return (
@@ -270,8 +261,6 @@ class FinalOverviewBase extends Component {
 							this.state.deliveryTime
 						)}
 						{this.griditem("No. of Pax:", this.state.pax)}
-
-						{this.renderRemarks()}
 
 						<br></br>
 

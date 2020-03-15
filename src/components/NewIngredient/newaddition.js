@@ -335,16 +335,15 @@ class NewIngredientForm extends Component {
 							</DialogContentText>
 						</DialogContent>
 						<DialogActions>
-							<Grid container spacing={3}>
+							<Grid container spacing={1}>
 								<Grid item xs={12}>
 									<Button
 										variant="outlined"
 										fullWidth
 										onClick={this.handleClose}
-										color="primary"
 										autoFocus
 									>
-										Continue Tagging
+										Continue Adding
 									</Button>
 								</Grid>
 									
@@ -353,7 +352,6 @@ class NewIngredientForm extends Component {
 										variant="outlined"
 										fullWidth
 										onClick={this.handleHome}
-										color="primary"
 										autoFocus
 									>
 										Home

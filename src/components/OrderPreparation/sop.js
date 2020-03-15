@@ -308,7 +308,7 @@ class OrderPreparationSopBase extends Component {
 												color="primary"
 											/>
 										}
-										label="Washed hands?"
+										label="Hands have been washed."
 									/>
 								</Grid>
 
@@ -322,7 +322,7 @@ class OrderPreparationSopBase extends Component {
 												color="primary"
 											/>
 										}
-										label="Use of Mask and gloves?"
+										label="No kitchen staff is currently feeling unwell."
 									/>
 								</Grid>
 
@@ -336,7 +336,7 @@ class OrderPreparationSopBase extends Component {
 												color="primary"
 											/>
 										}
-										label="Clean workspace?"
+										label="Kitchen worktops are clean."
 									/>
 								</Grid>
 								<Grid item xs={12}>
@@ -349,7 +349,7 @@ class OrderPreparationSopBase extends Component {
 												color="primary"
 											/>
 										}
-										label="Clean kitchen tools?"
+										label="Kitchen tools are clean."
 									/>
 								</Grid>
 							</Grid>

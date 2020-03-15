@@ -219,6 +219,7 @@ class IoTHeaterBase extends Component {
 									variant="outlined"
 									margin="dense"
 									fullWidth
+									required
 									
 								/>
 							</Grid>
@@ -256,25 +257,38 @@ class IoTHeaterBase extends Component {
 							</DialogContent>
 							<DialogActions>
 							
-							<Grid container spacing={1}>
-								<Grid item xs={12}>
-								<Button
-									variant="outlined"
-									fullWidth
-									component={RouterLink}
-									to={{
-										pathname: ROUTES.ORDER_SERVICE,
-										search: "?id=" + this.state.orderID,
-										state: {
-											orderID: this.props.location.state.orderID,
-											docID: this.props.location.state.docID,
-											menu: this.props.location.state.menu
-										}
-									}}
-								>
-									Back to Heater Overview
-								</Button>
-								</Grid> 
+								<Grid container spacing={1}>
+									<Grid item xs={12}>
+										<Button
+											variant="outlined"
+											autoFocus
+											fullWidth
+											onClick={this.handleClose} 
+										>
+											Back to Line Chart
+										</Button>
+									</Grid> 
+									
+									
+									<Grid item xs={12}>
+										<Button
+											variant="outlined"
+											autoFocus
+											fullWidth
+											component={RouterLink}
+											to={{
+												pathname: ROUTES.ORDER_SERVICE,
+												search: "?id=" + this.state.orderID,
+												state: {
+													orderID: this.props.location.state.orderID,
+													docID: this.props.location.state.docID,
+													menu: this.props.location.state.menu
+												}
+											}}
+										>
+											Back to Heater Overview
+										</Button>
+									</Grid> 
 								</Grid>
 							</DialogActions>
 						</Dialog>

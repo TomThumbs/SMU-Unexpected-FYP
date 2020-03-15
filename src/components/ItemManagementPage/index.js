@@ -23,6 +23,7 @@ import recipecreation from "./recipecreation.png";
 import simple from "./simpleing.png";
 import complex from "./complexing.png";
 import remove from "./removeing.png";
+import addnew from "./newingre.png";
 
 class IngredientManagementBase extends Component {
 	render() {
@@ -119,8 +120,8 @@ class IngredientManagementBase extends Component {
 							<Grid container justify="center" spacing={1}>
 								<Grid item xs={12}>
 									<img class="image"
-										src={checkingredients}
-										alt="checkingredients"/>
+										src={addnew}
+										alt="addnewingredient"/>
 								</Grid>
 								<Grid item xs={12} align="center">
 									<Typography component="h6" variant="h6">

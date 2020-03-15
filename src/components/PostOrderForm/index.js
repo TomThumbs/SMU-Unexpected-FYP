@@ -84,8 +84,8 @@ class PostOrderFormBase extends Component {
 					{this.griditem("Pax:", this.props.location.pax)}
 					<br></br>
 					{this.griditem("Payment Method:", this.props.location.payment)}
-					<br></br>
 					{this.renderRemarks()}
+					<br></br>
 
 					{/* {this.griditem("Order ID:","test")}
                 {this.griditem("Date:","test")}
@@ -101,8 +101,6 @@ class PostOrderFormBase extends Component {
 					
 					{this.renderMenu()}
 
-					
-					
 					
 					<br></br>
 

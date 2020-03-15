@@ -306,25 +306,25 @@ class OrderPreparationBase extends Component {
 										<Grid container xs={6}>
 											<FormControlLabel
 												control={<Checkbox checked="true" disabled name="hands"  value="remember" color="primary" />}
-												label="Hands washed?"
+												label="Hands have been washed."
 											/>
 										</Grid>
 										<Grid item xs>
 											<FormControlLabel
 												control={<Checkbox checked="true" disabled  name="workspace" value="remember" color="primary" />}
-												label="Workspace clean?"
+												label="No kitchen staff is currently feeling unwell."
 											/>
 										</Grid>
 										<Grid item xs={6}>
 											<FormControlLabel
 												control={<Checkbox checked="true" disabled name="workspace" value="remember" color="primary" />}
-												label="Clean workspace?"
+												label="Kitchen worktops are clean."
 											/>
 										</Grid>
 										<Grid item xs>
 											<FormControlLabel
 												control={<Checkbox checked="true" disabled name="workspace" value="remember" color="primary" />}
-												label="Clean kitchen tools?"
+												label="Kitchen tools are clean."
 											/>
 										</Grid>
 									</Grid>
@@ -336,7 +336,7 @@ class OrderPreparationBase extends Component {
 										<img
 											class="image"
 											src={this.state.kitchenImageURL}
-											alt="Delivery Van"
+											alt="Kitchen state"
 										></img>
 									</Grid>
 								</Grid>

@@ -390,33 +390,38 @@ class DishToIngredientFormBase extends Component {
 						<DialogTitle id="alert-dialog-title">
 							{"Submission Notification"}
 						</DialogTitle>
-						<DialogContent>
+						<DialogContent dividers>
 							<DialogContentText id="alert-dialog-description">
 								{this.state.newDishName} recipe has been
 								created.
 							</DialogContentText>
 						</DialogContent>
 						<DialogActions>
-							<Grid container spacing={3}>
-								<Grid item xs={12}>
-									<Button
-										onClick={this.handleClose}
-										color="primary"
-										autoFocus
-									>
-										Create another recipe
-									</Button>
+
+								<Grid container spacing={1}>
+									<Grid item xs={12}>
+										<Button
+											variant="outlined"
+											autoFocus
+											fullWidth
+											onClick={this.handleClose} 
+										>
+											Create another recipe
+										</Button>
+									</Grid> 
+									
+									
+									<Grid item xs={12}>
+										<Button
+											variant="outlined"
+											autoFocus
+											fullWidth
+											onClick={this.handleHome}
+										>
+											Home
+										</Button>
+									</Grid> 
 								</Grid>
-								<Grid item xs={12}>
-									<Button
-										onClick={this.handleHome}
-										color="primary"
-										autoFocus
-									>
-										Home
-									</Button>
-								</Grid>
-							</Grid>
 						
 						</DialogActions>
 					</Dialog>

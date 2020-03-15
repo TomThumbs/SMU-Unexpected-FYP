@@ -310,7 +310,7 @@ class OrderDeliveryBase extends Component {
 											/>
 										}
 										// <Checkbox checked={state.checkedA} onChange={handleChange('checkedA')} value="checkedA" />
-										label="Food securely packed?"
+										label="The food is securely packed."
 									/>
 								</Grid>
 
@@ -325,7 +325,7 @@ class OrderDeliveryBase extends Component {
 												value="allItems"
 											/>
 										}
-										label="Vehicle Clean?"
+										label="The vehicle is clean."
 									/>
 								</Grid>
 
@@ -340,7 +340,7 @@ class OrderDeliveryBase extends Component {
 												value="foodWrap"
 											/>
 										}
-										label="No strong odors?"
+										label="There are no strong odours present."
 									/>
 								</Grid>
 
@@ -355,7 +355,7 @@ class OrderDeliveryBase extends Component {
 												value="foodWrap"
 											/>
 										}
-										label="Buffet decor loaded?"
+										label="The buffet décor is loaded"
 									/>
 								</Grid>
 							</Grid>

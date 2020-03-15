@@ -38,21 +38,21 @@ class PostDeliveryFormBase extends Component {
 						<Grid item xs={6}>
 							<FormControlLabel
 								control={<Checkbox checked="true" disabled color="primary" name="cleanReady" value="cleanReady"/>}
-								label="Food securely packed?"
+								label="The food is securely packed."
 							/>
 						</Grid>
 
 						<Grid item xs>	
 							<FormControlLabel
 								control={<Checkbox checked="true" disabled color="primary" name="allItems" value="allItems"/>}
-								label="Vehicle Clean?"
+								label="The vehicle is clean."
 							/>		
 						</Grid>
 						
 						<Grid item xs={6}>	
 							<FormControlLabel
 								control={<Checkbox checked="true" disabled color="primary" name="foodWrap" value="foodWrap"/>}
-								label="No strong odors?"
+								label="There are no strong odours present."
 							/>	
 						</Grid>
 						
@@ -60,7 +60,7 @@ class PostDeliveryFormBase extends Component {
 						<Grid item xs>	
 						 	<FormControlLabel
 								control={<Checkbox checked="true" disabled color="primary" name="foodWrap" value="foodWrap"/>}
-								label="Buffet decor loaded?"
+								label="The buffet décor is loaded."
 							/>
 						</Grid>
 					</Grid>	
