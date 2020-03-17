@@ -3,7 +3,7 @@ import { withFirebase } from "../Firebase";
 import { withRouter } from "react-router-dom";
 import { Link as RouterLink } from "react-router-dom";
 
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from "@material-ui/core/styles";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
@@ -14,43 +14,41 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Divider from "@material-ui/core/Divider";
 
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpansionPanel from "@material-ui/core/ExpansionPanel";
+import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
+import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 import * as ROUTES from "../../constants/routes";
 
 import { withAuthorization } from "../Session";
 
 const StyledExpansionPanel = withStyles(() => ({
-	
 	root: {
-		padding:0,
+		padding: 0,
 		minHeight: 0
 	},
 
 	expanded: {
 		padding: 0,
 		margin: 0,
-		minHeight: 0,
-  }
+		minHeight: 0
+	}
 }))(ExpansionPanel);
 
-const useStyles = makeStyles(theme => ({	
+const useStyles = makeStyles(theme => ({
 	// submit: {
 	// 	margin: theme.spacing(3, 0, 2)
 	// },
 
 	root: {
-		padding: '100px',
-	  },
+		padding: "100px"
+	},
 
 	heading: {
 		fontSize: theme.typography.pxToRem(15),
-		fontWeight: theme.typography.fontWeightRegular,
-	  },
-
+		fontWeight: theme.typography.fontWeightRegular
+	}
 }));
 
 const INITIAL_STATE = {
@@ -72,7 +70,6 @@ const INITIAL_STATE = {
 	dataIsLoaded: false
 };
 
-
 class OrderPreparationBase extends Component {
 	constructor(props) {
 		super(props);
@@ -89,9 +86,7 @@ class OrderPreparationBase extends Component {
 			ingredientsUsed: props.location.state.ingredientsUsed
 		}; //props.location.state.orderID
 		this.classes = { useStyles };
-		
 	}
-
 
 	componentDidMount() {
 		let queryString = window.location.search;
@@ -109,8 +104,9 @@ class OrderPreparationBase extends Component {
 		// ---------- RETRIEVE INGREDIENTS ----------
 		console.log("Retreving Menu Ingredients");
 		this.props.firebase.fs
-			.collection("IngredientsInventory")
-			.get()
+		// .collection("IngredientsInventory")
+		.collection("Ingredients")
+		.get()
 			.then(querySnapshot => {
 				querySnapshot.forEach(doc => {
 					let data = doc.data();
@@ -161,8 +157,7 @@ class OrderPreparationBase extends Component {
 							commence: data.preparationCommencement,
 							statusDate: data.StatusDates[1],
 							menu: data.Menu,
-							ingredientsUsed: data.IngredientsUsed,
-							
+							ingredientsUsed: data.IngredientsUsed
 						});
 					});
 				});
@@ -194,28 +189,39 @@ class OrderPreparationBase extends Component {
 
 		ingts.push(
 			<Grid item xs={2} key="Ingredient ID">
-				<Typography gutterBottom><b>ID</b></Typography>
+				<Typography gutterBottom>
+					<b>ID</b>
+				</Typography>
 			</Grid>
 		);
 		ingts.push(
 			<Grid item xs={4} key="Ingredient Name" align="right">
-				<Typography gutterBottom><b>Name</b></Typography>
+				<Typography gutterBottom>
+					<b>Name</b>
+				</Typography>
 			</Grid>
 		);
 		ingts.push(
 			<Grid item xs={3} key="Storage Date" align="right">
-				<Typography gutterBottom><b>Storage Date</b></Typography>
+				<Typography gutterBottom>
+					<b>Storage Date</b>
+				</Typography>
 			</Grid>
 		);
 		ingts.push(
 			<Grid item xs={3} key="Expiry Date" align="right">
-			<Typography gutterBottom><b>Expiry Date</b></Typography>
+				<Typography gutterBottom>
+					<b>Expiry Date</b>
+				</Typography>
 			</Grid>
 		);
 
 		let ingredients = this.state.ingredientsUsed[dish].split(",");
 
 		ingredients.forEach(barcode => {
+			console.log(barcode)
+			console.log(this.state.ingredients[barcode])
+
 			ingts.push(
 				<Grid item xs={2} key={barcode}>
 					{barcode}
@@ -236,7 +242,6 @@ class OrderPreparationBase extends Component {
 					{this.state.ingredients[barcode][2]}
 				</Grid>
 			);
-			
 		});
 
 		return ingts;
@@ -249,12 +254,22 @@ class OrderPreparationBase extends Component {
 		this.state.menu.forEach(dish => {
 			menu.push(
 				<Grid container item>
-					<Grid item xs={12}><Typography variant="h6" key={dish}> {dish} </Typography></Grid>
-					<Grid item xs={12}><Typography variant="subtitle2" color="textSecondary" gutterBottom> List of Ingredients </Typography></Grid>
-					<Grid container item>{this.renderMenuItem(dish)}</Grid>
-				
+					<Grid item xs={12}>
+						<Typography variant="h6" key={dish}>
+							{" "}
+							{dish}{" "}
+						</Typography>
+					</Grid>
+					<Grid item xs={12}>
+						<Typography variant="subtitle2" color="textSecondary" gutterBottom>
+							{" "}
+							List of Ingredients{" "}
+						</Typography>
+					</Grid>
+					<Grid container item>
+						{this.renderMenuItem(dish)}
+					</Grid>
 				</Grid>
-				
 			);
 		});
 
@@ -263,113 +278,151 @@ class OrderPreparationBase extends Component {
 
 	render() {
 		const dataIsLoaded = this.state.dataIsLoaded === true;
+		console.log(this.state)
 
 		return (
-			<Container component="main" maxWidth="sm" >
-				<Typography variant="h4" gutterBottom>Preparation Details</Typography>
-				
-				
-					<div className="root">
-							{/* KITCHEN DECLARATION */}
-						<StyledExpansionPanel>
-							<ExpansionPanelSummary 
+			<Container component="main" maxWidth="sm">
+				<Typography variant="h4" gutterBottom>
+					Preparation Details
+				</Typography>
 
+				<div className="root">
+					{/* KITCHEN DECLARATION */}
+					<StyledExpansionPanel>
+						<ExpansionPanelSummary
 							aria-controls="panel1a-content"
-							id="panel1a-header">
-							
-								<Typography variant="h6" color="primary">Order Number: {this.state.orderID}</Typography>
-							</ExpansionPanelSummary>
-						</StyledExpansionPanel>
-						
-						{/* INGREDIENTS */}
-						<StyledExpansionPanel>
-							<ExpansionPanelSummary
+							id="panel1a-header"
+						>
+							<Typography variant="h6" color="primary">
+								Order Number: {this.state.orderID}
+							</Typography>
+						</ExpansionPanelSummary>
+					</StyledExpansionPanel>
+
+					{/* INGREDIENTS */}
+					<StyledExpansionPanel>
+						<ExpansionPanelSummary
 							expandIcon={<ExpandMoreIcon />}
 							aria-controls="panel2a-content"
 							id="panel2a-header"
-							>
-								<Typography variant="h5">Kitchen Declaration</Typography>
-							</ExpansionPanelSummary>
-							<ExpansionPanelDetails>
-							
-								
+						>
+							<Typography variant="h5">Kitchen Declaration</Typography>
+						</ExpansionPanelSummary>
+						<ExpansionPanelDetails>
+							<Grid item xs={12}>
+								<Typography variant="h6">
+									<font color="#2e7d32">Submission Successful</font>
+								</Typography>
+								<Typography variant="body1">
+									Preparation commenced at: {this.state.preparationCommencement}
+								</Typography>
+								<Typography variant="body1">
+									Head Chef: {this.state.headchef}
+								</Typography>
+								<Typography variant="body1">
+									Assistant A: {this.state.assistantA}
+								</Typography>
+								<Typography variant="body1">
+									Assistant B: {this.state.assistantB}
+								</Typography>
+
+								<p>
+									<Divider variant="li" />
+								</p>
+
+								<Grid container xs={12}>
+									<Grid container xs={6}>
+										<FormControlLabel
+											control={
+												<Checkbox
+													checked="true"
+													disabled
+													name="hands"
+													value="remember"
+													color="primary"
+												/>
+											}
+											label="Hands have been washed."
+										/>
+									</Grid>
+									<Grid item xs>
+										<FormControlLabel
+											control={
+												<Checkbox
+													checked="true"
+													disabled
+													name="workspace"
+													value="remember"
+													color="primary"
+												/>
+											}
+											label="No kitchen staff is currently feeling unwell."
+										/>
+									</Grid>
+									<Grid item xs={6}>
+										<FormControlLabel
+											control={
+												<Checkbox
+													checked="true"
+													disabled
+													name="workspace"
+													value="remember"
+													color="primary"
+												/>
+											}
+											label="Kitchen worktops are clean."
+										/>
+									</Grid>
+									<Grid item xs>
+										<FormControlLabel
+											control={
+												<Checkbox
+													checked="true"
+													disabled
+													name="workspace"
+													value="remember"
+													color="primary"
+												/>
+											}
+											label="Kitchen tools are clean."
+										/>
+									</Grid>
+								</Grid>
+
+								<br></br>
+
 								<Grid item xs={12}>
-									<Typography variant="h6"><font color="#2e7d32">Submission Successful</font></Typography>
-									<Typography variant="body1" >Preparation commenced at: {this.state.preparationCommencement}</Typography>
-									<Typography variant="body1" >Head Chef: {this.state.headchef}</Typography>
-									<Typography variant="body1" >Assistant A: {this.state.assistantA}</Typography>
-									<Typography variant="body1" >Assistant B: {this.state.assistantB}</Typography>
-
-									<p><Divider variant="li" /></p>
-
-									<Grid container xs={12}>
-										<Grid container xs={6}>
-											<FormControlLabel
-												control={<Checkbox checked="true" disabled name="hands"  value="remember" color="primary" />}
-												label="Hands have been washed."
-											/>
-										</Grid>
-										<Grid item xs>
-											<FormControlLabel
-												control={<Checkbox checked="true" disabled  name="workspace" value="remember" color="primary" />}
-												label="No kitchen staff is currently feeling unwell."
-											/>
-										</Grid>
-										<Grid item xs={6}>
-											<FormControlLabel
-												control={<Checkbox checked="true" disabled name="workspace" value="remember" color="primary" />}
-												label="Kitchen worktops are clean."
-											/>
-										</Grid>
-										<Grid item xs>
-											<FormControlLabel
-												control={<Checkbox checked="true" disabled name="workspace" value="remember" color="primary" />}
-												label="Kitchen tools are clean."
-											/>
-										</Grid>
-									</Grid>
-								
-
-								<br></br>
-						
-									<Grid item xs={12}>
-										<img
-											class="image"
-											src={this.state.kitchenImageURL}
-											alt="Kitchen state"
-										></img>
-									</Grid>
+									<img
+										class="image"
+										src={this.state.kitchenImageURL}
+										alt="Kitchen state"
+									></img>
 								</Grid>
-								<br></br>
-							
-							</ExpansionPanelDetails>
-						</StyledExpansionPanel>
+							</Grid>
+							<br></br>
+						</ExpansionPanelDetails>
+					</StyledExpansionPanel>
 
-						<StyledExpansionPanel>
-							<ExpansionPanelSummary
+					<StyledExpansionPanel>
+						<ExpansionPanelSummary
 							expandIcon={<ExpandMoreIcon />}
 							aria-controls="panel2a-content"
 							id="panel2a-header"
-							>
-								<Typography variant="h5">Ingredient List</Typography>
-							</ExpansionPanelSummary>
-							<ExpansionPanelDetails>
-
-								<Grid container xs={12} spacing={3}>
-							
+						>
+							<Typography variant="h5">Ingredient List</Typography>
+						</ExpansionPanelSummary>
+						<ExpansionPanelDetails>
+							<Grid container xs={12} spacing={3}>
 								{dataIsLoaded && this.renderMenu()}
+							</Grid>
+						</ExpansionPanelDetails>
+					</StyledExpansionPanel>
 
-								</Grid>
-							
-							</ExpansionPanelDetails>
-						</StyledExpansionPanel>
-
-						<StyledExpansionPanel >
-							<ExpansionPanelSummary 
-							
+					<StyledExpansionPanel>
+						<ExpansionPanelSummary
 							aria-controls="panel3a-content"
 							id="panel3a-header"
-							>
+						>
 							<Grid container spacing={1}>
 								<Grid item xs={12}>
 									<Button
@@ -396,12 +449,9 @@ class OrderPreparationBase extends Component {
 									</Button>
 								</Grid>
 							</Grid>
-							</ExpansionPanelSummary>
-						</StyledExpansionPanel>
-					</div>
-						
-			
-					
+						</ExpansionPanelSummary>
+					</StyledExpansionPanel>
+				</div>
 			</Container>
 		);
 	}
