@@ -176,6 +176,10 @@ class LandingPageBase extends Component {
 	}
 
 	render() {
+		if (this.props.firebase.auth.currentUser !== null){
+			console.log(this.props.firebase.auth.currentUser.uid)
+		}
+		// console.log(this.props.firebase.auth.currentUser)
 		return (
 			<Container component="main" maxWidth="md">
 				<div>

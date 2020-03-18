@@ -51,7 +51,7 @@ const INITIAL_STATE = {
 	custHp: "",
 	venue: "",
 	deliveryTime: "",
-	remarks:'',
+	remarks: "",
 	menu: [],
 	ingredientsUsed: {},
 	orderID: "",
@@ -100,7 +100,7 @@ class FinalOverviewBase extends Component {
 					ingredientsUsed: data.IngredientsUsed,
 					pax: data.Pax,
 					deliveryDate: data.DateOnly,
-					remarks: data.Remarks,
+					remarks: data.Remarks
 				});
 				this.props.firebase.fs
 					.collection("Customers")
@@ -112,7 +112,7 @@ class FinalOverviewBase extends Component {
 							custHp: docu.data().HP
 						});
 					});
-				console.log(this.state);
+				// console.log(this.state);
 			});
 
 		this.props.firebase.fs
@@ -132,7 +132,7 @@ class FinalOverviewBase extends Component {
 				this.setState({
 					dataIsLoaded: true
 				});
-				console.log(this.state)
+				// console.log(this.state)
 			})
 			.catch(function(error) {
 				console.log("Error getting documents: ", error);
@@ -159,72 +159,18 @@ class FinalOverviewBase extends Component {
 		return listofmenu[0];
 	};
 
-	// renderMenu = () => {
-	// 	let listofmenu = [];
-	// 	let ingredientsID = ''
-	// 	let i = 0;
-	// 	for (i = 0; i < this.state.menu.length; i++) {
-	// 		let dish = this.state.menu[i];
-	// 		listofmenu.push(<li> {dish}</li>);
-
-	// 		ingredientsID = this.state.ingredientsUsed[dish];
-	// 		ingredientsID = ingredientsID.split(",");
-
-	// 		ingredientsID.forEach(ingtID => {
-	// 			let ingtname = this.state[ingtID]
-	// 			listofmenu.push(<Typography variant="subtitle2" color="textSecondary"> &emsp; &emsp; {ingtname}: {ingtID}</Typography>)
-	// 		});
-	// 		listofmenu.push(<br/>);
-	// 	}
-	// 	return listofmenu;
-	// };
-
-
-	// renderMenu = () => {
-	// 	let menu = document.querySelector('#menu')
-	// 	let listofmenu = document.createElement("ul");
-	// 	// console.log(this.state.menu.length);
-	// 	// let i = 0;
-	// 	// for (i = 0; i < this.state.menu.length; i++) {
-	// 	// 	let dish = this.state.menu[i];
-	// 	// 	listofmenu.push(<li> {dish}</li>);
-	// 	// }
-
-	// 	this.state.menu.forEach(dish => {
-	// 		let li = document.createElement("li");
-
-	// 		let dishname = document.createElement("p");
-	// 		dishname.textContent = dish;
-
-	// 		li.appendChild(dishname);
-
-	// 		let ingredientsID = this.state.ingredientsUsed[dish];
-	// 		ingredientsID = ingredientsID.split(",");
-	// 		ingredientsID.forEach(ingtID => {
-	// 			let p = document.createElement("p");
-	// 			p.textContent =
-	// 				this.state[ingtID] + ": " + ingtID;
-	// 			li.appendChild(p);
-	// 		});
-
-	// 		listofmenu.appendChild(li);
-	// 	});
-	// 	menu.appendChild(listofmenu);
-	// };
-
 	renderRemarks() {
-		console.log(this.state)
+		// console.log(this.state)
 		if (this.state.remarks.length !== 0) {
-			let result = []
-			result.push(<br />)
-			result.push(this.griditem("Remarks:",this.state.remarks))
-			return result 
-		} 
+			let result = [];
+			result.push(<br />);
+			result.push(this.griditem("Remarks:", this.state.remarks));
+			return result;
+		}
 
 		return [];
-		
 	}
-	
+
 	griditem(title, info) {
 		return (
 			<Grid container>
@@ -247,48 +193,40 @@ class FinalOverviewBase extends Component {
 					Order Overview
 				</Typography>
 				<Paper>
-					<Typography variant="h6" gutterBottom color="primary">Order Number: {this.state.orderID}</Typography>
-					<Typography variant="body1">
+					<Typography variant="h6" gutterBottom color="primary">
+						Order Number: {this.state.orderID}
+					</Typography>
+					<Typography component={'span'} variant="body1">
 						{this.griditem("Created On:", this.state.createdOn)}
 						{this.griditem("Created By:", this.state.createdBy)}
 						{this.griditem("Fulfilled On:", this.state.fulfilledOn)}
-						{this.griditem(
-							"Notification Sent:",
-							this.state.notification
-						)}
+						{this.griditem("Notification Sent:", this.state.notification)}
 
-						<br></br>
+						<br/>
 
 						{this.griditem("Customer Name:", this.state.custName)}
 						{this.griditem("Customer HP No.:", this.state.custHp)}
 
-						<br></br>
+						<br/>
 
 						{this.griditem("Delivery Venue:", this.state.venue)}
-						{this.griditem(
-							"Delivery Date:",
-							this.state.deliveryDate
-						)}
-						{this.griditem(
-							"Delivery Time:",
-							this.state.deliveryTime
-						)}
+						{this.griditem("Delivery Date:", this.state.deliveryDate)}
+						{this.griditem("Delivery Time:", this.state.deliveryTime)}
 						{this.griditem("No. of Pax:", this.state.pax)}
 
-						<br></br>
+						<br/>
 
 						{/* {this.griditem("Menu:", dataIsLoaded && this.renderMenu())} */}
 						<Grid container>
 							<Grid item xs={5}>
 								Menu:
 							</Grid>
-							<Grid item xs={7} >
-								<div id="menu"></div>
+							<Grid item xs={7}>
 								{dataIsLoaded && this.renderMenu()}
 							</Grid>
 						</Grid>
 					</Typography>
-					<br></br>
+					<br/>
 
 					<Grid container spacing={1}>
 						<Grid item xs={12}>

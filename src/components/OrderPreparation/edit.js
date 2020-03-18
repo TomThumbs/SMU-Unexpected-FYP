@@ -206,7 +206,7 @@ class OrderPreparationEditBase extends Component {
 				console.log("Error getting documents: ", error);
 			});
 
-		console.log(this.state);
+		// console.log(this.state);
 	}
 
 	onSubmit = event => {
@@ -397,8 +397,8 @@ class OrderPreparationEditBase extends Component {
 		// console.log(this.state)
 		let list = [];
 		this.state.menu.forEach((dish, id) => {
-			console.log(dish);
-			console.log(id);
+			// console.log(dish);
+			// console.log(id);
 			list.push(
 				<div key={id}>
 					<Grid container style={{ paddingBottom: 18 }}>

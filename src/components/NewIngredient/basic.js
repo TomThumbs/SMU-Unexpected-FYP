@@ -186,7 +186,7 @@ class NewBasicIngredientForm extends Component {
 	handleFillChange = name => event => {
 		if (event.target.id.length > 22) {
 			let dictIndex = event.target.id.split("-")[4];
-			console.log(event.target.id)
+			// console.log(event.target.id)
 			// console.log(Object.values(this.state.availableIngredients)[dictIndex].ingredient)
 			this.setState({
 				...this.props,
@@ -216,9 +216,9 @@ class NewBasicIngredientForm extends Component {
 	today = new Date();
 
 	render() {
-		console.log(this.state)
+		// console.log(this.state)
 		const isInvalid =
-			this.state.storageDate.length === 0 || 
+			this.state.storageDate.length === 0 ||
 			this.state.expiryDate === null ||
 			this.state.foodName.length === 0;
 		return (
@@ -247,7 +247,6 @@ class NewBasicIngredientForm extends Component {
 						id="combo-box-demo"
 						options={this.state.availableIngredients}
 						getOptionLabel={option => option.ingredient}
-						fullWidth
 						onChange={this.handleFillChange("foodName")}
 						renderInput={params => (
 							<TextField
@@ -335,7 +334,7 @@ class NewBasicIngredientForm extends Component {
 							</DialogContentText>
 						</DialogContent>
 						<DialogActions>
-							
+
 							<Grid container spacing={1}>
 								<Grid item xs={12}>
 									<Button
@@ -372,7 +371,7 @@ class NewBasicIngredientForm extends Component {
 								search: "?id=" + this.state.orderID
 							}}>Complex Ingredient
 							</Button>
-							
+
 						</Grid> */}
 
 					<div>

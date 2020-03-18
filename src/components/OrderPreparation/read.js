@@ -104,9 +104,9 @@ class OrderPreparationBase extends Component {
 		// ---------- RETRIEVE INGREDIENTS ----------
 		console.log("Retreving Menu Ingredients");
 		this.props.firebase.fs
-		// .collection("IngredientsInventory")
-		.collection("Ingredients")
-		.get()
+			// .collection("IngredientsInventory")
+			.collection("Ingredients")
+			.get()
 			.then(querySnapshot => {
 				querySnapshot.forEach(doc => {
 					let data = doc.data();
@@ -219,8 +219,8 @@ class OrderPreparationBase extends Component {
 		let ingredients = this.state.ingredientsUsed[dish].split(",");
 
 		ingredients.forEach(barcode => {
-			console.log(barcode)
-			console.log(this.state.ingredients[barcode])
+			// console.log(barcode)
+			// console.log(this.state.ingredients[barcode])
 
 			ingts.push(
 				<Grid item xs={2} key={barcode}>
@@ -253,7 +253,7 @@ class OrderPreparationBase extends Component {
 
 		this.state.menu.forEach(dish => {
 			menu.push(
-				<Grid container item>
+				<Grid container item key={dish}>
 					<Grid item xs={12}>
 						<Typography variant="h6" key={dish}>
 							{" "}
@@ -278,7 +278,7 @@ class OrderPreparationBase extends Component {
 
 	render() {
 		const dataIsLoaded = this.state.dataIsLoaded === true;
-		console.log(this.state)
+		// console.log(this.state)
 
 		return (
 			<Container component="main" maxWidth="sm">
@@ -326,16 +326,16 @@ class OrderPreparationBase extends Component {
 									Assistant B: {this.state.assistantB}
 								</Typography>
 
-								<p>
-									<Divider variant="li" />
-								</p>
+								<br />
+								<Divider variant="middle" />
+								<br />
 
-								<Grid container xs={12}>
-									<Grid container xs={6}>
+								<Grid item xs={12}>
+									<Grid item xs={6}>
 										<FormControlLabel
 											control={
 												<Checkbox
-													checked="true"
+													checked={true}
 													disabled
 													name="hands"
 													value="remember"
@@ -349,7 +349,7 @@ class OrderPreparationBase extends Component {
 										<FormControlLabel
 											control={
 												<Checkbox
-													checked="true"
+													checked={true}
 													disabled
 													name="workspace"
 													value="remember"
@@ -363,7 +363,7 @@ class OrderPreparationBase extends Component {
 										<FormControlLabel
 											control={
 												<Checkbox
-													checked="true"
+													checked={true}
 													disabled
 													name="workspace"
 													value="remember"
@@ -377,7 +377,7 @@ class OrderPreparationBase extends Component {
 										<FormControlLabel
 											control={
 												<Checkbox
-													checked="true"
+													checked={true}
 													disabled
 													name="workspace"
 													value="remember"
@@ -393,10 +393,10 @@ class OrderPreparationBase extends Component {
 
 								<Grid item xs={12}>
 									<img
-										class="image"
+										className="image"
 										src={this.state.kitchenImageURL}
 										alt="Kitchen state"
-									></img>
+									/>
 								</Grid>
 							</Grid>
 							<br></br>
@@ -412,7 +412,7 @@ class OrderPreparationBase extends Component {
 							<Typography variant="h5">Ingredient List</Typography>
 						</ExpansionPanelSummary>
 						<ExpansionPanelDetails>
-							<Grid container xs={12} spacing={3}>
+							<Grid item xs={12}>
 								{dataIsLoaded && this.renderMenu()}
 							</Grid>
 						</ExpansionPanelDetails>
