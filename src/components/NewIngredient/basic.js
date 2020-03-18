@@ -76,11 +76,12 @@ class NewBasicIngredientForm extends Component {
 			});
 		}
 		this.props.firebase.fs
-			.collection("IngredientsInventory")
+			.collection("Ingredients")
 			.orderBy("name", "asc")
 			.get()
 			.then(snapshot => {
 				snapshot.forEach(doc => {
+					// console.log(doc.data().name)
 					if (
 						this.state.prevFood.length === 0 ||
 						this.state.prevFood !== doc.data().name

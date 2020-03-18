@@ -70,6 +70,7 @@ class DishToIngredientFormBase extends Component {
 
 		this.props.firebase.fs
 			.collection("Ingredients")
+			.orderBy("name", "asc")
 			.get()
 			.then(snapshot => {
 				snapshot.forEach(doc => {
@@ -92,19 +93,24 @@ class DishToIngredientFormBase extends Component {
 	}
 
 	handleIngreChange(e, index) {
-		//   console.log(e.target.data-option-index)
+		console.log(e.target.id);
 		if (e.target.id.length > 0) {
 			let yolo = e.target.id.split("-")[4];
-			let temp = Object.values(
-				this.state.availableIngredients
-			)[yolo].ingredient
-			this.setState({
-				[this.state.ingredients[index]]: temp
-			})
+			console.log(yolo);
+			let temp = Object.values(this.state.availableIngredients)[yolo]
+				.ingredient;
+			console.log(temp);
+			console.log(index);
+			const { ingredients } = this.state;
+			ingredients.splice(index, 1, temp);
+			this.setState({ ingredients: [...ingredients] });
+			// this.setState({
+			// 	[this.state.ingredients[index]]: temp
+			// });
 			// this.state.ingredients[index] = Object.values(
 			// 	this.state.availableIngredients
 			// )[yolo].ingredient;
-			this.setState({ ingredients: this.state.ingredients });
+			// this.setState({ ingredients: this.state.ingredients });
 		}
 	}
 
@@ -162,8 +168,6 @@ class DishToIngredientFormBase extends Component {
 		}
 	};
 
-
-
 	onChange = event => {
 		this.setState({
 			[event.target.name]: event.target.value
@@ -182,7 +186,7 @@ class DishToIngredientFormBase extends Component {
 			menu: "",
 			menu_List: [],
 			chosen_menu: "",
-		
+
 			availableIngredients: [],
 			newIngredientName: "",
 			newDishName: ""
@@ -223,7 +227,7 @@ class DishToIngredientFormBase extends Component {
 		if (
 			this.state.newDishName.length === 0 ||
 			this.state.chosen_menu.length === 0 ||
-			this.state.ingredients.length <   2
+			this.state.ingredients.length < 2
 		) {
 			return (
 				<Typography variant="subtitle2" color="secondary">
@@ -246,9 +250,9 @@ class DishToIngredientFormBase extends Component {
 			);
 		}
 	}
-	
+
 	render() {
-		// console.log(this.state);
+		console.log(this.state);
 		// const isLoaded = this.state.dataIsLoaded === true;
 		return (
 			<Container component="main" maxWidth="xs">
@@ -361,8 +365,6 @@ class DishToIngredientFormBase extends Component {
 						})}
 
 						{/* <hr /> */}
-
-		
 					</React.Fragment>
 
 					<Grid container spacing={1}>
@@ -397,32 +399,29 @@ class DishToIngredientFormBase extends Component {
 							</DialogContentText>
 						</DialogContent>
 						<DialogActions>
-
-								<Grid container spacing={1}>
-									<Grid item xs={12}>
-										<Button
-											variant="outlined"
-											autoFocus
-											fullWidth
-											onClick={this.handleClose} 
-										>
-											Create another recipe
-										</Button>
-									</Grid> 
-									
-									
-									<Grid item xs={12}>
-										<Button
-											variant="outlined"
-											autoFocus
-											fullWidth
-											onClick={this.handleHome}
-										>
-											Home
-										</Button>
-									</Grid> 
+							<Grid container spacing={1}>
+								<Grid item xs={12}>
+									<Button
+										variant="outlined"
+										autoFocus
+										fullWidth
+										onClick={this.handleClose}
+									>
+										Create another recipe
+									</Button>
 								</Grid>
-						
+
+								<Grid item xs={12}>
+									<Button
+										variant="outlined"
+										autoFocus
+										fullWidth
+										onClick={this.handleHome}
+									>
+										Home
+									</Button>
+								</Grid>
+							</Grid>
 						</DialogActions>
 					</Dialog>
 				</Paper>
