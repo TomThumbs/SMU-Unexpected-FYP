@@ -92,7 +92,8 @@ class DisplayIngredientBase extends Component {
 		}
 
 		this.setState({
-			prevId: this.state.searchId
+			prevId: this.state.searchId,
+			searchId: ''
 		});
 	};
 

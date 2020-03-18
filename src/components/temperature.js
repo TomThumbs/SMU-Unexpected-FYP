@@ -53,6 +53,7 @@ class TemperatureDisplayBase extends Component {
 	componentDidMount() {
 		this.props.firebase.fs
 			.collection("device_settings")
+			.where("ID", '==', '1')
 			.onSnapshot(snapshot => {
 				//to me, this is the 60 threshold.
 				let changes = snapshot.docChanges(); //if a new value is keyed in, update the value
@@ -69,13 +70,16 @@ class TemperatureDisplayBase extends Component {
 			});
 
 		this.props.firebase.fs
-			.collection("temp_sensor_test")
+			.collection("IoTSensorLogs")
 			.orderBy("timestamp", "desc")
 			.limit(1)
 			.onSnapshot(snapshot => {
 				let changes = snapshot.docChanges();
 				changes.forEach(change => {
-					this.setState({ current: change.doc.data().temp }); //this is what the temp is. if i replace temp with timestamp then it changes
+					if(change.doc.data().ID === '1'){
+						this.setState({ current: change.doc.data().temp }); //this is what the temp is. if i replace temp with timestamp then it changes
+					}
+					// this.setState({ current: change.doc.data().temp }); //this is what the temp is. if i replace temp with timestamp then it changes
 				});
 			});
 	}

@@ -162,8 +162,6 @@ class NewBasicIngredientForm extends Component {
 	};
 
 	onChange = event => {
-
-
 		this.setState({ [event.target.name]: event.target.value });
 	};
 
@@ -187,7 +185,7 @@ class NewBasicIngredientForm extends Component {
 	handleFillChange = name => event => {
 		if (event.target.id.length > 22) {
 			let dictIndex = event.target.id.split("-")[4];
-			console.log(event.target.id.length)
+			console.log(event.target.id)
 			// console.log(Object.values(this.state.availableIngredients)[dictIndex].ingredient)
 			this.setState({
 				...this.props,
@@ -217,7 +215,7 @@ class NewBasicIngredientForm extends Component {
 	today = new Date();
 
 	render() {
-		// console.log(this.state.availableIngredients)
+		console.log(this.state)
 		const isInvalid =
 			this.state.storageDate.length === 0 || 
 			this.state.expiryDate === null ||

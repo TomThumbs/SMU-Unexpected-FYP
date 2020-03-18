@@ -42,7 +42,7 @@ import { withAuthentication } from './components/Session';
 import CookingSelection from './components/CookingSelection';
 import CookingForm from './components/CookingForm'
 
-// import SmartHeaterDisplay from './views/smartHeater'
+import SmartHeaterDisplay from './views/smartHeater'
 import IoTHeater from './components/IoTHeater'
 
 // function App() {
@@ -64,6 +64,7 @@ const App = () => (
 
         {/* ---------- SMART HEATING ---------- */}
         <Route path={ROUTES.SMART_HEATING} component={IoTHeater} />
+        <Route path={ROUTES.SMART_HEATING_TEST} component={SmartHeaterDisplay} />
 
         {/* ---------- ITEM MANAGEMENT PAGE ---------- */}
         <Route path={ROUTES.ITEM_MANAGEMENT} component={ItemManagementPage} />

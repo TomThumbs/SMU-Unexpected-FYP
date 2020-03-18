@@ -51,6 +51,7 @@ const INITIAL_STATE = {
 	custHp: "",
 	venue: "",
 	deliveryTime: "",
+	remarks:'',
 	menu: [],
 	ingredientsUsed: {},
 	orderID: "",
@@ -211,6 +212,18 @@ class FinalOverviewBase extends Component {
 	// 	menu.appendChild(listofmenu);
 	// };
 
+	renderRemarks() {
+		console.log(this.state)
+		if (this.state.remarks.length !== 0) {
+			let result = []
+			result.push(<br />)
+			result.push(this.griditem("Remarks:",this.state.remarks))
+			return result 
+		} 
+
+		return [];
+		
+	}
 	
 	griditem(title, info) {
 		return (

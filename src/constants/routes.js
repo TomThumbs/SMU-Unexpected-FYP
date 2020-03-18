@@ -11,6 +11,7 @@ export const HOME = '/home';
 
 // ---------- SMART HEATING ----------
 export const SMART_HEATING = '/smart-heating';
+export const SMART_HEATING_TEST = '/smart-heating-test';
 
 // ---------- ITEM MANAGEMENT PAGE ----------
 export const ITEM_MANAGEMENT ='/item-management';
