@@ -106,7 +106,7 @@ class OrderServiceReadBase extends Component {
 									let counte = 0
 									changes.forEach(change => {
 										// console.log(changee.doc.data())
-										if (change.doc.data().ID == dish && counte == 0) {
+										if (change.doc.data().ID === dish && counte === 0) {
 											counte = 1
 											Object.assign(this.state.temps, {[dishname]: change.doc.data().temp});
 											this.setState({

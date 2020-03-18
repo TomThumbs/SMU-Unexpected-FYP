@@ -7,7 +7,7 @@ import "date-fns";
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import DateFnsUtils from "@date-io/date-fns";
-import Autocomplete from "@material-ui/lab/Autocomplete";
+// import Autocomplete from "@material-ui/lab/Autocomplete";
 import {
 	MuiPickersUtilsProvider,
 	KeyboardDatePicker
@@ -45,13 +45,13 @@ const INITIAL_STATE = {
 	inputLabel: "",
 	temp_tag: "",
 	foodName: "",
-	storageDate: "",
-	expiryDate: null,
+	// storageDate: "",
+	// expiryDate: null,
 	open: false,
-	foodId: "",
-	month: "",
-	availableIngredients: [],
-	prevFood: ""
+	// foodId: "",
+	// month: "",
+	// availableIngredients: [],
+	// prevFood: ""
 	// priFoodId: ""
 };
 
@@ -63,72 +63,72 @@ class NewIngredientForm extends Component {
 	}
 
 	componentDidMount() {
-		if (this.state.storageDate.length === 0) {
-			let temp_date = new Date();
-			let dd = String(temp_date.getDate()).padStart(2, "0");
-			let mm = String(temp_date.getMonth() + 1).padStart(2, "0");
-			let yyyy = temp_date.getFullYear();
-			let string = dd + "/" + mm + "/" + yyyy;
+		// if (this.state.storageDate.length === 0) {
+		// 	let temp_date = new Date();
+		// 	let dd = String(temp_date.getDate()).padStart(2, "0");
+		// 	let mm = String(temp_date.getMonth() + 1).padStart(2, "0");
+		// 	let yyyy = temp_date.getFullYear();
+		// 	let string = dd + "/" + mm + "/" + yyyy;
 
-			this.setState({
-				storageDate: string
-			});
-		}
-		this.props.firebase.fs
-			.collection("IngredientsInventory")
-			.orderBy("name", "asc")
-			.get()
-			.then(snapshot => {
-				snapshot.forEach(doc => {
-					if (
-						this.state.prevFood.length === 0 ||
-						this.state.prevFood !== doc.data().name
-					) {
-						this.setState(prevstate => ({
-							availableIngredients: [
-								...prevstate.availableIngredients,
-								{ ingredient: doc.data().name }
-							]
-						}));
-						this.setState({ prevFood: doc.data().name });
-					}
-				});
-			});
+		// 	this.setState({
+		// 		storageDate: string
+		// 	});
+		// }
+		// this.props.firebase.fs
+		// 	.collection("IngredientsInventory")
+		// 	.orderBy("name", "asc")
+		// 	.get()
+		// 	.then(snapshot => {
+		// 		snapshot.forEach(doc => {
+		// 			if (
+		// 				this.state.prevFood.length === 0 ||
+		// 				this.state.prevFood !== doc.data().name
+		// 			) {
+		// 				this.setState(prevstate => ({
+		// 					availableIngredients: [
+		// 						...prevstate.availableIngredients,
+		// 						{ ingredient: doc.data().name }
+		// 					]
+		// 				}));
+		// 				this.setState({ prevFood: doc.data().name });
+		// 			}
+		// 		});
+		// 	});
 	}
 
 	onSubmit = event => {
 		event.preventDefault();
 		this.props.firebase.fs
 			.collection("Ingredients")
-			.doc(this.state.foodId)
+			.doc("Food name " + this.state.foodName)
 			.set({
-				barcode: this.state.foodId,
-				Date_of_expiry:
-					String(this.state.expiryDate).split(" ")[2] +
-					"-" +
-					this.state.month +
-					"-" +
-					String(this.state.expiryDate).split(" ")[3],
+				// barcode: this.state.foodId,
+				// Date_of_expiry:
+				// 	String(this.state.expiryDate).split(" ")[2] +
+				// 	"-" +
+				// 	this.state.month +
+				// 	"-" +
+				// 	String(this.state.expiryDate).split(" ")[3],
 				name: this.state.foodName,
-				Primary_Ingredients: "",
-				Date_of_Storage: this.state.storageDate
+				// Primary_Ingredients: "",
+				// Date_of_Storage: this.state.storageDate
 			});
 
-		this.props.firebase.fs
-			.collection("IngredientsInventory")
-			.doc(this.state.foodId)
-			.set({
-				barcode: this.state.foodId,
-				Date_of_expiry:
-					String(this.state.expiryDate).split(" ")[2] +
-					"-" +
-					this.state.month +
-					"-" +
-					String(this.state.expiryDate).split(" ")[3],
-				name: this.state.foodName,
-				Primary_Ingredients: "",
-				Date_of_Storage: this.state.storageDate
-			});
+		// this.props.firebase.fs
+		// 	.collection("IngredientsInventory")
+		// 	.doc(this.state.foodId)
+		// 	.set({
+		// 		barcode: this.state.foodId,
+		// 		Date_of_expiry:
+		// 			String(this.state.expiryDate).split(" ")[2] +
+		// 			"-" +
+		// 			this.state.month +
+		// 			"-" +
+		// 			String(this.state.expiryDate).split(" ")[3],
+		// 		name: this.state.foodName,
+		// 		Primary_Ingredients: "",
+		// 		Date_of_Storage: this.state.storageDate
+		// 	});
 		this.handleClickOpen();
 	};
 
@@ -179,19 +179,6 @@ class NewIngredientForm extends Component {
 		// console.log(this.state.date)
 	};
 
-	handleFillChange = name => event => {
-		if (event.target.id.length > 22) {
-			let dictIndex = event.target.id.split("-")[4];
-			console.log(event.target.id.length)
-			// console.log(Object.values(this.state.availableIngredients)[dictIndex].ingredient)
-			this.setState({
-				...this.props,
-				[name]: Object.values(this.state.availableIngredients)[dictIndex]
-					.ingredient
-			});
-		}
-	};
-
 	createTextField = (name, temp, label, placeholder) => {
 		// const read = readonly === "true"
 		return (
@@ -213,10 +200,11 @@ class NewIngredientForm extends Component {
 
 	render() {
 		// console.log(this.state.availableIngredients)
-		const isInvalid =
-			this.state.storageDate.length === 0 || 
-			this.state.expiryDate === null ||
-			this.state.foodName.length === 0;
+		// const isInvalid =
+		// 	this.state.storageDate.length === 0 || 
+		// 	this.state.expiryDate === null ||
+		// 	this.state.foodName.length === 0;
+			const isInvalid = this.state.foodName.length === 0;
 		return (
 			<Container component="main" maxWidth="xs">
 				{/* {this.uniqueMenu()} */}
@@ -228,12 +216,12 @@ class NewIngredientForm extends Component {
 						Please ensure that ingredient has not been in the database before. 
 					</Typography>
 
-					{this.createTextField(
+					{/* {this.createTextField(
 						"foodId",
 						this.state.foodId,
 						"Food ID",
 						"Food ID"
-					)}
+					)} */}
 
 					{/* Food Name */}
 					{this.createTextField(
@@ -273,7 +261,7 @@ class NewIngredientForm extends Component {
 						/> */}
 
 					{/* Storage Date */}
-					<TextField
+					{/* <TextField
 						variant="outlined"
 						margin="normal"
 						required
@@ -287,8 +275,8 @@ class NewIngredientForm extends Component {
 						InputProps={{
 							readOnly: true
 						}}
-					/>
-					<MuiPickersUtilsProvider utils={DateFnsUtils}>
+					/> */}
+					{/* <MuiPickersUtilsProvider utils={DateFnsUtils}>
 						<KeyboardDatePicker
 							minDate={this.today}
 							// InputLabelProps={{ shrink: true }}
@@ -304,7 +292,7 @@ class NewIngredientForm extends Component {
 								"aria-label": "change date"
 							}}
 						/>
-					</MuiPickersUtilsProvider>
+					</MuiPickersUtilsProvider> */}
 
 					<Dialog
 						open={this.state.open}
@@ -317,12 +305,12 @@ class NewIngredientForm extends Component {
 						</DialogTitle>
 						<DialogContent dividers>
 							<DialogContentText id="alert-dialog-description">
-								{this.state.foodName} has been tagged.
-								<br />
+								{this.state.foodName} has been added.
+								{/* <br /> */}
 								{/* Primary ingredients(if any):
 									{this.state.priFoodId}
 									<br /> */}
-								Food ID: {this.state.foodId}
+								{/* Food ID: {this.state.foodId}
 								<br />
 								Storage Date: {this.state.storageDate}
 								<br />
@@ -331,7 +319,7 @@ class NewIngredientForm extends Component {
 									"/" +
 									this.state.month +
 									"/" +
-									String(this.state.expiryDate).split(" ")[3]}
+									String(this.state.expiryDate).split(" ")[3]} */}
 							</DialogContentText>
 						</DialogContent>
 						<DialogActions>
