@@ -249,7 +249,7 @@ class OrderFormBase extends Component {
 		if (notCreated) {
 			// console.log('Customer to be created')
 			let custDocName = "Customer" + String(this.state.custID);
-			console.log("custid" + this.state.custID + " --- " + custDocName);
+			// console.log("custid" + this.state.custID + " --- " + custDocName);
 			this.props.firebase.fs
 				.collection("Customers")
 				.doc(custDocName)
@@ -323,7 +323,7 @@ class OrderFormBase extends Component {
 		this.setState({
 			[name + " checkbox"]: value
 		});
-		console.log(this.state);
+		// console.log(this.state);
 		// this.setState(prevstate => ({
 		// 	finalmenu: [...prevstate.finalmenu, dishname]
 		// }));
@@ -450,20 +450,20 @@ class OrderFormBase extends Component {
 		// console.log("Final Menu: " + finalmenu);
 		// console.log(finalmenu.length === 0);
 
-		console.log("Checker: ")
-		console.log(this.state.date === null ||
-			this.state.starttime === null ||
-			this.state.venue.length === 0 ||
-			this.state.custname.length === 0 ||
-			this.state.custcontact.length === 0 ||
-			this.state.custemail.length === 0 ||
-			this.state.custcompany.length === 0 ||
-			this.state.chosen_payment.length === 0 ||
-			finalmenu !== [])
+		// console.log("Checker: ")
+		// console.log(this.state.date === null ||
+		// 	this.state.starttime === null ||
+		// 	this.state.venue.length === 0 ||
+		// 	this.state.custname.length === 0 ||
+		// 	this.state.custcontact.length === 0 ||
+		// 	this.state.custemail.length === 0 ||
+		// 	this.state.custcompany.length === 0 ||
+		// 	this.state.chosen_payment.length === 0 ||
+		// 	finalmenu !== [])
 
-		console.log("Pax: " + this.state.pax);
-		console.log(this.state.pax >= 30);
-		console.log("Invalid: " + isInvalid);
+		// console.log("Pax: " + this.state.pax);
+		// console.log(this.state.pax >= 30);
+		// console.log("Invalid: " + isInvalid);
 
 		return (
 			<Container component="main" maxWidth="sm">
@@ -606,9 +606,9 @@ class OrderFormBase extends Component {
 								</FormControl>
 								{/* here */}
 							</Grid>
-							<p>
-								<Divider variant="il" />
-							</p>
+							<br/>
+								<Divider variant="middle" />
+							<br/>
 							<Grid item xs={12}>
 								<Typography component="h5" variant="h5">
 									Menu

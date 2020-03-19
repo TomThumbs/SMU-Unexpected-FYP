@@ -9,7 +9,7 @@ import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from "react-router-dom";
 // import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
@@ -75,85 +75,91 @@ class OrderCompletionBase extends Component {
 			orderID: urlId
 		});
 
-		this.props.firebase.fs.collection("Catering_orders")
-		.where("orderID", "==", urlId)
-		.get()
-		.then(snap => {
-			snap.forEach(doc => {
-				if (doc.data().Status === "Order Completed") {
-					// console.log(doc.id)
-					this.props.history.push({
-						pathname: ROUTES.FINAL_OVERVIEW,
-						search: "?id=" + this.state.orderID,
-						docID: doc.id
-					});
-				}
+		this.props.firebase.fs
+			.collection("Catering_orders")
+			.where("orderID", "==", urlId)
+			.get()
+			.then(snap => {
+				snap.forEach(doc => {
+					if (doc.data().Status === "Order Completed") {
+						// console.log(doc.id)
+						this.props.history.push({
+							pathname: ROUTES.FINAL_OVERVIEW,
+							search: "?id=" + this.state.orderID,
+							docID: doc.id
+						});
+					}
+				});
 			});
-		});
 
-		let day = this.state.commencement.getDate()
-		let month = Number(this.state.commencement.getMonth())+1
-		let year = this.state.commencement.getFullYear()
-		let hour = this.state.commencement.getHours()
-		let minute = String(this.state.commencement.getMinutes())
+		let day = this.state.commencement.getDate();
+		let month = Number(this.state.commencement.getMonth()) + 1;
+		let year = this.state.commencement.getFullYear();
+		let hour = this.state.commencement.getHours();
+		let minute = String(this.state.commencement.getMinutes());
 		if (month.length === 1) {
-			month = "0" + month
-			}
+			month = "0" + month;
+		}
 		if (hour.length === 1) {
-			hour = "0" + hour
-			}
+			hour = "0" + hour;
+		}
 		if (minute.length === 1) {
-			 minute = "0" + minute
-			}
-		this.setState({commencement: day + "/" + month + "/" + year + " " + hour + ":" + minute})
-
-		this.props.firebase.fs.collection("Catering_orders")
-		.where("orderID", "==", urlId)
-		.get()
-		.then(snap => {
-			snap.forEach(doc => {
-				console.log(Object.values(doc.data().HeatersUsed))
-				console.log(doc.data().StatusDates.concat(this.state.commencement))
-				this.setState({
-					docID: doc.id,
-					IOTs: Object.values(doc.data().HeatersUsed),
-					StatusDates: doc.data().StatusDates.concat(this.state.commencement)
-				})
-			});
+			minute = "0" + minute;
+		}
+		this.setState({
+			commencement: day + "/" + month + "/" + year + " " + hour + ":" + minute
 		});
+
+		this.props.firebase.fs
+			.collection("Catering_orders")
+			.where("orderID", "==", urlId)
+			.get()
+			.then(snap => {
+				snap.forEach(doc => {
+					console.log(Object.values(doc.data().HeatersUsed));
+					console.log(doc.data().StatusDates.concat(this.state.commencement));
+					this.setState({
+						docID: doc.id,
+						IOTs: Object.values(doc.data().HeatersUsed),
+						StatusDates: doc.data().StatusDates.concat(this.state.commencement)
+					});
+				});
+			});
 	}
 
 	onChange = event => {
 		if (this.state.completion === false) {
 			this.setState({
 				[event.target.name]: true
-			})
+			});
 		} else {
 			this.setState({
 				[event.target.name]: false
-			})
+			});
 		}
-	}
+	};
 
 	onSubmit = event => {
 		event.preventDefault();
 
-		this.state.IOTs.forEach(item=>{
-			console.log(item)
+		this.state.IOTs.forEach(item => {
+			console.log(item);
 			this.props.firebase.fs
-			.collection("IoTHeaters")
-			.where("ID", "==", item)
-			.get()
-			.then(snap => {
-				snap.forEach(doc => {
-					this.props.firebase.fs.collection("IoTHeaters")
-					.doc(doc.id).update({
-						status: "Unused",
-						orderID: "Unused"
-					})
+				.collection("IoTHeaters")
+				.where("ID", "==", item)
+				.get()
+				.then(snap => {
+					snap.forEach(doc => {
+						this.props.firebase.fs
+							.collection("IoTHeaters")
+							.doc(doc.id)
+							.update({
+								status: "Unused",
+								orderID: "Unused"
+							});
+					});
 				});
-			})
-		})
+		});
 
 		this.props.firebase.fs
 			.collection("Catering_orders")
@@ -168,7 +174,7 @@ class OrderCompletionBase extends Component {
 			.catch(function(error) {
 				console.error("Error writing document: ", error);
 			});
-			this.props.history.push({
+		this.props.history.push({
 			pathname: ROUTES.FINAL_OVERVIEW,
 			search: "?id=" + this.state.orderID,
 			docID: this.state.docID
@@ -189,31 +195,33 @@ class OrderCompletionBase extends Component {
 	}
 
 	render() {
-		let isInvalid = this.state.completion === false
+		let isInvalid = this.state.completion === false;
 		return (
-		
-				<Container component="main" maxWidth="xs" className={this.classes.root}>
-					<Typography gutterBottom variant="h4">Order Completion</Typography>
-					<Paper className={this.classes.paper}>
-					<Typography variant="h6">Order Number: {this.state.orderID}.</Typography>
-						
-						<FormControlLabel
-							control={
+			<Container component="main" maxWidth="xs" className={this.classes.root}>
+				<Typography gutterBottom variant="h4">
+					Order Completion
+				</Typography>
+				<Paper className={this.classes.paper}>
+					<Typography variant="h6">
+						Order Number: {this.state.orderID}.
+					</Typography>
+
+					<FormControlLabel
+						control={
 							<Checkbox
 								onChange={this.onChange}
 								name="completion"
 								value="true"
 								color="primary"
-							/>}
-							label="The order has been collected back"
-						/>
-						
-							
+							/>
+						}
+						label="The order has been collected back"
+					/>
 
-						<Grid container spacing={1}>
+					<Grid container spacing={1}>
 						<Grid item xs={12}>
-						<form onSubmit={this.onSubmit}>
-							<Button
+							<form onSubmit={this.onSubmit}>
+								<Button
 									disabled={isInvalid}
 									type="submit"
 									fullWidth
@@ -221,18 +229,21 @@ class OrderCompletionBase extends Component {
 									color="primary"
 									className={this.classes.submit}
 								>
-								Submit
-							</Button>
-						</form>
+									Submit
+								</Button>
+							</form>
 						</Grid>
 						<Grid item xs={12}>
 							<Button
 								variant="outlined"
 								fullWidth
-								component={RouterLink} to={{
-								pathname: ROUTES.ORDER_TIMELINE,
-								search: "?id=" + this.props.location.orderID
-							}}>Back to Timeline
+								component={RouterLink}
+								to={{
+									pathname: ROUTES.ORDER_TIMELINE,
+									search: "?id=" + this.props.location.orderID
+								}}
+							>
+								Back to Timeline
 							</Button>
 						</Grid>
 						<Grid item xs={12}>
@@ -240,14 +251,15 @@ class OrderCompletionBase extends Component {
 								variant="outlined"
 								color="primary"
 								fullWidth
-								component={RouterLink} 
+								component={RouterLink}
 								to={ROUTES.LANDING}
-								>Home
+							>
+								Home
 							</Button>
 						</Grid>
-						</Grid>
-					</Paper>
-				</Container>
+					</Grid>
+				</Paper>
+			</Container>
 		);
 	}
 }

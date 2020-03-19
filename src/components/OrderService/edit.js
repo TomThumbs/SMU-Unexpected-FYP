@@ -132,8 +132,7 @@ class OrderServiceBase extends Component {
 			minute = "0" + minute;
 		}
 		this.setState({
-			commencement:
-				day + "/" + month + "/" + year + " " + hour + ":" + minute
+			commencement: day + "/" + month + "/" + year + " " + hour + ":" + minute
 		});
 
 		this.props.firebase.fs
@@ -142,9 +141,7 @@ class OrderServiceBase extends Component {
 			.get()
 			.then(doc => {
 				this.setState({
-					StatusDates: doc
-						.data()
-						.StatusDates.concat(this.state.commencement)
+					StatusDates: doc.data().StatusDates.concat(this.state.commencement)
 				});
 			});
 	}
@@ -223,7 +220,7 @@ class OrderServiceBase extends Component {
 		this.setState({
 			[dish + " heater"]: event.target.value
 		});
-		console.log(this.state);
+		// console.log(this.state);
 	};
 
 	renderHeaters() {
@@ -232,32 +229,23 @@ class OrderServiceBase extends Component {
 			heaters.push(
 				<Grid item xs={4} key={index}>
 					<Paper variant="outlined">
-						
-						<div className="item-height-dish">
-							{dish}
-						</div>
-						
-	
-							<TextField
-								fullWidth
-								id="standard-select"
-								select
-								label="Select Heater"
-								value={this.state[dish + " heater"]}
-								onChange={this.onChange(dish)}
-								//helperText="Please select the heater"
-							>
-								{this.state.IoTHeaters.map(option => (
-									<MenuItem
-										key={option.ID}
-										value={option.ID}
-									>
-										Heater {option.ID}
-									</MenuItem>
-								))}
-							</TextField>
-							
-						
+						<div className="item-height-dish">{dish}</div>
+
+						<TextField
+							fullWidth
+							id="standard-select"
+							select
+							label="Select Heater"
+							value={this.state[dish + " heater"]}
+							onChange={this.onChange(dish)}
+							//helperText="Please select the heater"
+						>
+							{this.state.IoTHeaters.map(option => (
+								<MenuItem key={option.ID} value={option.ID}>
+									Heater {option.ID}
+								</MenuItem>
+							))}
+						</TextField>
 					</Paper>
 				</Grid>
 			);
@@ -307,13 +295,9 @@ class OrderServiceBase extends Component {
 				used.push(this.state[item]);
 			}
 		});
-
 		let heaterCheck = counter === this.state.heaterCheck.length;
-
 		// console.log(heaterCheck)
-
 		const dataIsLoaded = this.state.dataIsLoaded === true;
-		// console.log(this.state);
 		return (
 			<Container component="main" maxWidth="sm">
 				{/* <Typography variant="h2">Order #{this.state.orderID}</Typography> */}
@@ -322,7 +306,9 @@ class OrderServiceBase extends Component {
 				</Typography>
 
 				<Paper>
-					<Typography variant="h6" gutterBottom color="primary">Order Number: {this.state.orderID}</Typography>
+					<Typography variant="h6" gutterBottom color="primary">
+						Order Number: {this.state.orderID}
+					</Typography>
 					<Grid container justify="center" spacing={2}>
 						{dataIsLoaded && this.renderHeaters()}
 					</Grid>
@@ -343,11 +329,7 @@ class OrderServiceBase extends Component {
 							</DialogContentText>
 						</DialogContent>
 						<DialogActions>
-							<Button
-								onClick={this.handleClose}
-								color="primary"
-								autoFocus
-							>
+							<Button onClick={this.handleClose} color="primary" autoFocus>
 								Back to Timeline
 							</Button>
 						</DialogActions>

@@ -25,7 +25,6 @@ import Grid from "@material-ui/core/Grid";
 import { Paper } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 
-
 const useStyles = makeStyles(theme => ({
 	paper: {
 		marginTop: theme.spacing(8),
@@ -45,9 +44,10 @@ const INITIAL_STATE = {
 	dateOfStorage: "",
 	dateOfExpiry: "",
 	ingredientName: "",
-	ingredientId:"",
-	searchId:"",
+	ingredientId: "",
+	searchId: "",
 	commencement: new Date(),
+	open: false
 };
 
 class DeleteIngredientForm extends Component {
@@ -73,8 +73,7 @@ class DeleteIngredientForm extends Component {
 			minute = "0" + minute;
 		}
 		this.setState({
-			commencement:
-				day + "/" + month + "/" + year + " " + hour + ":" + minute
+			commencement: day + "/" + month + "/" + year + " " + hour + ":" + minute
 		});
 
 		this.props.firebase.fs
@@ -83,12 +82,12 @@ class DeleteIngredientForm extends Component {
 			.then(querySnapshot => {
 				querySnapshot.forEach(doc => {
 					let data = doc.data();
-					// console.log(data.barcode); 	 	
+					// console.log(data.barcode);
 					this.setState({
 						[data.barcode]: {
 							ingredientName: data.name,
 							dateOfStorage: data.Date_of_Storage,
-							dateOfExpiry: data.Date_of_expiry,
+							dateOfExpiry: data.Date_of_expiry
 						}
 					});
 				});
@@ -110,11 +109,10 @@ class DeleteIngredientForm extends Component {
 			dateOfStorage: "",
 			dateOfExpiry: "",
 			ingredientName: "",
-			ingredientId:"",
-			searchId:""
+			ingredientId: "",
+			searchId: ""
 		});
 		// window.location.reload(false);
-
 	};
 
 	handleHome = () => {
@@ -132,18 +130,33 @@ class DeleteIngredientForm extends Component {
 		});
 		// console.log(this.state[event.target.value])
 		if (event.target.value in this.state) {
-			let dash = this.state[event.target.value].dateOfStorage.replace("/","-")
-					this.setState({
-						dateOfStorage: this.createTextField("dos",dash.replace("/","-"),"Date of Storage","DD/MM/YYYY"),
-						dateOfExpiry: this.createTextField("dos",this.state[event.target.value].dateOfExpiry,"Date of Expiry","DD/MM/YYYY"),
-						ingredientName: this.createTextField("dos",this.state[event.target.value].ingredientName,"Ingredient Name","Ingredient Name")
-					})
+			let dash = this.state[event.target.value].dateOfStorage.replace("/", "-");
+			this.setState({
+				dateOfStorage: this.createTextField(
+					"dos",
+					dash.replace("/", "-"),
+					"Date of Storage",
+					"DD/MM/YYYY"
+				),
+				dateOfExpiry: this.createTextField(
+					"dos",
+					this.state[event.target.value].dateOfExpiry,
+					"Date of Expiry",
+					"DD/MM/YYYY"
+				),
+				ingredientName: this.createTextField(
+					"dos",
+					this.state[event.target.value].ingredientName,
+					"Ingredient Name",
+					"Ingredient Name"
+				)
+			});
 		} else {
 			this.setState({
 				dateOfStorage: "",
 				dateOfExpiry: "",
-				ingredientName: "",
-			})			
+				ingredientName: ""
+			});
 		}
 	};
 
@@ -169,36 +182,38 @@ class DeleteIngredientForm extends Component {
 	onSubmit = event => {
 		event.preventDefault();
 
-		this.props.firebase.fs.collection("IngredientsInventory")
-		.where("barcode", "==", String(this.state.searchId))
-		.get()
-		.then(snap => {
-			snap.forEach(doc => {
-				this.props.firebase.fs.collection("IngredientsArchive").add({
-					Date_of_Storage: doc.data().Date_of_Storage,
-					Date_of_expiry: doc.data().Date_of_expiry,
-					Primary_Ingredients: doc.data().Primary_Ingredients,
-					barcode: doc.data().barcode,
-					name: doc.data().name,
-					reason: "Expired before use",
-					Date_of_removal: this.state.commencement
-				})
-			})
-		})
+		this.props.firebase.fs
+			.collection("IngredientsInventory")
+			.where("barcode", "==", String(this.state.searchId))
+			.get()
+			.then(snap => {
+				snap.forEach(doc => {
+					this.props.firebase.fs.collection("IngredientsArchive").add({
+						Date_of_Storage: doc.data().Date_of_Storage,
+						Date_of_expiry: doc.data().Date_of_expiry,
+						Primary_Ingredients: doc.data().Primary_Ingredients,
+						barcode: doc.data().barcode,
+						name: doc.data().name,
+						reason: "Expired before use",
+						Date_of_removal: this.state.commencement
+					});
+				});
+			});
 
-		this.props.firebase.fs.collection("IngredientsInventory")
-		.where("barcode", "==", String(this.state.searchId))
-		.get()
-		.then(snap => {
-			snap.forEach(doc => {
-				this.props.firebase.fs.collection("Ingredients")
-				.doc(doc.id)
-				.delete()
-			})
+		this.props.firebase.fs
+			.collection("IngredientsInventory")
+			.where("barcode", "==", String(this.state.searchId))
+			.get()
+			.then(snap => {
+				snap.forEach(doc => {
+					this.props.firebase.fs
+						.collection("Ingredients")
+						.doc(doc.id)
+						.delete();
+				});
+			});
 
-		})
-	
-		this.handleClickOpen()
+		this.handleClickOpen();
 	};
 
 	render() {
@@ -206,29 +221,26 @@ class DeleteIngredientForm extends Component {
 
 		return (
 			<Container component="main" maxWidth="xs">
-					<Typography variant="h4" gutterBottom>
-						Remove Ingredient
-					</Typography>
-					
-					<Paper>
+				<Typography variant="h4" gutterBottom>
+					Remove Ingredient
+				</Typography>
 
-					
-						<TextField
-							variant="outlined"
-							margin="normal"
-							fullWidth
-							name="searchId"
-							value={this.state.searchId}
-							label="Delete Ingredient"
-							onChange={this.onChange}
-							type="text"
-							placeholder="Scan barcode here"
-						/>
-						{this.state.dateOfStorage}
-						{this.state.dateOfExpiry}
-						{this.state.ingredientName}
-						<form onSubmit={this.onSubmit}>
-						
+				<Paper>
+					<TextField
+						variant="outlined"
+						margin="normal"
+						fullWidth
+						name="searchId"
+						value={this.state.searchId}
+						label="Delete Ingredient"
+						onChange={this.onChange}
+						type="text"
+						placeholder="Scan barcode here"
+					/>
+					{this.state.dateOfStorage}
+					{this.state.dateOfExpiry}
+					{this.state.ingredientName}
+					<form onSubmit={this.onSubmit}>
 						<br></br>
 						<Button
 							disabled={isInvalid}
@@ -241,44 +253,36 @@ class DeleteIngredientForm extends Component {
 							Delete
 						</Button>
 					</form>
-				<Dialog
-							open={this.state.open}
-							onClose={this.handleClose}
-							aria-labelledby="alert-dialog-title"
-							aria-describedby="alert-dialog-description"
-						>
-							<DialogTitle id="alert-dialog-title">
-								{"Submission Notification"}
-							</DialogTitle>
-							<DialogContent dividers>
-								<DialogContentText id="alert-dialog-description">
-									Barcode: {this.state.searchId}, {this.state.ingredientName} has been deleted.
-								</DialogContentText>
-							</DialogContent>
-							<DialogActions>
-								
-								<Grid container spacing={1}>
-									<Grid item xs={1}>
-										<Button
-											onClick={this.handleClose}
-											color="primary"
-											autoFocus
-										>
-											Continue Deleting
-										</Button>
-									</Grid>
-									<Grid item xs={1}>
-										<Button
-											onClick={this.handleHome}
-											color="primary"
-											autoFocus
-										>
-											Home
-										</Button>
-									</Grid>
+					<Dialog
+						open={this.state.open}
+						onClose={this.handleClose}
+						aria-labelledby="alert-dialog-title"
+						aria-describedby="alert-dialog-description"
+					>
+						<DialogTitle id="alert-dialog-title">
+							{"Submission Notification"}
+						</DialogTitle>
+						<DialogContent dividers>
+							<DialogContentText id="alert-dialog-description">
+								Barcode: {this.state.searchId}, {this.state.ingredientName} has
+								been deleted.
+							</DialogContentText>
+						</DialogContent>
+						<DialogActions>
+							<Grid container spacing={1}>
+								<Grid item xs={1}>
+									<Button onClick={this.handleClose} color="primary" autoFocus>
+										Continue Deleting
+									</Button>
 								</Grid>
-							</DialogActions>
-						</Dialog>
+								<Grid item xs={1}>
+									<Button onClick={this.handleHome} color="primary" autoFocus>
+										Home
+									</Button>
+								</Grid>
+							</Grid>
+						</DialogActions>
+					</Dialog>
 				</Paper>
 			</Container>
 		);

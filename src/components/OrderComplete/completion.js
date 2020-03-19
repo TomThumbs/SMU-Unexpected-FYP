@@ -66,22 +66,22 @@ class OrderCompletionBase extends Component {
 			orderID: urlId
 		});
 
-		this.props.firebase.fs
-			.collection("Catering_orders")
-			.where("orderID", "==", urlId)
-			.get()
-			.then(snap => {
-				snap.forEach(doc => {
-					if (doc.data().Status === "Order Completed") {
-						// console.log(doc.id)
-						this.props.history.push({
-							pathname: ROUTES.FINAL_OVERVIEW,
-							search: "?id=" + this.state.orderID,
-							docID: doc.id
-						});
-					}
-				});
-			});
+		// this.props.firebase.fs
+		// 	.collection("Catering_orders")
+		// 	.where("orderID", "==", urlId)
+		// 	.get()
+		// 	.then(snap => {
+		// 		snap.forEach(doc => {
+		// 			if (doc.data().Status === "Order Completed") {
+		// 				// console.log(doc.id)
+		// 				this.props.history.push({
+		// 					pathname: ROUTES.FINAL_OVERVIEW,
+		// 					search: "?id=" + this.state.orderID,
+		// 					docID: doc.id
+		// 				});
+		// 			}
+		// 		});
+		// 	});
 
 		let day = this.state.commencement.getDate();
 		let month = Number(this.state.commencement.getMonth()) + 1;
@@ -98,8 +98,7 @@ class OrderCompletionBase extends Component {
 			minute = "0" + minute;
 		}
 		this.setState({
-			commencement:
-				day + "/" + month + "/" + year + " " + hour + ":" + minute
+			commencement: day + "/" + month + "/" + year + " " + hour + ":" + minute
 		});
 
 		this.props.firebase.fs
@@ -108,17 +107,30 @@ class OrderCompletionBase extends Component {
 			.get()
 			.then(snap => {
 				snap.forEach(doc => {
-					console.log(Object.values(doc.data().HeatersUsed));
-					console.log(
-						doc.data().StatusDates.concat(this.state.commencement)
-					);
+					// console.log(Object.values(doc.data().HeatersUsed));
+					// console.log(doc.data().StatusDates.concat(this.state.commencement));
 					this.setState({
 						docID: doc.id,
 						IOTs: Object.values(doc.data().HeatersUsed),
-						StatusDates: doc
-							.data()
-							.StatusDates.concat(this.state.commencement)
+						StatusDates: doc.data().StatusDates.concat(this.state.commencement)
 					});
+				});
+			});
+
+		this.props.firebase.fs
+			.collection("Catering_orders")
+			.where("orderID", "==", urlId)
+			.get()
+			.then(snap => {
+				snap.forEach(doc => {
+					if (doc.data().Status === "Order Completed") {
+						// console.log(doc.id)
+						this.props.history.push({
+							pathname: ROUTES.FINAL_OVERVIEW,
+							search: "?id=" + this.state.orderID,
+							docID: doc.id
+						});
+					}
 				});
 			});
 	}
@@ -193,11 +205,7 @@ class OrderCompletionBase extends Component {
 	render() {
 		let isInvalid = this.state.completion === false;
 		return (
-			<Container
-				component="main"
-				maxWidth="xs"
-				className={this.classes.root}
-			>
+			<Container component="main" maxWidth="xs" className={this.classes.root}>
 				<Typography gutterBottom variant="h4">
 					Order Completion
 				</Typography>

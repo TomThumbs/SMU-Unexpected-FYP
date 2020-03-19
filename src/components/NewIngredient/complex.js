@@ -210,9 +210,9 @@ class NewComplexIngredientForm extends Component {
 
 	render() {
 		const isInvalid =
-		this.state.foodId.length === 0 || 
+		this.state.foodId.length === 0 ||
 		this.state.expiryDate === null ||
-	    this.state.foodName.length === 0 || 
+	    this.state.foodName.length === 0 ||
 	    this.state.priFoodId.length === 0;
 		return (
 			<Container component="main" maxWidth="xs">
@@ -244,7 +244,6 @@ class NewComplexIngredientForm extends Component {
 						id="combo-box-demo"
 						options={this.state.availableIngredients}
 						getOptionLabel={option => option.ingredient}
-						fullWidth
 						onChange={this.handleFillChange("foodName")}
 						renderInput={params => (
 							<TextField

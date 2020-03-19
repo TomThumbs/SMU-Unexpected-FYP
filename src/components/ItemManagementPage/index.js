@@ -16,7 +16,7 @@ import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 // import Divider from '@material-ui/core/Divider';
 // import Paper from "@material-ui/core/Paper";
-import Box from '@material-ui/core/Box';
+import Box from "@material-ui/core/Box";
 
 import checkingredients from "./checkingredients.png";
 import recipecreation from "./recipecreation.png";
@@ -28,33 +28,29 @@ import addnew from "./newingre.png";
 class IngredientManagementBase extends Component {
 	render() {
 		return (
-			
 			<Container component="main" maxWidth="lg">
 				<Typography variant="h3" align="center" gutterBottom>
 					Ingredient Management
 				</Typography>
-				
-				<br></br>
-				<br></br>
-	
-				
-				<Grid container spacing={3} justify="center">
-					
 
+				<br></br>
+				<br></br>
+
+				<Grid container spacing={3} justify="center">
 					<Grid container item xs={2}>
-						<Button
-							component={RouterLink}
-							to={ROUTES.DISH_TO_INGREDIENT_FORM}>
+						<Button component={RouterLink} to={ROUTES.DISH_TO_INGREDIENT_FORM}>
 							<Grid container justify="center" spacing={1}>
 								<Box height="100px"></Box>
 								<Grid item xs={12}>
-									<img class="image"
+									<img
+										className="image"
 										src={recipecreation}
-										alt="recipecreation"/>
+										alt="recipecreation"
+									/>
 								</Grid>
 								<Grid item xs={12} align="center">
 									<Typography component="h6" variant="h6">
-										Create<br></br>Recipe
+										Create<br/>Recipe
 									</Typography>
 								</Grid>
 							</Grid>
@@ -62,13 +58,12 @@ class IngredientManagementBase extends Component {
 					</Grid>
 
 					{/* <Divider orientation="vertical" flexItem /> */}
-		
+
 					<Grid container item xs={2}>
 						<Button component={RouterLink} to={ROUTES.NEW_INGREDIENT_BASIC}>
 							<Grid container justify="center" spacing={1}>
-								
 								<Grid item xs={12}>
-									<img class="image" src={simple} alt="simple-ingredient" />
+									<img className="image" src={simple} alt="simple-ingredient" />
 								</Grid>
 								<Grid item xs={12} align="center">
 									<Typography component="h6" variant="h6">
@@ -83,9 +78,7 @@ class IngredientManagementBase extends Component {
 						<Button component={RouterLink} to={ROUTES.NEW_INGREDIENT_COMPLEX}>
 							<Grid container justify="center" spacing={1}>
 								<Grid item xs={12}>
-									<img class="image" 
-									src={complex} 
-									alt="complex-ingredient" />
+									<img className="image" src={complex} alt="complex-ingredient" />
 								</Grid>
 								<Grid item xs={12} align="center">
 									<Typography component="h6" variant="h6">
@@ -102,9 +95,11 @@ class IngredientManagementBase extends Component {
 						<Button component={RouterLink} to={ROUTES.DISPLAY_INGREDIENT}>
 							<Grid container justify="center" spacing={1}>
 								<Grid item xs={12}>
-									<img class="image"
+									<img
+										className="image"
 										src={checkingredients}
-										alt="checkingredients"/>
+										alt="checkingredients"
+									/>
 								</Grid>
 								<Grid item xs={12} align="center">
 									<Typography component="h6" variant="h6">
@@ -119,9 +114,7 @@ class IngredientManagementBase extends Component {
 						<Button component={RouterLink} to={ROUTES.NEW_INGREDIENT}>
 							<Grid container justify="center" spacing={1}>
 								<Grid item xs={12}>
-									<img class="image"
-										src={addnew}
-										alt="addnewingredient"/>
+									<img className="image" src={addnew} alt="addnewingredient" />
 								</Grid>
 								<Grid item xs={12} align="center">
 									<Typography component="h6" variant="h6">
@@ -137,19 +130,16 @@ class IngredientManagementBase extends Component {
 						<Button component={RouterLink} to={ROUTES.DELETE_INGREDIENT}>
 							<Grid container justify="center" spacing={1}>
 								<Grid item xs={12}>
-									<img class="image" 
-									src={remove} 
-									alt="remove-ingredient" />
+									<img className="image" src={remove} alt="remove-ingredient" />
 								</Grid>
 								<Grid item xs={12} align="center">
 									<Typography component="h6" variant="h6">
-										Remove Ingredient 
+										Remove Ingredient
 									</Typography>
 								</Grid>
 							</Grid>
 						</Button>
 					</Grid>
-
 				</Grid>
 
 				<br></br>
@@ -157,25 +147,23 @@ class IngredientManagementBase extends Component {
 				<br></br>
 				<br></br>
 
-
-			
-					{/* <Box 
-						display="flex" 
+				{/* <Box
+						display="flex"
 						flexDirection="row"
-						p={1} 
-						m={1} 
+						p={1}
+						m={1}
 						bgcolor="background.paper"
 						justifyContent="center">
 
 						<Box p={1} bgcolor="grey.300" flexDirection="column" >
-							
+
 								<Box p={1} m={1} bgcolor="white" css={{ height: 50 }}>
-									<img class="image" 
-									src={remove} 
+									<img class="image"
+									src={remove}
 									alt="remove-ingredient" />
 								</Box>
 								<Box p={1} m={1} bgcolor="white">2</Box>
-						
+
 						</Box>
 						<Box p={1} bgcolor="grey.300">
 						Item 1
@@ -184,13 +172,7 @@ class IngredientManagementBase extends Component {
 						Item 1
 						</Box>
 					</Box> */}
-					
-			
-			
 			</Container>
-
-			
-			
 		);
 	}
 }

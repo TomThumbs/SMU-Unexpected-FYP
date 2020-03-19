@@ -40,7 +40,8 @@ const INITIAL_STATE = {
 	newIngredientName: "",
 	newDishName: "",
 	dataIsLoaded: false,
-	ingredients: []
+	ingredients: [],
+	open: false
 };
 
 class DishToIngredientFormBase extends Component {
@@ -93,14 +94,14 @@ class DishToIngredientFormBase extends Component {
 	}
 
 	handleIngreChange(e, index) {
-		console.log(e.target.id);
+		// console.log(e.target.id);
 		if (e.target.id.length > 0) {
 			let yolo = e.target.id.split("-")[4];
-			console.log(yolo);
+			// console.log(yolo);
 			let temp = Object.values(this.state.availableIngredients)[yolo]
 				.ingredient;
-			console.log(temp);
-			console.log(index);
+			// console.log(temp);
+			// console.log(index);
 			const { ingredients } = this.state;
 			ingredients.splice(index, 1, temp);
 			this.setState({ ingredients: [...ingredients] });
@@ -116,7 +117,7 @@ class DishToIngredientFormBase extends Component {
 
 	handleRemove(index) {
 		this.state.ingredients.splice(index, 1);
-		console.log(this.state.ingredients, "$$$$");
+		// console.log(this.state.ingredients, "$$$$");
 		this.setState({ ingredients: this.state.ingredients });
 	}
 
@@ -128,7 +129,7 @@ class DishToIngredientFormBase extends Component {
 
 	onSubmit = event => {
 		event.preventDefault();
-		console.log(this.state);
+		// console.log(this.state);
 
 		this.props.firebase.fs
 			.collection("Menu")
@@ -252,7 +253,7 @@ class DishToIngredientFormBase extends Component {
 	}
 
 	render() {
-		console.log(this.state);
+		// console.log(this.state);
 		// const isLoaded = this.state.dataIsLoaded === true;
 		return (
 			<Container component="main" maxWidth="xs">
@@ -295,7 +296,9 @@ class DishToIngredientFormBase extends Component {
 							margin="normal"
 						>
 							{this.state.menu_List.map((event, index) => (
-								<MenuItem value={event}>{event}</MenuItem>
+								<MenuItem value={event} key={event}>
+									{event}
+								</MenuItem>
 							))}
 						</TextField>
 
@@ -308,26 +311,14 @@ class DishToIngredientFormBase extends Component {
 
 						{this.state.ingredients.map((ingredient, index) => {
 							return (
-								<Grid
-									container
-									spacing={1}
-									className="full-size"
-									key={index}
-								>
+								<Grid container spacing={1} className="full-size" key={index}>
 									<Grid item xs={10}>
 										<Autocomplete
 											id="combo-box-demo"
-											options={
-												this.state.availableIngredients
-											}
-											getOptionLabel={option =>
-												option.ingredient
-											}
-											fullWidth
+											options={this.state.availableIngredients}
+											getOptionLabel={option => option.ingredient}
 											required
-											onChange={e =>
-												this.handleIngreChange(e, index)
-											}
+											onChange={e => this.handleIngreChange(e, index)}
 											renderInput={params => (
 												<TextField
 													{...params}
@@ -342,18 +333,16 @@ class DishToIngredientFormBase extends Component {
 									<Grid item xs>
 										<IconButton
 											aria-label="remove"
-											onClick={e =>
-												this.handleRemove(index)
-											}
+											onClick={e => this.handleRemove(index)}
 										>
-											<HighlightOffIcon fontSize="medium" />
+											<HighlightOffIcon fontSize="default" />
 										</IconButton>
 
 										<div>
 											<br></br>
 										</div>
 
-										{/* <Button 
+										{/* <Button
 										onClick={(e)=>this.handleRemove(index)}
 										size="large"
 										>
@@ -394,8 +383,7 @@ class DishToIngredientFormBase extends Component {
 						</DialogTitle>
 						<DialogContent dividers>
 							<DialogContentText id="alert-dialog-description">
-								{this.state.newDishName} recipe has been
-								created.
+								{this.state.newDishName} recipe has been created.
 							</DialogContentText>
 						</DialogContent>
 						<DialogActions>
