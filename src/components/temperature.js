@@ -100,8 +100,8 @@ class TemperatureDisplayBase extends Component {
 		event.preventDefault();
 		let num = Number(this.state.newMinTemp); //sets the var
 		// let num = this.newMinTemp;
-		console.log(num);
-		console.log(typeof num);
+		// console.log(num);
+		// console.log(typeof num);
 		this.props.firebase.fs
 			.collection("device_settings")
 			.doc(this.state.minTempDocID)

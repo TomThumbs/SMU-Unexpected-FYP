@@ -59,7 +59,7 @@ class OrderDeliveryBase extends Component {
 		let queryString = window.location.search;
 		let urlParams = new URLSearchParams(queryString);
 		let urlId = Number(urlParams.get("id"));
-		console.log(urlId);
+		// console.log(urlId);
 		this.setState({
 			orderID: urlId
 		});

@@ -63,7 +63,7 @@ class OrderServiceReadBase extends Component {
 	}
 
 	componentDidMount() {
-		console.log(this.props.location.state)
+		// console.log(this.props.location.state)
 		this.props.firebase.fs
 			.collection("Catering_orders")
 			.doc(this.state.docID)
@@ -71,8 +71,20 @@ class OrderServiceReadBase extends Component {
 			.then(doc => {
 				let data = doc.data();
 				this.setState({
-					heatersUsed: data.HeatersUsed
+					heatersUsed: data.HeatersUsed,
+					doneBy: data.doneBy
 				});
+
+				this.props.firebase.fs
+						.collection("Users")
+						.doc(data.doneBy["Order Service"])
+						.get()
+						.then(doc => {
+							// console.log(doc.data());
+							this.setState({
+								username: doc.data().name
+							});
+						});
 			});
 	}
 
@@ -186,7 +198,8 @@ class OrderServiceReadBase extends Component {
 			<Container component="main" maxWidth="sm">
 				<Typography gutterBottom variant="h4">Adjust Heater Temperature</Typography>
 				<Paper>
-					<Typography variant="h6" gutterBottom color="primary">Order Number: {this.state.orderID}</Typography>
+				<Typography variant="h6" gutterBottom color="primary">Order Number: {this.state.orderID}</Typography>
+				<Typography variant="h6" gutterBottom color="primary">Edited By: {this.state.username}</Typography>
 					<Grid container justify="center" spacing={2}>
 			
 						{this.renderMenu()}

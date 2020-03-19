@@ -116,8 +116,8 @@ class OrderCompletionBase extends Component {
 			.get()
 			.then(snap => {
 				snap.forEach(doc => {
-					console.log(Object.values(doc.data().HeatersUsed));
-					console.log(doc.data().StatusDates.concat(this.state.commencement));
+					// console.log(Object.values(doc.data().HeatersUsed));
+					// console.log(doc.data().StatusDates.concat(this.state.commencement));
 					this.setState({
 						docID: doc.id,
 						IOTs: Object.values(doc.data().HeatersUsed),
@@ -143,7 +143,7 @@ class OrderCompletionBase extends Component {
 		event.preventDefault();
 
 		this.state.IOTs.forEach(item => {
-			console.log(item);
+			// console.log(item);
 			this.props.firebase.fs
 				.collection("IoTHeaters")
 				.where("ID", "==", item)

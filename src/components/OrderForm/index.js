@@ -89,6 +89,7 @@ class OrderFormBase extends Component {
 			commencement:
 				day + "/" + month + "/" + year + " " + hour + ":" + minute
 		});
+
 		// Detect latest order ID
 		this.props.firebase.fs
 			.collection("Catering_orders")
@@ -104,6 +105,7 @@ class OrderFormBase extends Component {
 					});
 				});
 			});
+
 		//get latest customer ID
 		this.props.firebase.fs
 			.collection("Customers")
@@ -114,6 +116,7 @@ class OrderFormBase extends Component {
 					custID: Number(docu.data().ID) + 1
 				});
 			});
+
 		// Get list of menu items
 		this.props.firebase.fs
 			.collection("Menu")
@@ -135,6 +138,25 @@ class OrderFormBase extends Component {
 					}));
 				});
 			});
+
+		// ---------- RETRIEVE USER ID ----------
+		// const userID = this.props.firebase.auth.currentUser.uid;
+		// this.props.firebase.fs
+		// 	.collection("Users")
+		// 	.doc(userID)
+		// 	.get()
+		// 	.then(doc => {
+		// 		// console.log(doc.data());
+		// 		this.setState({
+		// 			userID: doc.data().email
+		// 		});
+		// 	});
+		const userID = this.props.firebase.auth.currentUser.uid;
+		this.setState({
+			userID: userID
+		});
+
+		// console.log(this.state);
 	}
 
 	onSubmit = event => {
@@ -195,6 +217,7 @@ class OrderFormBase extends Component {
 			heatersUsed = { ...heatersUsed, [dish]: "unallocated" };
 		});
 		// let strMonth = Number(new Date().getMonth()) + 1;
+		// ------------------UPDATE CATERING ORDER------------------
 		this.props.firebase.fs.collection("Catering_orders").add({
 			Customer: "",
 			Status: "Order Received",
@@ -212,9 +235,10 @@ class OrderFormBase extends Component {
 			StatusDates: [this.state.commencement],
 			Created_On: this.state.commencement,
 			Remarks: this.state.remarks,
-			apmTime: apmHour + ":" + strmin + " " + apmTime
+			apmTime: apmHour + ":" + strmin + " " + apmTime,
+			doneBy: { "Order Received": this.state.userID }
 		});
-
+		// ------------------CREATE CUSTOMER IF EXIST------------------
 		let notCreated = true;
 		this.props.firebase.fs
 			.collection("Customers")
@@ -246,6 +270,7 @@ class OrderFormBase extends Component {
 				});
 			});
 		// console.log(notCreated)
+		// ------------------UPDATE CUSTOMER IF NOT EXIST------------------
 		if (notCreated) {
 			// console.log('Customer to be created')
 			let custDocName = "Customer" + String(this.state.custID);
@@ -349,7 +374,7 @@ class OrderFormBase extends Component {
 	createTextField = (name, temp, label, placeholder) => {
 		return (
 			<TextField
-				margin="densed"
+				margin="dense"
 				fullWidth
 				required
 				name={name}
@@ -496,7 +521,7 @@ class OrderFormBase extends Component {
 										// InputLabelProps={{ shrink: true }}
 										fullWidth
 										required
-										margin="densed"
+										margin="dense"
 										label="Date:"
 										format="dd/MM/yyyy"
 										minDate={this.today}
@@ -515,7 +540,7 @@ class OrderFormBase extends Component {
 										id="time-picker"
 										fullWidth
 										required
-										margin="densed"
+										margin="dense"
 										label="Time:"
 										value={this.state.starttime}
 										onChange={this.handleTimeChange}
@@ -574,19 +599,19 @@ class OrderFormBase extends Component {
 									"Venue"
 								)}
 							</Grid>
-							<Grid item xs={6} >
-							<TextField
-								margin="densed"
-								id="standard-number"
-								fullWidth
-								name="pax"
-								value={this.state.pax}
-								label="Number of people"
-								type="number"
-								onChange={this.onChange}
-								InputLabelProps={{shrink: true}}
-								inputProps={{ min: 30 }}
-							/>
+							<Grid item xs={6}>
+								<TextField
+									margin="dense"
+									id="standard-number"
+									fullWidth
+									name="pax"
+									value={this.state.pax}
+									label="Number of people"
+									type="number"
+									onChange={this.onChange}
+									InputLabelProps={{ shrink: true }}
+									inputProps={{ min: 30 }}
+								/>
 							</Grid>
 							<Grid item xs={6}>
 								<FormControl style={{ minWidth: 250 }}>
@@ -597,7 +622,10 @@ class OrderFormBase extends Component {
 									>
 										{this.state.payment.map(
 											(event, index) => (
-												<MenuItem value={event}>
+												<MenuItem
+													value={event}
+													key={event}
+												>
 													{event}
 												</MenuItem>
 											)
@@ -606,9 +634,9 @@ class OrderFormBase extends Component {
 								</FormControl>
 								{/* here */}
 							</Grid>
-							<br/>
-								<Divider variant="middle" />
-							<br/>
+							<br />
+							<Divider variant="middle" />
+							<br />
 							<Grid item xs={12}>
 								<Typography component="h5" variant="h5">
 									Menu
@@ -621,7 +649,7 @@ class OrderFormBase extends Component {
 							<Grid item xs={12}>
 								{/* Remarks */}
 								<TextField
-									margin="densed"
+									margin="dense"
 									fullWidth
 									name="remarks"
 									value={this.state.remarks}

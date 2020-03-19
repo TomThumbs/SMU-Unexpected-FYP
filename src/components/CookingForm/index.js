@@ -159,7 +159,7 @@ class OrderPreparationEditBase extends Component {
 		});
 
 		if (this.state.menu.length !== 0) {
-			console.log("chosen menu is ", this.state.chosenMenu);
+			// console.log("chosen menu is ", this.state.chosenMenu);
 			this.state.menu.forEach((item, id) => {
 				if (item === this.state.chosenMenu) {
 					list.push(
@@ -174,7 +174,7 @@ class OrderPreparationEditBase extends Component {
 				}
 			});
 		} else {
-			console.log("chosen menu is empty.");
+			// console.log("chosen menu is empty.");
 			list.push(
 				<div>
 					<Paper className={this.classes.paper}>
@@ -205,7 +205,7 @@ class OrderPreparationEditBase extends Component {
 	}
 
 	render() {
-		console.log(this.state);
+		// console.log(this.state);
 		return (
 			<Container component="main" maxWidth="xs" className={this.classes.root}>
 				{this.renderBackButton()}

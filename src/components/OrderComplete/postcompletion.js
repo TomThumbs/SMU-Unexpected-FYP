@@ -58,7 +58,9 @@ const INITIAL_STATE = {
 	pax: "",
 	deliveryDate: "",
 	docID: "",
-	dataIsLoaded: false
+	dataIsLoaded: false,
+	doneBy: {},
+	doneByName: {}
 };
 
 class FinalOverviewBase extends Component {
@@ -100,8 +102,43 @@ class FinalOverviewBase extends Component {
 					ingredientsUsed: data.IngredientsUsed,
 					pax: data.Pax,
 					deliveryDate: data.DateOnly,
-					remarks: data.Remarks
+					remarks: data.Remarks,
+					doneBy: data.doneBy
 				});
+
+				// const doneByValues = Array.from(new Set(Object.values(data.doneBy)));
+				// const doneByKey = Object.keys(data.doneBy);
+
+				let doneByName = this.state.doneByName;
+
+				this.props.firebase.fs
+					.collection("Users")
+					.get()
+					.then(query => {
+						query.forEach(doc2 => {
+							if (
+								this.state.doneBy["Order Received"] === doc2.id
+							) {
+								doneByName["Order Received"] = doc2.data().name;
+							}
+							if (
+								this.state.doneBy["Order Completion"] ===
+								doc2.id
+							) {
+								doneByName["Order Completion"] = doc2.data().name;
+							}
+							// if (doneByValues.indexOf(doc2.id) !== -1) {
+							// 	doneByName[
+							// 		doneByKey[doneByValues.indexOf(doc2.id)]
+							// 	] = doc2.data().name;
+							// }
+						});
+					});
+
+				this.setState({
+					doneByName: doneByName
+				});
+
 				this.props.firebase.fs
 					.collection("Customers")
 					.doc(data.Customer.id)
@@ -187,6 +224,8 @@ class FinalOverviewBase extends Component {
 	render() {
 		let dataIsLoaded = this.state.dataIsLoaded === true;
 
+		// console.log(this.state);
+
 		return (
 			<Container component="main" maxWidth="sm">
 				<Typography variant="h4" gutterBottom>
@@ -196,25 +235,51 @@ class FinalOverviewBase extends Component {
 					<Typography variant="h6" gutterBottom color="primary">
 						Order Number: {this.state.orderID}
 					</Typography>
-					<Typography component={'span'} variant="body1">
+					<Typography component={"span"} variant="body1">
 						{this.griditem("Created On:", this.state.createdOn)}
-						{this.griditem("Created By:", this.state.createdBy)}
-						{this.griditem("Fulfilled On:", this.state.fulfilledOn)}
-						{this.griditem("Notification Sent:", this.state.notification)}
 
-						<br/>
+						{this.griditem("Created By:", this.state.doneByName["Order Received"])}
+						{this.griditem("Collected By:", this.state.doneByName["Order Completion"])}
+						{/* <Grid container>
+							<Grid item xs={5}>
+								Created By
+							</Grid>
+							<Grid item xs={7}>
+								{Object.keys(this.state.doneByName).map(
+									(status, index) => (
+										<li>
+											{status}:{" "}
+											{this.state.doneByName[status]}
+										</li>
+									)
+								)}
+							</Grid>
+						</Grid> */}
+						{this.griditem("Fulfilled On:", this.state.fulfilledOn)}
+						{this.griditem(
+							"Notification Sent:",
+							this.state.notification
+						)}
+
+						<br />
 
 						{this.griditem("Customer Name:", this.state.custName)}
 						{this.griditem("Customer HP No.:", this.state.custHp)}
 
-						<br/>
+						<br />
 
 						{this.griditem("Delivery Venue:", this.state.venue)}
-						{this.griditem("Delivery Date:", this.state.deliveryDate)}
-						{this.griditem("Delivery Time:", this.state.deliveryTime)}
+						{this.griditem(
+							"Delivery Date:",
+							this.state.deliveryDate
+						)}
+						{this.griditem(
+							"Delivery Time:",
+							this.state.deliveryTime
+						)}
 						{this.griditem("No. of Pax:", this.state.pax)}
 
-						<br/>
+						<br />
 
 						{/* {this.griditem("Menu:", dataIsLoaded && this.renderMenu())} */}
 						<Grid container>
@@ -226,7 +291,7 @@ class FinalOverviewBase extends Component {
 							</Grid>
 						</Grid>
 					</Typography>
-					<br/>
+					<br />
 
 					<Grid container spacing={1}>
 						<Grid item xs={12}>

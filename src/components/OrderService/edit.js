@@ -65,7 +65,8 @@ const INITIAL_STATE = {
 	commencement: new Date(),
 	StatusDates: "",
 	heaterCheck: [],
-	open: false
+	open: false,
+	userID: ""
 };
 
 class OrderServiceBase extends Component {
@@ -132,7 +133,8 @@ class OrderServiceBase extends Component {
 			minute = "0" + minute;
 		}
 		this.setState({
-			commencement: day + "/" + month + "/" + year + " " + hour + ":" + minute
+			commencement:
+				day + "/" + month + "/" + year + " " + hour + ":" + minute
 		});
 
 		this.props.firebase.fs
@@ -141,9 +143,18 @@ class OrderServiceBase extends Component {
 			.get()
 			.then(doc => {
 				this.setState({
-					StatusDates: doc.data().StatusDates.concat(this.state.commencement)
+					StatusDates: doc
+						.data()
+						.StatusDates.concat(this.state.commencement),
+					doneBy: doc.data().doneBy
 				});
 			});
+
+		// ---------- RETRIVE USER ID ----------
+		const userID = this.props.firebase.auth.currentUser.uid;
+		this.setState({
+			userID: userID
+		});
 	}
 
 	handleClickOpen = () => {
@@ -168,13 +179,20 @@ class OrderServiceBase extends Component {
 	onSubmit = event => {
 		event.preventDefault();
 
+		const doneBy = this.state.doneBy;
+		if (this.state.userID !== "") {
+			doneBy["Order Service"] = this.state.userID;
+		}
+
+
 		this.props.firebase.fs
 			.collection("Catering_orders")
 			.doc(String(this.state.docID))
 			.update({
 				Status: "Event in Progress",
 				StatusDates: this.state.StatusDates,
-				orderComplete: this.state.commencement
+				orderComplete: this.state.commencement,
+				doneBy: doneBy
 			})
 			.then(function() {
 				console.log("Document successfully written!");
@@ -329,7 +347,11 @@ class OrderServiceBase extends Component {
 							</DialogContentText>
 						</DialogContent>
 						<DialogActions>
-							<Button onClick={this.handleClose} color="primary" autoFocus>
+							<Button
+								onClick={this.handleClose}
+								color="primary"
+								autoFocus
+							>
 								Back to Timeline
 							</Button>
 						</DialogActions>

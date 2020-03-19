@@ -122,7 +122,10 @@ class PostDeliveryFormBase extends Component {
 								component={RouterLink}
 								to={{
 									pathname: ROUTES.ORDER_TIMELINE,
-									search: "?id=" + this.props.location.orderID
+									search: "?id=" + this.props.location.orderID,
+									state: {
+										orderID: this.state.orderID
+									}
 								}}
 							>
 								Back to Timeline

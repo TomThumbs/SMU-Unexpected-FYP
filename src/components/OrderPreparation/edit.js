@@ -55,7 +55,8 @@ const INITIAL_STATE = {
 	menu: [],
 	ingredientsUsed: "",
 	dishIngredientsCheck: [],
-	commencement: new Date()
+	commencement: new Date(),
+	userID: ""
 };
 
 class OrderPreparationEditBase extends Component {
@@ -115,7 +116,8 @@ class OrderPreparationEditBase extends Component {
 						let data = doc.data();
 						this.setState({
 							docID: doc.id,
-							menu: Array.from(new Set(data.Menu))
+							menu: Array.from(new Set(data.Menu)),
+							doneBy: data.doneBy
 						});
 						if (data.IngredientsUsed !== null) {
 							Object.keys(data.IngredientsUsed).forEach(dish => {
@@ -172,8 +174,8 @@ class OrderPreparationEditBase extends Component {
 
 		// ---------- RETRIEVE INGREDIENTS ----------
 		let todayTimestamp = new Date();
-		todayTimestamp.setDate(todayTimestamp.getDate()-1);
-		todayTimestamp = Math.round(todayTimestamp.getTime()/1000)
+		todayTimestamp.setDate(todayTimestamp.getDate() - 1);
+		todayTimestamp = Math.round(todayTimestamp.getTime() / 1000);
 		// Get ingrediens which have not expired
 		console.log("Retrieving Menu Ingredients");
 		this.props.firebase.fs
@@ -206,6 +208,12 @@ class OrderPreparationEditBase extends Component {
 				console.log("Error getting documents: ", error);
 			});
 
+		// ---------- RETRIVE USER ID ----------
+		const userID = this.props.firebase.auth.currentUser.uid;
+		this.setState({
+			userID: userID
+		});
+
 		// console.log(this.state);
 	}
 
@@ -227,7 +235,7 @@ class OrderPreparationEditBase extends Component {
 		// console.log(typeof y)
 		// let j = 0
 		for (let j = 0; j < y.length; j++) {
-			console.log(Number(y[j]));
+			// console.log(Number(y[j]));
 			this.props.firebase.fs
 				.collection("IngredientsInventory")
 				.where("barcode", "==", y[j])
@@ -288,12 +296,18 @@ class OrderPreparationEditBase extends Component {
 		// 	});
 
 		// ---------- UPDATE CATERING ORDER INGREDIENTS USED IN FIRESTORE ----------
+		const doneBy = this.state.doneBy;
+		if (this.state.userID !== "") {
+			doneBy["Preparation"] = this.state.userID;
+		}
+
 		this.props.firebase.fs
 			.collection("Catering_orders")
 			.doc(this.state.docID)
 			.update({
 				IngredientsUsed: ingredientsUsed,
-				Status: "Preparation"
+				Status: "Preparation",
+				doneBy: doneBy
 			})
 			.then(function() {
 				console.log("Document successfully written!");
@@ -451,7 +465,10 @@ class OrderPreparationEditBase extends Component {
 				component={RouterLink}
 				to={{
 					pathname: ROUTES.ORDER_TIMELINE,
-					search: "?id=" + this.state.orderID
+					search: "?id=" + this.state.orderID,
+					state: {
+						orderID: this.state.orderID
+					}
 				}}
 			>
 				Back
@@ -460,6 +477,7 @@ class OrderPreparationEditBase extends Component {
 	}
 
 	render() {
+		// console.log(this.state)
 		let counter = 0;
 		this.state.dishIngredientsCheck.forEach(item => {
 			if (this.state[item] === true) {
@@ -508,7 +526,10 @@ class OrderPreparationEditBase extends Component {
 									component={RouterLink}
 									to={{
 										pathname: ROUTES.ORDER_TIMELINE,
-										search: "?id=" + this.state.orderID
+										search: "?id=" + this.state.orderID,
+										state: {
+											orderID: this.state.orderID
+										}
 									}}
 								>
 									Back to Timeline

@@ -11,32 +11,7 @@ import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
 
 import * as ROUTES from "../../constants/routes";
-import { Link as RouterLink } from 'react-router-dom';
-
-// const useStyles = makeStyles(theme => ({
-// 	root: {
-// 		flexGrow: 1
-// 	},
-// 	paper: {
-// 		marginTop: theme.spacing(8),
-// 		display: "flex",
-// 		flexDirection: "column",
-// 		maxWidth: 400,
-// 		textAlign: "center"
-// 		// margin: `${theme.spacing(1)}px auto`,
-// 		// padding: theme.spacing(2),
-// 	},
-// 	form: {
-// 		width: "100%", // Fix IE 11 issue.
-// 		marginTop: theme.spacing(1)
-// 	},
-// 	submit: {
-// 		margin: theme.spacing(3, 0, 2)
-// 	},
-// 	text: {
-// 		textAlign: "center"
-// 	}
-// }));
+import { Link as RouterLink } from "react-router-dom";
 
 const INITIAL_STATE = {
 	orderID: "",
@@ -47,20 +22,20 @@ const INITIAL_STATE = {
 	status: "",
 	menu: [],
 	remarks: "",
+	doneBy: {}
 };
 
 class OrderReceivedBase extends Component {
 	constructor(props) {
 		super(props);
 		this.state = { ...INITIAL_STATE };
-		// this.classes = { useStyles };
 	}
 
 	componentDidMount() {
 		let queryString = window.location.search;
 		let urlParams = new URLSearchParams(queryString);
 		let urlId = Number(urlParams.get("id"));
-		console.log(urlId);
+		// console.log(urlId);
 		this.setState({
 			orderID: urlId
 		});
@@ -75,26 +50,39 @@ class OrderReceivedBase extends Component {
 					let data = doc.data();
 					this.setState({
 						createdOn: data.Created_On,
-						createdBy:"Kelvin",
+						createdBy: "Kelvin",
 						dateOnly: data.DateOnly,
 						time: data.apmTime,
 						venue: data.venue,
 						pax: Number(data.Pax),
 						status: data.Status,
 						remarks: data.Remarks,
-						menu: Array.from(new Set(data.Menu))
+						menu: Array.from(new Set(data.Menu)),
+						doneBy: data.doneBy
 					});
+
 					this.props.firebase.fs
-					.collection("Customers")
-					.doc(data.Customer.id)
-					.get()
-					.then(docu => {
-						console.log(docu.data())
-						this.setState({
-							custName:docu.data().Name,
-							custHp:docu.data().HP,
+						.collection("Customers")
+						.doc(data.Customer.id)
+						.get()
+						.then(docu => {
+							// console.log(docu.data());
+							this.setState({
+								custName: docu.data().Name,
+								custHp: docu.data().HP
+							});
 						});
-					});
+
+					this.props.firebase.fs
+						.collection("Users")
+						.doc(this.state.doneBy["Order Received"])
+						.get()
+						.then(doc => {
+							// console.log(doc.data());
+							this.setState({
+								username: doc.data().name
+							});
+						});
 				});
 			})
 			.catch(function(error) {
@@ -113,101 +101,136 @@ class OrderReceivedBase extends Component {
 	renderBackButton() {
 		return (
 			<Button
-					component={RouterLink} to={{
+				component={RouterLink}
+				to={{
 					pathname: ROUTES.ORDER_TIMELINE,
-					search: "?id=" + this.state.orderID
+					search: "?id=" + this.state.orderID,
+					state: {
+						orderID: this.state.orderID
+					}
 				}}
-			> Back
+			>
+				{" "}
+				Back
 			</Button>
 		);
 	}
 
-	griditem(title,info){
+	griditem(title, info) {
 		return (
 			<Grid container>
-				<Grid item xs={5}>{title}</Grid>
-				<Grid item xs={7}><b>{info}</b></Grid>
+				<Grid item xs={5}>
+					{title}
+				</Grid>
+				<Grid item xs={7}>
+					<b>{info}</b>
+				</Grid>
 			</Grid>
-		)
+		);
 	}
 
 	renderRemarks() {
 		if (this.state.remarks.length !== 0) {
-			let result = []
-			result.push(<br />)
-			result.push(this.griditem("Remarks:",this.state.remarks))
-			return result 
-		} 
+			let result = [];
+			result.push(<br />);
+			result.push(this.griditem("Remarks:", this.state.remarks));
+			return result;
+		}
 	}
 
 	render() {
 		return (
 			<Container component="main" maxWidth="md">
-				<Typography gutterBottom variant="h4">Order Details</Typography>
+				<Typography gutterBottom variant="h4">
+					Order Details
+				</Typography>
 				<Paper>
-					<Typography variant="h6" gutterBottom color="primary">Order Number: {this.state.orderID}</Typography>
+					<Typography variant="h6" gutterBottom color="primary">
+						Order Number: {this.state.orderID}
+					</Typography>
 					<Typography variant="body1">
-					<Grid container>
-						<Grid item xs={7} className="side-border-right">
-							{this.griditem("Created On:",this.state.createdOn)}
-							{this.griditem("Created By:",this.state.createdBy)}
+						<Grid container>
+							<Grid item xs={7} className="side-border-right">
+								{this.griditem(
+									"Created On:",
+									this.state.createdOn
+								)}
+								{this.griditem(
+									"Created By:",
+									this.state.username
+								)}
 
-							<br></br>
+								<br></br>
 
-							{this.griditem("Customer Name:",this.state.custName)}
-							{this.griditem("Customer HP No.:",this.state.custHp)}
+								{this.griditem(
+									"Customer Name:",
+									this.state.custName
+								)}
+								{this.griditem(
+									"Customer HP No.:",
+									this.state.custHp
+								)}
 
-							<br></br>
+								<br></br>
 
-							{this.griditem("Delivery Venue:",this.state.venue)}
-							{this.griditem("Delivery Date:",this.state.dateOnly)}
-							{this.griditem("Delivery Time:",this.state.time)}
-							{this.griditem("No. of Pax:",this.state.pax)}
+								{this.griditem(
+									"Delivery Venue:",
+									this.state.venue
+								)}
+								{this.griditem(
+									"Delivery Date:",
+									this.state.dateOnly
+								)}
+								{this.griditem(
+									"Delivery Time:",
+									this.state.time
+								)}
+								{this.griditem("No. of Pax:", this.state.pax)}
 
-							{this.renderRemarks()}
-						
-						
+								{this.renderRemarks()}
+							</Grid>
+
+							<Divider orientation="vertical" flexItem />
+
+							<Grid item xs={4} className="side-border-left">
+								<b>Dishes ordered:</b>
+								{this.renderMenu()}
+							</Grid>
 						</Grid>
 
-
-						<Divider orientation="vertical" flexItem />
-
-						
-
-
-						<Grid item xs={4} className="side-border-left">
-							<b>Dishes ordered:</b>
-							{this.renderMenu()}
+						<br></br>
+						<Grid container spacing={1}>
+							<Grid item xs={12}>
+								<Button
+									variant="outlined"
+									fullWidth
+									component={RouterLink}
+									to={{
+										pathname: ROUTES.ORDER_TIMELINE,
+										search: "?id=" + this.state.orderID,
+										state: {
+											orderID: this.state.orderID
+										}
+									}}
+								>
+									Back to Timeline
+								</Button>
+							</Grid>
+							<Grid item xs={12}>
+								<Button
+									variant="outlined"
+									color="primary"
+									fullWidth
+									component={RouterLink}
+									to={ROUTES.LANDING}
+								>
+									Home
+								</Button>
+							</Grid>
 						</Grid>
-					</Grid>
-
-					<br></br>
-					<Grid container spacing={1}>
-						<Grid item xs={12}>
-							<Button
-								variant="outlined"
-								fullWidth
-								component={RouterLink} to={{
-								pathname: ROUTES.ORDER_TIMELINE,
-								search: "?id=" + this.state.orderID
-							}}>Back to Timeline
-							</Button>
-						</Grid>
-						<Grid item xs={12}>
-							<Button
-								variant="outlined"
-								color="primary"
-								fullWidth
-								component={RouterLink}
-								to={ROUTES.LANDING}
-								>Home
-							</Button>
-						</Grid>
-					</Grid>
 					</Typography>
 				</Paper>
 			</Container>
-
 		);
 	}
 }

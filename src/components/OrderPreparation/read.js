@@ -67,7 +67,8 @@ const INITIAL_STATE = {
 	commence: "",
 	searchId: "",
 	ingredients: {},
-	dataIsLoaded: false
+	dataIsLoaded: false,
+	username: ""
 };
 
 class OrderPreparationBase extends Component {
@@ -83,7 +84,8 @@ class OrderPreparationBase extends Component {
 			commence: props.location.state.preparationCommencement,
 			statusDates: props.location.state.StatusDates,
 			menu: props.location.state.menu,
-			ingredientsUsed: props.location.state.ingredientsUsed
+			ingredientsUsed: props.location.state.ingredientsUsed,
+			doneBy: props.location.state.doneBy
 		}; //props.location.state.orderID
 		this.classes = { useStyles };
 	}
@@ -157,8 +159,31 @@ class OrderPreparationBase extends Component {
 							commence: data.preparationCommencement,
 							statusDate: data.StatusDates[1],
 							menu: data.Menu,
-							ingredientsUsed: data.IngredientsUsed
+							ingredientsUsed: data.IngredientsUsed,
+							doneBy: data.doneBy
 						});
+
+						this.props.firebase.fs
+							.collection("Users")
+							.doc(data.doneBy["Preparation"])
+							.get()
+							.then(doc => {
+								// console.log(doc.data());
+								this.setState({
+									username: doc.data().name
+								});
+							});
+					});
+				});
+		} else {
+			this.props.firebase.fs
+				.collection("Users")
+				.doc(this.state.doneBy["Preparation"])
+				.get()
+				.then(doc => {
+					// console.log(doc.data());
+					this.setState({
+						username: doc.data().name
 					});
 				});
 		}
@@ -261,7 +286,11 @@ class OrderPreparationBase extends Component {
 						</Typography>
 					</Grid>
 					<Grid item xs={12}>
-						<Typography variant="subtitle2" color="textSecondary" gutterBottom>
+						<Typography
+							variant="subtitle2"
+							color="textSecondary"
+							gutterBottom
+						>
 							{" "}
 							List of Ingredients{" "}
 						</Typography>
@@ -278,7 +307,7 @@ class OrderPreparationBase extends Component {
 
 	render() {
 		const dataIsLoaded = this.state.dataIsLoaded === true;
-		// console.log(this.state)
+		// console.log(this.state);
 
 		return (
 			<Container component="main" maxWidth="sm">
@@ -296,6 +325,10 @@ class OrderPreparationBase extends Component {
 							<Typography variant="h6" color="primary">
 								Order Number: {this.state.orderID}
 							</Typography>
+							<br />
+							<Typography variant="h6" color="primary">
+								Edited by: {this.state.username}
+							</Typography>
 						</ExpansionPanelSummary>
 					</StyledExpansionPanel>
 
@@ -306,15 +339,20 @@ class OrderPreparationBase extends Component {
 							aria-controls="panel2a-content"
 							id="panel2a-header"
 						>
-							<Typography variant="h5">Kitchen Declaration</Typography>
+							<Typography variant="h5">
+								Kitchen Declaration
+							</Typography>
 						</ExpansionPanelSummary>
 						<ExpansionPanelDetails>
 							<Grid item xs={12}>
 								<Typography variant="h6">
-									<font color="#2e7d32">Submission Successful</font>
+									<font color="#2e7d32">
+										Submission Successful
+									</font>
 								</Typography>
 								<Typography variant="body1">
-									Preparation commenced at: {this.state.preparationCommencement}
+									Preparation commenced at:{" "}
+									{this.state.preparationCommencement}
 								</Typography>
 								<Typography variant="body1">
 									Head Chef: {this.state.headchef}
@@ -409,7 +447,9 @@ class OrderPreparationBase extends Component {
 							aria-controls="panel2a-content"
 							id="panel2a-header"
 						>
-							<Typography variant="h5">Ingredient List</Typography>
+							<Typography variant="h5">
+								Ingredient List
+							</Typography>
 						</ExpansionPanelSummary>
 						<ExpansionPanelDetails>
 							<Grid item xs={12}>
@@ -431,7 +471,10 @@ class OrderPreparationBase extends Component {
 										component={RouterLink}
 										to={{
 											pathname: ROUTES.ORDER_TIMELINE,
-											search: "?id=" + this.state.orderID
+											search: "?id=" + this.state.orderID,
+											state: {
+												orderID: this.state.orderID
+											}
 										}}
 									>
 										Back to Timeline

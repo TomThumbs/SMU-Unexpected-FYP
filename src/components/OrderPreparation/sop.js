@@ -68,7 +68,7 @@ class OrderPreparationSopBase extends Component {
 	}
 
 	renderSubmit() {
-		console.log(this.state)
+		// console.log(this.state)
 		if (
 			this.state.hands === true &&
 			this.state.imageURL.length !== 0 &&
@@ -214,7 +214,7 @@ class OrderPreparationSopBase extends Component {
 	};
 
 	onBoxChange = event => {
-		console.log(event.target.name)
+		// console.log(event.target.name)
 		this.setState({
 			[event.target.name]: true
 		});

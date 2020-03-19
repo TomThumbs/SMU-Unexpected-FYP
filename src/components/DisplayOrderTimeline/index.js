@@ -67,7 +67,7 @@ class DisplayOrderTimelineBase extends Component {
 		let queryString = window.location.search;
 		let urlParams = new URLSearchParams(queryString);
 		let urlId = Number(urlParams.get("id"));
-		console.log(urlId);
+		// console.log(urlId);
 		this.setState({
 			orderID: urlId
 		});
@@ -98,7 +98,8 @@ class DisplayOrderTimelineBase extends Component {
 						assistantA: data.assistantA,
 						assistantB: data.assistantB,
 						kitchenImageURL: data.kitchenImageURL,
-						preparationCommence: data.preparationCommencement
+						preparationCommence: data.preparationCommencement,
+						doneBy: data.doneBy
 					});
 				});
 			})
@@ -261,7 +262,8 @@ class DisplayOrderTimelineBase extends Component {
 									preparationCommence: this.state
 										.preparationCommencement,
 									statusDates: this.state.statusDates,
-									ingredientsUsed: this.state.ingredientsUsed
+									ingredientsUsed: this.state.ingredientsUsed,
+									doneBy:this.state.doneBy
 								}
 							}}
 						>

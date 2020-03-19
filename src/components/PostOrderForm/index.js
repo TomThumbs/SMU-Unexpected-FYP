@@ -45,7 +45,7 @@ class PostOrderFormBase extends Component {
 	}
 
 	render() {
-		console.log(this.props.location.Menu);
+		// console.log(this.props.location.Menu);
 		return (
 			<Container component="main" maxWidth="sm">
 				
@@ -95,7 +95,7 @@ class PostOrderFormBase extends Component {
                 {this.griditem("Pax:", "test")} */}
 
 				
-					<p><Divider variant="il" /></p>
+					<br/><Divider variant="middle" /><br/>
 			
 					<Typography variant="h6" >Dishes ordered</Typography>
 					

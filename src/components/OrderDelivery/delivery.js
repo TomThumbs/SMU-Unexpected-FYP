@@ -137,7 +137,7 @@ class OrderDeliveryBase extends Component {
 					.doc(doc.data().Customer.id)
 					.get()
 					.then(docu => {
-						console.log(docu.data());
+						// console.log(docu.data());
 						this.setState({
 							contact: docu.data().HP,
 							name: docu.data().Name,
@@ -147,7 +147,7 @@ class OrderDeliveryBase extends Component {
 			});
 
 		let temp_date = String(this.state.date);
-		console.log(this.state.date);
+		// console.log(this.state.date);
 		this.setState({
 			strDate: temp_date.split("GMT")[0]
 		});

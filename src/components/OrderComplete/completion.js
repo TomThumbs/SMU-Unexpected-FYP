@@ -98,7 +98,8 @@ class OrderCompletionBase extends Component {
 			minute = "0" + minute;
 		}
 		this.setState({
-			commencement: day + "/" + month + "/" + year + " " + hour + ":" + minute
+			commencement:
+				day + "/" + month + "/" + year + " " + hour + ":" + minute
 		});
 
 		this.props.firebase.fs
@@ -112,17 +113,11 @@ class OrderCompletionBase extends Component {
 					this.setState({
 						docID: doc.id,
 						IOTs: Object.values(doc.data().HeatersUsed),
-						StatusDates: doc.data().StatusDates.concat(this.state.commencement)
+						StatusDates: doc
+							.data()
+							.StatusDates.concat(this.state.commencement),
+						doneBy: doc.data().doneBy
 					});
-				});
-			});
-
-		this.props.firebase.fs
-			.collection("Catering_orders")
-			.where("orderID", "==", urlId)
-			.get()
-			.then(snap => {
-				snap.forEach(doc => {
 					if (doc.data().Status === "Order Completed") {
 						// console.log(doc.id)
 						this.props.history.push({
@@ -133,6 +128,29 @@ class OrderCompletionBase extends Component {
 					}
 				});
 			});
+
+		// ---------- RETRIVE USER ID ----------
+		const userID = this.props.firebase.auth.currentUser.uid;
+		this.setState({
+			userID: userID
+		});
+
+		// this.props.firebase.fs
+		// 	.collection("Catering_orders")
+		// 	.where("orderID", "==", urlId)
+		// 	.get()
+		// 	.then(snap => {
+		// 		snap.forEach(doc => {
+		// 			if (doc.data().Status === "Order Completed") {
+		// 				// console.log(doc.id)
+		// 				this.props.history.push({
+		// 					pathname: ROUTES.FINAL_OVERVIEW,
+		// 					search: "?id=" + this.state.orderID,
+		// 					docID: doc.id
+		// 				});
+		// 			}
+		// 		});
+		// 	});
 	}
 
 	onChange = event => {
@@ -151,7 +169,7 @@ class OrderCompletionBase extends Component {
 		event.preventDefault();
 
 		this.state.IOTs.forEach(item => {
-			console.log(item);
+			// console.log(item);
 			this.props.firebase.fs
 				.collection("IoTHeaters")
 				.where("ID", "==", item)
@@ -169,12 +187,18 @@ class OrderCompletionBase extends Component {
 				});
 		});
 
+		const doneBy = this.state.doneBy;
+		if (this.state.userID !== "") {
+			doneBy["Order Completion"] = this.state.userID;
+		}
+
 		this.props.firebase.fs
 			.collection("Catering_orders")
 			.doc(String(this.state.docID))
 			.update({
 				Status: "Order Completed",
-				StatusDates: this.state.StatusDates
+				StatusDates: this.state.StatusDates,
+				doneBy: doneBy
 			})
 			.then(function() {
 				console.log("Document successfully written!");
@@ -205,7 +229,11 @@ class OrderCompletionBase extends Component {
 	render() {
 		let isInvalid = this.state.completion === false;
 		return (
-			<Container component="main" maxWidth="xs" className={this.classes.root}>
+			<Container
+				component="main"
+				maxWidth="xs"
+				className={this.classes.root}
+			>
 				<Typography gutterBottom variant="h4">
 					Order Completion
 				</Typography>

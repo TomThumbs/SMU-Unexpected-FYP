@@ -60,7 +60,7 @@ class SearchOrderBase extends Component {
 				snap.forEach(doc => {
 					// if (doc.exists) {
 					found = true;
-					console.log("doc found");
+					// console.log("doc found");
 					this.props.history.push({
 						pathname: ROUTES.ORDER_TIMELINE,
 						search: "?id=" + this.state.searchId,
