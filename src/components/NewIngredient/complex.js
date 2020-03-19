@@ -74,7 +74,7 @@ class NewComplexIngredientForm extends Component {
 			});
 		}
 		this.props.firebase.fs
-			.collection("IngredientsInventory")
+			.collection("Ingredients")
 			.orderBy("name", "asc")
 			.get()
 			.then(snapshot => {

@@ -29,7 +29,7 @@ class DisplayIngredientBase extends Component {
 
 	componentDidMount() {
 		this.props.firebase.fs
-			.collection("IngredientsInventory")
+			.collection("Ingredients")
 			.get()
 			.then(querySnapshot => {
 				querySnapshot.forEach(doc => {
@@ -86,7 +86,7 @@ class DisplayIngredientBase extends Component {
 		} else {
 			let error = document.createElement("p");
 			error.setAttribute("data-id", "id" + this.state.searchId);
-			error.textContent = "Item does not exist";
+			error.textContent = "Item " + this.state.searchId + " does not exist";
 			result.appendChild(error);
 			// console.log(error);
 		}

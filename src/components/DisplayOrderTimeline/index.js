@@ -56,7 +56,10 @@ const INITIAL_STATE = {
 class DisplayOrderTimelineBase extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { ...INITIAL_STATE };
+		this.state = {
+			...INITIAL_STATE,
+			orderID: props.location.state.orderID
+		};
 		this.classes = { useStyles };
 	}
 
@@ -109,9 +112,7 @@ class DisplayOrderTimelineBase extends Component {
 		// });
 	}
 
-	
 	timelineItem(key, itemIndex, status) {
-		// console.log(this.state);
 		const isDone =
 			this.state.statusList.indexOf(itemIndex) <=
 				this.state.statusList.indexOf(status) &&
@@ -126,10 +127,12 @@ class DisplayOrderTimelineBase extends Component {
 		// const isRec = itemIndex === "Order Received";
 		const isPrep =
 			itemIndex === "Preparation" && this.state.prepStatus === false;
-		const isSop = itemIndex === "Preparation" && this.state.sopStatus === false;
+		const isSop =
+			itemIndex === "Preparation" && this.state.sopStatus === false;
 
 		// Check if current item is to be delivered
-		const makeDelivery = itemIndex === "Delivery" && status === "Preparation";
+		const makeDelivery =
+			itemIndex === "Delivery" && status === "Preparation";
 
 		// Check if order is delivered and to be set up
 		const setUpService =
@@ -161,7 +164,7 @@ class DisplayOrderTimelineBase extends Component {
 				<div className="timeline-item-content">
 					<span className="tag">{itemIndex}</span>
 
-					{date !== "" ? <span className="time" >{date}</span> : null}
+					{date !== "" ? <span className="time">{date}</span> : null}
 
 					{isPrep ? (
 						<Link
@@ -255,7 +258,8 @@ class DisplayOrderTimelineBase extends Component {
 									assistantA: this.state.assistantA,
 									assistantB: this.state.assistantB,
 									kitchenImageURL: this.state.kitchenImageURL,
-									preparationCommence: this.state.preparationCommencement,
+									preparationCommence: this.state
+										.preparationCommencement,
 									statusDates: this.state.statusDates,
 									ingredientsUsed: this.state.ingredientsUsed
 								}

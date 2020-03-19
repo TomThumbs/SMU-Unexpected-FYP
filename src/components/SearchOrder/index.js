@@ -17,7 +17,7 @@ import Paper from "@material-ui/core/Paper";
 
 const INITIAL_STATE = {
 	searchId: "",
-	errorMsg: "",
+	errorMsg: ""
 };
 
 const useStyles = makeStyles(theme => ({
@@ -49,37 +49,38 @@ class SearchOrderBase extends Component {
 
 	onSubmit = event => {
 		event.preventDefault();
-		// console.log(this.state.searchId);
-		// const serch =
-		// 
-		let found = false
+
+		let found = false;
 		this.props.firebase.fs
-		.collection("Catering_orders")
-		.where("orderID", "==", Number(this.state.searchId))
-		.get()
-		.then(snap => {
-			// console.log("asdasds")
-			snap.forEach(doc => {
-			// let data = doc.data();
-			
-			// if (doc.exists) {
-				found = true
-				console.log("doc found")
-				this.props.history.push({
-					pathname: ROUTES.ORDER_TIMELINE,
-					search: "?id=" + this.state.searchId,
-					state: {
-						orderID: this.state.searchId,
-
-					}
-				});		
-			})
-			if (!found) {			
-				this.setState({
-				errorMsg:<p><Typography variant="h7"><center>Order does not exist.</center></Typography></p>
-			})}
-		})
-
+			.collection("Catering_orders")
+			.where("orderID", "==", Number(this.state.searchId))
+			.get()
+			.then(snap => {
+				// console.log("asdasds")
+				snap.forEach(doc => {
+					// if (doc.exists) {
+					found = true;
+					console.log("doc found");
+					this.props.history.push({
+						pathname: ROUTES.ORDER_TIMELINE,
+						search: "?id=" + this.state.searchId,
+						state: {
+							orderID: this.state.searchId
+						}
+					});
+				});
+				if (!found) {
+					this.setState({
+						errorMsg: (
+							<p>
+								<Typography variant="h7">
+									<center>Order does not exist.</center>
+								</Typography>
+							</p>
+						)
+					});
+				}
+			});
 	};
 
 	onChange = event => {
@@ -92,11 +93,11 @@ class SearchOrderBase extends Component {
 		let isInvalid = this.state.searchId.length === 0;
 
 		return (
-		
 			<Container component="main" maxWidth="xs">
-			<Typography gutterBottom variant="h4">Search Order</Typography>
+				<Typography gutterBottom variant="h4">
+					Search Order
+				</Typography>
 				<Paper>
-				
 					<form onSubmit={this.onSubmit}>
 						<TextField
 							variant="outlined"
@@ -120,11 +121,10 @@ class SearchOrderBase extends Component {
 							Search
 						</Button>
 					</form>
-					
+
 					{this.state.errorMsg}
 				</Paper>
 			</Container>
-		
 		);
 	}
 }
