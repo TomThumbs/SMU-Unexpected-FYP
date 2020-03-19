@@ -109,7 +109,10 @@ class OrderDeliveryBase extends Component {
 			<Link
 				to={{
 					pathname: ROUTES.ORDER_TIMELINE,
-					search: "?id=" + this.state.orderID
+					search: "?id=" + this.state.orderID,
+					state: {
+						orderID: this.state.orderID
+					}
 				}}
 			>
 				<Button>Back</Button>

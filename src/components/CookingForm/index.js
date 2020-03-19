@@ -196,7 +196,10 @@ class OrderPreparationEditBase extends Component {
 			<Link
 				to={{
 					pathname: ROUTES.ORDER_TIMELINE,
-					search: "?id=29" //+ this.state.orderID
+					search: "?id=29", //+ this.state.orderID,
+					state: {
+						orderID: this.state.orderID
+					}
 				}}
 			>
 				<Button>Back</Button>

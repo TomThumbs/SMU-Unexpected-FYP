@@ -186,7 +186,10 @@ class OrderCompletionBase extends Component {
 			<Link
 				to={{
 					pathname: ROUTES.ORDER_TIMELINE,
-					search: "?id=" + this.state.orderID
+					search: "?id=" + this.state.orderID,
+					state: {
+						orderID: this.state.orderID
+					}
 				}}
 			>
 				<Button>Back</Button>
@@ -240,7 +243,10 @@ class OrderCompletionBase extends Component {
 								component={RouterLink}
 								to={{
 									pathname: ROUTES.ORDER_TIMELINE,
-									search: "?id=" + this.props.location.orderID
+									search: "?id=" + this.props.location.orderID,
+									state: {
+										orderID: this.state.orderID
+									}
 								}}
 							>
 								Back to Timeline

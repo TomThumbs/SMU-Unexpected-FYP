@@ -322,7 +322,10 @@ class IoTHeaterBase extends Component {
 								fullWidth
 								component={RouterLink} to={{
 								pathname: ROUTES.ORDER_TIMELINE,
-								search: "?id=" + this.state.orderID
+								search: "?id=" + this.state.orderID,
+								state: {
+									orderID: this.state.orderID
+								}
 							}}>Back to Timeline
 							</Button>
 						</Grid>
