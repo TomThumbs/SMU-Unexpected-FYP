@@ -16,6 +16,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 // import Paper from '@material-ui/core/Paper';
 import Button from "@material-ui/core/Button";
+import * as ROUTES from "../../constants/routes";
 
 const useStyles = makeStyles({
 	table: {
@@ -160,7 +161,14 @@ class LandingPageBase extends Component {
 									<TableCell align="right">
 										<Button
 											component={RouterLink}
-											to={this.linktoevent(row.orderID)}
+											to={{
+												// pathname: this.linktoevent(row.orderID),
+												pathname: ROUTES.ORDER_TIMELINE,
+												search: "?id=" + row.orderID,
+												state: {
+													orderID: this.state.orderID
+												}
+											}}
 											color="primary"
 										>
 											{row.status}
