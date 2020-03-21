@@ -91,7 +91,10 @@ class OrderDeliveryBase extends Component {
 						pathname: ROUTES.POST_DELIVERY_FORM,
 						orderID: this.state.orderID,
 						driver: doc.data().Driver,
-						url: doc.data().TruckImgURL
+						url: doc.data().TruckImgURL,
+						state: {
+							orderID: this.state.orderID
+						}
 					});
 				}
 			});
@@ -173,7 +176,10 @@ class OrderDeliveryBase extends Component {
 			pathname: ROUTES.POST_DELIVERY_FORM,
 			orderID: this.state.oID,
 			driver: this.state.driver,
-			url: this.state.imageURL
+			url: this.state.imageURL,
+			state: {
+				orderID: this.state.orderID
+			}
 		});
 	};
 
