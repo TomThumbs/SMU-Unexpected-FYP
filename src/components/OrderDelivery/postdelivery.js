@@ -27,12 +27,13 @@ class PostDeliveryFormBase extends Component {
 					Delivery Declaration
 				</Typography>
 				<Paper>
-					<Typography variant="h6">
-						<font color="#2e7d32">Submission Successful</font>
-					</Typography>
-					<Typography variant="h6">
+					<Typography variant="h6" color="primary" gutterBottom>
 						Order Number: {this.props.location.state.orderID}
 					</Typography>
+					<Typography variant="h6" gutterBottom>
+						<font color="#2e7d32">Submission Successful</font>
+					</Typography>
+					
 					<Typography variant="body1">
 						Name of Delivery Driver: {this.props.location.state.driver}
 					</Typography>
