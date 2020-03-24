@@ -20,7 +20,7 @@ import Divider from "@material-ui/core/Divider";
 
 class PostDeliveryFormBase extends Component {
 	render() {
-		// console.log(this.props.location);
+		// console.log(this.props.location.state);
 		return (
 			<Container component="main" maxWidth="sm">
 				<Typography gutterBottom variant="h4">
@@ -31,10 +31,10 @@ class PostDeliveryFormBase extends Component {
 						<font color="#2e7d32">Submission Successful</font>
 					</Typography>
 					<Typography variant="h6">
-						Order Number: {this.props.location.orderID}
+						Order Number: {this.props.location.state.orderID}
 					</Typography>
 					<Typography variant="body1">
-						Name of Delivery Driver: {this.props.location.driver}
+						Name of Delivery Driver: {this.props.location.state.driver}
 					</Typography>
 
 					<br />
@@ -108,7 +108,7 @@ class PostDeliveryFormBase extends Component {
 						<Grid item xs>
 							<img
 								className="image"
-								src={this.props.location.url}
+								src={this.props.location.state.url}
 								alt="Delivery Van"
 							/>
 						</Grid>
@@ -122,9 +122,9 @@ class PostDeliveryFormBase extends Component {
 								component={RouterLink}
 								to={{
 									pathname: ROUTES.ORDER_TIMELINE,
-									search: "?id=" + this.props.location.orderID,
+									search: "?id=" + this.props.location.state.orderID,
 									state: {
-										orderID: this.state.orderID
+										orderID: this.props.location.state.orderID
 									}
 								}}
 							>

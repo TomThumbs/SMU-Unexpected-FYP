@@ -89,9 +89,14 @@ class OrderDeliveryBase extends Component {
 				) {
 					this.props.history.push({
 						pathname: ROUTES.POST_DELIVERY_FORM,
-						orderID: this.state.orderID,
-						driver: doc.data().Driver,
-						url: doc.data().TruckImgURL
+						// orderID: this.state.orderID,
+						// driver: doc.data().Driver,
+						// url: doc.data().TruckImgURL,
+						state: {
+							orderID: this.state.orderID,
+							driver: doc.data().Driver,
+							url: doc.data().TruckImgURL
+						}
 					});
 				}
 			});
@@ -111,7 +116,8 @@ class OrderDeliveryBase extends Component {
 			minute = "0" + minute;
 		}
 		this.setState({
-			commencement: day + "/" + month + "/" + year + " " + hour + ":" + minute
+			commencement:
+				day + "/" + month + "/" + year + " " + hour + ":" + minute
 		});
 
 		// ---------- GET ORDER DETAILS ----------
@@ -129,7 +135,9 @@ class OrderDeliveryBase extends Component {
 					pax: doc.data().Pax,
 					name: doc.data().Customer.id,
 					oID: doc.data().orderID,
-					StatusDates: doc.data().StatusDates.concat(this.state.commencement)
+					StatusDates: doc
+						.data()
+						.StatusDates.concat(this.state.commencement)
 				});
 
 				this.props.firebase.fs
@@ -173,7 +181,10 @@ class OrderDeliveryBase extends Component {
 			pathname: ROUTES.POST_DELIVERY_FORM,
 			orderID: this.state.oID,
 			driver: this.state.driver,
-			url: this.state.imageURL
+			url: this.state.imageURL,
+			state: {
+				orderID: this.state.orderID
+			}
 		});
 	};
 
@@ -240,9 +251,9 @@ class OrderDeliveryBase extends Component {
 		} else {
 			return (
 				<Typography variant="subtitle2" color="secondary">
-					Please ensure that you have adhered to and completed the checklist
-					requirements. Please also upload a picture of the state of the vehicle
-					after the food has been loaded.
+					Please ensure that you have adhered to and completed the
+					checklist requirements. Please also upload a picture of the
+					state of the vehicle after the food has been loaded.
 				</Typography>
 			);
 		}
@@ -278,7 +289,10 @@ class OrderDeliveryBase extends Component {
 							{this.griditem("Venue:", this.state.venue)}
 							{this.griditem("Pax:", this.state.pax)}
 							{this.griditem("Customer Name:", this.state.name)}
-							{this.griditem("Customer HP No.:", this.state.contact)}
+							{this.griditem(
+								"Customer HP No.:",
+								this.state.contact
+							)}
 
 							<TextField
 								variant="outlined"
@@ -303,7 +317,9 @@ class OrderDeliveryBase extends Component {
 										control={
 											<Checkbox
 												checked={this.state.cleanReady}
-												onChange={this.handleChange("cleanReady")}
+												onChange={this.handleChange(
+													"cleanReady"
+												)}
 												color="primary"
 												name="cleanReady"
 												value="cleanReady"
@@ -319,7 +335,9 @@ class OrderDeliveryBase extends Component {
 										control={
 											<Checkbox
 												checked={this.state.allItems}
-												onChange={this.handleChange("allItems")}
+												onChange={this.handleChange(
+													"allItems"
+												)}
 												color="primary"
 												name="allItems"
 												value="allItems"
@@ -334,7 +352,9 @@ class OrderDeliveryBase extends Component {
 										control={
 											<Checkbox
 												checked={this.state.foodWrap}
-												onChange={this.handleChange("foodWrap")}
+												onChange={this.handleChange(
+													"foodWrap"
+												)}
 												color="primary"
 												name="foodWrap"
 												value="foodWrap"
@@ -349,7 +369,9 @@ class OrderDeliveryBase extends Component {
 										control={
 											<Checkbox
 												checked={this.state.decor}
-												onChange={this.handleChange("decor")}
+												onChange={this.handleChange(
+													"decor"
+												)}
 												color="primary"
 												name="foodWrap"
 												value="foodWrap"
@@ -374,7 +396,9 @@ class OrderDeliveryBase extends Component {
 							<FileUploader
 								accept="image/*"
 								name="image"
-								storageRef={this.props.firebase.stg.ref("truckHistory")}
+								storageRef={this.props.firebase.stg.ref(
+									"truckHistory"
+								)}
 								onUploadStart={this.handleUploadStart}
 								onUploadSuccess={this.handleUploadSuccess}
 								onProgress={this.handleProgress}
