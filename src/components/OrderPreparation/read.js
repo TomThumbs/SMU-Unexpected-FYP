@@ -322,13 +322,20 @@ class OrderPreparationBase extends Component {
 							aria-controls="panel1a-content"
 							id="panel1a-header"
 						>
-							<Typography variant="h6" color="primary">
-								Order Number: {this.state.orderID}
-							</Typography>
-							<br />
-							<Typography variant="h6" color="primary">
-								Edited by: {this.state.username}
-							</Typography>
+							<Grid container>
+								<Grid item xs={12}>
+									<Typography variant="h6" color="primary" gutterBottom>
+										Order Number: {this.state.orderID}
+									</Typography>
+								</Grid>
+								
+								<Grid item xs={12}> 
+									<Typography variant="body1">
+										Edited by: {this.state.username}
+									</Typography>
+								</Grid>
+							</Grid>
+
 						</ExpansionPanelSummary>
 					</StyledExpansionPanel>
 

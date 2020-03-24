@@ -74,6 +74,7 @@ class SearchOrderBase extends Component {
 						errorMsg: (
 							<p>
 								<Typography variant="h7">
+									<br></br>
 									<center>Order does not exist.</center>
 								</Typography>
 							</p>
@@ -110,6 +111,7 @@ class SearchOrderBase extends Component {
 							type="string"
 							placeholder="Order Number:"
 						/>
+						<div><br></br></div>
 						<Button
 							disabled={isInvalid}
 							type="submit"

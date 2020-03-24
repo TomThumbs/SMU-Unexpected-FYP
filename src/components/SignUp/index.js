@@ -28,9 +28,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const SignUpPage = () => (
-	<div className="body">
+	
 		<SignUpForm />
-	</div>
+	
 );
 
 const INITIAL_STATE = {

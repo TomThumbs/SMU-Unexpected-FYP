@@ -198,12 +198,19 @@ class OrderServiceReadBase extends Component {
 			<Container component="main" maxWidth="sm">
 				<Typography gutterBottom variant="h4">Adjust Heater Temperature</Typography>
 				<Paper>
-				<Typography variant="h6" gutterBottom color="primary">Order Number: {this.state.orderID}</Typography>
-				<Typography variant="h6" gutterBottom color="primary">Edited By: {this.state.username}</Typography>
-					<Grid container justify="center" spacing={2}>
-			
-						{this.renderMenu()}
+					<Grid container>
+						<Grid item xs={12}>
+							<Typography variant="h6" gutterBottom color="primary" gutterBottom>Order Number: {this.state.orderID}</Typography>
+						</Grid>
+						<Grid item xs={12}>
+							<Typography variant="body1" gutterBottom >Edited By: {this.state.username}</Typography>
+						</Grid>
 					</Grid>
+						
+						<Grid container justify="center" spacing={2}>
+							{this.renderMenu()}
+						</Grid>
+					
 				
 					<br></br>
 					<Grid container spacing={1}>
