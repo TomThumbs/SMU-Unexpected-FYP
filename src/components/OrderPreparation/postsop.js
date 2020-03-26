@@ -25,7 +25,7 @@ class OrderPreparationPostSopBase extends Component {
 			pathname: ROUTES.ORDER_TIMELINE,
 			search: "?id=" + this.props.location.orderID,
 			state: {
-				orderID: this.state.orderID
+				orderID: this.props.location.orderID
 			}
 		});
 	};
@@ -72,8 +72,6 @@ class OrderPreparationPostSopBase extends Component {
 							/>
 						</Grid>
 					</Grid>
-
-		
 
 					<br></br>
 					<Grid container spacing={3}>

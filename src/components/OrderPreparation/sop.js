@@ -75,9 +75,9 @@ class OrderPreparationSopBase extends Component {
 			this.state.workspace === true &&
 			this.state.mask === true &&
 			this.state.tools === true &&
-			this.state.headchef && 
+			this.state.headchef &&
 			this.state.assistantA &&
-			this.state.assistantB 
+			this.state.assistantB
 		) {
 			return (
 				<form onSubmit={this.onSubmit}>
@@ -261,7 +261,6 @@ class OrderPreparationSopBase extends Component {
 										onChange={this.onChange}
 										type="text"
 										placeholder="Head Chef"
-										 
 									/>
 								</Grid>
 								<Grid item xs={12}>
@@ -275,7 +274,6 @@ class OrderPreparationSopBase extends Component {
 										onChange={this.onChange}
 										type="text"
 										placeholder="Assistant A"
-										 
 									/>
 								</Grid>
 								<Grid item xs={12}>
@@ -289,7 +287,6 @@ class OrderPreparationSopBase extends Component {
 										onChange={this.onChange}
 										type="text"
 										placeholder="Assistant B"
-										 
 									/>
 								</Grid>
 

@@ -179,11 +179,13 @@ class OrderDeliveryBase extends Component {
 
 		this.props.history.push({
 			pathname: ROUTES.POST_DELIVERY_FORM,
-			orderID: this.state.oID,
-			driver: this.state.driver,
-			url: this.state.imageURL,
+			// orderID: this.state.oID,
+			// driver: this.state.driver,
+			// url: this.state.imageURL,
 			state: {
-				orderID: this.state.orderID
+				orderID: this.state.orderID,
+				driver: this.state.driver,
+				url: this.state.imageURL,	
 			}
 		});
 	};
