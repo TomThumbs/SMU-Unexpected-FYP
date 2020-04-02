@@ -1,4 +1,4 @@
 import OrderCompletion from "./completion";
-import FinalOverview from "./postcompletion";
+import FinalOverview from "./finaloverview";
 
 export { OrderCompletion, FinalOverview };
