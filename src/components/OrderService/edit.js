@@ -82,7 +82,7 @@ class OrderServiceBase extends Component {
 	}
 
 	componentDidMount() {
-		// console.log(this.props.location)	;
+		// ----- RETRIEVE UNUSED IOT HEATERS -----
 		this.props.firebase.fs
 			.collection("IoTHeaters")
 			.orderBy("ID", "asc")

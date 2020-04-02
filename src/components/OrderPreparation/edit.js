@@ -187,7 +187,8 @@ class OrderPreparationEditBase extends Component {
 					let data = doc.data();
 					let ingtname = data.name;
 					this.setState({
-						[Number(data.barcode)]: ingtname
+						// [Number(data.barcode)]: ingtname
+						[data.barcode]: ingtname
 					});
 				});
 
@@ -477,7 +478,7 @@ class OrderPreparationEditBase extends Component {
 	}
 
 	render() {
-		// console.log(this.state)
+		console.log(this.state)
 		let counter = 0;
 		this.state.dishIngredientsCheck.forEach(item => {
 			if (this.state[item] === true) {

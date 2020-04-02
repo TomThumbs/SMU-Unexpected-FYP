@@ -281,7 +281,7 @@ class OrderCompletionBase extends Component {
 									pathname: ROUTES.ORDER_TIMELINE,
 									search: "?id=" + this.props.location.orderID,
 									state: {
-										orderID: this.state.orderID
+										orderID: this.props.location.orderID
 									}
 								}}
 							>

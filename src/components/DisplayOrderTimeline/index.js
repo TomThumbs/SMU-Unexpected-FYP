@@ -57,8 +57,7 @@ class DisplayOrderTimelineBase extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			...INITIAL_STATE,
-			orderID: props.location.state.orderID
+			...INITIAL_STATE
 		};
 		this.classes = { useStyles };
 	}
@@ -263,7 +262,7 @@ class DisplayOrderTimelineBase extends Component {
 										.preparationCommencement,
 									statusDates: this.state.statusDates,
 									ingredientsUsed: this.state.ingredientsUsed,
-									doneBy:this.state.doneBy
+									doneBy: this.state.doneBy
 								}
 							}}
 						>

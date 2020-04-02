@@ -111,23 +111,27 @@ class OrderPreparationBase extends Component {
 			.get()
 			.then(querySnapshot => {
 				querySnapshot.forEach(doc => {
-					let data = doc.data();
-					let ingtname = data.name;
-					// ingtname = ingtname.toLowerCase();
-					// this.setState({
-					// 	// [data.name.toLowerCase()]: Number(data.barcode),
-					// 	[Number(data.barcode)]: ingtname
-					// });
-					this.setState(prevState => ({
-						ingredients: {
-							...prevState.ingredients,
-							[Number(data.barcode)]: [
-								ingtname,
-								data.Date_of_Storage,
-								data.Date_of_expiry
-							]
-						}
-					}));
+					// console.log(doc.id);
+					if (doc.id.includes("Food name") == false) {
+						let data = doc.data();
+						let ingtname = data.name;
+						// ingtname = ingtname.toLowerCase();
+						// this.setState({
+						// 	// [data.name.toLowerCase()]: Number(data.barcode),
+						// 	[Number(data.barcode)]: ingtname
+						// });
+						this.setState(prevState => ({
+							ingredients: {
+								...prevState.ingredients,
+								// [Number(data.barcode)]: [
+								[data.barcode]: [
+									ingtname,
+									data.Date_of_Storage,
+									data.Date_of_expiry
+								]
+							}
+						}));
+					}
 				});
 				this.setState({ dataIsLoaded: true });
 			})
@@ -244,7 +248,7 @@ class OrderPreparationBase extends Component {
 		let ingredients = this.state.ingredientsUsed[dish].split(",");
 
 		ingredients.forEach(barcode => {
-			// console.log(barcode)
+			// console.log(barcode);
 			// console.log(this.state.ingredients[barcode])
 
 			ingts.push(
@@ -324,18 +328,21 @@ class OrderPreparationBase extends Component {
 						>
 							<Grid container>
 								<Grid item xs={12}>
-									<Typography variant="h6" color="primary" gutterBottom>
+									<Typography
+										variant="h6"
+										color="primary"
+										gutterBottom
+									>
 										Order Number: {this.state.orderID}
 									</Typography>
 								</Grid>
-								
-								<Grid item xs={12}> 
+
+								<Grid item xs={12}>
 									<Typography variant="body1">
 										Edited by: {this.state.username}
 									</Typography>
 								</Grid>
 							</Grid>
-
 						</ExpansionPanelSummary>
 					</StyledExpansionPanel>
 
