@@ -282,14 +282,14 @@ class FinalOverviewBase extends Component {
 						<br />
 
 						{/* {this.griditem("Menu:", dataIsLoaded && this.renderMenu())} */}
-						<Grid container>
+						{/* <Grid container>
 							<Grid item xs={5}>
 								Menu:
 							</Grid>
 							<Grid item xs={7}>
 								{dataIsLoaded && this.renderMenu()}
 							</Grid>
-						</Grid>
+						</Grid> */}
 					</Typography>
 					<br />
 
