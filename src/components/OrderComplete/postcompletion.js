@@ -70,13 +70,6 @@ class FinalOverviewBase extends Component {
 		this.classes = { useStyles };
 	}
 
-	// onSubmit = event => {
-	// 	this.props.history.push({
-	// 		pathname: ROUTES.ORDER_TIMELINE,
-	// 		search: "?id=" + this.props.location.orderID,
-	// 	});
-	// };
-
 	componentDidMount() {
 		let queryString = window.location.search;
 		let urlParams = new URLSearchParams(queryString);

@@ -66,16 +66,9 @@ const INITIAL_STATE = {
 class FinalOverviewBase extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { ...INITIAL_STATE, docID: this.props.location.docID }; // docID: props.location.state.docID
+		this.state = { ...INITIAL_STATE, docID: this.props.location.state.docID }; // docID: props.location.state.docID
 		this.classes = { useStyles };
 	}
-
-	// onSubmit = event => {
-	// 	this.props.history.push({
-	// 		pathname: ROUTES.ORDER_TIMELINE,
-	// 		search: "?id=" + this.props.location.orderID,
-	// 	});
-	// };
 
 	componentDidMount() {
 		let queryString = window.location.search;
@@ -86,6 +79,7 @@ class FinalOverviewBase extends Component {
 			orderID: urlId
 		});
 
+		// ---------- RETRIEVE ORDER ----------
 		this.props.firebase.fs
 			.collection("Catering_orders")
 			.doc(this.state.docID)
@@ -111,6 +105,7 @@ class FinalOverviewBase extends Component {
 
 				let doneByName = this.state.doneByName;
 
+				// ---------- RETRIEVE CURRENT USER DETAILS ----------
 				this.props.firebase.fs
 					.collection("Users")
 					.get()
@@ -125,7 +120,9 @@ class FinalOverviewBase extends Component {
 								this.state.doneBy["Order Completion"] ===
 								doc2.id
 							) {
-								doneByName["Order Completion"] = doc2.data().name;
+								doneByName[
+									"Order Completion"
+								] = doc2.data().name;
 							}
 							// if (doneByValues.indexOf(doc2.id) !== -1) {
 							// 	doneByName[
@@ -139,6 +136,7 @@ class FinalOverviewBase extends Component {
 					doneByName: doneByName
 				});
 
+				// ---------- RETRIEVE CUSTOMER DETAILS ----------
 				this.props.firebase.fs
 					.collection("Customers")
 					.doc(data.Customer.id)
@@ -152,6 +150,7 @@ class FinalOverviewBase extends Component {
 				// console.log(this.state);
 			});
 
+		// ---------- RETRIEVE INGREDIENTS ----------
 		this.props.firebase.fs
 			.collection("Ingredients")
 			.get()
@@ -159,17 +158,14 @@ class FinalOverviewBase extends Component {
 				querySnapshot.forEach(doc => {
 					let data = doc.data();
 					let ingtname = data.name;
-					// ingtname = ingtname.toLowerCase();
 					this.setState({
-						// [data.name.toLowerCase()]: Number(data.barcode),
-						[Number(data.barcode)]: ingtname
+						[data.barcode]: ingtname
 					});
 				});
 
 				this.setState({
 					dataIsLoaded: true
 				});
-				// console.log(this.state)
 			})
 			.catch(function(error) {
 				console.log("Error getting documents: ", error);
@@ -178,7 +174,6 @@ class FinalOverviewBase extends Component {
 
 	renderMenu = () => {
 		let listofmenu = [];
-		// console.log(this.state.menu.length)
 		let i = 0;
 		for (i = 0; i < this.state.menu.length; i++) {
 			let dish = this.state.menu[i];
@@ -238,8 +233,14 @@ class FinalOverviewBase extends Component {
 					<Typography component={"span"} variant="body1">
 						{this.griditem("Created On:", this.state.createdOn)}
 
-						{this.griditem("Created By:", this.state.doneByName["Order Received"])}
-						{this.griditem("Collected By:", this.state.doneByName["Order Completion"])}
+						{this.griditem(
+							"Created By:",
+							this.state.doneByName["Order Received"]
+						)}
+						{this.griditem(
+							"Collected By:",
+							this.state.doneByName["Order Completion"]
+						)}
 						{/* <Grid container>
 							<Grid item xs={5}>
 								Created By

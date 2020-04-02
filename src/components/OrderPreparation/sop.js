@@ -207,12 +207,20 @@ class OrderPreparationSopBase extends Component {
 		this.props.history.push({
 			pathname: "./order-preparation-post-sop",
 			search: "?id=" + this.state.orderID,
-			headchef: this.state.headchef,
-			assistantA: this.state.assistantA,
-			assistantB: this.state.assistantB,
-			imageURL: this.state.imageURL,
-			orderID: this.state.orderID,
-			preparationCommencement: this.state.commencement
+			state: {
+				headchef: this.state.headchef,
+				assistantA: this.state.assistantA,
+				assistantB: this.state.assistantB,
+				imageURL: this.state.imageURL,
+				orderID: this.state.orderID,
+				preparationCommencement: this.state.commencement
+			}
+			// headchef: this.state.headchef,
+			// assistantA: this.state.assistantA,
+			// assistantB: this.state.assistantB,
+			// imageURL: this.state.imageURL,
+			// orderID: this.state.orderID,
+			// preparationCommencement: this.state.commencement
 		});
 	};
 

@@ -23,25 +23,24 @@ class OrderPreparationPostSopBase extends Component {
 	onSubmit = event => {
 		this.props.history.push({
 			pathname: ROUTES.ORDER_TIMELINE,
-			search: "?id=" + this.props.location.orderID,
+			search: "?id=" + this.props.location.state.orderID,
 			state: {
-				orderID: this.props.location.orderID
+				orderID: this.props.location.state.orderID
 			}
 		});
 	};
 
 	render() {
-		// console.log(this.props.location);
 		return (
 			<Container component="main" maxWidth="sm">
 				<Typography gutterBottom variant="h4">Kitchen Declaration</Typography>
 				<Paper>
 					<Typography variant="h6"><font color="#2e7d32">Submission Successful</font></Typography>
-					<Typography variant="h6">Order Number: {this.props.location.orderID}</Typography>
-					<Typography variant="h6">Preparation commenced at: {this.props.location.preparationCommencement}</Typography>
-					<Typography variant="body1">Head Chef: {this.props.location.headchef}</Typography>
-					<Typography variant="body1">Assistant A: {this.props.location.assistantA}</Typography>
-					<Typography variant="body1">Assistant B: {this.props.location.assistantB}</Typography>
+					<Typography variant="h6">Order Number: {this.props.location.state.orderID}</Typography>
+					<Typography variant="h6">Preparation commenced at: {this.props.location.state.preparationCommencement}</Typography>
+					<Typography variant="body1">Head Chef: {this.props.location.state.headchef}</Typography>
+					<Typography variant="body1">Assistant A: {this.props.location.state.assistantA}</Typography>
+					<Typography variant="body1">Assistant B: {this.props.location.state.assistantB}</Typography>
 
 					<p><Divider variant="li" /></p>
 
@@ -78,7 +77,7 @@ class OrderPreparationPostSopBase extends Component {
 						<Grid item xs spacing={3}>
 							<img
 								class="image"
-								src={this.props.location.imageURL}
+								src={this.props.location.state.imageURL}
 								alt="Kitchen state"
 							></img>
 						</Grid>
@@ -92,9 +91,9 @@ class OrderPreparationPostSopBase extends Component {
 								fullWidth
 								component={RouterLink} to={{
 								pathname: ROUTES.ORDER_TIMELINE,
-								search: "?id=" + this.props.location.orderID,
+								search: "?id=" + this.props.location.state.orderID,
 								state: {
-									orderID: this.props.location.orderID
+									orderID: this.props.location.state.orderID
 								}
 							}}>Back to Timeline
 							</Button>

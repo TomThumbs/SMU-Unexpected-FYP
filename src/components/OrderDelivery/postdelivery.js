@@ -20,7 +20,6 @@ import Divider from "@material-ui/core/Divider";
 
 class PostDeliveryFormBase extends Component {
 	render() {
-		// console.log(this.props.location.state);
 		return (
 			<Container component="main" maxWidth="sm">
 				<Typography gutterBottom variant="h4">

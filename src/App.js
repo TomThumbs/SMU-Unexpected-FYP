@@ -17,8 +17,9 @@ import SignInPage from './components/SignIn'
 // import PostDeliveryForm from './components/PostDeliveryForm'
 
 // ---------- ORDER FORM ---------- 
-import OrderForm from './components/OrderForm'
-import PostOrderForm from './components/PostOrderForm'
+import {OrderForm, PostOrderForm} from './components/OrderForm'
+// import OrderForm from './components/OrderForm'
+// import PostOrderForm from './components/PostOrderForm'
 // import DeliverySelection from './components/DeliverySelection'
 
 // ---------- ITEM MANAGEMENT ---------- 

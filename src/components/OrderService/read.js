@@ -63,7 +63,6 @@ class OrderServiceReadBase extends Component {
 	}
 
 	componentDidMount() {
-		// console.log(this.props.location.state)
 		this.props.firebase.fs
 			.collection("Catering_orders")
 			.doc(this.state.docID)
