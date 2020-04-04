@@ -284,6 +284,7 @@ class OrderPreparationBase extends Component {
 			menu.push(
 				<Grid container item key={dish}>
 					<Grid item xs={12}>
+						<br></br>
 						<Typography variant="h6" key={dish}>
 							{" "}
 							{dish}{" "}
@@ -293,7 +294,7 @@ class OrderPreparationBase extends Component {
 						<Typography
 							variant="subtitle2"
 							color="textSecondary"
-							gutterBottom
+							
 						>
 							{" "}
 							List of Ingredients{" "}
