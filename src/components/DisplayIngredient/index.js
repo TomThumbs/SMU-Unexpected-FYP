@@ -125,6 +125,7 @@ class DisplayIngredientBase extends Component {
 						type="text"
 						placeholder="Ingredient ID"
 					/>
+					<div><br></br></div>
 					<Button
 						disabled={isInvalid}
 						type="submit"

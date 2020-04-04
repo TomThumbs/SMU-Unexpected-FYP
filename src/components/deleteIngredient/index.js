@@ -153,7 +153,9 @@ class DeleteIngredientForm extends Component {
 					this.state[event.target.value].ingredientName,
 					"Ingredient Name",
 					"Ingredient Name"
-				)
+				),
+				ingredientNameOnly: 
+					this.state[event.target.value].ingredientName,
 			});
 		} else {
 			this.setState({
@@ -242,7 +244,7 @@ class DeleteIngredientForm extends Component {
 						fullWidth
 						name="searchId"
 						value={this.state.searchId}
-						label="Delete Ingredient"
+						label="Barcode of item to delete"
 						onChange={this.onChange}
 						type="text"
 						placeholder="Scan barcode here"
@@ -274,23 +276,26 @@ class DeleteIngredientForm extends Component {
 						</DialogTitle>
 						<DialogContent dividers>
 							<DialogContentText id="alert-dialog-description">
-								Barcode: {this.state.searchId},{" "}
-								{this.state.ingredientName} has been deleted.
+								Barcode: {this.state.searchId},{" "} 
+								<i>{this.state.ingredientNameOnly}</i> has been deleted.
 							</DialogContentText>
 						</DialogContent>
 						<DialogActions>
 							<Grid container spacing={1}>
-								<Grid item xs={1}>
+								<Grid item xs={12}>
 									<Button
+										variant="outlined"
+										fullWidth
 										onClick={this.handleClose}
 										color="primary"
-										autoFocus
-									>
+										autoFocus>
 										Continue Deleting
 									</Button>
 								</Grid>
-								<Grid item xs={1}>
+								<Grid item xs={12}>
 									<Button
+										variant="outlined"
+										fullWidth
 										onClick={this.handleHome}
 										color="primary"
 										autoFocus
