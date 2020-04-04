@@ -73,11 +73,12 @@ class DeleteIngredientForm extends Component {
 			minute = "0" + minute;
 		}
 		this.setState({
-			commencement: day + "/" + month + "/" + year + " " + hour + ":" + minute
+			commencement:
+				day + "/" + month + "/" + year + " " + hour + ":" + minute
 		});
 
 		this.props.firebase.fs
-			.collection("Ingredients")
+			.collection("IngredientsInventory")
 			.get()
 			.then(querySnapshot => {
 				querySnapshot.forEach(doc => {
@@ -130,7 +131,10 @@ class DeleteIngredientForm extends Component {
 		});
 		// console.log(this.state[event.target.value])
 		if (event.target.value in this.state) {
-			let dash = this.state[event.target.value].dateOfStorage.replace("/", "-");
+			let dash = this.state[event.target.value].dateOfStorage.replace(
+				"/",
+				"-"
+			);
 			this.setState({
 				dateOfStorage: this.createTextField(
 					"dos",
@@ -188,30 +192,36 @@ class DeleteIngredientForm extends Component {
 			.get()
 			.then(snap => {
 				snap.forEach(doc => {
-					this.props.firebase.fs.collection("IngredientsArchive").add({
-						Date_of_Storage: doc.data().Date_of_Storage,
-						Date_of_expiry: doc.data().Date_of_expiry,
-						Primary_Ingredients: doc.data().Primary_Ingredients,
-						barcode: doc.data().barcode,
-						name: doc.data().name,
-						reason: "Expired before use",
-						Date_of_removal: this.state.commencement
-					});
-				});
-			});
-
-		this.props.firebase.fs
-			.collection("IngredientsInventory")
-			.where("barcode", "==", String(this.state.searchId))
-			.get()
-			.then(snap => {
-				snap.forEach(doc => {
 					this.props.firebase.fs
-						.collection("Ingredients")
+						.collection("IngredientsArchive")
+						.add({
+							Date_of_Storage: doc.data().Date_of_Storage,
+							Date_of_expiry: doc.data().Date_of_expiry,
+							Primary_Ingredients: doc.data().Primary_Ingredients,
+							barcode: doc.data().barcode,
+							name: doc.data().name,
+							reason: "Expired before use",
+							Date_of_removal: this.state.commencement
+						});
+					this.props.firebase.fs
+						.collection("IngredientsInventory")
 						.doc(doc.id)
 						.delete();
 				});
 			});
+
+		// this.props.firebase.fs
+		// 	.collection("IngredientsInventory")
+		// 	.where("barcode", "==", String(this.state.searchId))
+		// 	.get()
+		// 	.then(snap => {
+		// 		snap.forEach(doc => {
+		// 			this.props.firebase.fs
+		// 				.collection("Ingredients")
+		// 				.doc(doc.id)
+		// 				.delete();
+		// 		});
+		// 	});
 
 		this.handleClickOpen();
 	};
@@ -264,19 +274,27 @@ class DeleteIngredientForm extends Component {
 						</DialogTitle>
 						<DialogContent dividers>
 							<DialogContentText id="alert-dialog-description">
-								Barcode: {this.state.searchId}, {this.state.ingredientName} has
-								been deleted.
+								Barcode: {this.state.searchId},{" "}
+								{this.state.ingredientName} has been deleted.
 							</DialogContentText>
 						</DialogContent>
 						<DialogActions>
 							<Grid container spacing={1}>
 								<Grid item xs={1}>
-									<Button onClick={this.handleClose} color="primary" autoFocus>
+									<Button
+										onClick={this.handleClose}
+										color="primary"
+										autoFocus
+									>
 										Continue Deleting
 									</Button>
 								</Grid>
 								<Grid item xs={1}>
-									<Button onClick={this.handleHome} color="primary" autoFocus>
+									<Button
+										onClick={this.handleHome}
+										color="primary"
+										autoFocus
+									>
 										Home
 									</Button>
 								</Grid>

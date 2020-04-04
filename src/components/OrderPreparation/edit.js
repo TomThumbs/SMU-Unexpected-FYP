@@ -232,9 +232,8 @@ class OrderPreparationEditBase extends Component {
 			}
 			// console.log(String(this.state.toDelete[x[i]]).split(","))
 		}
-		y = y.split(",");
-		// console.log(typeof y)
-		// let j = 0
+		console.log(y);
+		// y = y.split(",");
 		for (let j = 0; j < y.length; j++) {
 			// console.log(Number(y[j]));
 			this.props.firebase.fs
@@ -255,25 +254,29 @@ class OrderPreparationEditBase extends Component {
 								reason: "Consumed in Preparation",
 								Date_of_removal: this.state.commencement
 							});
-					});
-				});
-		}
-
-		// let k = 0
-		for (let k = 0; k < y.length; k++) {
-			this.props.firebase.fs
-				.collection("IngredientsInventory")
-				.where("barcode", "==", y[k])
-				.get()
-				.then(snap => {
-					snap.forEach(doc => {
 						this.props.firebase.fs
-							.collection("Ingredients")
+							.collection("IngredientsInventory")
 							.doc(doc.id)
 							.delete();
 					});
 				});
 		}
+
+		// let k = 0
+		// for (let k = 0; k < y.length; k++) {
+		// 	this.props.firebase.fs
+		// 		.collection("IngredientsInventory")
+		// 		.where("barcode", "==", y[k])
+		// 		.get()
+		// 		.then(snap => {
+		// 			snap.forEach(doc => {
+		// 				this.props.firebase.fs
+		// 					.collection("IngredientsInventory")
+		// 					.doc(doc.id)
+		// 					.delete();
+		// 			});
+		// 		});
+		// }
 
 		let ingredientsUsed = {};
 
@@ -478,7 +481,7 @@ class OrderPreparationEditBase extends Component {
 	}
 
 	render() {
-		console.log(this.state)
+		console.log(this.state);
 		let counter = 0;
 		this.state.dishIngredientsCheck.forEach(item => {
 			if (this.state[item] === true) {
