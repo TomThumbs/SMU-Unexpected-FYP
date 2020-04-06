@@ -15,28 +15,28 @@ import Checkbox from "@material-ui/core/Checkbox";
 import * as ROUTES from "../../constants/routes";
 import { withAuthorization } from "../Session";
 
-const useStyles = makeStyles(theme =>
+const useStyles = makeStyles((theme) =>
 	createStyles({
 		root: {
-			flexGrow: 1
+			flexGrow: 1,
 		},
 		paper: {
 			marginTop: theme.spacing(8),
 			display: "flex",
 			flexDirection: "column",
 			maxWidth: 400,
-			textAlign: "center"
+			textAlign: "center",
 		},
 		form: {
 			width: "100%", // Fix IE 11 issue.
-			marginTop: theme.spacing(1)
+			marginTop: theme.spacing(1),
 		},
 		submit: {
-			margin: theme.spacing(3, 0, 2)
+			margin: theme.spacing(3, 0, 2),
 		},
 		text: {
-			textAlign: "center"
-		}
+			textAlign: "center",
+		},
 	})
 );
 
@@ -48,7 +48,7 @@ const INITIAL_STATE = {
 	status: "",
 	IOTs: [],
 	commencement: new Date(),
-	StatusDates: ""
+	StatusDates: "",
 };
 
 class OrderCompletionBase extends Component {
@@ -63,7 +63,7 @@ class OrderCompletionBase extends Component {
 		let urlParams = new URLSearchParams(queryString);
 		let urlId = Number(urlParams.get("id"));
 		this.setState({
-			orderID: urlId
+			orderID: urlId,
 		});
 
 		// this.props.firebase.fs
@@ -98,32 +98,29 @@ class OrderCompletionBase extends Component {
 			minute = "0" + minute;
 		}
 		this.setState({
-			commencement:
-				day + "/" + month + "/" + year + " " + hour + ":" + minute
+			commencement: day + "/" + month + "/" + year + " " + hour + ":" + minute,
 		});
 
 		this.props.firebase.fs
 			.collection("Catering_orders")
 			.where("orderID", "==", urlId)
 			.get()
-			.then(snap => {
-				snap.forEach(doc => {
+			.then((snap) => {
+				snap.forEach((doc) => {
 					// console.log(Object.values(doc.data().HeatersUsed));
 					// console.log(doc.data().StatusDates.concat(this.state.commencement));
 					this.setState({
 						docID: doc.id,
 						IOTs: Object.values(doc.data().HeatersUsed),
-						StatusDates: doc
-							.data()
-							.StatusDates.concat(this.state.commencement),
-						doneBy: doc.data().doneBy
+						StatusDates: doc.data().StatusDates.concat(this.state.commencement),
+						doneBy: doc.data().doneBy,
 					});
 					if (doc.data().Status === "Order Completed") {
 						// console.log(doc.id)
 						this.props.history.push({
 							pathname: ROUTES.FINAL_OVERVIEW,
 							search: "?id=" + this.state.orderID,
-							docID: doc.id
+							docID: doc.id,
 						});
 					}
 				});
@@ -132,7 +129,7 @@ class OrderCompletionBase extends Component {
 		// ---------- RETRIVE USER ID ----------
 		const userID = this.props.firebase.auth.currentUser.uid;
 		this.setState({
-			userID: userID
+			userID: userID,
 		});
 
 		// this.props.firebase.fs
@@ -153,36 +150,33 @@ class OrderCompletionBase extends Component {
 		// 	});
 	}
 
-	onChange = event => {
+	onChange = (event) => {
 		if (this.state.completion === false) {
 			this.setState({
-				[event.target.name]: true
+				[event.target.name]: true,
 			});
 		} else {
 			this.setState({
-				[event.target.name]: false
+				[event.target.name]: false,
 			});
 		}
 	};
 
-	onSubmit = event => {
+	onSubmit = (event) => {
 		event.preventDefault();
 
-		this.state.IOTs.forEach(item => {
+		this.state.IOTs.forEach((item) => {
 			// console.log(item);
 			this.props.firebase.fs
 				.collection("IoTHeaters")
 				.where("ID", "==", item)
 				.get()
-				.then(snap => {
-					snap.forEach(doc => {
-						this.props.firebase.fs
-							.collection("IoTHeaters")
-							.doc(doc.id)
-							.update({
-								status: "Unused",
-								orderID: "Unused"
-							});
+				.then((snap) => {
+					snap.forEach((doc) => {
+						this.props.firebase.fs.collection("IoTHeaters").doc(doc.id).update({
+							status: "Unused",
+							orderID: "Unused",
+						});
 					});
 				});
 		});
@@ -198,18 +192,20 @@ class OrderCompletionBase extends Component {
 			.update({
 				Status: "Order Completed",
 				StatusDates: this.state.StatusDates,
-				doneBy: doneBy
+				doneBy: doneBy,
 			})
-			.then(function() {
+			.then(function () {
 				console.log("Document successfully written!");
 			})
-			.catch(function(error) {
+			.catch(function (error) {
 				console.error("Error writing document: ", error);
 			});
 		this.props.history.push({
 			pathname: ROUTES.FINAL_OVERVIEW,
 			search: "?id=" + this.state.orderID,
-			docID: this.state.docID
+			state: {
+				docID: this.state.docID,
+			},
 		});
 	};
 
@@ -220,8 +216,8 @@ class OrderCompletionBase extends Component {
 					pathname: ROUTES.ORDER_TIMELINE,
 					search: "?id=" + this.state.orderID,
 					state: {
-						orderID: this.state.orderID
-					}
+						orderID: this.state.orderID,
+					},
 				}}
 			>
 				<Button>Back</Button>
@@ -232,11 +228,7 @@ class OrderCompletionBase extends Component {
 	render() {
 		let isInvalid = this.state.completion === false;
 		return (
-			<Container
-				component="main"
-				maxWidth="xs"
-				className={this.classes.root}
-			>
+			<Container component="main" maxWidth="xs" className={this.classes.root}>
 				<Typography gutterBottom variant="h4">
 					Order Completion
 				</Typography>
@@ -281,8 +273,8 @@ class OrderCompletionBase extends Component {
 									pathname: ROUTES.ORDER_TIMELINE,
 									search: "?id=" + this.state.orderID,
 									state: {
-										orderID: this.state.orderID
-									}
+										orderID: this.state.orderID,
+									},
 								}}
 							>
 								Back to Timeline
@@ -307,5 +299,5 @@ class OrderCompletionBase extends Component {
 }
 
 const OrderCompletion = withRouter(withFirebase(OrderCompletionBase));
-const condition = authUser => !!authUser;
+const condition = (authUser) => !!authUser;
 export default withAuthorization(condition)(OrderCompletion);
