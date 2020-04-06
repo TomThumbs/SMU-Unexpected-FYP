@@ -1,12 +1,36 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { withFirebase } from "../Firebase";
 import * as ROUTES from "../../constants/routes";
+
+import { makeStyles } from "@material-ui/core/styles";
+
+import Typography from "@material-ui/core/Typography";
+import Paper from "@material-ui/core/Paper";
+import Container from "@material-ui/core/Container";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+
+const useStyles = makeStyles((theme) => ({
+	paper: {
+		display: "flex",
+		flexDirection: "column",
+	},
+	form: {
+		width: "100%", // Fix IE 11 issue.
+		marginTop: theme.spacing(1),
+	},
+	submit: {
+		margin: theme.spacing(3, 0, 2),
+	},
+}));
+
 const PasswordForgetPage = () => (
-	<div>
+	<Container component="main" maxWidth="xs">
 		<h1>PasswordForget</h1>
 		<PasswordForgetForm />
-	</div>
+	</Container>
 );
 const INITIAL_STATE = {
 	email: "",
@@ -16,8 +40,11 @@ class PasswordForgetFormBase extends Component {
 	constructor(props) {
 		super(props);
 		this.state = { ...INITIAL_STATE };
+		this.classes = { useStyles };
 	}
 	onSubmit = (event) => {
+		event.preventDefault();
+
 		const { email } = this.state;
 		this.props.firebase
 			.doPasswordReset(email)
@@ -30,7 +57,6 @@ class PasswordForgetFormBase extends Component {
 		this.props.history.push({
 			pathname: ROUTES.LANDING,
 		});
-		event.preventDefault();
 	};
 	onChange = (event) => {
 		this.setState({ [event.target.name]: event.target.value });
@@ -39,19 +65,44 @@ class PasswordForgetFormBase extends Component {
 		const { email, error } = this.state;
 		const isInvalid = email === "";
 		return (
-			<form onSubmit={this.onSubmit}>
-				<input
-					name="email"
-					value={this.state.email}
-					onChange={this.onChange}
-					type="text"
-					placeholder="Email Address"
-				/>
-				<button disabled={isInvalid} type="submit">
-					Reset My Password
-				</button>
-				{error && <p>{error.message}</p>}
-			</form>
+			<Paper>
+				<form onSubmit={this.onSubmit}>
+					{/* <input
+						name="email"
+						value={this.state.email}
+						onChange={this.onChange}
+						type="text"
+						placeholder="Email Address"
+					/> */}
+					<TextField
+						variant="outlined"
+						margin="normal"
+						required
+						fullWidth
+						name="email"
+						value={this.state.email}
+						label="Email Address"
+						onChange={this.onChange}
+						type="text"
+						placeholder="Email Address"
+						autoFocus
+					/>
+					{/* <button disabled={isInvalid} type="submit">
+						Reset My Password
+					</button> */}
+					<Button
+						disabled={isInvalid}
+						type="submit"
+						fullWidth
+						variant="contained"
+						color="primary"
+						className={this.classes.submit}
+					>
+						Reset My Password
+					</Button>
+					{error && <p>{error.message}</p>}
+				</form>
+			</Paper>
 		);
 	}
 }
@@ -61,5 +112,5 @@ const PasswordForgetLink = () => (
 	</p>
 );
 export default PasswordForgetPage;
-const PasswordForgetForm = withFirebase(PasswordForgetFormBase);
+const PasswordForgetForm = withRouter(withFirebase(PasswordForgetFormBase));
 export { PasswordForgetForm, PasswordForgetLink };
