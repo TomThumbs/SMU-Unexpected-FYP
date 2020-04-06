@@ -28,7 +28,9 @@ const useStyles = makeStyles((theme) => ({
 
 const PasswordForgetPage = () => (
 	<Container component="main" maxWidth="xs">
-		<h1>PasswordForget</h1>
+		<Typography component="h1" variant="h4" gutterBottom>
+					Reset Password
+		</Typography>
 		<PasswordForgetForm />
 	</Container>
 );
@@ -66,6 +68,9 @@ class PasswordForgetFormBase extends Component {
 		const isInvalid = email === "";
 		return (
 			<Paper>
+				<Typography variant="body2" color="secondary" gutterBottom>
+						A new password will be sent to your email. 
+					</Typography>
 				<form onSubmit={this.onSubmit}>
 					{/* <input
 						name="email"
@@ -90,6 +95,7 @@ class PasswordForgetFormBase extends Component {
 					{/* <button disabled={isInvalid} type="submit">
 						Reset My Password
 					</button> */}
+					<div><br></br></div>
 					<Button
 						disabled={isInvalid}
 						type="submit"
