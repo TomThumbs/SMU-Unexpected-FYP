@@ -54,3 +54,5 @@ export const DISH_TO_INGREDIENT_FORM = '/digital-recipe'
 export const COOKING_SELECTION = '/cooking-selection'
 export const COOKING_FORM = '/cooking-form'
 export const DISPLAY_ORDERS = '/display-orders'
+
+export const HEATER_MANAGEMENT = '/heater-management'
